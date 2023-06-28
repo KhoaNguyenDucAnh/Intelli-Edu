@@ -1,0 +1,26 @@
+server:
+  port: 8080
+  error:
+    include-stacktrace: never
+---
+spring:
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://127.0.0.1:5432/algorithmdesigner
+    username: postgres
+    password: 1234567890
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        '[format_sql]': true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  mvc:
+    async:
+      request-timeout: -1
+---
