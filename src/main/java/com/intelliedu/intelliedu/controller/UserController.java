@@ -19,8 +19,13 @@ public class UserController {
   @Autowired
   private UserService userService;
 
-  @PostMapping("")
+  @PostMapping("/register")
   public void registerUser(@RequestBody @Valid UserDto userDto) {
     userService.registerUser(userDto);
+  }
+
+  @PostMapping("/login")
+  public void loginUser(@RequestBody @Valid UserDto userDto) {
+    userService.loginUser(userDto);
   }
 }

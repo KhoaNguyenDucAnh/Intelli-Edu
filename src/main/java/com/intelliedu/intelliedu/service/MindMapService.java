@@ -9,7 +9,7 @@ public interface MindMapService {
 
   public ResponseEntity<ByteArrayResource> findMindMapById(String rawId);
 
-  public List<MindMapDto> findMindMapByName(String name);
+  public List<MindMapDto> findMindMapByTitle(String title);
 
   public void addMindMap(MindMapDto mindMapDto);
 

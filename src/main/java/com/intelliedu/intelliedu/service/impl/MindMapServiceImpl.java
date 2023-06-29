@@ -10,11 +10,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import com.intelliedu.intelliedu.config.MindMapConfig;
 import com.intelliedu.intelliedu.dto.MindMapDto;
 import com.intelliedu.intelliedu.entity.MindMap;
 import com.intelliedu.intelliedu.entity.User;
 import com.intelliedu.intelliedu.mapper.MindMapMapper;
-import com.intelliedu.intelliedu.repository.MindMapRepository;
+import com.intelliedu.intelliedu.repository.MindMapRepo;
 import com.intelliedu.intelliedu.service.MindMapService;
 
 @Service
@@ -24,24 +25,25 @@ public class MindMapServiceImpl implements MindMapService {
   private MindMapMapper mindMapMapper;
 
   @Autowired
-  private MindMapRepository mindMapRepository;
+  private MindMapRepo mindMapRepo;
 
   @Override
   public ResponseEntity<ByteArrayResource> findMindMapById(String rawId) {
     try {
       Long id = Long.parseLong(rawId);
-      MindMap mindMap = mindMapRepository.findById(id)
-          .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+      MindMap mindMap = mindMapRepo.findById(id)
+          .orElseThrow(
+              () -> new ResponseStatusException(HttpStatus.NOT_FOUND, MindMapConfig.NOT_FOUND));
       return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN)
           .body(new ByteArrayResource(mindMap.getData()));
     } catch (NumberFormatException e) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, MindMapConfig.INVALID_ID);
     }
   }
 
   @Override
-  public List<MindMapDto> findMindMapByName(String name) {
-    List<MindMap> mindMap = mindMapRepository.findByName(name);
+  public List<MindMapDto> findMindMapByTitle(String title) {
+    List<MindMap> mindMap = mindMapRepo.findByTitle(title);
     return mindMapMapper.toMindMapDto(mindMap);
   }
 
@@ -55,18 +57,19 @@ public class MindMapServiceImpl implements MindMapService {
       List<MindMap> userMindMap = user.getMindMap();
       if (userMindMap != null) {
         if (userMindMap.stream()
-            .noneMatch(mindMapTemp -> mindMapTemp.getName().equals(mindMap.getName()))) {
+            .noneMatch(mindMapTemp -> mindMapTemp.getTitle().equals(mindMap.getTitle()))) {
           userMindMap.add(mindMap);
         } else {
-          throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+          throw new ResponseStatusException(HttpStatus.CONFLICT, MindMapConfig.CONFLICT);
         }
       } else {
         userMindMap = Arrays.asList(mindMap);
       }
 
-      mindMapRepository.save(mindMap);
+      mindMapRepo.save(mindMap);
     } catch (IOException e) {
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+          MindMapConfig.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -75,27 +78,29 @@ public class MindMapServiceImpl implements MindMapService {
     try {
       Long id = Long.parseLong(rawId);
 
-      MindMap mindMap = mindMapRepository.findById(id)
-          .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
+      MindMap mindMap = mindMapRepo.findById(id)
+          .orElseThrow(
+              () -> new ResponseStatusException(HttpStatus.NOT_FOUND, MindMapConfig.NOT_FOUND));
       MindMap newMindMap = mindMapMapper.toMindMap(mindMapDto);
 
       // Update name
       User user = mindMap.getUser();
       List<MindMap> userMindMap = user.getMindMap();
       if (userMindMap.stream()
-          .anyMatch(mindMapTemp -> mindMapTemp.getName().equals(mindMap.getName()))) {
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+          .anyMatch(mindMapTemp -> mindMapTemp.getTitle().equals(mindMap.getTitle()))) {
+        throw new ResponseStatusException(HttpStatus.CONFLICT, MindMapConfig.CONFLICT);
       }
-      mindMap.setName(newMindMap.getName());
+      mindMap.setTitle(newMindMap.getTitle());
 
       // Update data
       mindMap.setData(newMindMap.getData());
 
-      mindMapRepository.save(mindMap);
+      mindMapRepo.save(mindMap);
     } catch (NumberFormatException e) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, MindMapConfig.INVALID_ID);
     } catch (IOException e) {
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+          MindMapConfig.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -103,9 +108,9 @@ public class MindMapServiceImpl implements MindMapService {
   public void deleteMindMap(String rawId) {
     try {
       Long id = Long.parseLong(rawId);
-      mindMapRepository.deleteById(id);
+      mindMapRepo.deleteById(id);
     } catch (NumberFormatException e) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, MindMapConfig.INVALID_ID);
     }
   }
 }

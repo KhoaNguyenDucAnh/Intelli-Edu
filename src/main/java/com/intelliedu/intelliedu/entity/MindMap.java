@@ -27,8 +27,8 @@ public class MindMap {
   @Column(name = "id")
   private Long id;
 
-  @Column(name = "name")
-  private String name;
+  @Column(name = "title")
+  private String title;
 
   @Column(name = "data")
   private byte[] data;

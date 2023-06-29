@@ -33,8 +33,8 @@ public class MindMapController {
   }
 
   @GetMapping("/name/{name}")
-  public List<MindMapDto> findMindMapByName(@PathVariable(value = "name") String name) {
-    return mindMapService.findMindMapByName(name);
+  public List<MindMapDto> findMindMapByTitle(@PathVariable(value = "name") String title) {
+    return mindMapService.findMindMapByTitle(title);
   }
 
   @PostMapping("/")

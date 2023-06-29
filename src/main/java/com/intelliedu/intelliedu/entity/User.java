@@ -27,6 +27,8 @@ import lombok.NoArgsConstructor;
 public class User implements UserDetails {
 
   private static final long serialVersionUID = 1L;
+  @SuppressWarnings("unused")
+  private static final String ROLE_PREFIX = "ROLE_";
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -43,11 +45,19 @@ public class User implements UserDetails {
   private String password;
 
   @Column(name = "roles")
-  private List<String> Roles;
+  private List<String> role;
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   @Column(name = "mindmaps")
   private List<MindMap> mindMap;
+
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  @Column(name = "posts")
+  private List<Post> post;
+
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  @Column(name = "comments")
+  private List<Comment> comment;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
