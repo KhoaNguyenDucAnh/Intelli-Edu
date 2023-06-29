@@ -23,8 +23,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "users")
-public class User implements UserDetails {
+@Table(name = "account")
+public class Account implements UserDetails {
 
   private static final long serialVersionUID = 1L;
   @SuppressWarnings("unused")
@@ -47,16 +47,16 @@ public class User implements UserDetails {
   @Column(name = "roles")
   private List<String> role;
 
-  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  @Column(name = "mindmaps")
+  @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  @Column(name = "mindmap")
   private List<MindMap> mindMap;
 
-  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  @Column(name = "posts")
+  @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  @Column(name = "post")
   private List<Post> post;
 
-  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  @Column(name = "comments")
+  @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  @Column(name = "comment")
   private List<Comment> comment;
 
   @Override

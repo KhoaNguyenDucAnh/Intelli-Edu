@@ -7,25 +7,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import com.intelliedu.intelliedu.dto.UserDto;
-import com.intelliedu.intelliedu.service.UserService;
+import com.intelliedu.intelliedu.dto.AccountDto;
+import com.intelliedu.intelliedu.service.AccountService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/account")
 @ResponseStatus(code = HttpStatus.OK)
-public class UserController {
+public class AccountController {
 
   @Autowired
-  private UserService userService;
+  private AccountService accountService;
 
   @PostMapping("/register")
-  public void registerUser(@RequestBody @Valid UserDto userDto) {
-    userService.registerUser(userDto);
+  public void registerAccount(@RequestBody @Valid AccountDto accountDto) {
+    accountService.registerAccount(accountDto);
   }
 
   @PostMapping("/login")
-  public void loginUser(@RequestBody @Valid UserDto userDto) {
-    userService.loginUser(userDto);
+  public void loginAccount(@RequestBody @Valid AccountDto accountDto) {
+    accountService.loginAccount(accountDto);
   }
 }

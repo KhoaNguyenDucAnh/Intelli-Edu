@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import com.intelliedu.intelliedu.config.MindMapConfig;
 import com.intelliedu.intelliedu.dto.MindMapDto;
+import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.entity.MindMap;
-import com.intelliedu.intelliedu.entity.User;
 import com.intelliedu.intelliedu.mapper.MindMapMapper;
 import com.intelliedu.intelliedu.repository.MindMapRepo;
 import com.intelliedu.intelliedu.service.MindMapService;
@@ -52,18 +52,18 @@ public class MindMapServiceImpl implements MindMapService {
     try {
       MindMap mindMap = mindMapMapper.toMindMap(mindMapDto);
 
-      // Add mindmap to user
-      User user = mindMap.getUser();
-      List<MindMap> userMindMap = user.getMindMap();
-      if (userMindMap != null) {
-        if (userMindMap.stream()
+      // Add mindmap to account
+      Account account = mindMap.getAccount();
+      List<MindMap> accountMindMap = account.getMindMap();
+      if (accountMindMap != null) {
+        if (accountMindMap.stream()
             .noneMatch(mindMapTemp -> mindMapTemp.getTitle().equals(mindMap.getTitle()))) {
-          userMindMap.add(mindMap);
+          accountMindMap.add(mindMap);
         } else {
           throw new ResponseStatusException(HttpStatus.CONFLICT, MindMapConfig.CONFLICT);
         }
       } else {
-        userMindMap = Arrays.asList(mindMap);
+        accountMindMap = Arrays.asList(mindMap);
       }
 
       mindMapRepo.save(mindMap);
@@ -84,9 +84,9 @@ public class MindMapServiceImpl implements MindMapService {
       MindMap newMindMap = mindMapMapper.toMindMap(mindMapDto);
 
       // Update name
-      User user = mindMap.getUser();
-      List<MindMap> userMindMap = user.getMindMap();
-      if (userMindMap.stream()
+      Account account = mindMap.getAccount();
+      List<MindMap> accountMindMap = account.getMindMap();
+      if (accountMindMap.stream()
           .anyMatch(mindMapTemp -> mindMapTemp.getTitle().equals(mindMap.getTitle()))) {
         throw new ResponseStatusException(HttpStatus.CONFLICT, MindMapConfig.CONFLICT);
       }

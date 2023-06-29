@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "mindmaps")
+@Table(name = "document")
 public class Document {
 
   @Id
@@ -34,6 +34,6 @@ public class Document {
   private String data;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "users")
-  private User user;
+  @JoinColumn(name = "account")
+  private Account account;
 }

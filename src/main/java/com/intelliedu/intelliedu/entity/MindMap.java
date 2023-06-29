@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "mindmaps")
+@Table(name = "mindmap")
 public class MindMap {
 
   @Id
@@ -34,6 +34,6 @@ public class MindMap {
   private byte[] data;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "users")
-  private User user;
+  @JoinColumn(name = "account")
+  private Account account;
 }

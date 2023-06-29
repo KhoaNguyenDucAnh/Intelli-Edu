@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "comments")
+@Table(name = "comment")
 public class Comment {
 
   @Id
@@ -35,10 +35,10 @@ public class Comment {
   private String content;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "users")
-  private User user;
+  @JoinColumn(name = "account")
+  private Account account;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "posts")
+  @JoinColumn(name = "post")
   private Post post;
 }

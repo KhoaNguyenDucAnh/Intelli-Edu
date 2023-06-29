@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "posts")
+@Table(name = "post")
 public class Post {
 
   @Id
@@ -45,10 +45,10 @@ public class Post {
   private String content;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "users")
-  private User user;
+  @JoinColumn(name = "account")
+  private Account account;
 
   @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  @Column(name = "comments")
+  @Column(name = "comment")
   private List<Comment> comment;
 }
