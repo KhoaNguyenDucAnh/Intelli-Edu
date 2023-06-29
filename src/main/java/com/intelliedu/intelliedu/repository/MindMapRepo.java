@@ -6,9 +6,9 @@ import com.intelliedu.intelliedu.entity.MindMap;
 import com.intelliedu.intelliedu.entity.User;
 
 
-public interface MindMapRepository extends JpaRepository<MindMap, Long> {
+public interface MindMapRepo extends JpaRepository<MindMap, Long> {
 
-  List<MindMap> findByName(String name);
+  List<MindMap> findByTitle(String title);
 
   List<MindMap> findByUser(User user);
 }
