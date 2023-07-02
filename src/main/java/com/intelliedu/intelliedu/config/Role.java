@@ -1,5 +1,5 @@
 package com.intelliedu.intelliedu.config;
 
-public enum Subject {
-
+public enum Role {
+  ROLE_USER, ROLE_ADMIN
 }

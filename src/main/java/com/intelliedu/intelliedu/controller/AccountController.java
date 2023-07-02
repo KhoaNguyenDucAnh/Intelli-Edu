@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import com.intelliedu.intelliedu.dto.AccountDto;
+import com.intelliedu.intelliedu.dto.AccountRegistrationDto;
 import com.intelliedu.intelliedu.service.AccountService;
 import jakarta.validation.Valid;
 
@@ -16,16 +16,5 @@ import jakarta.validation.Valid;
 @ResponseStatus(code = HttpStatus.OK)
 public class AccountController {
 
-  @Autowired
-  private AccountService accountService;
-
-  @PostMapping("/register")
-  public void registerAccount(@RequestBody @Valid AccountDto accountDto) {
-    accountService.registerAccount(accountDto);
-  }
-
-  @PostMapping("/login")
-  public void loginAccount(@RequestBody @Valid AccountDto accountDto) {
-    accountService.loginAccount(accountDto);
-  }
+  
 }

@@ -20,5 +20,5 @@ public class MindMapDto {
   private MultipartFile data;
 
   @JsonProperty
-  private AccountDto accountDto;
+  private AccountResponseDto accountResponseDto;
 }

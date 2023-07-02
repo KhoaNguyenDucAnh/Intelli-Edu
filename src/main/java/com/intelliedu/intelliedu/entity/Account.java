@@ -1,16 +1,19 @@
 package com.intelliedu.intelliedu.entity;
 
-import java.util.Collection;
 import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import com.intelliedu.intelliedu.config.Role;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -31,61 +34,56 @@ public class Account implements UserDetails {
   private static final String ROLE_PREFIX = "ROLE_";
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  @Column(name = "id")
+  @GeneratedValue
   private Long id;
 
-  @Column(name = "email", unique = true)
+  @Column(unique = true)
   private String email;
 
-  @Column(name = "username", unique = true)
+  @Column(unique = true)
   private String username;
 
-  @Column(name = "password")
   private String password;
 
-  @Column(name = "roles")
-  private List<String> role;
+  @Enumerated(EnumType.STRING)
+  private Role role;
 
   @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  @Column(name = "mindmap")
+  @JoinColumn(name = "mindmap")
   private List<MindMap> mindMap;
 
   @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  @Column(name = "post")
   private List<Post> post;
 
   @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  @Column(name = "comment")
   private List<Comment> comment;
 
   @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    // TODO Auto-generated method stub
-    return null;
+  public List<? extends GrantedAuthority> getAuthorities() {
+    return List.of(new SimpleGrantedAuthority(role.name()));
   }
 
   @Override
   public boolean isAccountNonExpired() {
     // TODO Auto-generated method stub
-    return false;
+    return true;
   }
 
   @Override
   public boolean isAccountNonLocked() {
     // TODO Auto-generated method stub
-    return false;
+    return true;
   }
 
   @Override
   public boolean isCredentialsNonExpired() {
     // TODO Auto-generated method stub
-    return false;
+    return true;
   }
 
   @Override
   public boolean isEnabled() {
     // TODO Auto-generated method stub
-    return false;
+    return true;
   }
 }

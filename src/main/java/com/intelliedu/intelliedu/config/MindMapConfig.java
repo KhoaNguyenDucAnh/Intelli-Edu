@@ -1,7 +1,6 @@
 package com.intelliedu.intelliedu.config;
 
 public class MindMapConfig {
-
   public static final String INVALID_ID =
       "Invalid Mindmap ID. The provided ID must be a number. Please provide a valid mindmap ID.";
   public static final String NOT_FOUND =
