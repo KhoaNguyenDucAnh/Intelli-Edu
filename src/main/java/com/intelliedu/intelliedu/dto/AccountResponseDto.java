@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class AccountResponseDto {
+  
   private Long id;
+  
   private String username;
 }

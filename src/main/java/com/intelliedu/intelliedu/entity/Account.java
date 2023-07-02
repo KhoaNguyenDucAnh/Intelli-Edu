@@ -13,7 +13,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -49,7 +48,7 @@ public class Account implements UserDetails {
   private Role role;
 
   @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  @JoinColumn(name = "mindmap")
+  @Column(name = "mindmap")
   private List<MindMap> mindMap;
 
   @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
@@ -65,25 +64,21 @@ public class Account implements UserDetails {
 
   @Override
   public boolean isAccountNonExpired() {
-    // TODO Auto-generated method stub
     return true;
   }
 
   @Override
   public boolean isAccountNonLocked() {
-    // TODO Auto-generated method stub
     return true;
   }
 
   @Override
   public boolean isCredentialsNonExpired() {
-    // TODO Auto-generated method stub
     return true;
   }
 
   @Override
   public boolean isEnabled() {
-    // TODO Auto-generated method stub
     return true;
   }
 }

@@ -3,6 +3,7 @@ package com.intelliedu.intelliedu.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -16,14 +17,15 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import com.intelliedu.intelliedu.security.exception.AuthEntryPointJWT;
 import com.intelliedu.intelliedu.security.filter.AuthTokenFilter;
-import com.intelliedu.intelliedu.service.AccountService;
+import com.intelliedu.intelliedu.security.service.AuthService;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
 
   @Autowired
-  private AccountService accountService;
+  @Lazy
+  private AuthService authService;
 
   @Autowired
   private AuthEntryPointJWT unauthorizedHandler;
@@ -37,7 +39,7 @@ public class WebSecurityConfig {
   public DaoAuthenticationProvider authenticationProvider() {
     DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
-    authProvider.setUserDetailsService(accountService);
+    authProvider.setUserDetailsService(authService);
     authProvider.setPasswordEncoder(passwordEncoder());
 
     return authProvider;
@@ -58,11 +60,10 @@ public class WebSecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(CsrfConfigurer::disable)
         .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-        .sessionManagement(
-            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll()
-            .requestMatchers("/api/test/**").permitAll()
-            .anyRequest().authenticated());
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(auth -> auth
+          .requestMatchers("/api/v1/auth/**").permitAll()
+          .anyRequest().authenticated());
 
     http.authenticationProvider(authenticationProvider());
 

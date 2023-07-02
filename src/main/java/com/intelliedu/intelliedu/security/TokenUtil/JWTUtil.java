@@ -2,43 +2,39 @@ package com.intelliedu.intelliedu.security.TokenUtil;
 
 import java.security.Key;
 import java.util.Date;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
-
-import com.intelliedu.intelliedu.entity.Account;
-
-import io.jsonwebtoken.*;
+import com.intelliedu.intelliedu.config.SecurityConfig;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JWTUtil {
+
   private static final Logger logger = LoggerFactory.getLogger(JWTUtil.class);
-
-  @Value("${bezkoder.app.jwtSecret}")
-  private String jwtSecret;
-
-  @Value("${bezkoder.app.jwtExpirationMs}")
-  private int jwtExpirationMs;
 
   public String generateJwtToken(Authentication authentication) {
 
-    Account userPrincipal = (Account) authentication.getPrincipal();
+    User userPrincipal = (User) authentication.getPrincipal();
 
     return Jwts.builder()
         .setSubject((userPrincipal.getUsername()))
         .setIssuedAt(new Date())
-        .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+        .setExpiration(new Date((new Date()).getTime() + SecurityConfig.EXPIRATION_TIME))
         .signWith(key(), SignatureAlgorithm.HS256)
         .compact();
   }
   
   private Key key() {
-    return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+    return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SecurityConfig.SECRET));
   }
 
   public String getUserNameFromJwtToken(String token) {

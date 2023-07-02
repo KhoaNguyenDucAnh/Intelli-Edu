@@ -4,9 +4,12 @@ server:
     include-stacktrace: never
 ---
 spring:
-  main:
+  devtools:
+    livereload:
+      enabled: true
+  # main:
 #    allow-bean-definition-overriding: true
-    allow-circular-references: true
+    # allow-circular-references: true
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://127.0.0.1:5432/intelliedu
