@@ -62,6 +62,11 @@ public class WebSecurityConfig {
         .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
+          .requestMatchers("/").permitAll()
+          .requestMatchers("error").permitAll()
+          .requestMatchers("favicon.ico").permitAll()
+          .requestMatchers("login.html").permitAll()
+          .requestMatchers("registration.html").permitAll()
           .requestMatchers("/api/v1/auth/**").permitAll()
           .anyRequest().authenticated());
 

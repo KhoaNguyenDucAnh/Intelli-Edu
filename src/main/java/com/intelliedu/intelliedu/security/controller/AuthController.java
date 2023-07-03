@@ -21,7 +21,7 @@ public class AuthController {
   @Autowired
   private AuthService authService;
 
-  @PostMapping("/signin")
+  @PostMapping("/authenticate")
   public void authenticateUser(@Valid @RequestBody AccountLogInDto accountLogInDto, HttpServletResponse response) {
     authService.authenticateAccount(accountLogInDto, response);
   }
