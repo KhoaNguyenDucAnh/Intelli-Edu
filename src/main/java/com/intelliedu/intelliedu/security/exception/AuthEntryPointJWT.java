@@ -20,6 +20,6 @@ public class AuthEntryPointJWT implements AuthenticationEntryPoint {
       AuthenticationException authException) throws IOException, ServletException {
     logger.error(String.format("Unauthorized access attempted. Request URL: %s. IP Address: %s.", request.getRequestURL(), request.getRemoteAddr()));
     // response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
-    response.sendRedirect("/login.html");
+    response.sendRedirect("/login");
   }
 }

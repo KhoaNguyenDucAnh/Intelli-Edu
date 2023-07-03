@@ -1,5 +1,10 @@
 package com.intelliedu.intelliedu.security.service;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,7 +31,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Service
 public class AuthService implements UserDetailsService {
-  
+
   @Autowired
   private AuthenticationManager authenticationManager;
 
@@ -42,27 +47,36 @@ public class AuthService implements UserDetailsService {
   @Autowired
   private AccountRepo accountRepo;
 
+  private Logger logger = LoggerFactory.getLogger(AuthService.class);
+
   public void authenticateAccount(AccountLogInDto accountLogInDto, HttpServletResponse response) {
-    Authentication authentication = authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(accountLogInDto.getUsername(), accountLogInDto.getPassword()));
+    Authentication authentication =
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+            accountLogInDto.getEmail(), accountLogInDto.getPassword()));
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
     String jwt = jwtUtil.generateJwtToken(authentication);
-    
-    // Account userDetails = (Account) authentication.getPrincipal();    
-    // List<String> roles = userDetails.getAuthorities().stream()
-    //     .map(GrantedAuthority::getAuthority)
-    //     .collect(Collectors.toList());
+    try {
+      Cookie cookie = new Cookie(SecurityConfig.HEADER_STRING, URLEncoder.encode(SecurityConfig.BEARER_PREFIX + jwt, "UTF-8"));
+      cookie.setMaxAge((int) SecurityConfig.EXPIRATION_TIME);
+      cookie.setPath("/");
+      cookie.setHttpOnly(false);
+      cookie.setSecure(false);
 
-    Cookie cookie = new Cookie(SecurityConfig.HEADER_STRING, jwt);
-    cookie.setHttpOnly(false);
-    cookie.setSecure(false);
+      response.addCookie(cookie);
+      response.sendRedirect("/account");
 
-    response.addCookie(cookie);
+      logger.info(String.format("User with email %s logged in successfully.", accountLogInDto.getEmail()));
+    } catch (UnsupportedEncodingException e) {
+      logger.error(e.getMessage());
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error encoding authentication token on the server side.");
+    } catch (IOException e) {
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   public void registerAccount(AccountRegistrationDto accountRegistrationDto) {
-    if (accountRepo.findByUsername(accountRegistrationDto.getUsername()).isPresent()) {
+    if (accountRepo.findByEmail(accountRegistrationDto.getEmail()).isPresent()) {
       throw new ResponseStatusException(HttpStatus.CONFLICT, AccountConfig.CONFLICT);
     }
 
@@ -71,13 +85,13 @@ public class AuthService implements UserDetailsService {
     account.setRole(Role.ROLE_USER);
 
     accountRepo.save(account);
+
+    logger.info(String.format("User with email %s registered successfully.", accountRegistrationDto.getEmail()));
   }
 
   @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    System.out.println(username);
-
-    Account account = accountRepo.findByUsername(username)
+  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    Account account = accountRepo.findByEmail(email)
         .orElseThrow(() -> new UsernameNotFoundException(AccountConfig.NOT_FOUND));
 
     boolean enabled = true;
@@ -85,9 +99,8 @@ public class AuthService implements UserDetailsService {
     boolean credentialsNonExpired = true;
     boolean accountNonLocked = true;
 
-    return new org.springframework.security.core.userdetails.User(
-        account.getUsername(), account.getPassword(), enabled, accountNonExpired,
-        credentialsNonExpired, accountNonLocked,
+    return new org.springframework.security.core.userdetails.User(account.getEmail(),
+        account.getPassword(), enabled, accountNonExpired, credentialsNonExpired, accountNonLocked,
         account.getAuthorities());
   }
 }

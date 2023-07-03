@@ -63,10 +63,10 @@ public class WebSecurityConfig {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
           .requestMatchers("/").permitAll()
-          .requestMatchers("error").permitAll()
-          .requestMatchers("favicon.ico").permitAll()
-          .requestMatchers("login.html").permitAll()
-          .requestMatchers("registration.html").permitAll()
+          .requestMatchers("/error").permitAll()
+          .requestMatchers("/favicon.ico").permitAll()
+          .requestMatchers("/login*").permitAll()
+          .requestMatchers("/registration*").permitAll()
           .requestMatchers("/api/v1/auth/**").permitAll()
           .anyRequest().authenticated());
 
