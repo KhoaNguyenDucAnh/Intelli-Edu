@@ -3,9 +3,12 @@ package com.intelliedu.intelliedu.service;
 import java.util.List;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import com.intelliedu.intelliedu.dto.MindMapDto;
 
 public interface MindMapService {
+
+  public List<MindMapDto> findMindMapByUser(Authentication authentication);
 
   public ResponseEntity<ByteArrayResource> findMindMapById(String rawId);
 

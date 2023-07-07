@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,14 +27,19 @@ public class MindMapController {
   @Autowired
   private MindMapService mindMapService;
 
+  @GetMapping("")
+  public List<MindMapDto> findMindMapByUser(Authentication authentication) {
+    return mindMapService.findMindMapByUser(authentication);
+  }
+
   @GetMapping("/id/{id}")
   public ResponseEntity<ByteArrayResource> findMindMapById(
       @PathVariable(value = "id") String rawId) {
     return mindMapService.findMindMapById(rawId);
   }
 
-  @GetMapping("/name/{name}")
-  public List<MindMapDto> findMindMapByTitle(@PathVariable(value = "name") String title) {
+  @GetMapping("/title/{title}")
+  public List<MindMapDto> findMindMapByTitle(@PathVariable(value = "title") String title) {
     return mindMapService.findMindMapByTitle(title);
   }
 

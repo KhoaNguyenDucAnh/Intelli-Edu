@@ -3,18 +3,23 @@ package com.intelliedu.intelliedu.service.impl;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
 import com.intelliedu.intelliedu.config.MindMapConfig;
 import com.intelliedu.intelliedu.dto.MindMapDto;
 import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.entity.MindMap;
 import com.intelliedu.intelliedu.mapper.MindMapMapper;
+import com.intelliedu.intelliedu.repository.AccountRepo;
 import com.intelliedu.intelliedu.repository.MindMapRepo;
 import com.intelliedu.intelliedu.service.MindMapService;
 
@@ -26,6 +31,16 @@ public class MindMapServiceImpl implements MindMapService {
 
   @Autowired
   private MindMapRepo mindMapRepo;
+
+  @Autowired
+  private AccountRepo accountRepo;
+
+  @Override
+  public List<MindMapDto> findMindMapByUser(Authentication authentication) {
+    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+    Account account = accountRepo.findByEmail(userDetails.getUsername()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
+    return mindMapMapper.toMindMapDto(account.getMindMap());
+  }
 
   @Override
   public ResponseEntity<ByteArrayResource> findMindMapById(String rawId) {
