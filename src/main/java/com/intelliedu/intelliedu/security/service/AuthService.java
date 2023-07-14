@@ -25,7 +25,7 @@ import com.intelliedu.intelliedu.dto.AccountRegistrationDto;
 import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.mapper.AccountMapper;
 import com.intelliedu.intelliedu.repository.AccountRepo;
-import com.intelliedu.intelliedu.security.TokenUtil.JWTUtil;
+import com.intelliedu.intelliedu.security.util.JWTUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 

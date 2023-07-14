@@ -30,9 +30,11 @@ public class Comment {
 
   private String content;
 
+  private Boolean isAnswer;
+
   @ManyToOne(fetch = FetchType.LAZY)
   private Account account;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  private Post post;
+  //@ManyToOne(fetch = FetchType.LAZY)
+  //private Post post;
 }

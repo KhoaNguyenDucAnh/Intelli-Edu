@@ -1,4 +1,4 @@
-package com.intelliedu.intelliedu.security.TokenUtil;
+package com.intelliedu.intelliedu.security.util;
 
 import java.security.Key;
 import java.util.Date;

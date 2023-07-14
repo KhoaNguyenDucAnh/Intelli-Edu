@@ -4,6 +4,8 @@ import com.intelliedu.intelliedu.dto.AccountRegistrationDto;
 import com.intelliedu.intelliedu.validator.PasswordMatches;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 public class PasswordMatchesValidator implements ConstraintValidator<PasswordMatches, Object> {
 
@@ -13,7 +15,12 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
   @Override
   public boolean isValid(Object obj, ConstraintValidatorContext context) {
     AccountRegistrationDto accountRegistrationDto = (AccountRegistrationDto) obj;
-    return accountRegistrationDto.getPassword()
-        .equals(accountRegistrationDto.getMatchingPassword());
+    try {
+      return accountRegistrationDto
+          .getPassword()
+          .equals(accountRegistrationDto.getConfirmPassword());
+    } catch (Exception e) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
   }
 }

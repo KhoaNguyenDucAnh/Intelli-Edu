@@ -8,21 +8,21 @@ public class MainController {
 
   @GetMapping("/")
   public String homepage() {
-    return "homepage.html";
+    return "forward:homepage.html";
   }
 
   @GetMapping("/login")
   public String login() {
-    return "login.html";
+    return "forward:login.html";
   }
 
   @GetMapping("/registration")
   public String registration() {
-    return "registration.html";
+    return "forward:registration.html";
   }
 
   @GetMapping("/account")
   public String account() {
-    return "account.html";
+    return "forward:account.html";
   }
 }

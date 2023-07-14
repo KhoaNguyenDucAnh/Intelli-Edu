@@ -1,9 +1,16 @@
 package com.intelliedu.intelliedu.service.impl;
 
+import com.intelliedu.intelliedu.config.MindMapConfig;
+import com.intelliedu.intelliedu.dto.MindMapDto;
+import com.intelliedu.intelliedu.entity.Account;
+import com.intelliedu.intelliedu.entity.MindMap;
+import com.intelliedu.intelliedu.mapper.MindMapMapper;
+import com.intelliedu.intelliedu.repository.AccountRepo;
+import com.intelliedu.intelliedu.repository.MindMapRepo;
+import com.intelliedu.intelliedu.service.MindMapService;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
@@ -14,31 +21,22 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.intelliedu.intelliedu.config.MindMapConfig;
-import com.intelliedu.intelliedu.dto.MindMapDto;
-import com.intelliedu.intelliedu.entity.Account;
-import com.intelliedu.intelliedu.entity.MindMap;
-import com.intelliedu.intelliedu.mapper.MindMapMapper;
-import com.intelliedu.intelliedu.repository.AccountRepo;
-import com.intelliedu.intelliedu.repository.MindMapRepo;
-import com.intelliedu.intelliedu.service.MindMapService;
-
 @Service
 public class MindMapServiceImpl implements MindMapService {
 
-  @Autowired
-  private MindMapMapper mindMapMapper;
+  @Autowired private MindMapMapper mindMapMapper;
 
-  @Autowired
-  private MindMapRepo mindMapRepo;
+  @Autowired private MindMapRepo mindMapRepo;
 
-  @Autowired
-  private AccountRepo accountRepo;
+  @Autowired private AccountRepo accountRepo;
 
   @Override
   public List<MindMapDto> findMindMapByUser(Authentication authentication) {
     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-    Account account = accountRepo.findByEmail(userDetails.getUsername()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
+    Account account =
+        accountRepo
+            .findByEmail(userDetails.getUsername())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
     return mindMapMapper.toMindMapDto(account.getMindMap());
   }
 
@@ -46,10 +44,13 @@ public class MindMapServiceImpl implements MindMapService {
   public ResponseEntity<ByteArrayResource> findMindMapById(String rawId) {
     try {
       Long id = Long.parseLong(rawId);
-      MindMap mindMap = mindMapRepo.findById(id)
-          .orElseThrow(
-              () -> new ResponseStatusException(HttpStatus.NOT_FOUND, MindMapConfig.NOT_FOUND));
-      return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN)
+      MindMap mindMap =
+          mindMapRepo
+              .findById(id)
+              .orElseThrow(
+                  () -> new ResponseStatusException(HttpStatus.NOT_FOUND, MindMapConfig.NOT_FOUND));
+      return ResponseEntity.ok()
+          .contentType(MediaType.TEXT_PLAIN)
           .body(new ByteArrayResource(mindMap.getData()));
     } catch (NumberFormatException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, MindMapConfig.INVALID_ID);
@@ -83,8 +84,8 @@ public class MindMapServiceImpl implements MindMapService {
 
       mindMapRepo.save(mindMap);
     } catch (IOException e) {
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-          MindMapConfig.INTERNAL_SERVER_ERROR);
+      throw new ResponseStatusException(
+          HttpStatus.INTERNAL_SERVER_ERROR, MindMapConfig.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -93,9 +94,11 @@ public class MindMapServiceImpl implements MindMapService {
     try {
       Long id = Long.parseLong(rawId);
 
-      MindMap mindMap = mindMapRepo.findById(id)
-          .orElseThrow(
-              () -> new ResponseStatusException(HttpStatus.NOT_FOUND, MindMapConfig.NOT_FOUND));
+      MindMap mindMap =
+          mindMapRepo
+              .findById(id)
+              .orElseThrow(
+                  () -> new ResponseStatusException(HttpStatus.NOT_FOUND, MindMapConfig.NOT_FOUND));
       MindMap newMindMap = mindMapMapper.toMindMap(mindMapDto);
 
       // Update name
@@ -114,8 +117,8 @@ public class MindMapServiceImpl implements MindMapService {
     } catch (NumberFormatException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, MindMapConfig.INVALID_ID);
     } catch (IOException e) {
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-          MindMapConfig.INTERNAL_SERVER_ERROR);
+      throw new ResponseStatusException(
+          HttpStatus.INTERNAL_SERVER_ERROR, MindMapConfig.INTERNAL_SERVER_ERROR);
     }
   }
 

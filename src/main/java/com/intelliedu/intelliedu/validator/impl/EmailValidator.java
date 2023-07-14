@@ -1,10 +1,12 @@
 package com.intelliedu.intelliedu.validator.impl;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import com.intelliedu.intelliedu.validator.ValidEmail;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 public class EmailValidator implements ConstraintValidator<ValidEmail, String> {
 
@@ -22,8 +24,12 @@ public class EmailValidator implements ConstraintValidator<ValidEmail, String> {
   }
 
   private boolean validateEmail(String email) {
-    pattern = Pattern.compile(EMAIL_PATTERN);
-    matcher = pattern.matcher(email);
-    return matcher.matches();
+    try {
+      pattern = Pattern.compile(EMAIL_PATTERN);
+      matcher = pattern.matcher(email);
+      return matcher.matches();
+    } catch (NullPointerException e) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
   }
 }

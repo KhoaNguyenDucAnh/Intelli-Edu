@@ -31,5 +31,5 @@ public class AccountRegistrationDto {
 
   @NotNull
   @NotEmpty
-  private String matchingPassword;
+  private String confirmPassword;
 }
