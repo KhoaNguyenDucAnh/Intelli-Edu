@@ -27,7 +27,7 @@ public class AuthController {
   }
 
   @PostMapping("/register")
-  public void registerAccount(@RequestBody @Valid AccountRegistrationDto accountRegistrationDto) {
+  public void registerAccount(@Valid @RequestBody AccountRegistrationDto accountRegistrationDto) {
     authService.registerAccount(accountRegistrationDto);
   }
 }

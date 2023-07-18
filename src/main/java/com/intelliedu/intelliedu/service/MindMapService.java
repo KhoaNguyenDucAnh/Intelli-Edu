@@ -1,22 +1,24 @@
 package com.intelliedu.intelliedu.service;
 
 import java.util.List;
+
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+
 import com.intelliedu.intelliedu.dto.MindMapDto;
 
 public interface MindMapService {
 
-  public List<MindMapDto> findMindMapByUser(Authentication authentication);
+  public List<MindMapDto> findMindMap(String query);
 
-  public ResponseEntity<ByteArrayResource> findMindMapById(String rawId);
+  public List<MindMapDto> findMindMap(Authentication authentication);
 
-  public List<MindMapDto> findMindMapByTitle(String title);
+  public ResponseEntity<ByteArrayResource> findMindMap(String title, Authentication authentication);
 
-  public void addMindMap(MindMapDto mindMapDto);
+  public void createMindMap(MindMapDto mindMapDto, Authentication authentication);
 
-  public void updateMindMap(String rawId, MindMapDto mindMapDto);
+  public void updateMindMap(String title, MindMapDto mindMapDto, Authentication authentication);
 
-  public void deleteMindMap(String rawId);
+  public void deleteMindMap(String title, Authentication authentication);
 }

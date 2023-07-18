@@ -1,19 +1,18 @@
 package com.intelliedu.intelliedu.dto;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * CommentDto
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MindMapDto {
+public class CommentDto {
 
-  private String title;
-
-  private MultipartFile data;
+  private String content;
 }

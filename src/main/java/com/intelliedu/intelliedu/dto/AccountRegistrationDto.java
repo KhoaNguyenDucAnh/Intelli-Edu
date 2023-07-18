@@ -1,7 +1,5 @@
 package com.intelliedu.intelliedu.dto;
 
-import com.intelliedu.intelliedu.validator.PasswordMatches;
-import com.intelliedu.intelliedu.validator.ValidEmail;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -13,12 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@PasswordMatches
 public class AccountRegistrationDto {
 
   @NotNull
   @NotEmpty
-  @ValidEmail
   private String email;
 
   @NotNull
