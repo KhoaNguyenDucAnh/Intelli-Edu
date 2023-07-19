@@ -13,5 +13,5 @@ public interface AccountMapper {
   @Mapping(source = "password", target = "password", ignore = true)
   public Account toAccount(AccountRegistrationDto accountRegistrationDto);
 
-  public AccountResponseDto toAccountDResponseDto(Account account);
+  public AccountResponseDto toAccountResponseDto(Account account);
 }
