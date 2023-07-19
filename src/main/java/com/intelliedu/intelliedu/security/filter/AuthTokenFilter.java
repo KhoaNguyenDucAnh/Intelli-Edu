@@ -1,16 +1,9 @@
 package com.intelliedu.intelliedu.security.filter;
 
-import com.intelliedu.intelliedu.config.SecurityConfig;
-import com.intelliedu.intelliedu.security.service.AuthService;
-import com.intelliedu.intelliedu.security.util.JWTUtil;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +16,16 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.intelliedu.intelliedu.config.SecurityConfig;
+import com.intelliedu.intelliedu.security.service.AuthService;
+import com.intelliedu.intelliedu.security.util.JWTUtil;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 public class AuthTokenFilter extends OncePerRequestFilter {
 
   @Autowired private JWTUtil jwtUtil;
@@ -30,6 +33,19 @@ public class AuthTokenFilter extends OncePerRequestFilter {
   @Autowired private AuthService authService;
 
   private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
+
+  @Override
+  protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    //return false;
+    //String[] listOfUrl = new String[] {"/", "/homepage.html", "/login", "/login.html"};
+    //for (String url: listOfUrl) {
+    //  if (request.getRequestURI().matches(url)) {
+    //    return true;
+    //  }
+    //}
+    //return false;
+    return request.getRequestURI().matches(SecurityConfig.ALLOWED_PATH_REGEX);
+  }
 
   @Override
   protected void doFilterInternal(
@@ -41,9 +57,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         String username = jwtUtil.getUserNameFromJwtToken(jwt);
 
         UserDetails userDetails = authService.loadUserByUsername(username);
-        UsernamePasswordAuthenticationToken authentication =
-            new UsernamePasswordAuthenticationToken(
-                userDetails, null, userDetails.getAuthorities());
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -70,13 +84,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         }
       }
     } catch (UnsupportedEncodingException e) {
-      logger.error(
-          "Failed to decode authentication token with value %s: UnsupportedEncodingException"
-              + " occurred.",
-          undecodedAuth);
-      throw new ResponseStatusException(
-          HttpStatus.INTERNAL_SERVER_ERROR,
-          "Error decoding authentication token on the server side.");
+      logger.error("Failed to decode authentication token with value %s: UnsupportedEncodingException occurred.", undecodedAuth);
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error decoding authentication token on the server side.");
     }
 
     if (StringUtils.hasText(auth) && auth.startsWith(SecurityConfig.BEARER_PREFIX)) {

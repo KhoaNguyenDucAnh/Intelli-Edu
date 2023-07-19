@@ -1,8 +1,5 @@
 package com.intelliedu.intelliedu.security;
 
-import com.intelliedu.intelliedu.security.exception.AuthEntryPointJWT;
-import com.intelliedu.intelliedu.security.filter.AuthTokenFilter;
-import com.intelliedu.intelliedu.security.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,13 +16,24 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.intelliedu.intelliedu.security.exception.AuthEntryPointJWT;
+import com.intelliedu.intelliedu.security.filter.AuthTokenFilter;
+import com.intelliedu.intelliedu.security.service.AuthService;
+import com.intelliedu.intelliedu.security.service.RequestMatchersService;
+
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 public class WebSecurityConfig {
 
-  @Autowired @Lazy private AuthService authService;
+  @Autowired
+  @Lazy
+  private AuthService authService;
 
-  @Autowired private AuthEntryPointJWT unauthorizedHandler;
+  @Autowired
+  private AuthEntryPointJWT unauthorizedHandler;
+
+  @Autowired
+  private RequestMatchersService requestMatchersService;
 
   @Bean
   AuthTokenFilter authenticationJwtTokenFilter() {
@@ -56,19 +64,13 @@ public class WebSecurityConfig {
   @Bean
   SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(CsrfConfigurer::disable)
-        .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(auth ->
-            auth.requestMatchers("/").permitAll()
-                .requestMatchers("/error").permitAll()
-                .requestMatchers("/favicon.ico").permitAll()
-                .requestMatchers("/homepage**").permitAll()
-                .requestMatchers("/login*").permitAll()
-                .requestMatchers("/registration*").permitAll()
-                .requestMatchers("/api/v1/auth/**").permitAll()
-                .anyRequest().authenticated())
-        .authenticationProvider(authenticationProvider())
-        .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+      .authenticationProvider(authenticationProvider())
+      .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+      .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+      .authorizeHttpRequests(auth -> auth
+        .requestMatchers(requestMatchersService).permitAll()
+        .anyRequest().authenticated())
+      .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
   }
