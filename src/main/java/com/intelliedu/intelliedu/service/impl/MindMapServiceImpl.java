@@ -25,11 +25,14 @@ import com.intelliedu.intelliedu.service.MindMapService;
 @Service
 public class MindMapServiceImpl implements MindMapService {
 
-  @Autowired private MindMapMapper mindMapMapper;
+  @Autowired
+  private MindMapMapper mindMapMapper;
 
-  @Autowired private MindMapRepo mindMapRepo;
+  @Autowired
+  private MindMapRepo mindMapRepo;
 
-  @Autowired private AuthService authService;
+  @Autowired
+  private AuthService authService;
 
   @Override
   public List<MindMapDto> findMindMap(String query) {

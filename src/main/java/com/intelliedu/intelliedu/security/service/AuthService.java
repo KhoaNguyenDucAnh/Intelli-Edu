@@ -53,10 +53,7 @@ public class AuthService implements UserDetailsService {
     SecurityContextHolder.getContext().setAuthentication(authentication);
     String jwt = jwtUtil.generateJwtToken(authentication);
     try {
-      Cookie cookie =
-          new Cookie(
-              SecurityConfig.HEADER_STRING,
-              URLEncoder.encode(SecurityConfig.BEARER_PREFIX + jwt, "UTF-8"));
+      Cookie cookie = new Cookie(SecurityConfig.HEADER_STRING, URLEncoder.encode(SecurityConfig.BEARER_PREFIX + jwt, "UTF-8"));
       cookie.setMaxAge((int) SecurityConfig.EXPIRATION_TIME);
       cookie.setPath("/");
       cookie.setHttpOnly(false);
@@ -69,9 +66,7 @@ public class AuthService implements UserDetailsService {
           String.format("User with email %s logged in successfully.", accountLogInDto.getEmail()));
     } catch (UnsupportedEncodingException e) {
       logger.error(e.getMessage());
-      throw new ResponseStatusException(
-          HttpStatus.INTERNAL_SERVER_ERROR,
-          "Error encoding authentication token on the server side.");
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Error encoding authentication token on the server side.");
     } catch (IOException e) {
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -88,17 +83,14 @@ public class AuthService implements UserDetailsService {
 
     accountRepo.save(account);
 
-    logger.info(
-        String.format(
-            "User with email %s registered successfully.", accountRegistrationDto.getEmail()));
+    logger.info(String.format("User with email %s registered successfully.", accountRegistrationDto.getEmail()));
   }
 
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    Account account =
-        accountRepo
-            .findByEmail(email)
-            .orElseThrow(() -> new UsernameNotFoundException(AccountConfig.NOT_FOUND));
+    Account account = accountRepo
+        .findByEmail(email)
+        .orElseThrow(() -> new UsernameNotFoundException(AccountConfig.NOT_FOUND));
 
     boolean enabled = true;
     boolean accountNonExpired = true;

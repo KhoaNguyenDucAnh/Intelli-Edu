@@ -8,6 +8,7 @@ import com.intelliedu.intelliedu.service.CommentService;
 /** CommentServiceImpl */
 public class CommentServiceImpl implements CommentService {
 
-  @Autowired private CommentRepo commentRepo;
+  @Autowired
+  private CommentRepo commentRepo;
 
 }
