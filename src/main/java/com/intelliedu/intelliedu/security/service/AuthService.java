@@ -32,43 +32,42 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class AuthService implements UserDetailsService {
 
-  @Autowired private AuthenticationManager authenticationManager;
+  @Autowired 
+  private AuthenticationManager authenticationManager;
 
-  @Autowired private JWTUtil jwtUtil;
+  @Autowired 
+  private JWTUtil jwtUtil;
 
-  @Autowired private PasswordEncoder passwordEncoder;
+  @Autowired 
+  private PasswordEncoder passwordEncoder;
 
-  @Autowired private AccountMapper accountMapper;
+  @Autowired 
+  private AccountMapper accountMapper;
 
-  @Autowired private AccountRepo accountRepo;
+  @Autowired 
+  private AccountRepo accountRepo;
 
   private Logger logger = LoggerFactory.getLogger(AuthService.class);
 
   public void authenticateAccount(AccountLogInDto accountLogInDto, HttpServletResponse response) {
-    Authentication authentication =
-        authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(
-                accountLogInDto.getEmail(), accountLogInDto.getPassword()));
 
+    Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(accountLogInDto.getEmail(), accountLogInDto.getPassword()));
     SecurityContextHolder.getContext().setAuthentication(authentication);
     String jwt = jwtUtil.generateJwtToken(authentication);
+    
     try {
       Cookie cookie = new Cookie(SecurityConfig.HEADER_STRING, URLEncoder.encode(SecurityConfig.BEARER_PREFIX + jwt, "UTF-8"));
+      
       cookie.setMaxAge((int) SecurityConfig.EXPIRATION_TIME);
       cookie.setPath("/");
       cookie.setHttpOnly(false);
       cookie.setSecure(false);
 
       response.addCookie(cookie);
-      response.sendRedirect("/account");
-
-      logger.info(
-          String.format("User with email %s logged in successfully.", accountLogInDto.getEmail()));
+      logger.info(String.format("User with email %s logged in successfully.", accountLogInDto.getEmail()));
     } catch (UnsupportedEncodingException e) {
       logger.error(e.getMessage());
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Error encoding authentication token on the server side.");
-    } catch (IOException e) {
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
