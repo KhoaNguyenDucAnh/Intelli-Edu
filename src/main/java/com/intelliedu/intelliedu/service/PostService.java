@@ -20,7 +20,7 @@ public interface PostService {
 
   public void updatePost(String title, PostDto postDto, Authentication authentication);
 
-  public void setAnswer(CommentDto commentDto);
+  public void setAnswer(String commentRawId, String postRawId);
 
   public void deletePost(String title, Authentication authentication);
 }

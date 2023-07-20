@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MindMapDto {
 
+  private Long id;
+
   private String title;
 
   private MultipartFile data;

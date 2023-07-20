@@ -87,8 +87,8 @@ public class PostServiceImpl implements PostService {
 
 
   @Override
-  public void setAnswer(CommentDto commentDto) {
-       
+  public void setAnswer(String commentRawId, String postRawId) {
+     
   }
 
   @Override
