@@ -36,28 +36,20 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
   @Override
   protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-    //return false;
-    //String[] listOfUrl = new String[] {"/", "/homepage.html", "/login", "/login.html"};
-    //for (String url: listOfUrl) {
-    //  if (request.getRequestURI().matches(url)) {
-    //    return true;
-    //  }
-    //}
-    //return false;
     return request.getRequestURI().matches(SecurityConfig.ALLOWED_PATH_REGEX);
   }
 
   @Override
-  protected void doFilterInternal(
-      HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-      throws ServletException, IOException {
+  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
     try {
       String jwt = parseJwt(request);
       if (jwt != null && jwtUtil.validateJwtToken(jwt)) {
         String username = jwtUtil.getUserNameFromJwtToken(jwt);
 
         UserDetails userDetails = authService.loadUserByUsername(username);
+
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -65,16 +57,17 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     } catch (Exception e) {
       // logger.error(error);
     }
-
     filterChain.doFilter(request, response);
   }
 
   private String parseJwt(HttpServletRequest request) {
     String undecodedAuth = "", auth = "";
     Cookie[] cookies = request.getCookies();
+    
     if (cookies == null) {
       return null;
     }
+    
     try {
       for (Cookie cookie : cookies) {
         if (SecurityConfig.HEADER_STRING.equals(cookie.getName())) {
