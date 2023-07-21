@@ -22,7 +22,7 @@ import com.intelliedu.intelliedu.security.service.AuthService;
 import com.intelliedu.intelliedu.security.service.RequestMatchersService;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
 public class WebSecurityConfig {
 
   @Autowired

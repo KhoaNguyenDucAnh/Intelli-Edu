@@ -1,19 +1,9 @@
 package com.intelliedu.intelliedu.security.service;
 
-import com.intelliedu.intelliedu.config.AccountConfig;
-import com.intelliedu.intelliedu.config.Role;
-import com.intelliedu.intelliedu.config.SecurityConfig;
-import com.intelliedu.intelliedu.dto.AccountLogInDto;
-import com.intelliedu.intelliedu.dto.AccountRegistrationDto;
-import com.intelliedu.intelliedu.entity.Account;
-import com.intelliedu.intelliedu.mapper.AccountMapper;
-import com.intelliedu.intelliedu.repository.AccountRepo;
-import com.intelliedu.intelliedu.security.util.JWTUtil;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +18,19 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.intelliedu.intelliedu.config.AccountConfig;
+import com.intelliedu.intelliedu.config.Role;
+import com.intelliedu.intelliedu.config.SecurityConfig;
+import com.intelliedu.intelliedu.dto.AccountLogInDto;
+import com.intelliedu.intelliedu.dto.AccountRegistrationDto;
+import com.intelliedu.intelliedu.entity.Account;
+import com.intelliedu.intelliedu.mapper.AccountMapper;
+import com.intelliedu.intelliedu.repository.AccountRepo;
+import com.intelliedu.intelliedu.security.util.JWTUtil;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Service
 public class AuthService implements UserDetailsService {

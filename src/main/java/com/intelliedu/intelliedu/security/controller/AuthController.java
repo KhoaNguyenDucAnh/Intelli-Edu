@@ -22,12 +22,12 @@ public class AuthController {
   private AuthService authService;
 
   @PostMapping("/authenticate")
-  public void authenticateUser(@Valid @RequestBody AccountLogInDto accountLogInDto, HttpServletResponse response) {
+  public void authenticateUser(@RequestBody @Valid AccountLogInDto accountLogInDto, HttpServletResponse response) {
     authService.authenticateAccount(accountLogInDto, response);
   }
 
   @PostMapping("/register")
-  public void registerAccount(@Valid @RequestBody AccountRegistrationDto accountRegistrationDto) {
+  public void registerAccount(@RequestBody @Valid AccountRegistrationDto accountRegistrationDto) {
     authService.registerAccount(accountRegistrationDto);
   }
 }

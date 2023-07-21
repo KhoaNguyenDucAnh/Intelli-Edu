@@ -38,7 +38,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
   @Override
   protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-    return request.getRequestURI().matches(SecurityConfig.ALLOWED_PATH_REGEX);
+    return request.getRequestURI().matches(SecurityConfig.PERMITALL_REGEX);
   }
 
   @Override
