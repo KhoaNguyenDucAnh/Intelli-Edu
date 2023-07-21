@@ -15,6 +15,7 @@ public class RequestMatchersService implements RequestMatcher {
 
   @Override
   public boolean matches(HttpServletRequest request) {
-     return request.getRequestURI().matches(SecurityConfig.ALLOWED_PATH_REGEX); 
+     return request.getRequestURI().matches(SecurityConfig.PERMITALL_REGEX)
+        ||  request.getRequestURI().matches(SecurityConfig.PERMITALLWITHAUTH_REGEX); 
   } 
 }
