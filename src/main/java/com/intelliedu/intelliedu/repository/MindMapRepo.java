@@ -1,20 +1,24 @@
 package com.intelliedu.intelliedu.repository;
 
-import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.entity.MindMap;
 
 
 public interface MindMapRepo extends JpaRepository<MindMap, Long> {
 
-  List<MindMap> findByTitle(String title);
+  Page<MindMap> findByTitle(String title, Pageable pageable);
 
-  List<MindMap> findByAccount(Account account);
+  Page<MindMap> findByTitleAndAccountIsNot(String title, Account account, Pageable pageable);
 
-  Optional<MindMap> findByTitleAndAccount(String title, Account account);
+  Page<MindMap> findByTitleAndAccount(String title, Account account, Pageable pageable);
 
-  void deleteByTitleAndAccount(String title, Account account);
+  Optional<MindMap> findByIdAndAccount(Long id, Account account);
+
+  void deleteByIdAndAccount(Long id, Account account);
 }

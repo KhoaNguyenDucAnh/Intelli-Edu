@@ -3,9 +3,12 @@ package com.intelliedu.intelliedu.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +23,6 @@ import com.intelliedu.intelliedu.entity.MindMap;
 import com.intelliedu.intelliedu.mapper.MindMapMapper;
 import com.intelliedu.intelliedu.repository.MindMapRepo;
 import com.intelliedu.intelliedu.security.service.AuthService;
-import com.intelliedu.intelliedu.service.MindMapService;
 
 @Service
 public class MindMapService {
@@ -33,19 +35,20 @@ public class MindMapService {
 
   @Autowired
   private AuthService authService;
-
-  public List<MindMapDto> findMindMap(String query) {
-    return mindMapMapper.toMindMapDto(mindMapRepo.findByTitle(query));
-  }
   
-  public List<MindMapDto> findMindMap(Authentication authentication) {
-    return mindMapMapper.toMindMapDto(authService.getAccount(authentication).getMindMap());
+  public Map<String, Page<MindMapDto>> findMindMap(String query, Authentication authentication, Pageable pageable) {
+    if (authentication == null) {
+      return Map.of("other", mindMapMapper.toMindMapDto(mindMapRepo.findByTitle(query, pageable))); 
+    } else {
+      Account account = authService.getAccount(authentication);
+      return Map.of("own", mindMapMapper.toMindMapDto(mindMapRepo.findByTitleAndAccount(query, account, pageable)),
+                  "other", mindMapMapper.toMindMapDto(mindMapRepo.findByTitleAndAccountIsNot(query, account, pageable)));
+    }
   }
 
-  public ResponseEntity<ByteArrayResource> findMindMap(
-      String title, Authentication authentication) {
+  public ResponseEntity<ByteArrayResource> findMindMap(Long id, Authentication authentication) {
     MindMap mindMap = mindMapRepo
-        .findByTitleAndAccount(title, authService.getAccount(authentication))
+        .findByIdAndAccount(id, authService.getAccount(authentication))
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, MindMapConfig.NOT_FOUND));
     return ResponseEntity.ok()
         .contentType(MediaType.TEXT_PLAIN)
@@ -77,12 +80,12 @@ public class MindMapService {
     }
   }
   
-  public void updateMindMap(String title, MindMapDto mindMapDto, Authentication authentication) {
+  public void updateMindMap(Long id, MindMapDto mindMapDto, Authentication authentication) {
     try {
       Account account = authService.getAccount(authentication);
 
       MindMap mindMap = mindMapRepo
-          .findByTitleAndAccount(title, account)
+          .findByIdAndAccount(id, account)
           .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, MindMapConfig.NOT_FOUND));
 
       // Check duplicate name
@@ -98,7 +101,7 @@ public class MindMapService {
     }
   }
 
-  public void deleteMindMap(String title, Authentication authentication) {
-    mindMapRepo.deleteByTitleAndAccount(title, authService.getAccount(authentication));
+  public void deleteMindMap(Long id, Authentication authentication) {
+    mindMapRepo.deleteByIdAndAccount(id, authService.getAccount(authentication));
   }
 }

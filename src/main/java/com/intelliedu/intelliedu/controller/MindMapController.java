@@ -1,9 +1,11 @@
 package com.intelliedu.intelliedu.controller;
 
-import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -31,18 +33,13 @@ public class MindMapController {
   private MindMapService mindMapService;
 
   @GetMapping("/find/{query}")
-  public List<MindMapDto> findMindMap(@PathVariable(value = "query") String query) {
-    return mindMapService.findMindMap(query);
+  public Map<String, Page<MindMapDto>> findMindMap(@PathVariable(value = "query") String query, Authentication authentication, Pageable pageable) {
+    return mindMapService.findMindMap(query, authentication, pageable);
   }
 
-  @GetMapping("")
-  public List<MindMapDto> findMindMap(Authentication authentication) {
-    return mindMapService.findMindMap(authentication);
-  }
-
-  @GetMapping("/title/{title}")
-  public ResponseEntity<ByteArrayResource> findMindMap(@PathVariable(value = "title") String title, Authentication authentication) {
-    return mindMapService.findMindMap(title, authentication);
+  @GetMapping("/id/{id}")
+  public ResponseEntity<ByteArrayResource> findMindMap(@PathVariable(value = "id") Long id, Authentication authentication) {
+    return mindMapService.findMindMap(id, authentication);
   }
 
   @PostMapping("/")
@@ -50,13 +47,13 @@ public class MindMapController {
     mindMapService.createMindMap(mindMapDto, authentication);
   }
 
-  @PutMapping("/title{title}")
-  public void updateMindMap(@PathVariable(value = "title") String title, @Valid @RequestBody MindMapDto mindMapDto, Authentication authentication) {
-    mindMapService.updateMindMap(title, mindMapDto, authentication);
+  @PutMapping("/{id}")
+  public void updateMindMap(@PathVariable(value = "id") Long id, @RequestBody @Valid MindMapDto mindMapDto, Authentication authentication) {
+    mindMapService.updateMindMap(id, mindMapDto, authentication);
   }
 
   @DeleteMapping("/{id}")
-  public void deleteMindMap(@PathVariable(value = "id") String rawId, Authentication authentication) {
-    mindMapService.deleteMindMap(rawId, authentication);
+  public void deleteMindMap(@PathVariable(value = "id") Long id, Authentication authentication) {
+    mindMapService.deleteMindMap(id, authentication);
   }
 }
