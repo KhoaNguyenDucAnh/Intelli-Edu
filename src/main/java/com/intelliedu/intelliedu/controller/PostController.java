@@ -59,7 +59,7 @@ public class PostController {
   @PutMapping("/answer")
   public void setAnswer(@RequestParam(required = true) Long postId, @RequestParam(required = true) Long commentId) {
     postService.setAnswer(postId, commentId);
-  } 
+  }
 
   @DeleteMapping("/{id}")
   public void deletePost(@PathVariable(value = "id") Long id, Authentication authentication) {
