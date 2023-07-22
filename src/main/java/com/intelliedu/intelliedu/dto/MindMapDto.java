@@ -1,6 +1,6 @@
 package com.intelliedu.intelliedu.dto;
 
-import org.springframework.web.multipart.MultipartFile;
+import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,5 +17,5 @@ public class MindMapDto {
 
   private String title;
 
-  private MultipartFile data;
+  private Map<String, Object> data;
 }

@@ -1,5 +1,10 @@
 package com.intelliedu.intelliedu.entity;
 
+import java.util.Map;
+
+import com.intelliedu.intelliedu.util.HashMapConverter;
+
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -25,7 +30,8 @@ public class MindMap {
 
   private String title;
 
-  private byte[] data;
+  @Convert(converter = HashMapConverter.class)
+  private Map<String, Object> data;
 
   @ManyToOne(fetch = FetchType.LAZY)
   private Account account;
