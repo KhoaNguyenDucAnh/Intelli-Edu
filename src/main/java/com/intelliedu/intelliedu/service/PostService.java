@@ -81,23 +81,25 @@ public class PostService {
     postRepo.save(post);
   }
 
-  public void updatePost(Long id, PostDto postDto, Authentication authentication) {
+  public void updatePost(PostDto postDto, Authentication authentication) {
     Account account = authService.getAccount(authentication);
 
-    Post post = postRepo
-        .findByIdAndAccount(id, account)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    postRepo
+      .findByIdAndAccount(postDto.getId(), account)
+      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
     if (account.getPost().stream().anyMatch(tempPost -> tempPost.getTitle().equals(postDto.getTitle()))) {
       throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
 
-    post = postMapper.toPost(postDto);
-
-    postRepo.save(post);
+    postRepo.save(postMapper.toPost(postDto));
   }
 
-  public void setAnswer(Long postId, Long commentId) {
+  public void setAnswer(Long commentId, Long postId) {
+    if (postRepo.existCommentWithId(commentId, postId) == 0) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
+
     Post post = postRepo.findById(postId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));  
     Comment comment = commentRepo.findById(commentId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 

@@ -45,9 +45,9 @@ public class MindMapController {
     mindMapService.createMindMap(mindMapDto, authentication);
   }
 
-  @PutMapping("/{id}")
-  public void updateMindMap(@PathVariable(value = "id") Long id, @RequestBody @Valid MindMapDto mindMapDto, Authentication authentication) {
-    mindMapService.updateMindMap(id, mindMapDto, authentication);
+  @PutMapping("/")
+  public void updateMindMap(@RequestBody @Valid MindMapDto mindMapDto, Authentication authentication) {
+    mindMapService.updateMindMap(mindMapDto, authentication);
   }
 
   @DeleteMapping("/{id}")

@@ -10,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -26,7 +27,9 @@ import lombok.NoArgsConstructor;
 @Table(name = "post")
 public class Post {
 
-  @Id @GeneratedValue private Long id;
+  @Id 
+  @GeneratedValue 
+  private Long id;
 
   @Column(name = "date_time")
   private OffsetDateTime dateTime;
@@ -44,6 +47,7 @@ public class Post {
   private Account account;
 
   @OneToMany(fetch = FetchType.LAZY)
+  @JoinColumn(name = "post_id", referencedColumnName = "id")
   private List<Comment> comment;
 
 }

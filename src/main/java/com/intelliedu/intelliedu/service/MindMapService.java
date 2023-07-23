@@ -69,21 +69,19 @@ public class MindMapService {
     mindMapRepo.save(mindMap);
   }
   
-  public void updateMindMap(Long id, MindMapDto mindMapDto, Authentication authentication) {
+  public void updateMindMap(MindMapDto mindMapDto, Authentication authentication) {
     Account account = authService.getAccount(authentication);
 
-    MindMap mindMap = mindMapRepo
-      .findByIdAndAccount(id, account)
+    mindMapRepo
+      .findByIdAndAccount(mindMapDto.getId(), account)
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, MindMapConfig.NOT_FOUND));
 
     // Check duplicate name
     if (account.getMindMap().stream().anyMatch(mindMapTemp -> mindMapTemp.getTitle().equals(mindMapDto.getTitle()))) {
       throw new ResponseStatusException(HttpStatus.CONFLICT, MindMapConfig.CONFLICT);
-    }
+   }
 
-    mindMap = mindMapMapper.toMindMap(mindMapDto);
-
-    mindMapRepo.save(mindMap);
+    mindMapRepo.save(mindMapMapper.toMindMap(mindMapDto));
   }
 
   public void deleteMindMap(Long id, Authentication authentication) {
