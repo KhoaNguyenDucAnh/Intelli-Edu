@@ -13,8 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -33,16 +31,16 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Service
-public class AuthService implements UserDetailsService {
+public class AuthService {
+
+  @Autowired
+  private JWTUtil jwtUtil;
+
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
   @Autowired 
   private AuthenticationManager authenticationManager;
-
-  @Autowired 
-  private JWTUtil jwtUtil;
-
-  @Autowired 
-  private PasswordEncoder passwordEncoder;
 
   @Autowired 
   private AccountMapper accountMapper;
@@ -86,27 +84,6 @@ public class AuthService implements UserDetailsService {
     accountRepo.save(account);
 
     logger.info(String.format("User with email %s registered successfully.", accountRegistrationDto.getEmail()));
-  }
-
-  @Override
-  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    Account account = accountRepo
-        .findByEmail(email)
-        .orElseThrow(() -> new UsernameNotFoundException(AccountConfig.NOT_FOUND));
-
-    boolean enabled = true;
-    boolean accountNonExpired = true;
-    boolean credentialsNonExpired = true;
-    boolean accountNonLocked = true;
-
-    return new org.springframework.security.core.userdetails.User(
-        account.getEmail(),
-        account.getPassword(),
-        enabled,
-        accountNonExpired,
-        credentialsNonExpired,
-        accountNonLocked,
-        account.getAuthorities());
   }
 
   public Account getAccount(Authentication authentication) {

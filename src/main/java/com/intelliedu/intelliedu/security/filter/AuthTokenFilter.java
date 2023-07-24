@@ -11,13 +11,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.intelliedu.intelliedu.config.SecurityConfig;
-import com.intelliedu.intelliedu.security.service.AuthService;
 import com.intelliedu.intelliedu.security.util.JWTUtil;
 
 import jakarta.servlet.FilterChain;
@@ -26,13 +27,14 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+@Component
 public class AuthTokenFilter extends OncePerRequestFilter {
 
   @Autowired 
   private JWTUtil jwtUtil;
 
   @Autowired 
-  private AuthService authService;
+  private UserDetailsService userDetailsService;
 
   private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 
@@ -48,7 +50,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
       if (jwt != null && jwtUtil.validateJwtToken(jwt)) {
         String username = jwtUtil.getUserNameFromJwtToken(jwt);
 
-        UserDetails userDetails = authService.loadUserByUsername(username);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
@@ -57,7 +59,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
     } catch (Exception e) {
-      // logger.error(error);
+
     }
     filterChain.doFilter(request, response);
   }
