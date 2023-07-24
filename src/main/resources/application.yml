@@ -7,9 +7,8 @@ spring:
   devtools:
     livereload:
       enabled: true
-  # main:
-#    allow-bean-definition-overriding: true
-    # allow-circular-references: true
+  main:
+    lazy-initialization: true
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://127.0.0.1:5432/intelliedu
