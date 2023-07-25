@@ -44,15 +44,15 @@ public class PostService {
     if (authentication == null) {
       return Map.of("other", postMapper.toPostDto(postRepo.findByTitleAndContent(query, query, pageable))); 
     } else {
-      Account account = authService.getAccount(authentication);
-      return Map.of("own", postMapper.toPostDto(postRepo.findByTitleAndContentAndAccount(query, query, account, pageable)),
-                  "other", postMapper.toPostDto(postRepo.findByTitleAndContentAndAccountIsNot(query, query, account, pageable)));
+      String email = authService.getEmail(authentication);
+      return Map.of("own", postMapper.toPostDto(postRepo.findByTitleAndContentAndAccountEmail(query, query, email, pageable)),
+                  "other", postMapper.toPostDto(postRepo.findByTitleAndContentAndAccountEmailIsNot(query, query, email, pageable)));
     }
   }
 
   public PostDto findPost(Long id, Authentication authentication) {
     return postMapper.toPostDto(postRepo
-      .findByIdAndAccount(id, authService.getAccount(authentication))
+      .findByIdAndAccountEmail(id, authService.getEmail(authentication))
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
   }
 
@@ -82,13 +82,11 @@ public class PostService {
   }
 
   public void updatePost(PostDto postDto, Authentication authentication) {
-    Account account = authService.getAccount(authentication);
-
     postRepo
-      .findByIdAndAccount(postDto.getId(), account)
+      .findByIdAndAccountEmail(postDto.getId(), authService.getEmail(authentication))
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-    if (account.getPost().stream().anyMatch(tempPost -> tempPost.getTitle().equals(postDto.getTitle()))) {
+    if (authService.getAccount(authentication).getPost().stream().anyMatch(tempPost -> tempPost.getTitle().equals(postDto.getTitle()))) {
       throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
 
@@ -100,8 +98,8 @@ public class PostService {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
 
-    Post post = postRepo.findById(postId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));  
-    Comment comment = commentRepo.findById(commentId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    Post post = postRepo.findById(postId).orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));  
+    Comment comment = commentRepo.findById(commentId).orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
 
     post.setIsAnswered(true);
     comment.setIsAnswer(true);
@@ -111,6 +109,6 @@ public class PostService {
   }
 
   public void deletePost(Long id, Authentication authentication) {
-    postRepo.deleteByIdAndAccount(id, authService.getAccount(authentication)); 
+    postRepo.deleteByIdAndAccountEmail(id, authService.getEmail(authentication)); 
   }
 }

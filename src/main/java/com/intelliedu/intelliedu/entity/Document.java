@@ -27,6 +27,6 @@ public class Document {
 
   private String data;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
   private Account account;
 }

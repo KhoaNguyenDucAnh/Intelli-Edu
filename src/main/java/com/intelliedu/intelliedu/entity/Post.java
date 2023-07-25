@@ -43,7 +43,8 @@ public class Post {
   @Column(name = "is_answered")
   private Boolean isAnswered;
   
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(referencedColumnName = "email")
   private Account account;
 
   @OneToMany(fetch = FetchType.LAZY)

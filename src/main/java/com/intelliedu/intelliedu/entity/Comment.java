@@ -42,7 +42,7 @@ public class Comment {
   @Column(name = "is_answer")
   private Boolean isAnswer;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
   private Account account;
 
   @ManyToMany
