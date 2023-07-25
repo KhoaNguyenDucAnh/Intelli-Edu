@@ -17,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.intelliedu.intelliedu.config.AccountConfig;
 import com.intelliedu.intelliedu.config.Role;
 import com.intelliedu.intelliedu.config.SecurityConfig;
 import com.intelliedu.intelliedu.dto.AccountLogInDto;
@@ -74,7 +73,7 @@ public class AuthService {
 
   public void registerAccount(AccountRegistrationDto accountRegistrationDto) {
     if (accountRepo.findByEmail(accountRegistrationDto.getEmail()).isPresent()) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT, AccountConfig.CONFLICT);
+      throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
 
     Account account = accountMapper.toAccount(accountRegistrationDto);
@@ -86,9 +85,13 @@ public class AuthService {
     logger.info(String.format("User with email %s registered successfully.", accountRegistrationDto.getEmail()));
   }
 
+  public String getEmail(Authentication authentication) {
+    return ((UserDetails) authentication.getPrincipal()).getUsername();
+  }
+
   public Account getAccount(Authentication authentication) {
     return accountRepo
-        .findByEmail(((UserDetails) authentication.getPrincipal()).getUsername())
+        .findByEmail(getEmail(authentication))
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 }

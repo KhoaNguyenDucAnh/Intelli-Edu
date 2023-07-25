@@ -25,7 +25,7 @@ public class HashMapConverter implements AttributeConverter<Map<String, Object>,
   public String convertToDatabaseColumn(Map<String, Object> meta) {
     try {
       return objectMapper.writeValueAsString(meta);
-    } catch (JsonProcessingException ex) {
+    } catch (JsonProcessingException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST);   
     }
   }
@@ -33,8 +33,8 @@ public class HashMapConverter implements AttributeConverter<Map<String, Object>,
   @Override
   public Map<String, Object> convertToEntityAttribute(String dbData) {
     try {
-      return objectMapper.readValue(dbData, new TypeReference<Map<String, Object>>() {});
-    } catch (IOException ex) {
+      return (dbData == null) ? null : objectMapper.readValue(dbData, new TypeReference<Map<String, Object>>() {});
+    } catch (IOException e) {
       return null;
     }
   }
