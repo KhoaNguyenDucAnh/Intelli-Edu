@@ -12,7 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.intelliedu.intelliedu.config.AccountConfig;
 import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.repository.AccountRepo;
 
@@ -32,7 +31,7 @@ public class SecurityComponent {
       public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Account account = accountRepo
           .findByEmail(email)
-          .orElseThrow(() -> new UsernameNotFoundException(AccountConfig.NOT_FOUND));
+          .orElseThrow(() -> new UsernameNotFoundException(null));
 
         boolean enabled = true;
         boolean accountNonExpired = true;

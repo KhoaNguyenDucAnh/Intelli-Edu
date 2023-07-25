@@ -19,7 +19,7 @@ import com.intelliedu.intelliedu.security.filter.AuthTokenFilter;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class WebSecurityConfig {
 
   @Autowired

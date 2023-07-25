@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
 public class Account implements UserDetails {
 
   private static final long serialVersionUID = 1L;
-  @SuppressWarnings("unused")
+
   private static final String ROLE_PREFIX = "ROLE_";
 
   @Id
