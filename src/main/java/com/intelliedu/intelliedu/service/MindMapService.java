@@ -24,10 +24,10 @@ import com.intelliedu.intelliedu.security.service.AuthService;
 public class MindMapService {
 
   @Autowired
-  private MindMapMapper mindMapMapper;
+  private MindMapRepo mindMapRepo;
 
   @Autowired
-  private MindMapRepo mindMapRepo;
+  private MindMapMapper mindMapMapper;
 
   @Autowired
   private AuthService authService;
@@ -51,20 +51,22 @@ public class MindMapService {
   public void createMindMap(MindMapDto mindMapDto, Authentication authentication) {
     MindMap mindMap = mindMapMapper.toMindMap(mindMapDto);
 
+    Account account = authService.getAccount(authentication);
+
     // Add mindmap to account
-    List<MindMap> accountMindMap = authService.getAccount(authentication).getMindMap();      
+    List<MindMap> accountMindMap = account.getMindMap();      
     
-    // Check if list null
     if (accountMindMap == null) {
       accountMindMap = new ArrayList<>();
      }
 
-    // Check duplicate name
     if (accountMindMap.stream().anyMatch(mindMapTemp -> mindMapTemp.getTitle().equals(mindMap.getTitle()))) {
       throw new ResponseStatusException(HttpStatus.CONFLICT, MindMapConfig.CONFLICT);
     }
 
     accountMindMap.add(mindMap);
+
+    mindMap.setAccount(account);
 
     mindMapRepo.save(mindMap);
   }
