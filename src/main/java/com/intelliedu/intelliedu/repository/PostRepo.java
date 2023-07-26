@@ -12,11 +12,51 @@ import com.intelliedu.intelliedu.entity.Post;
 
 public interface PostRepo extends JpaRepository<Post, Long> {
 
-  Page<Post> findByTitleAndContent(String title, String content, Pageable pageable);
+  Page<Post> findByTitleOrContent(String title, String content, Pageable pageable);
 
-  Page<Post> findByTitleAndContentAndAccountEmailIsNot(String title, String content, String email, Pageable pageable);
+  @Query(
+    value = 
+    """
+    select
+        p1_0.id,
+        p1_0.account_email,
+        p1_0.content,
+        p1_0.date_time,
+        p1_0.is_answered,
+        p1_0.subject,
+        p1_0.title 
+    from
+        post p1_0 
+    where
+        (p1_0.title=? 
+        or p1_0.content=?) 
+        and p1_0.account_email!=?
+    """,
+    nativeQuery = true
+  )
+  Page<Post> findByTitleOrContentAndAccountEmailIsNot(String title, String content, String email, Pageable pageable);
 
-  Page<Post> findByTitleAndContentAndAccountEmail(String title, String content, String email, Pageable pageable);
+  @Query(
+    value = 
+    """
+    select
+        p1_0.id,
+        p1_0.account_email,
+        p1_0.content,
+        p1_0.date_time,
+        p1_0.is_answered,
+        p1_0.subject,
+        p1_0.title 
+    from
+        post p1_0 
+    where
+        (p1_0.title=? 
+        or p1_0.content=?) 
+        and p1_0.account_email=?
+    """,
+    nativeQuery = true
+  )
+  Page<Post> findByTitleOrContentAndAccountEmail(String title, String content, String email, Pageable pageable);
 
   Optional<Post> findByIdAndAccountEmail(Long id, String email);
 
