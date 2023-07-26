@@ -45,6 +45,9 @@ public class Comment {
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   private Account account;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  private Post post;
+
   @ManyToMany
   @JoinTable(joinColumns = @JoinColumn(name = "parent_comment"), inverseJoinColumns = @JoinColumn(name = "child_comment"))
   private List<Comment> comment;
