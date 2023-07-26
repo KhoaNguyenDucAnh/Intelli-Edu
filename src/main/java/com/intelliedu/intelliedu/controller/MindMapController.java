@@ -41,7 +41,7 @@ public class MindMapController {
   }
 
   @PostMapping("/")
-  public void addMindMap(@RequestBody @Valid MindMapDto mindMapDto, Authentication authentication) {
+  public void createMindMap(@RequestBody @Valid MindMapDto mindMapDto, Authentication authentication) {
     mindMapService.createMindMap(mindMapDto, authentication);
   }
 

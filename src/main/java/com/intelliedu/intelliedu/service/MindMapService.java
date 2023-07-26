@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.intelliedu.intelliedu.dto.MindMapDto;
+import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.entity.MindMap;
 import com.intelliedu.intelliedu.mapper.MindMapMapper;
 import com.intelliedu.intelliedu.repository.MindMapRepo;
@@ -22,10 +23,10 @@ import com.intelliedu.intelliedu.security.service.AuthService;
 public class MindMapService {
 
   @Autowired
-  private MindMapMapper mindMapMapper;
+  private MindMapRepo mindMapRepo;
 
   @Autowired
-  private MindMapRepo mindMapRepo;
+  private MindMapMapper mindMapMapper;
 
   @Autowired
   private AuthService authService;
@@ -49,20 +50,22 @@ public class MindMapService {
   public void createMindMap(MindMapDto mindMapDto, Authentication authentication) {
     MindMap mindMap = mindMapMapper.toMindMap(mindMapDto);
 
+    Account account = authService.getAccount(authentication);
+
     // Add mindmap to account
-    List<MindMap> accountMindMap = authService.getAccount(authentication).getMindMap();      
+    List<MindMap> accountMindMap = account.getMindMap();      
     
-    // Check if list null
     if (accountMindMap == null) {
       accountMindMap = new ArrayList<>();
      }
 
-    // Check duplicate name
     if (accountMindMap.stream().anyMatch(mindMapTemp -> mindMapTemp.getTitle().equals(mindMap.getTitle()))) {
       throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
 
     accountMindMap.add(mindMap);
+
+    mindMap.setAccount(account);
 
     mindMapRepo.save(mindMap);
   }

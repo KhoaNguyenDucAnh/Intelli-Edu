@@ -42,11 +42,13 @@ public class PostService {
 
   public Map<String, Page<PostDto>> findPost(String query, Authentication authentication, Pageable pageable) {
     if (authentication == null) {
-      return Map.of("other", postMapper.toPostDto(postRepo.findByTitleAndContent(query, query, pageable))); 
+      return Map.of("other", postMapper.toPostDto(postRepo.findByTitleOrContent(query, query, pageable))); 
     } else {
       String email = authService.getEmail(authentication);
-      return Map.of("own", postMapper.toPostDto(postRepo.findByTitleAndContentAndAccountEmail(query, query, email, pageable)),
-                  "other", postMapper.toPostDto(postRepo.findByTitleAndContentAndAccountEmailIsNot(query, query, email, pageable)));
+      return Map.of(
+        "own", postMapper.toPostDto(postRepo.findByTitleOrContentAndAccountEmail(query, query, email, pageable)),
+        "other", postMapper.toPostDto(postRepo.findByTitleOrContentAndAccountEmailIsNot(query, query, email, pageable))
+      );
     }
   }
 
@@ -59,13 +61,9 @@ public class PostService {
   public void createPost(PostDto postDto, Authentication authentication) {
     Post post = postMapper.toPost(postDto);
 
-    // Set attributes
-    post.setIsAnswered(false);
-    post.setDateTime(OffsetDateTime.now());
-   
-    // Save post to account
     Account account = authService.getAccount(authentication);
 
+    // Add post to account
     List<Post> accountPost = account.getPost();
 
     if (accountPost == null) {
@@ -77,6 +75,11 @@ public class PostService {
     }
     
     accountPost.add(post);
+
+    // Set attributes
+    post.setIsAnswered(false);
+    post.setDateTime(OffsetDateTime.now());
+    post.setAccount(account);
 
     postRepo.save(post);
   }

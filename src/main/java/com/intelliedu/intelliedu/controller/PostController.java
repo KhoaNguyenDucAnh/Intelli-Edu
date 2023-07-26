@@ -45,7 +45,7 @@ public class PostController {
   }
 
   @PostMapping("/")
-  public void addPost(@RequestBody @Valid PostDto postDto, Authentication authentication) {
+  public void createPost(@RequestBody @Valid PostDto postDto, Authentication authentication) {
     postService.createPost(postDto, authentication);
   }
 

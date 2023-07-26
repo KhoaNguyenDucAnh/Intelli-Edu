@@ -5,12 +5,12 @@ import java.util.List;
 
 import com.intelliedu.intelliedu.config.Subject;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -43,12 +43,9 @@ public class Post {
   @Column(name = "is_answered")
   private Boolean isAnswered;
   
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(referencedColumnName = "email")
+  @ManyToOne(fetch = FetchType.LAZY)
   private Account account;
 
-  @OneToMany(fetch = FetchType.LAZY)
-  @JoinColumn(name = "post_id", referencedColumnName = "id")
+  @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private List<Comment> comment;
-
 }
