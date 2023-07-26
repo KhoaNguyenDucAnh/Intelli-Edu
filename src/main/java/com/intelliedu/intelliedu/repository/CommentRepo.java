@@ -6,4 +6,5 @@ import com.intelliedu.intelliedu.entity.Comment;
 
 public interface CommentRepo extends JpaRepository<Comment, Long> {
 
+  public void deleteByIdAndAccountEmail(Long id, String email);
 }
