@@ -49,6 +49,6 @@ public class CommentService {
   }
 
   public void deleteComment(Long id, Authentication authentication) {
-    commentRepo.deleteByIdAndAccountEmail(id, authService.getEmail(authentication)); 
+    commentRepo.deleteByIdAndAccount(id, authService.getAccount(authentication)); 
   }
 }

@@ -44,10 +44,10 @@ public class PostService {
     if (authentication == null) {
       return Map.of("other", postMapper.toPostDto(postRepo.findByTitleOrContent(query, query, pageable))); 
     } else {
-      String email = authService.getEmail(authentication);
+      Long accountId = authService.getAccount(authentication).getId();
       return Map.of(
-        "own", postMapper.toPostDto(postRepo.findByTitleOrContentAndAccountEmail(query, query, email, pageable)),
-        "other", postMapper.toPostDto(postRepo.findByTitleOrContentAndAccountEmailIsNot(query, query, email, pageable))
+        "own", postMapper.toPostDto(postRepo.findByTitleOrContentAndAccountId(query, query, accountId, pageable)),
+        "other", postMapper.toPostDto(postRepo.findByTitleOrContentAndAccountIdIsNot(query, query, accountId, pageable))
       );
     }
   }
@@ -98,7 +98,7 @@ public class PostService {
 
   public void setAnswer(Long commentId, Long postId) {
     if (postRepo.existCommentWithId(commentId, postId) == 0) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
     Post post = postRepo.findById(postId).orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));  

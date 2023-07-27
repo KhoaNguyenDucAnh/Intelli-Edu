@@ -35,15 +35,17 @@ public class MindMapService {
     if (authentication == null) {
       return Map.of("other", mindMapMapper.toMindMapDto(mindMapRepo.findByTitle(query, pageable))); 
     } else {
-      String email = authService.getEmail(authentication);
-          return Map.of("own", mindMapMapper.toMindMapDto(mindMapRepo.findByTitleAndAccountEmail(query, email, pageable)),
-                      "other", mindMapMapper.toMindMapDto(mindMapRepo.findByTitleAndAccountEmailIsNot(query, email, pageable)));
+      Account account = authService.getAccount(authentication);
+      return Map.of(
+        "other", mindMapMapper.toMindMapDto(mindMapRepo.findByTitleAndAccountIsNot(query, account, pageable)),
+        "own", mindMapMapper.toMindMapDto(mindMapRepo.findByTitleAndAccount(query, account, pageable))
+      );
     }
   }
 
   public MindMapDto findMindMap(Long id, Authentication authentication) {
     return mindMapMapper.toMindMapDto(mindMapRepo
-        .findByIdAndAccountEmail(id, authService.getEmail(authentication))
+        .findByIdAndAccount(id, authService.getAccount(authentication))
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
   }
   
@@ -72,11 +74,11 @@ public class MindMapService {
   
   public void updateMindMap(MindMapDto mindMapDto, Authentication authentication) {
     mindMapRepo
-      .findByIdAndAccountEmail(mindMapDto.getId(), authService.getEmail(authentication))
+      .findByIdAndAccount(mindMapDto.getId(), account)
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
     // Check duplicate name
-    if (authService.getAccount(authentication).getMindMap().stream().anyMatch(mindMapTemp -> mindMapTemp.getTitle().equals(mindMapDto.getTitle()))) {
+    if (account.getMindMap().stream().anyMatch(mindMapTemp -> mindMapTemp.getTitle().equals(mindMapDto.getTitle()))) {
       throw new ResponseStatusException(HttpStatus.CONFLICT);
    }
 
