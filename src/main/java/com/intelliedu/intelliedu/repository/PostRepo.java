@@ -13,16 +13,68 @@ import com.intelliedu.intelliedu.entity.Post;
 
 public interface PostRepo extends JpaRepository<Post, Long> {
 
-  Page<Post> findByTitleAndContent(String title, String content, Pageable pageable);
+  Page<Post> findByTitleOrContent(String title, String content, Pageable pageable);
 
-  Page<Post> findByTitleAndContentAndAccountIsNot(String title, String content, Account account, Pageable pageable);
-
-  Page<Post> findByTitleAndContentAndAccount(String title, String content, Account account, Pageable pageable);
+  @Query(
+    value = 
+    """
+    select
+      p.id,
+      p.account_id,
+      p.content,
+      p.date_time,
+      p.is_answered,
+      p.subject,
+      p.title 
+    from
+      post p
+    where
+      (p.title=? 
+      or p.content=?) 
+      and p.account_id!=?
+    """,
+    nativeQuery = true
+  )
+  Page<Post> findByTitleOrContentAndAccountIdIsNot(String title, String content, Long acountId, Pageable pageable);
+  
+  @Query(
+    value = 
+    """
+    select
+      p.id,
+      p.account_id,
+      p.content,
+      p.date_time,
+      p.is_answered,
+      p.subject,
+      p.title 
+    from
+      post p
+    where
+      (p.title=? 
+      or p.content=?) 
+      and p.account_id=?
+    """,
+    nativeQuery = true
+  )
+  Page<Post> findByTitleOrContentAndAccountId(String title, String content, Long accountId, Pageable pageable);
 
   Optional<Post> findByIdAndAccount(Long id, Account account);
 
-  @Query(value = "SELECT COUNT(1) FROM Comment c WHERE c.id = :comment_id AND c.post_id = :post_id", nativeQuery = true)
-  Long existCommentWithId(@Param("comment_id") Long commentId, @Param("post_id") Long postId);
+  @Query(
+    value = 
+    """
+    select
+      count(1)
+    from
+      comment c
+    where
+      c.id=?
+      and c.post_id=?
+    """,
+    nativeQuery = true
+  )
+  Long existCommentWithId(Long commentId, Long postId);
 
   void deleteByIdAndAccount(Long id, Account account);
 }

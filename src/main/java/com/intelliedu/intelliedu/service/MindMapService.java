@@ -12,7 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.intelliedu.intelliedu.config.MindMapConfig;
 import com.intelliedu.intelliedu.dto.MindMapDto;
 import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.entity.MindMap;
@@ -37,15 +36,17 @@ public class MindMapService {
       return Map.of("other", mindMapMapper.toMindMapDto(mindMapRepo.findByTitle(query, pageable))); 
     } else {
       Account account = authService.getAccount(authentication);
-      return Map.of("own", mindMapMapper.toMindMapDto(mindMapRepo.findByTitleAndAccount(query, account, pageable)),
-                  "other", mindMapMapper.toMindMapDto(mindMapRepo.findByTitleAndAccountIsNot(query, account, pageable)));
+      return Map.of(
+        "other", mindMapMapper.toMindMapDto(mindMapRepo.findByTitleAndAccountIsNot(query, account, pageable)),
+        "own", mindMapMapper.toMindMapDto(mindMapRepo.findByTitleAndAccount(query, account, pageable))
+      );
     }
   }
 
   public MindMapDto findMindMap(Long id, Authentication authentication) {
     return mindMapMapper.toMindMapDto(mindMapRepo
         .findByIdAndAccount(id, authService.getAccount(authentication))
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, MindMapConfig.NOT_FOUND)));
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
   }
   
   public void createMindMap(MindMapDto mindMapDto, Authentication authentication) {
@@ -61,7 +62,7 @@ public class MindMapService {
      }
 
     if (accountMindMap.stream().anyMatch(mindMapTemp -> mindMapTemp.getTitle().equals(mindMap.getTitle()))) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT, MindMapConfig.CONFLICT);
+      throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
 
     accountMindMap.add(mindMap);
@@ -76,11 +77,11 @@ public class MindMapService {
 
     mindMapRepo
       .findByIdAndAccount(mindMapDto.getId(), account)
-      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, MindMapConfig.NOT_FOUND));
+      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
     // Check duplicate name
     if (account.getMindMap().stream().anyMatch(mindMapTemp -> mindMapTemp.getTitle().equals(mindMapDto.getTitle()))) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT, MindMapConfig.CONFLICT);
+      throw new ResponseStatusException(HttpStatus.CONFLICT);
    }
 
     mindMapRepo.save(mindMapMapper.toMindMap(mindMapDto));
