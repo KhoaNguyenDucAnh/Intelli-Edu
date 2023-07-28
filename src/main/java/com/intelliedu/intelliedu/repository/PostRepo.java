@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.entity.Post;
 
 public interface PostRepo extends JpaRepository<Post, Long> {
@@ -58,7 +59,7 @@ public interface PostRepo extends JpaRepository<Post, Long> {
   )
   Page<Post> findByTitleOrContentAndAccountId(String title, String content, Long accountId, Pageable pageable);
 
-  Optional<Post> findByIdAndAccountEmail(Long id, String email);
+  Optional<Post> findByIdAndAccount(Long id, Account account);
 
   @Query(
     value = 
@@ -75,5 +76,5 @@ public interface PostRepo extends JpaRepository<Post, Long> {
   )
   Long existCommentWithId(Long commentId, Long postId);
 
-  void deleteByIdAndAccountEmail(Long id, String email);
+  void deleteByIdAndAccount(Long id, Account account);
 }

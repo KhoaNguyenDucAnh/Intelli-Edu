@@ -54,7 +54,7 @@ public class PostService {
 
   public PostDto findPost(Long id, Authentication authentication) {
     return postMapper.toPostDto(postRepo
-      .findByIdAndAccountEmail(id, authService.getEmail(authentication))
+      .findByIdAndAccount(id, authService.getAccount(authentication))
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
   }
 
@@ -86,7 +86,7 @@ public class PostService {
 
   public void updatePost(PostDto postDto, Authentication authentication) {
     postRepo
-      .findByIdAndAccountEmail(postDto.getId(), authService.getEmail(authentication))
+      .findByIdAndAccount(postDto.getId(), authService.getAccount(authentication))
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
     if (authService.getAccount(authentication).getPost().stream().anyMatch(tempPost -> tempPost.getTitle().equals(postDto.getTitle()))) {
@@ -112,6 +112,6 @@ public class PostService {
   }
 
   public void deletePost(Long id, Authentication authentication) {
-    postRepo.deleteByIdAndAccountEmail(id, authService.getEmail(authentication)); 
+    postRepo.deleteByIdAndAccount(id, authService.getAccount(authentication)); 
   }
 }

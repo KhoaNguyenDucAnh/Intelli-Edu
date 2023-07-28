@@ -85,13 +85,9 @@ public class AuthService {
     logger.info(String.format("User with email %s registered successfully.", accountRegistrationDto.getEmail()));
   }
 
-  public String getEmail(Authentication authentication) {
-    return ((UserDetails) authentication.getPrincipal()).getUsername();
-  }
-
   public Account getAccount(Authentication authentication) {
     return accountRepo
-        .findByEmail(getEmail(authentication))
+        .findByEmail(((UserDetails) authentication.getPrincipal()).getUsername())
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 }

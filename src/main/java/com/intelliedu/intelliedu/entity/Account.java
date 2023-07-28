@@ -16,7 +16,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -30,7 +29,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name = "account")
-@IdClass(AccountId.class)
 public class Account implements UserDetails {
 
   private static final long serialVersionUID = 1L;
@@ -41,7 +39,7 @@ public class Account implements UserDetails {
   @GeneratedValue
   private Long id;
 
-  @Id
+  @Column(unique = true)
   private String email;
 
   @Column(unique = true)
