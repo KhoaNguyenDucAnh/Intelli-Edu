@@ -46,8 +46,8 @@ public class PostService {
     } else {
       Long accountId = authService.getAccount(authentication).getId();
       return Map.of(
-        "own", postMapper.toPostDto(postRepo.findByTitleOrContentAndAccountId(query, query, accountId, pageable)),
-        "other", postMapper.toPostDto(postRepo.findByTitleOrContentAndAccountIdIsNot(query, query, accountId, pageable))
+        "other", postMapper.toPostDto(postRepo.findByTitleOrContentAndAccountIdIsNot(query, query, accountId, pageable)),
+        "own", postMapper.toPostDto(postRepo.findByTitleOrContentAndAccountId(query, query, accountId, pageable))
       );
     }
   }
