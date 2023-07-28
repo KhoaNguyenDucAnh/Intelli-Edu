@@ -40,6 +40,8 @@ jobs:
     steps:
     - name: Connect to PostgreSQL and create database
       run: psql -h localhost -U postgres -d intelliedu -c "CREATE SCHEMA public;"
+      env:
+        PGPASSWORD: 123456780
       
     - uses: actions/checkout@v3
     - name: Set up JDK 17
