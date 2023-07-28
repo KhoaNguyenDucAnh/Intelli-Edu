@@ -68,18 +68,28 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-security</artifactId>
     </dependency>
+    
+    <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-config</artifactId>
+      <version>6.1.2</version>
+    </dependency>
+
     <!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct -->
     <dependency>
       <groupId>org.mapstruct</groupId>
       <artifactId>mapstruct</artifactId>
       <version>${mapstruct.version}</version>
     </dependency>
+
     <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt-api</artifactId>
       <version>0.11.5</version>
     </dependency>
+
     <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl -->
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
@@ -87,6 +97,7 @@
       <version>0.11.5</version>
       <scope>runtime</scope>
     </dependency>
+
     <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson -->
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
@@ -94,18 +105,28 @@
       <version>0.11.5</version>
       <scope>runtime</scope>
     </dependency>
+
     <!-- https://mvnrepository.com/artifact/com.github.ekryd.sortpom/sortpom-maven-plugin -->
     <dependency>
       <groupId>com.github.ekryd.sortpom</groupId>
       <artifactId>sortpom-maven-plugin</artifactId>
       <version>3.2.1</version>
     </dependency>
+
     <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
       <version>2.15.2</version>
     </dependency>
+    
+    <!-- https://mvnrepository.com/artifact/org.yaml/snakeyaml -->
+    <dependency>
+      <groupId>org.yaml</groupId>
+      <artifactId>snakeyaml</artifactId>
+      <version>2.0</version>
+    </dependency>
+
   </dependencies>
 
   <build>
