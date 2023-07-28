@@ -73,6 +73,8 @@ public class MindMapService {
   }
   
   public void updateMindMap(MindMapDto mindMapDto, Authentication authentication) {
+    Account account = authService.getAccount(authentication);
+
     mindMapRepo
       .findByIdAndAccount(mindMapDto.getId(), account)
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -86,6 +88,6 @@ public class MindMapService {
   }
 
   public void deleteMindMap(Long id, Authentication authentication) {
-    mindMapRepo.deleteByIdAndAccountEmail(id, authService.getEmail(authentication));
+    mindMapRepo.deleteByIdAndAccount(id, authService.getAccount(authentication));
   }
 }
