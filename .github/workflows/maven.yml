@@ -42,10 +42,6 @@ jobs:
       run: psql -h localhost -U postgres -c "CREATE DATABASE intelliedu;"
       env:
         PGPASSWORD: 1234567890
-    - name: Create schema
-      run: psql -h localhost -U postgres -d intelliedu -c "CREATE SCHEMA public;"
-      env:
-        PGPASSWORD: 1234567890
       
     - uses: actions/checkout@v3
     - name: Set up JDK 17
