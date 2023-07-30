@@ -33,19 +33,22 @@ public class SecurityComponent {
           .findByEmail(email)
           .orElseThrow(() -> new UsernameNotFoundException(null));
 
-        boolean enabled = true;
-        boolean accountNonExpired = true;
-        boolean credentialsNonExpired = true;
-        boolean accountNonLocked = true;
+        if (true || account.isEnabled()) {
+          boolean accountNonExpired = true;
+          boolean credentialsNonExpired = true;
+          boolean accountNonLocked = true;
 
-        return new org.springframework.security.core.userdetails.User(
-          account.getEmail(),
-          account.getPassword(),
-          enabled,
-          accountNonExpired,
-          credentialsNonExpired,
-          accountNonLocked,
-          account.getAuthorities());
+          return new org.springframework.security.core.userdetails.User(
+            account.getEmail(),
+            account.getPassword(),
+            true,
+            accountNonExpired,
+            credentialsNonExpired,
+            accountNonLocked,
+            account.getAuthorities());
+        } else {
+          return null;
+        }
       }
     }; 
   }

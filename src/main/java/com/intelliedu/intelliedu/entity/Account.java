@@ -33,8 +33,6 @@ public class Account implements UserDetails {
 
   private static final long serialVersionUID = 1L;
 
-  private static final String ROLE_PREFIX = "ROLE_";
-
   @Id
   @GeneratedValue
   private Long id;
@@ -46,6 +44,8 @@ public class Account implements UserDetails {
   private String username;
 
   private String password;
+
+  private Boolean isEnabled;
 
   @Enumerated(EnumType.STRING)
   private Role role;
@@ -82,6 +82,6 @@ public class Account implements UserDetails {
 
   @Override
   public boolean isEnabled() {
-    return true;
+    return isEnabled;
   }
 }
