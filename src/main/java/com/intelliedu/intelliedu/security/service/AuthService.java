@@ -64,6 +64,7 @@ public class AuthService {
       cookie.setSecure(false);
 
       response.addCookie(cookie);
+      
       logger.info(String.format("User with email %s logged in successfully.", accountLogInDto.getEmail()));
     } catch (UnsupportedEncodingException e) {
       logger.error(e.getMessage());
@@ -77,6 +78,7 @@ public class AuthService {
     }
 
     Account account = accountMapper.toAccount(accountRegistrationDto);
+    
     account.setPassword(passwordEncoder.encode(accountRegistrationDto.getPassword()));
     account.setRole(Role.ROLE_USER);
 
