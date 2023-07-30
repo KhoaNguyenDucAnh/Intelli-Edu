@@ -54,11 +54,6 @@ public class PostController {
     postService.updatePost(postDto, authentication);
   }
 
-  @PutMapping("/answer")
-  public void setAnswer(@RequestParam(name = "comment", required = true) Long commentId, @RequestParam(name = "post", required = true) Long postId) {
-    postService.setAnswer(commentId, postId);
-  }
-
   @DeleteMapping("/{id}")
   public void deletePost(@PathVariable(value = "id") Long id, Authentication authentication) {
     postService.deletePost(id, authentication);

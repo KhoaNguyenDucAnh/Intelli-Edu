@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.entity.Post;
@@ -60,21 +59,6 @@ public interface PostRepo extends JpaRepository<Post, Long> {
   Page<Post> findByTitleOrContentAndAccountId(String title, String content, Long accountId, Pageable pageable);
 
   Optional<Post> findByIdAndAccount(Long id, Account account);
-
-  @Query(
-    value = 
-    """
-    select
-      count(1)
-    from
-      comment c
-    where
-      c.id=?
-      and c.post_id=?
-    """,
-    nativeQuery = true
-  )
-  Long existCommentWithId(Long commentId, Long postId);
 
   void deleteByIdAndAccount(Long id, Account account);
 }

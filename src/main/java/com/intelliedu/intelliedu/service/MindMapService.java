@@ -49,7 +49,7 @@ public class MindMapService {
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
   }
   
-  public void createMindMap(MindMapDto mindMapDto, Authentication authentication) {
+  public MindMapDto createMindMap(MindMapDto mindMapDto, Authentication authentication) {
     MindMap mindMap = mindMapMapper.toMindMap(mindMapDto);
 
     Account account = authService.getAccount(authentication);
@@ -69,22 +69,23 @@ public class MindMapService {
 
     mindMap.setAccount(account);
 
-    mindMapRepo.save(mindMap);
+    return mindMapMapper.toMindMapDto(mindMapRepo.save(mindMap));
   }
   
-  public void updateMindMap(MindMapDto mindMapDto, Authentication authentication) {
+  public MindMapDto updateMindMap(MindMapDto mindMapDto, Authentication authentication) {
     Account account = authService.getAccount(authentication);
 
-    mindMapRepo
-      .findByIdAndAccount(mindMapDto.getId(), account)
-      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    MindMap mindMap = mindMapRepo.findByIdAndAccount(mindMapDto.getId(), account).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
     // Check duplicate name
-    if (account.getMindMap().stream().anyMatch(mindMapTemp -> mindMapTemp.getTitle().equals(mindMapDto.getTitle()))) {
+    if (account.getMindMap().stream().anyMatch(mindMapTemp -> mindMapTemp.getTitle().equals(mindMapDto.getTitle()) && !mindMapTemp.getTitle().equals(mindMap.getTitle()))) {
       throw new ResponseStatusException(HttpStatus.CONFLICT);
-   }
+    }
 
-    mindMapRepo.save(mindMapMapper.toMindMap(mindMapDto));
+    mindMap.setTitle(mindMapDto.getTitle());
+    mindMap.setData(mindMapDto.getData());
+
+    return mindMapMapper.toMindMapDto(mindMapRepo.save(mindMap));
   }
 
   public void deleteMindMap(Long id, Authentication authentication) {

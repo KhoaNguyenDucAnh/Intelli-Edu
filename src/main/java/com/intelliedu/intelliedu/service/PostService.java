@@ -15,10 +15,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.intelliedu.intelliedu.dto.PostDto;
 import com.intelliedu.intelliedu.entity.Account;
-import com.intelliedu.intelliedu.entity.Comment;
 import com.intelliedu.intelliedu.entity.Post;
 import com.intelliedu.intelliedu.mapper.PostMapper;
-import com.intelliedu.intelliedu.repository.CommentRepo;
 import com.intelliedu.intelliedu.repository.PostRepo;
 import com.intelliedu.intelliedu.security.service.AuthService;
 
@@ -36,9 +34,6 @@ public class PostService {
 
   @Autowired
   private AuthService authService;
-
-  @Autowired
-  private CommentRepo commentRepo;
 
   public Map<String, Page<PostDto>> findPost(String query, Authentication authentication, Pageable pageable) {
     if (authentication == null) {
@@ -58,7 +53,7 @@ public class PostService {
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
   }
 
-  public void createPost(PostDto postDto, Authentication authentication) {
+  public PostDto createPost(PostDto postDto, Authentication authentication) {
     Post post = postMapper.toPost(postDto);
 
     Account account = authService.getAccount(authentication);
@@ -81,34 +76,22 @@ public class PostService {
     post.setDateTime(OffsetDateTime.now());
     post.setAccount(account);
 
-    postRepo.save(post);
+    return postMapper.toPostDto(postRepo.save(post));
   }
 
-  public void updatePost(PostDto postDto, Authentication authentication) {
-    postRepo
-      .findByIdAndAccount(postDto.getId(), authService.getAccount(authentication))
-      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+  public PostDto updatePost(PostDto postDto, Authentication authentication) {
+    Account account = authService.getAccount(authentication);
 
-    if (authService.getAccount(authentication).getPost().stream().anyMatch(tempPost -> tempPost.getTitle().equals(postDto.getTitle()))) {
+    Post post = postRepo.findByIdAndAccount(postDto.getId(), account).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)); 
+
+    if (authService.getAccount(authentication).getPost().stream().anyMatch(tempPost -> tempPost.getTitle().equals(postDto.getTitle()) && !tempPost.getTitle().equals(post.getTitle()))) {
       throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
 
-    postRepo.save(postMapper.toPost(postDto));
-  }
+    post.setTitle(postDto.getTitle());
+    post.setContent(postDto.getContent());
 
-  public void setAnswer(Long commentId, Long postId) {
-    if (postRepo.existCommentWithId(commentId, postId) == 0) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    }
-
-    Post post = postRepo.findById(postId).orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));  
-    Comment comment = commentRepo.findById(commentId).orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
-
-    post.setIsAnswered(true);
-    comment.setIsAnswer(true);
-
-    postRepo.save(post);
-    commentRepo.save(comment);
+    return postMapper.toPostDto(postRepo.save(post));
   }
 
   public void deletePost(Long id, Authentication authentication) {

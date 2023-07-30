@@ -41,13 +41,13 @@ public class MindMapController {
   }
 
   @PostMapping("/")
-  public void createMindMap(@RequestBody @Valid MindMapDto mindMapDto, Authentication authentication) {
-    mindMapService.createMindMap(mindMapDto, authentication);
+  public MindMapDto createMindMap(@RequestBody @Valid MindMapDto mindMapDto, Authentication authentication) {
+    return mindMapService.createMindMap(mindMapDto, authentication);
   }
 
   @PutMapping("/")
-  public void updateMindMap(@RequestBody @Valid MindMapDto mindMapDto, Authentication authentication) {
-    mindMapService.updateMindMap(mindMapDto, authentication);
+  public MindMapDto updateMindMap(@RequestBody @Valid MindMapDto mindMapDto, Authentication authentication) {
+    return mindMapService.updateMindMap(mindMapDto, authentication);
   }
 
   @DeleteMapping("/{id}")
