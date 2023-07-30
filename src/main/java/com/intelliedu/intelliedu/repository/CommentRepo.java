@@ -7,5 +7,9 @@ import com.intelliedu.intelliedu.entity.Comment;
 
 public interface CommentRepo extends JpaRepository<Comment, Long> {
 
-  public void deleteByIdAndAccount(Long id, Account account);
+  boolean existsByIdAndAccountId(Long id, Long accountId);
+
+  boolean existsByIdAndPostId(Long id, Long postId);
+
+  void deleteByIdAndAccount(Long id, Account account);
 }

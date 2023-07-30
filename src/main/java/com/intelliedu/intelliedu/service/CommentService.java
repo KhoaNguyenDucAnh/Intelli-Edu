@@ -23,15 +23,15 @@ public class CommentService {
   private CommentRepo commentRepo;
 
   @Autowired
+  private PostRepo postRepo;
+
+  @Autowired
   private CommentMapper commentMapper;
 
   @Autowired
   private AuthService authService;
 
-  @Autowired
-  private PostRepo postRepo;
-
-  public void createComment(Long postId, CommentDto commentDto, Authentication authentication) {
+  public CommentDto createComment(Long postId, CommentDto commentDto, Authentication authentication) {
     Post post = postRepo.findById(postId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     
     Account account = authService.getAccount(authentication);
@@ -41,11 +41,30 @@ public class CommentService {
     comment.setAccount(account);
     comment.setPost(post);
 
-    commentRepo.save(comment);
+    return commentMapper.toCommentDto(commentRepo.save(comment));
   }
 
-  public void updateComment(CommentDto commentDto, Authentication authentication) {
-    
+  public CommentDto updateComment(CommentDto commentDto, Authentication authentication) {
+    if (commentRepo.existsByIdAndAccountId(commentDto.getId(), authService.getAccount(authentication).getId())) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
+    return commentMapper.toCommentDto(commentRepo.save(commentMapper.toComment(commentDto)));
+  }
+
+  public void setAnswer(Long commentId, Long postId) {
+    if (!commentRepo.existsByIdAndPostId(commentId, postId)) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
+    Comment comment = commentRepo.findById(commentId).orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
+    Post post = postRepo.findById(postId).orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
+
+    comment.setIsAnswer(true);
+    post.setIsAnswered(true);
+
+    commentRepo.save(comment);
+    postRepo.save(post);
   }
 
   public void deleteComment(Long id, Authentication authentication) {

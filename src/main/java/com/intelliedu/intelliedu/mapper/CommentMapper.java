@@ -18,6 +18,8 @@ public interface CommentMapper {
 
   public Comment toComment(CommentDto commentDto);
 
+  public CommentDto toCommentDto(Comment comment);
+
   public List<CommentDto> toCommentDto(List<Comment> comment);
 
   default public Page<CommentDto> toCommentDto(Page<Comment> comment) {
