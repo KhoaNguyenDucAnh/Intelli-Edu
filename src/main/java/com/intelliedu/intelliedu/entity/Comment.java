@@ -1,6 +1,6 @@
 package com.intelliedu.intelliedu.entity;
 
-import java.time.OffsetDateTime;
+import java.sql.Timestamp;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -30,8 +30,8 @@ public class Comment {
   @GeneratedValue
   private Long id;
 
-  @Column(name = "date_time")
-  private OffsetDateTime dateTime;
+  @Column(name = "created_at")
+  private Timestamp createdAt;
 
   private String content;
 
@@ -42,7 +42,7 @@ public class Comment {
   @Column(name = "is_answer")
   private Boolean isAnswer;
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @ManyToOne(fetch = FetchType.LAZY)
   private Account account;
 
   @ManyToOne(fetch = FetchType.LAZY)

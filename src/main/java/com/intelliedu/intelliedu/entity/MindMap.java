@@ -1,9 +1,11 @@
 package com.intelliedu.intelliedu.entity;
 
+import java.sql.Timestamp;
 import java.util.Map;
 
 import com.intelliedu.intelliedu.util.HashMapConverter;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -29,6 +31,12 @@ public class MindMap {
   private Long id;
 
   private String title;
+
+  @Column(name = "created_at")
+  private Timestamp createdAt;
+
+  @Column(name = "last_opened")
+  private Timestamp lastOpened;
 
   @Convert(converter = HashMapConverter.class)
   private Map<String, Object> data;

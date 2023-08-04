@@ -1,5 +1,8 @@
 package com.intelliedu.intelliedu.entity;
 
+import java.sql.Timestamp;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -24,6 +27,12 @@ public class Document {
   private Long id;
 
   private String title;
+
+  @Column(name = "created_at")
+  private Timestamp createdAt;
+
+  @Column(name = "last_opened")
+  private Timestamp lastOpened;
 
   private String data;
 

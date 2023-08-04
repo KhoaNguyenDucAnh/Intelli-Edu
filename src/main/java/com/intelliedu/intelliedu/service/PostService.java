@@ -1,6 +1,7 @@
 package com.intelliedu.intelliedu.service;
 
-import java.time.OffsetDateTime;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -73,7 +74,7 @@ public class PostService {
 
     // Set attributes
     post.setIsAnswered(false);
-    post.setDateTime(OffsetDateTime.now());
+    post.setCreatedAt(Timestamp.from(Instant.now()));
     post.setAccount(account);
 
     return postMapper.toPostDto(postRepo.save(post));

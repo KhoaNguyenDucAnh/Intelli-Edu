@@ -1,6 +1,6 @@
 package com.intelliedu.intelliedu.entity;
 
-import java.time.OffsetDateTime;
+import java.sql.Timestamp;
 import java.util.List;
 
 import com.intelliedu.intelliedu.config.Subject;
@@ -31,8 +31,8 @@ public class Post {
   @GeneratedValue 
   private Long id;
 
-  @Column(name = "date_time")
-  private OffsetDateTime dateTime;
+  @Column(name = "created_at")
+  private Timestamp createdAt;
 
   private Subject subject;
 
