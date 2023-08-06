@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login Page</title>
+</head>
+<body>
+  <h1>Login</h1>
+  <form id="loginForm" onsubmit="login(event)">
+    <label for="email">Email:</label>
+    <input type="email" id="email" required><br>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" required><br>
+
+    <input type="submit" value="Login">
+  </form>
+
+  <div id="loginResult"></div>
+
+  <script>
+    function login(event) {
+      event.preventDefault();
+
+      // Retrieve form inputs
+      var email = document.getElementById("email").value;
+      var password = document.getElementById("password").value;
+
+      // Validate inputs
+      if (email === "" || password === "") {
+        document.getElementById("loginResult").innerHTML = "Please enter email and password.";
+        return;
+      }
+
+      // Create request body
+      var requestBody = {
+        email: email,
+        password: password
+      };
+
+      // Make authentication request
+      fetch('/api/v1/auth/authenticate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      })
+      .then(function(response) {
+        if (response.ok) {
+          window.location.href = "/dashboard";
+        } else {
+          document.getElementById("loginResult").innerHTML = "Invalid email or password.";
+        }
+      })
+      .catch(function(error) {
+        console.log(error.message);
+      });
+    }
+  </script>
+</body>
+</html>

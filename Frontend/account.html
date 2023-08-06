@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Page</title>
+</head>
+<body>
+  <h1>User Page</h1>
+
+  <h2>Welcome, <span id="username"></span>!</h2>
+
+  <h3>Account Details</h3>
+  <p>
+    Username: <span id="displayUsername"></span>
+    <button onclick="changeUsername()">Change</button>
+  </p>
+  <p>
+    Email: <span id="displayEmail"></span>
+    <button onclick="changeEmail()">Change</button>
+  </p>
+  <p>
+    Password: <span id="displayPassword">********</span>
+    <button onclick="changePassword()">Change</button>
+  </p>
+  <button onclick="logout()">Logout</button>
+
+  <script>
+    // Fetch user data from API and populate the page
+    fetchUserData();
+
+    function fetchUserData() {
+      // Make an API call to retrieve user data
+      fetch('/api/v1/account')
+        .then(function(response) {
+          if (response.ok) {
+            return response.json();
+          }
+          throw new Error('Failed to fetch user data.');
+        })
+        .then(function(data) {
+          // Populate the page with user data
+          document.getElementById("username").textContent = data.username;
+          document.getElementById("displayUsername").textContent = data.username;
+          document.getElementById("displayEmail").textContent = data.email;
+        })
+        .catch(function(error) {
+          console.log(error.message);
+        });
+    }
+
+    function changeUsername() {
+      // Implement logic to change the username
+      // You can display a form or prompt for user input
+      alert("Change username feature coming soon!");
+    }
+
+    function changeEmail() {
+      // Implement logic to change the email
+      // You can display a form or prompt for user input
+      alert("Change email feature coming soon!");
+    }
+
+    function changePassword() {
+      // Implement logic to change the password
+      // You can display a form or prompt for user input
+      alert("Change password feature coming soon!");
+    }
+
+    function logout() {
+      // Implement logic to log out the user
+      alert("Logout feature coming soon!");
+    }
+  </script>
+</body>
+</html>
