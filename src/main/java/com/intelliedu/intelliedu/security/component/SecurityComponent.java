@@ -33,7 +33,7 @@ public class SecurityComponent {
           .findByEmail(email)
           .orElseThrow(() -> new UsernameNotFoundException(null));
 
-        if (true || account.isEnabled()) {
+        if (account.isEnabled()) {
           boolean accountNonExpired = true;
           boolean credentialsNonExpired = true;
           boolean accountNonLocked = true;
@@ -47,7 +47,7 @@ public class SecurityComponent {
             accountNonLocked,
             account.getAuthorities());
         } else {
-          return null;
+          throw new UsernameNotFoundException(null);
         }
       }
     }; 

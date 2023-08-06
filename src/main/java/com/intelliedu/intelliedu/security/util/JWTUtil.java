@@ -28,7 +28,7 @@ public class JWTUtil {
     return Jwts.builder()
         .setSubject((userPrincipal.getUsername()))
         .setIssuedAt(new Date())
-        .setExpiration(new Date((new Date()).getTime() + SecurityConfig.EXPIRATION_TIME))
+        .setExpiration(new Date((new Date()).getTime() + SecurityConfig.TOKEN_EXPIRATION_TIME))
         .signWith(key(), SignatureAlgorithm.HS256)
         .compact();
   }
