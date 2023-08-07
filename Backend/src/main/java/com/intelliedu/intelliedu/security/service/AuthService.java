@@ -70,9 +70,9 @@ public class AuthService {
 
       response.addCookie(cookie);
       
-      logger.info(String.format("Account %s: login successful", accountLogInDto.getEmail()));
+      logger.info(String.format("Account %s | Login successful", accountLogInDto.getEmail()));
 		} catch (AuthenticationException e) {
-			logger.error(String.format("Account %s: login failed", accountLogInDto.getEmail()));
+			logger.error(String.format("Account %s | Login failed", accountLogInDto.getEmail()));
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
   }
@@ -102,7 +102,7 @@ public class AuthService {
 
     activationTokenRepo.save(activationToken);
 
-		logger.info(String.format("Account %s: register", accountRegistrationDto.getEmail()));	
+		logger.info(String.format("Account %s | Register", accountRegistrationDto.getEmail()));	
 
     return "http://localhost:8080/activate/" + token;
   }
@@ -124,7 +124,7 @@ public class AuthService {
 
     accountRepo.save(account);
 
-    logger.info(String.format("Account %s: activate", account.getEmail()));
+    logger.info(String.format("Account %s: | Activate", account.getEmail()));
   }
 
   public Account getAccount(Authentication authentication) {

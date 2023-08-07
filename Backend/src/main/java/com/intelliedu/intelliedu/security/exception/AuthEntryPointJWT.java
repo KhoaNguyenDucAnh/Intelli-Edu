@@ -16,12 +16,8 @@ public class AuthEntryPointJWT implements AuthenticationEntryPoint {
   private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJWT.class);
 
   @Override
-  public void commence(
-      HttpServletRequest request,
-      HttpServletResponse response,
-      AuthenticationException authException)
-      throws IOException, ServletException {
-    logger.error(String.format("Unauthorized access attempted. Request URL: %s. IP Address: %s.",request.getRequestURL(), request.getRemoteAddr()));
+  public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    logger.error(String.format("Request URL %s | IP Address %s | Unauthorized access",request.getRequestURL(), request.getRemoteAddr()));
     response.sendRedirect("/login");
   }
 }
