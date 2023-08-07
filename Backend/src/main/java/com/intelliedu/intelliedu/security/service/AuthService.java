@@ -1,8 +1,8 @@
 package com.intelliedu.intelliedu.security.service;
 
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.time.Instant;
 
@@ -13,8 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -57,13 +57,11 @@ public class AuthService {
   private Logger logger = LoggerFactory.getLogger(AuthService.class);
 
   public void authenticateAccount(AccountLogInDto accountLogInDto, HttpServletResponse response) {
-
-    Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(accountLogInDto.getEmail(), accountLogInDto.getPassword()));
-    SecurityContextHolder.getContext().setAuthentication(authentication);
-    String jwt = jwtUtil.generateJwtToken(authentication);
-    
     try {
-      Cookie cookie = new Cookie(SecurityConfig.HEADER_STRING, URLEncoder.encode(SecurityConfig.BEARER_PREFIX + jwt, "UTF-8"));
+			Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(accountLogInDto.getEmail(), accountLogInDto.getPassword()));
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+
+      Cookie cookie = new Cookie(SecurityConfig.HEADER_STRING, URLEncoder.encode(SecurityConfig.BEARER_PREFIX + jwtUtil.generateJwtToken(authentication), StandardCharsets.UTF_8));
       
       cookie.setMaxAge((int) SecurityConfig.TOKEN_EXPIRATION_TIME);
       cookie.setPath("/");
@@ -72,10 +70,10 @@ public class AuthService {
 
       response.addCookie(cookie);
       
-      logger.info(String.format("User with email %s logged in successfully.", accountLogInDto.getEmail()));
-    } catch (UnsupportedEncodingException e) {
-      logger.error(e.getMessage());
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Error encoding authentication token on the server side.");
+      logger.info(String.format("Account %s: login successful", accountLogInDto.getEmail()));
+		} catch (AuthenticationException e) {
+			logger.error(String.format("Account %s: login failed", accountLogInDto.getEmail()));
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
   }
 
@@ -104,6 +102,8 @@ public class AuthService {
 
     activationTokenRepo.save(activationToken);
 
+		logger.info(String.format("Account %s: register", accountRegistrationDto.getEmail()));	
+
     return "http://localhost:8080/activate/" + token;
   }
 
@@ -124,12 +124,12 @@ public class AuthService {
 
     accountRepo.save(account);
 
-    logger.info(String.format("User with email %s registered successfully.", account.getEmail()));
+    logger.info(String.format("Account %s: activate", account.getEmail()));
   }
 
   public Account getAccount(Authentication authentication) {
     return accountRepo
-        .findByEmail(((UserDetails) authentication.getPrincipal()).getUsername())
+        .findByEmail(authentication.getPrincipal().toString())
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 }
