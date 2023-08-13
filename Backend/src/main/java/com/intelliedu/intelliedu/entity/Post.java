@@ -6,46 +6,50 @@ import java.util.List;
 import com.intelliedu.intelliedu.config.Subject;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * CommentAble
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
-@Table(name = "post")
-public class Post {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING)
+public abstract class Post {
 
-  @Id 
+	@Id 
   @GeneratedValue 
   private Long id;
 
-  @Column(name = "created_at")
-  private Timestamp createdAt;
+	private String title;
 
   private Subject subject;
 
-  private String title;
+	private Timestamp createdAt;
 
-  private String content;
+	private Timestamp lastOpened;
 
-  @Column(name = "is_answered")
-  private Boolean isAnswered;
-  
+	private Integer upvote;
+
+  private Integer downvote;
+	 
   @ManyToOne(fetch = FetchType.LAZY)
   private Account account;
 
-  @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private List<Comment> comment;
 }

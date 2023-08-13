@@ -35,3 +35,4 @@ build/
 ### AI ###
 *.ipynb*
 AI/__pycache__
+AI

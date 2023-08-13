@@ -17,5 +17,5 @@ public class MindMapDto {
 
   private String title;
 
-  private Map<String, Object> data;
+  private Map<String, Object> content;
 }

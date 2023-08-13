@@ -83,7 +83,7 @@ public class MindMapService {
     }
 
     mindMap.setTitle(mindMapDto.getTitle());
-    mindMap.setData(mindMapDto.getData());
+    mindMap.setContent(mindMapDto.getContent());
 
     return mindMapMapper.toMindMapDto(mindMapRepo.save(mindMap));
   }
