@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 @ResponseStatus(code = HttpStatus.OK)
 public class AccountController {
 
-  @Autowired private AccountService accountService;
+  @Autowired
+	private AccountService accountService;
 
   @GetMapping("")
   public AccountResponseDto getAccountInfo(Authentication authentication) {
