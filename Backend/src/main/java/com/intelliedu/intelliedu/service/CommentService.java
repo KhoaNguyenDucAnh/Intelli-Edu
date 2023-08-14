@@ -16,9 +16,6 @@ import com.intelliedu.intelliedu.security.service.AuthService;
 @Service
 public class CommentService {
 
-	//@Autowired
-	//private PostRepo postRepo;
-
 	@Autowired
   private CommentRepo commentRepo;
 
@@ -33,7 +30,7 @@ public class CommentService {
 	}
 
   public CommentDto updateComment(CommentDto commentDto, Authentication authentication) {
-    if (commentRepo.existsByIdAndAccountId(commentDto.getId(), authService.getAccount(authentication).getId())) {
+    if (commentRepo.existsByIdAndAccountId(commentDto.getPostDto().getId(), authService.getAccount(authentication).getId())) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 

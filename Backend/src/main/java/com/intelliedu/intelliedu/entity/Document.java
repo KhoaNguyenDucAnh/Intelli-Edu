@@ -1,19 +1,25 @@
 package com.intelliedu.intelliedu.entity;
 
+import com.intelliedu.intelliedu.config.Subject;
+
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 @Entity
 public class Document extends Post {
 
-  private String content;
+	private String title;
+
+	private Subject subject;
+  
+	private String content;
 }
