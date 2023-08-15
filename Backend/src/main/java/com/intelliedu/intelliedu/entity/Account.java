@@ -49,14 +49,17 @@ public class Account implements UserDetails {
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  /*@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private List<Document> document;
 
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private List<MindMap> mindMap;
 
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  private List<Comment> comment;
+  private List<Comment> comment;*/
+
+	@ManyToMany(mappedBy = "account")
+	private List<Post> post;
 
 	@ManyToMany(mappedBy = "upvote")
 	private List<Post> upvote;
