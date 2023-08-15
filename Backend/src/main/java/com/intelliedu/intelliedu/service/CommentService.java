@@ -6,10 +6,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.intelliedu.intelliedu.config.CommentType;
 import com.intelliedu.intelliedu.dto.CommentDto;
+import com.intelliedu.intelliedu.entity.Comment;
+import com.intelliedu.intelliedu.entity.Post;
 import com.intelliedu.intelliedu.mapper.CommentMapper;
 import com.intelliedu.intelliedu.repository.CommentRepo;
+import com.intelliedu.intelliedu.repository.PostRepo;
 import com.intelliedu.intelliedu.security.service.AuthService;
 
 /** CommentServiceImpl */
@@ -19,14 +21,23 @@ public class CommentService {
 	@Autowired
   private CommentRepo commentRepo;
 
+	@Autowired
+	private PostRepo postRepo;
+
   @Autowired
   private CommentMapper commentMapper;
 
   @Autowired
   private AuthService authService;
 	
-  public CommentDto createComment(CommentType commentType, Long parentId, CommentDto commentDto, Authentication authentication) {
-		return null;
+  public CommentDto createComment(Long postId, CommentDto commentDto, Authentication authentication) {
+		Post post = postRepo.findById(postId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+		Comment comment = commentMapper.toComment(commentDto);
+
+		comment.setPost(post);
+
+		return commentMapper.toCommentDto(commentRepo.save(comment));
 	}
 
   public CommentDto updateComment(CommentDto commentDto, Authentication authentication) {

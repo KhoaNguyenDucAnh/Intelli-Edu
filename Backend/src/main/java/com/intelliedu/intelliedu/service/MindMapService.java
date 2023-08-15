@@ -1,7 +1,5 @@
 package com.intelliedu.intelliedu.service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,24 +48,17 @@ public class MindMapService {
   }
   
   public MindMapDto createMindMap(MindMapDto mindMapDto, Authentication authentication) {
-    MindMap mindMap = mindMapMapper.toMindMap(mindMapDto);
-
     Account account = authService.getAccount(authentication);
 
-    // Add mindmap to account
-    List<MindMap> accountMindMap = account.getMindMap();      
-    
-    if (accountMindMap == null) {
-      accountMindMap = new ArrayList<>();
-     }
+		if (mindMapRepo.findByTitleAndAccount(mindMapDto.getTitle(), account).isPresent()) {
+			throw new ResponseStatusException(HttpStatus.CONFLICT);
+		}
 
-    if (accountMindMap.stream().anyMatch(mindMapTemp -> mindMapTemp.getTitle().equals(mindMap.getTitle()))) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT);
-    }
-
-    accountMindMap.add(mindMap);
+		MindMap mindMap = mindMapMapper.toMindMap(mindMapDto);
 
     mindMap.setAccount(account);
+		
+		account.getPost().add(mindMap);
 
     return mindMapMapper.toMindMapDto(mindMapRepo.save(mindMap));
   }
@@ -75,11 +66,14 @@ public class MindMapService {
   public MindMapDto updateMindMap(MindMapDto mindMapDto, Authentication authentication) {
     Account account = authService.getAccount(authentication);
 
-    MindMap mindMap = mindMapRepo.findByIdAndAccount(mindMapDto.getPostDto().getId(), account).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		// Check existance
+    MindMap mindMap = mindMapRepo
+			.findByIdAndAccount(mindMapDto.getPostDto().getId(), account)
+			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
     // Check duplicate name
-    if (account.getMindMap().stream().anyMatch(mindMapTemp -> mindMapTemp.getTitle().equals(mindMapDto.getTitle()) && !mindMapTemp.getTitle().equals(mindMap.getTitle()))) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT);
+    if (mindMapRepo.findByIdIsNotAndTitleAndAccount(mindMapDto.getPostDto().getId(), mindMapDto.getTitle(), account).isPresent()) {
+			throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
 
     mindMap.setTitle(mindMapDto.getTitle());

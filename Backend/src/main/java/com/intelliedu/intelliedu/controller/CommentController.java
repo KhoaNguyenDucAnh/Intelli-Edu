@@ -9,11 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.intelliedu.intelliedu.config.CommentType;
 import com.intelliedu.intelliedu.dto.CommentDto;
 import com.intelliedu.intelliedu.service.CommentService;
 
@@ -28,17 +26,12 @@ public class CommentController {
   @Autowired
   private CommentService commentService;
 
-  @PostMapping("")
-  public CommentDto createComment(
-		@RequestParam(name = "type", required = true) CommentType commentType, 
-		@RequestParam(name = "id", required = true) Long id, 
-		@RequestBody CommentDto commentDto, 
-		Authentication authentication
-	) {
-    return commentService.createComment(commentType, id, commentDto, authentication);
+  @PostMapping("/{id}")
+  public CommentDto createComment(@PathVariable(value = "postId") Long postId, @RequestBody CommentDto commentDto, Authentication authentication) {
+    return commentService.createComment(postId, commentDto, authentication);
   }
 
-  @PutMapping("/")
+  @PutMapping("")
   public CommentDto updateComment(@RequestBody CommentDto commentDto, Authentication authentication) {
     return commentService.updateComment(commentDto, authentication);
   }
