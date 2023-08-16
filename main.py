@@ -1,5 +1,6 @@
 import numpy as np
 import json 
+from sentence_transformers import SentenceTransformer,util
 
 nChain=np.zeros(2)
 chainHead=np.zeros((2,100000))
@@ -9,9 +10,11 @@ values=[[None for i in range(100000)],[None for i in range(100000)]]
 adj=[[[] for i in range(50)],[[] for i in range(50)]]
 nBase=np.zeros(2)
 pos=np.zeros((2,100000))
-rev=np.zeros((2,100000))
 parent=np.zeros((2,100000))
 nChild=np.zeros((2,100000))
+flat=[[None for i in range(100000)],[None for i in range(100000)]]
+n=0
+model = SentenceTransformer('keepitreal/vietnamese-sbert')
 
 json={
   "title": "Conversation",
@@ -39,8 +42,11 @@ json={
     }
   ]
 }
+
 def to_tree(index,js,u):
     values[index][u]=js['label']
+    global n 
+    n+=1
     if 'nodes' not in js:
         return
     js=js['nodes']
@@ -57,16 +63,13 @@ def dfs(u,index):
         if v!=parent[index][u]:
             dfs(v,index)
             nChild[index][u]+=nChild[index][v]
-        
-to_tree(0,json,0)
-dfs(0,0)
+
 def hld(u,index):
     if int(chainHead[index][int(nChain[index])])==0:
         chainHead[index][int(nChain[index])]=u 
     chainInd[index][u]=nChain[index]
     nBase[index]+=1
     pos[index][u]=nBase[index]
-    rev[index][int(nBase[index])]=u
     spec=-1
     for i in range(len(adj[index][u])):
         v=adj[index][u][i]
@@ -81,9 +84,22 @@ def hld(u,index):
         if(v!=parent[index][u] and v!=spec):
             nChain[index]+=1
             hld(v,index)
+
+def flatten(index):
+  for i in range(n):
+    flat[index][int(pos[index][i])]=values[index][i]
+
+def find(text):
+  corpus_em=model.encode(flat[1])
+  hits = util.semantic_search(text, corpus_em, score_function=util.dot_score)
+  position=hits[0][0]['corpus_id']
+  return position
+
+to_tree(0,json,0)
+dfs(0,0)
 hld(0,0)
-for i in range(int(nChain[0]+1)):
-    print(rev[0][int(chainHead[0][0]):int(chainEnd[0][0]+1)])
+flatten(0)
+
 # for i in range(total):
 #     if (chainHead[0][i+1]==chain[0][i] and i+1!=total):
 #         text=text+value[0][i]
