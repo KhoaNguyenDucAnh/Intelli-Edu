@@ -129,7 +129,7 @@ public class AuthService {
 
   public Account getAccount(Authentication authentication) {
     return accountRepo
-        .findByEmail(authentication.getPrincipal().toString())
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
+      .findByEmail(authentication.getPrincipal().toString())
+      .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 }

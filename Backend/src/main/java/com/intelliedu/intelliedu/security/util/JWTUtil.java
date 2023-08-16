@@ -23,6 +23,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Component
@@ -63,10 +64,16 @@ public class JWTUtil {
   }
 
 	public String parseJwt(HttpServletRequest request) {
-    String token = URLDecoder
+    Cookie[] cookies = request.getCookies();
+		
+		if (cookies == null) {
+			return null;
+		}
+
+		String token = URLDecoder
 			.decode(
 				Arrays
-					.stream(request.getCookies())
+					.stream(cookies)
 					.filter(cookie -> SecurityConfig.HEADER_STRING.equals(cookie.getName()))
 					.findFirst()
 					.orElseThrow(() -> new NoSuchElementException())
