@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 import com.intelliedu.intelliedu.config.EventType;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -36,6 +38,7 @@ public class Event {
 
 	private Boolean important;
 
+	@Enumerated(EnumType.STRING)	
 	private EventType eventType;
 
 	private String description;
