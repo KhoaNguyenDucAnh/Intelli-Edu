@@ -14,8 +14,8 @@ import com.intelliedu.intelliedu.entity.Post;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PostMapper {
 
-	@Mapping(source = "upvote", target = "upvote", ignore = true)
-	@Mapping(source = "downvote", target = "downvote", ignore = true)
+	@Mapping(source = "upvote", target = ".", ignore = true)
+	@Mapping(source = "downvote", target = ".", ignore = true)
 	public Post toPost(PostDto postDto);
 
 	@InheritInverseConfiguration

@@ -4,6 +4,8 @@ import com.intelliedu.intelliedu.config.Subject;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,6 +23,7 @@ public class Document extends Post {
 
 	private String title;
 
+	@Enumerated(EnumType.STRING)
 	private Subject subject;
   
 	private String content;

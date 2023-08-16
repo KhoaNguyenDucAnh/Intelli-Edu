@@ -12,9 +12,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -41,26 +38,13 @@ public class Post {
 	private Timestamp createdAt;
 
 	private Timestamp lastOpened;
-
-	@ManyToMany
-	@JoinTable(
-		name = "upvote",
-		joinColumns = @JoinColumn(name = "post_id"),
-		inverseJoinColumns = @JoinColumn(name = "account_id")
-	)
-	private List<Account> upvote;
-
-	@ManyToMany
-	@JoinTable(
-		name = "downvote",
-		joinColumns = @JoinColumn(name = "post_id"),
-		inverseJoinColumns = @JoinColumn(name = "account_id")
-	)
-  private List<Account> downvote;
-	 
-  @ManyToOne(fetch = FetchType.LAZY)
-  private Account account;
+	
+	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	private List<Vote> vote;
 
 	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private List<Comment> comment;
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  private Account account;
 }

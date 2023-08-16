@@ -16,7 +16,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -49,23 +48,11 @@ public class Account implements UserDetails {
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  /*@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  private List<Document> document;
-
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  private List<MindMap> mindMap;
-
-	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  private List<Comment> comment;*/
-
-	@ManyToMany(mappedBy = "account")
 	private List<Post> post;
 
-	@ManyToMany(mappedBy = "upvote")
-	private List<Post> upvote;
-
-	@ManyToMany(mappedBy = "downvote")
-	private List<Post> downvote;
+	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	private List<Vote> vote;
 
   @Override
   public List<? extends GrantedAuthority> getAuthorities() {

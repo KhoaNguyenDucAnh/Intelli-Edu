@@ -15,8 +15,8 @@ import com.intelliedu.intelliedu.entity.MindMap;
 public interface MindMapMapper {
 
 	@Mapping(source = "postDto", target = ".")
-	@Mapping(source = "postDto.upvote", target = "upvote", ignore = true)
-	@Mapping(source = "postDto.downvote", target = "downvote", ignore = true)
+	@Mapping(source = "postDto.upvote", target = ".", ignore = true)
+	@Mapping(source = "postDto.downvote", target = ".", ignore = true)
   public MindMap toMindMap(MindMapDto mindMapDto);
 
 	@Mapping(source = ".", target = "postDto")

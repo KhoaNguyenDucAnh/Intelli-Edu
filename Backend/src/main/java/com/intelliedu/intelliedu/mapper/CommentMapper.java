@@ -18,8 +18,8 @@ import com.intelliedu.intelliedu.entity.Comment;
 public interface CommentMapper {
 
 	@Mapping(source = "postDto", target = ".")
-	@Mapping(source = "postDto.upvote", target = "upvote", ignore = true)
-	@Mapping(source = "postDto.downvote", target = "downvote", ignore = true)
+	@Mapping(source = "postDto.upvote", target = ".", ignore = true)
+	@Mapping(source = "postDto.downvote", target = ".", ignore = true)
   public Comment toComment(CommentDto commentDto);
 
 	@Mapping(source = ".", target = "postDto")
