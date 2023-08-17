@@ -40,7 +40,7 @@ public class DocumentController {
   }
 
   @GetMapping("/{id}")
-  public DocumentDto findDocument(@PathVariable(value = "id") Long id, Authentication authentication) {
+  public DocumentDto findDocument(@PathVariable Long id, Authentication authentication) {
     return documentService.findDocument(id, authentication);
   }
 
@@ -55,7 +55,7 @@ public class DocumentController {
   }
 
   @DeleteMapping("/{id}")
-  public void deleteDocument(@PathVariable(value = "id") Long id, Authentication authentication) {
+  public void deleteDocument(@PathVariable Long id, Authentication authentication) {
     documentService.deleteDocument(id, authentication);
   }
 }

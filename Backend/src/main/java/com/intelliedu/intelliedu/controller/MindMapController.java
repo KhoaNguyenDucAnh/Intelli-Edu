@@ -37,7 +37,7 @@ public class MindMapController {
   }
 
   @GetMapping("/{id}")
-  public MindMapDto findMindMap(@PathVariable(value = "id") Long id, Authentication authentication) {
+  public MindMapDto findMindMap(@PathVariable Long id, Authentication authentication) {
     return mindMapService.findMindMap(id, authentication);
   }
 
@@ -52,7 +52,7 @@ public class MindMapController {
   }
 
   @DeleteMapping("/{id}")
-  public void deleteMindMap(@PathVariable(value = "id") Long id, Authentication authentication) {
+  public void deleteMindMap(@PathVariable Long id, Authentication authentication) {
     mindMapService.deleteMindMap(id, authentication);
   }
 }

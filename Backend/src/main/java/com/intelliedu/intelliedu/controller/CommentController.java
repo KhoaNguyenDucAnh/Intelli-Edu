@@ -26,8 +26,8 @@ public class CommentController {
   @Autowired
   private CommentService commentService;
 
-  @PostMapping("/{id}")
-  public CommentDto createComment(@PathVariable(value = "postId") Long postId, @RequestBody CommentDto commentDto, Authentication authentication) {
+  @PostMapping("/{postId}")
+  public CommentDto createComment(@PathVariable Long postId, @RequestBody CommentDto commentDto, Authentication authentication) {
     return commentService.createComment(postId, commentDto, authentication);
   }
 
@@ -37,7 +37,7 @@ public class CommentController {
   }
 
   @DeleteMapping("/{id}")
-  public void deleteComment(@PathVariable(value = "id") Long id, Authentication authentication) {
+  public void deleteComment(@PathVariable Long id, Authentication authentication) {
     commentService.deleteComment(id, authentication);
   }
 }
