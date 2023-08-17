@@ -12,6 +12,7 @@ nBase=np.zeros(2)
 pos=np.zeros((2,100000))
 parent=np.zeros((2,100000))
 nChild=np.zeros((2,100000))
+rev=np.zeros((2,100000))
 flat=[[None for i in range(100000)],[None for i in range(100000)]]
 n=0
 model = SentenceTransformer('keepitreal/vietnamese-sbert')
@@ -70,6 +71,7 @@ def hld(u,index):
     chainInd[index][u]=nChain[index]
     nBase[index]+=1
     pos[index][u]=nBase[index]
+    rev[index][pos[index][u]]=u
     spec=-1
     for i in range(len(adj[index][u])):
         v=adj[index][u][i]
@@ -100,12 +102,18 @@ dfs(0,0)
 hld(0,0)
 flatten(0)
 
-# for i in range(total):
-#     if (chainHead[0][i+1]==chain[0][i] and i+1!=total):
-#         text=text+value[0][i]
-#     else:
-#         user_text=find(text)
-#         fb=comment(text,user_text)
+for i in range(nChain[0]):
+  findHead=find(chainHead[0][i])
+  findEnd=find(chainEnd[0][i])
+  comp_text=flat[0][chainHead[0][i]:chainEnd[0][i]]
+  Head_index=rev[0][findHead]
+  End_index=rev[0][findEnd]
+  user_text=''
+  while(End_index!=Head_index):
+    user_chain=chainInd[0][End_index]
+    user_text+=flat[0][pos[0][chainHead[0][user_chain]]:pos[0][End_index]]
+    End_index=parent[0][chainHead[0][user_chain]]
+    user_chain=chainInd[0][End_index]
 
 
         
