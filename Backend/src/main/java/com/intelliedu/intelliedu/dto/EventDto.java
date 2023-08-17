@@ -18,6 +18,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class EventDto {
 
+	private Long id;
+
 	private String name;
 
 	private Timestamp deadline;
