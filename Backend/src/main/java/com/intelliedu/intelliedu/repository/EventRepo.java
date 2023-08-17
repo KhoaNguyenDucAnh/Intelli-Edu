@@ -18,5 +18,5 @@ public interface EventRepo extends JpaRepository<Event, Long> {
 
 	Optional<Event> findByIdAndAccount(Long id, Account account);
 
-	void deleteByIdAndAccoutn(Long id, Account account);
+	void deleteByIdAndAccount(Long id, Account account);
 }

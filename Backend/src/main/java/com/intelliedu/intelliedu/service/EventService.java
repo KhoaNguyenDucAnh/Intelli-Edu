@@ -65,6 +65,6 @@ public class EventService {
   }
 
 	public void deleteEvent(Long id, Authentication authentication) {
-		eventRepo.deleteByIdAndAccoutn(id, authService.getAccount(authentication));
+		eventRepo.deleteByIdAndAccount(id, authService.getAccount(authentication));
 	}
 }
