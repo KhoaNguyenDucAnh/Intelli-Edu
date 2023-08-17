@@ -31,7 +31,7 @@ public class EventService {
 	private AuthService authService;
 
 	public Page<EventDto> findEvent(Pageable pageable, Authentication authentication) {
-		return eventMapper.toEventDto(eventRepo.findByAccount(authService.getAccount(authentication)));
+		return eventMapper.toEventDto(eventRepo.findByAccount(pageable, authService.getAccount(authentication)));
 	}
 
 	public EventDto createEvent(EventDto eventDto, Authentication authentication) {
