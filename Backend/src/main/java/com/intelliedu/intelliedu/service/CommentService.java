@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.intelliedu.intelliedu.dto.CommentDto;
+import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.entity.Comment;
 import com.intelliedu.intelliedu.entity.Post;
 import com.intelliedu.intelliedu.mapper.CommentMapper;
@@ -41,11 +42,15 @@ public class CommentService {
 	}
 
   public CommentDto updateComment(CommentDto commentDto, Authentication authentication) {
-    if (commentRepo.existsByIdAndAccountId(commentDto.getPostDto().getId(), authService.getAccount(authentication).getId())) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    }
+		Account account = authService.getAccount(authentication);
 
-		return commentMapper.toCommentDto(commentRepo.save(commentMapper.toComment(commentDto)));
+		Comment comment = commentRepo
+			.findByIdAndAccount(commentDto.getPostDto().getId(), account)
+			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+		comment.setContent(commentDto.getContent());
+
+		return commentMapper.toCommentDto(commentRepo.save(comment));
 	}
 
   public void deleteComment(Long id, Authentication authentication) {

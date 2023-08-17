@@ -69,15 +69,13 @@ public class DocumentService {
 	public DocumentDto updateDocument(DocumentDto documentDto, Authentication authentication) {
     Account account = authService.getAccount(authentication);
 
-		// Check existance
-    Document document = documentRepo
-			.findByIdAndAccount(documentDto.getPostDto().getId(), account)
-			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-    // Check duplicate name
     if (documentRepo.findByIdIsNotAndTitleAndAccount(documentDto.getPostDto().getId(), documentDto.getTitle(), account).isPresent()) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
+
+		Document document = documentRepo
+			.findByIdAndAccount(documentDto.getPostDto().getId(), account)
+			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
     document.setTitle(documentDto.getTitle());
     document.setContent(documentDto.getContent());

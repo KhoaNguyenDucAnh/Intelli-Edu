@@ -66,17 +66,15 @@ public class MindMapService {
   public MindMapDto updateMindMap(MindMapDto mindMapDto, Authentication authentication) {
     Account account = authService.getAccount(authentication);
 
-		// Check existance
+		if (mindMapRepo.findByIdIsNotAndTitleAndAccount(mindMapDto.getPostDto().getId(), mindMapDto.getTitle(), account).isPresent()) {
+			throw new ResponseStatusException(HttpStatus.CONFLICT);
+    }
+
     MindMap mindMap = mindMapRepo
 			.findByIdAndAccount(mindMapDto.getPostDto().getId(), account)
 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-    // Check duplicate name
-    if (mindMapRepo.findByIdIsNotAndTitleAndAccount(mindMapDto.getPostDto().getId(), mindMapDto.getTitle(), account).isPresent()) {
-			throw new ResponseStatusException(HttpStatus.CONFLICT);
-    }
-
-    mindMap.setTitle(mindMapDto.getTitle());
+		mindMap.setTitle(mindMapDto.getTitle());
     mindMap.setContent(mindMapDto.getContent());
 
     return mindMapMapper.toMindMapDto(mindMapRepo.save(mindMap));
