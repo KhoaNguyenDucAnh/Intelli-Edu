@@ -17,7 +17,34 @@ flat=[[None for i in range(100000)],[None for i in range(100000)]]
 n=0
 model = SentenceTransformer('keepitreal/vietnamese-sbert')
 
-json={
+json1={
+  "title": "Conversation",
+  "label":"gay",
+  "nodes": [
+    {
+      "id": "howareyou",
+      "label": "how are u",
+      "nodes": [
+        {
+          "id": "imfine",
+          "label": "i'm fine thank you"
+        },
+        {
+          "id": "andyou",
+          "label": "and you",
+          "nodes": [
+            {
+              "id": "doyouhaveapie",
+              "label": "Do you have a pie"  
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+json2={
   "title": "Conversation",
   "label":"gay",
   "nodes": [
@@ -98,9 +125,13 @@ def find(text):
   return position
 
 to_tree(0,json,0)
+to_tree(1,json,0)
 dfs(0,0)
+dfs(1,0)
 hld(0,0)
+hld(1,0)
 flatten(0)
+flatten(1)
 
 for i in range(nChain[0]):
   findHead=find(chainHead[0][i])
@@ -112,7 +143,7 @@ for i in range(nChain[0]):
   while(End_index!=Head_index):
     user_chain=chainInd[0][End_index]
     user_text+=flat[0][pos[0][chainHead[0][user_chain]]:pos[0][End_index]]
-    End_index=parent[0][chainHead[0][user_chain]]
+    End_index=parent[0][chainHead[0][user_chain]]   
     user_chain=chainInd[0][End_index]
 
 
