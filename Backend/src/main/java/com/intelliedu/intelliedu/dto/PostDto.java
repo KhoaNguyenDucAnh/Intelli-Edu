@@ -1,6 +1,6 @@
 package com.intelliedu.intelliedu.dto;
 
-import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,9 +18,9 @@ public class PostDto {
 
 	private Long id;
 
-	private Timestamp createdAt;
+	private ZonedDateTime createdAt;
 
-	private Timestamp lastOpened;
+	private ZonedDateTime lastOpened;
 
 	private Integer upvote;
 

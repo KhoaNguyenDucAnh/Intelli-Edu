@@ -1,6 +1,6 @@
 package com.intelliedu.intelliedu.dto;
 
-import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 
 import com.intelliedu.intelliedu.config.EventType;
 
@@ -22,7 +22,7 @@ public class EventDto {
 
 	private String name;
 
-	private Timestamp deadline;
+	private ZonedDateTime deadline;
 	
 	private Boolean urgent;
 

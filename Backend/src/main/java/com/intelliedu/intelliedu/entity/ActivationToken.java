@@ -1,6 +1,6 @@
 package com.intelliedu.intelliedu.entity;
 
-import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 
 import com.github.f4b6a3.uuid.UuidCreator;
 
@@ -27,7 +27,7 @@ public class ActivationToken {
   @Id
   private String token;
 
-  private Timestamp expireDateTime; 
+  private ZonedDateTime expireDateTime; 
 
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private Account account;

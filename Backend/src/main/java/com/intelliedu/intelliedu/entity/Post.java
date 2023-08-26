@@ -1,7 +1,10 @@
 package com.intelliedu.intelliedu.entity;
 
-import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 import java.util.List;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorColumn;
@@ -35,9 +38,11 @@ public class Post {
   @GeneratedValue 
   private Long id;
 
-	private Timestamp createdAt;
+	@CreationTimestamp
+	private ZonedDateTime createdAt;
 
-	private Timestamp lastOpened;
+	@UpdateTimestamp
+	private ZonedDateTime lastOpened;
 	
 	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private List<Vote> vote;
