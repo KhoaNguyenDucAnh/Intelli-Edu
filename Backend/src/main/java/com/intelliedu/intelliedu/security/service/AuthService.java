@@ -3,8 +3,7 @@ package com.intelliedu.intelliedu.security.service;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.time.Instant;
-import java.time.ZoneId;
+import java.time.Duration;
 import java.time.ZonedDateTime;
 
 import org.slf4j.Logger;
@@ -99,7 +98,7 @@ public class AuthService {
 
     String token = activationToken.setToken();
     activationToken.setAccount(account);
-    activationToken.setExpireDateTime(ZonedDateTime.from(Instant.now().plusMillis(SecurityConfig.TOKEN_EXPIRATION_TIME)));
+    activationToken.setExpireDateTime(ZonedDateTime.now().plus(Duration.ofMillis(SecurityConfig.ACTIVATION_EXPIRATION_TIME)));
 
     activationTokenRepo.save(activationToken);
 
@@ -115,7 +114,7 @@ public class AuthService {
       .findById(token)
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-    if (ZonedDateTime.now(ZoneId.systemDefault()).isAfter(activationToken.getExpireDateTime())) {
+    if (ZonedDateTime.now().isAfter(activationToken.getExpireDateTime())) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
 

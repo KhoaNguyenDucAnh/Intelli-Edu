@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.intelliedu.intelliedu.dto.CommentDto;
@@ -53,6 +54,7 @@ public class CommentService {
 		return commentMapper.toCommentDto(commentRepo.save(comment));
 	}
 
+	@Transactional
   public void deleteComment(Long id, Authentication authentication) {
     commentRepo.deleteByIdAndAccount(id, authService.getAccount(authentication)); 
   }
