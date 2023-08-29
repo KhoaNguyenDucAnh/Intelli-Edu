@@ -29,3 +29,9 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file Backend/
+
+    - name: Build with Docker
+      run: |
+        docker login --username KhoaNguyenDucAnh --password ${{ secrets.GHCR }}
+        docker build . -t ghcr.io/khoanguyenducanh/intelli-edu:snapshot
+        docker push ghcr.io/khoanguyenducanh/intelli-edu:snapshot 
