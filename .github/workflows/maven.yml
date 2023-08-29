@@ -33,5 +33,5 @@ jobs:
     - name: Build with Docker
       run: |
         docker login --username KhoaNguyenDucAnh --password ${{ secrets.GHCR }} ghcr.io
-        docker build . -t ghcr.io/khoanguyenducanh/intelli-edu:snapshot
+        docker build Backend/ -t ghcr.io/khoanguyenducanh/intelli-edu:snapshot
         docker push ghcr.io/khoanguyenducanh/intelli-edu:snapshot 
