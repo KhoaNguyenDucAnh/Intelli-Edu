@@ -29,8 +29,8 @@ public class AuthController {
   }
 
   @PostMapping("/api/v1/auth/register")
-  public String registerAccount(@RequestBody @Valid AccountRegistrationDto accountRegistrationDto) {
-    return authService.registerAccount(accountRegistrationDto);
+  public void registerAccount(@RequestBody @Valid AccountRegistrationDto accountRegistrationDto) {
+    authService.registerAccount(accountRegistrationDto);
   }
 
   @RequestMapping("/activate/{token}")

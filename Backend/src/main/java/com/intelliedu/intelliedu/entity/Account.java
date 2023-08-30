@@ -17,6 +17,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -47,6 +48,9 @@ public class Account implements UserDetails {
 
   @Enumerated(EnumType.STRING)
   private Role role;
+
+	@OneToOne(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	private ActivationToken activationToken;
 
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private List<Post> post;
@@ -81,4 +85,9 @@ public class Account implements UserDetails {
   public boolean isEnabled() {
     return isEnabled;
   }
+
+	public Account enable() {
+		this.isEnabled = true;
+		return this;
+	}
 }

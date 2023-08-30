@@ -8,7 +8,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,7 +29,9 @@ public class ActivationToken {
 
   private ZonedDateTime expireDateTime; 
 
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  private String email;
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private Account account;
 
   public String setToken() {

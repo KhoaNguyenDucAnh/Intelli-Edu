@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,7 @@ import com.intelliedu.intelliedu.mapper.AccountMapper;
 import com.intelliedu.intelliedu.repository.AccountRepo;
 import com.intelliedu.intelliedu.repository.ActivationTokenRepo;
 import com.intelliedu.intelliedu.security.util.JWTUtil;
+import com.intelliedu.intelliedu.util.EmailUtil;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -77,10 +79,16 @@ public class AuthService {
     }
   }
 
-  public String registerAccount(AccountRegistrationDto accountRegistrationDto) {
-    if (accountRepo.findByEmail(accountRegistrationDto.getEmail()).isPresent()) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT);
-    }
+  public void registerAccount(AccountRegistrationDto accountRegistrationDto) {
+		accountRepo
+			.findByEmail(accountRegistrationDto.getEmail())
+			.ifPresent((account) -> {
+				if (account.getUsername().equals(accountRegistrationDto.getUsername())) {
+					throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+				} else {
+					throw new ResponseStatusException(HttpStatus.CONFLICT);
+				}
+		});
 
     if (!accountRegistrationDto.getPassword().equals(accountRegistrationDto.getConfirmPassword())) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
@@ -94,37 +102,40 @@ public class AuthService {
 
     accountRepo.save(account);
 
-    ActivationToken activationToken = new ActivationToken();
+		verifyEmail(account);
+  }
 
-    String token = activationToken.setToken();
-    activationToken.setAccount(account);
-    activationToken.setExpireDateTime(ZonedDateTime.now().plus(Duration.ofMillis(SecurityConfig.ACTIVATION_EXPIRATION_TIME)));
+	private void verifyEmail(Account account) {
+		ActivationToken activationToken = Optional
+			.of(account.getActivationToken())
+			.orElse(
+				ActivationToken
+					.builder()
+					.account(account)
+					.email(account.getEmail())
+					.expireDateTime(ZonedDateTime.now().plus(Duration.ofMillis(SecurityConfig.ACTIVATION_EXPIRATION_TIME)))
+					.build()
+			);
+
+		EmailUtil.sendEmail(activationToken.setToken());
 
     activationTokenRepo.save(activationToken);
 
-		logger.info(String.format("Account %s | Register", accountRegistrationDto.getEmail()));	
-
-    return "http://localhost:8080/activate/" + token;
-  }
+		logger.info(String.format("Account %s | Register", account.getEmail()));
+	}
 
   public void activateAccount(String token) {
-    System.out.println(token);
-
     ActivationToken activationToken = activationTokenRepo
       .findById(token)
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
     if (ZonedDateTime.now().isAfter(activationToken.getExpireDateTime())) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN);
     }
 
-    Account account = activationToken.getAccount();
+    accountRepo.save(activationToken.getAccount().enable());
 
-    account.setIsEnabled(true);
-
-    accountRepo.save(account);
-
-    logger.info(String.format("Account %s: | Activate", account.getEmail()));
+    logger.info(String.format("Account %s: | Activate", activationToken.getEmail()));
   }
 
   public Account getAccount(Authentication authentication) {
