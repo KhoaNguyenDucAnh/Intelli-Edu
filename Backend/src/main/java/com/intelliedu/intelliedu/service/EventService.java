@@ -48,21 +48,11 @@ public class EventService {
 	}
 
 	public EventDto updateEvent(EventDto eventDto, Authentication authentication) {
-    Account account = authService.getAccount(authentication);
-
-		// Check existance
     Event event = eventRepo
-			.findByIdAndAccount(eventDto.getId(), account)
+			.findByIdAndAccount(eventDto.getId(), authService.getAccount(authentication))
 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-		event.setName(eventDto.getName());
-		event.setDeadline(eventDto.getDeadline());
-		event.setUrgent(eventDto.getUrgent());
-		event.setImportant(eventDto.getImportant());
-		event.setEventType(eventDto.getEventType());
-		event.setDescription(eventDto.getDescription());
-
-    return eventMapper.toEventDto(eventRepo.save(event));
+    return eventMapper.toEventDto(eventRepo.save(eventMapper.toEvent(eventDto, event)));
   }
 
 	@Transactional

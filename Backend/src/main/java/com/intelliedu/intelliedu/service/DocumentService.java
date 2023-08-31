@@ -60,9 +60,7 @@ public class DocumentService {
 
 		Document document = documentMapper.toDocument(documentDto);
 
-    document.setAccount(account);
-		
-		account.getPost().add(document);
+    PostService.addPostToAccount(document, account);
 
     return documentMapper.toDocumentDto(documentRepo.save(document));
   }
@@ -70,18 +68,15 @@ public class DocumentService {
 	public DocumentDto updateDocument(DocumentDto documentDto, Authentication authentication) {
     Account account = authService.getAccount(authentication);
 
-    if (documentRepo.findByIdIsNotAndTitleAndAccount(documentDto.getPostDto().getId(), documentDto.getTitle(), account).isPresent()) {
-			throw new ResponseStatusException(HttpStatus.CONFLICT);
-    }
-
 		Document document = documentRepo
 			.findByIdAndAccount(documentDto.getPostDto().getId(), account)
 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-    document.setTitle(documentDto.getTitle());
-    document.setContent(documentDto.getContent());
+		if (documentRepo.existsByIdIsNotAndTitleAndAccount(documentDto.getPostDto().getId(), documentDto.getTitle(), account)) {
+			throw new ResponseStatusException(HttpStatus.CONFLICT);
+    }
 
-    return documentMapper.toDocumentDto(documentRepo.save(document));
+    return documentMapper.toDocumentDto(documentRepo.save(documentMapper.toDocument(documentDto, document)));
   }
 
 	@Transactional

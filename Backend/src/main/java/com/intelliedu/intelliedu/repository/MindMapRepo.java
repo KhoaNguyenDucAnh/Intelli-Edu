@@ -19,7 +19,7 @@ public interface MindMapRepo extends JpaRepository<MindMap, Long> {
 
 	Optional<MindMap> findByTitleAndAccount(String title, Account account);
 
-	Optional<MindMap> findByIdIsNotAndTitleAndAccount(Long id, String title, Account account);
+	Boolean existsByIdIsNotAndTitleAndAccount(Long id, String title, Account account);
 
   Optional<MindMap> findByIdAndAccount(Long id, Account Account);
 

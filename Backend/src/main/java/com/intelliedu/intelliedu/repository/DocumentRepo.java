@@ -19,7 +19,7 @@ public interface DocumentRepo extends JpaRepository<Document, Long> {
 
 	Optional<Document> findByTitleAndAccount(String title, Account account);
 
-	Optional<Document> findByIdIsNotAndTitleAndAccount(Long id, String title, Account account);
+	Boolean existsByIdIsNotAndTitleAndAccount(Long id, String title, Account account);
 
   Optional<Document> findByIdAndAccount(Long id, Account Account);
 

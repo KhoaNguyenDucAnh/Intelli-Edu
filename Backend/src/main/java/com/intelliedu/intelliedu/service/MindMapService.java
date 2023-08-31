@@ -57,9 +57,7 @@ public class MindMapService {
 
 		MindMap mindMap = mindMapMapper.toMindMap(mindMapDto);
 
-    mindMap.setAccount(account);
-		
-		account.getPost().add(mindMap);
+		PostService.addPostToAccount(mindMap, account); 
 
     return mindMapMapper.toMindMapDto(mindMapRepo.save(mindMap));
   }
@@ -67,18 +65,15 @@ public class MindMapService {
   public MindMapDto updateMindMap(MindMapDto mindMapDto, Authentication authentication) {
     Account account = authService.getAccount(authentication);
 
-		if (mindMapRepo.findByIdIsNotAndTitleAndAccount(mindMapDto.getPostDto().getId(), mindMapDto.getTitle(), account).isPresent()) {
-			throw new ResponseStatusException(HttpStatus.CONFLICT);
-    }
-
     MindMap mindMap = mindMapRepo
 			.findByIdAndAccount(mindMapDto.getPostDto().getId(), account)
 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-		mindMap.setTitle(mindMapDto.getTitle());
-    mindMap.setContent(mindMapDto.getContent());
+		if (mindMapRepo.existsByIdIsNotAndTitleAndAccount(mindMapDto.getPostDto().getId(), mindMapDto.getTitle(), account)) {
+			throw new ResponseStatusException(HttpStatus.CONFLICT);
+    }
 
-    return mindMapMapper.toMindMapDto(mindMapRepo.save(mindMap));
+    return mindMapMapper.toMindMapDto(mindMapRepo.save(mindMapMapper.toMindMap(mindMapDto, mindMap)));
   }
 
 	@Transactional

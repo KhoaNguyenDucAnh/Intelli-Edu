@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.intelliedu.intelliedu.dto.CommentDto;
-import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.entity.Comment;
 import com.intelliedu.intelliedu.entity.Post;
 import com.intelliedu.intelliedu.mapper.CommentMapper;
@@ -39,19 +38,17 @@ public class CommentService {
 
 		comment.setPost(post);
 
+		PostService.addPostToAccount(comment, authService.getAccount(authentication)); 
+
 		return commentMapper.toCommentDto(commentRepo.save(comment));
 	}
 
   public CommentDto updateComment(CommentDto commentDto, Authentication authentication) {
-		Account account = authService.getAccount(authentication);
-
 		Comment comment = commentRepo
-			.findByIdAndAccount(commentDto.getPostDto().getId(), account)
+			.findByIdAndAccount(commentDto.getPostDto().getId(), authService.getAccount(authentication))
 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-		comment.setContent(commentDto.getContent());
-
-		return commentMapper.toCommentDto(commentRepo.save(comment));
+		return commentMapper.toCommentDto(commentRepo.save(commentMapper.toComment(commentDto, comment)));
 	}
 
 	@Transactional
