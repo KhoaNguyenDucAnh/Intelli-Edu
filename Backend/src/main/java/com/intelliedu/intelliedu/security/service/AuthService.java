@@ -107,7 +107,7 @@ public class AuthService {
 
 	private void verifyEmail(Account account) {
 		ActivationToken activationToken = Optional
-			.of(account.getActivationToken())
+			.ofNullable(account.getActivationToken())
 			.orElse(
 				ActivationToken
 					.builder()
