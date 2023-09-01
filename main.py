@@ -152,7 +152,13 @@ json2={
       {
         "label": "Vai trò",
         "children": [
-          { "label": "Diễn đàn hợp tác & đấu tranh cho hòa bình" }
+          { 
+            "label": "Hòa bình" ,
+            "children":[
+              {"label":"diễn đàn hợp tác"},
+              {"label":"đấu tranh"}
+            ]
+          }
         ]  
       }
     ]
