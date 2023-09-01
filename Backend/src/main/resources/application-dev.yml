@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/intelliedu
+    username: postgres 
+    password: 1234567890 
