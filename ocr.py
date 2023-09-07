@@ -61,7 +61,7 @@ def match_template(image, template):
 
 # Adding custom options
 custom_config = r'--oem 3 --psm 6'
-img = cv2.imread('test2.jpg')
+img = cv2.imread('test3.jpg')
 img=get_grayscale(img)
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract'
 print(pytesseract.image_to_string(img,lang='vie+eng'))
