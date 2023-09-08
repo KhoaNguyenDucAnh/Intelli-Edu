@@ -85,9 +85,4 @@ public class Account implements UserDetails {
   public boolean isEnabled() {
     return isEnabled;
   }
-
-	public Account enable() {
-		this.isEnabled = true;
-		return this;
-	}
 }
