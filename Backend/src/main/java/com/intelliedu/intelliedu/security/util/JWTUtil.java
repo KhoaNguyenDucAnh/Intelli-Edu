@@ -1,11 +1,7 @@
 package com.intelliedu.intelliedu.security.util;
 
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.NoSuchElementException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +19,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Component
@@ -64,22 +59,7 @@ public class JWTUtil {
   }
 
 	public String parseJwt(HttpServletRequest request) {
-    Cookie[] cookies = request.getCookies();
-		
-		if (cookies == null) {
-			return null;
-		}
-
-		String token = URLDecoder
-			.decode(
-				Arrays
-					.stream(cookies)
-					.filter(cookie -> SecurityConfig.HEADER_STRING.equals(cookie.getName()))
-					.findFirst()
-					.orElseThrow(() -> new NoSuchElementException())
-				.getValue(),
-				StandardCharsets.UTF_8
-			);
+		String token = CookieUtil.getCookie(request.getCookies(), SecurityConfig.AUTHORIZATION); 
 
     if (StringUtils.hasText(token) && token.startsWith(SecurityConfig.BEARER_PREFIX)) {
       return token.substring(SecurityConfig.BEARER_PREFIX.length());
