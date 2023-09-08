@@ -4,8 +4,6 @@ server:
     include-stacktrace: never
 ---
 spring:
-  profiles:
-    active: dev
   devtools:
     livereload:
       enabled: true
