@@ -22,7 +22,7 @@ public class CookieUtil {
 					.stream(cookies)
 					.filter(cookie -> name.equals(cookie.getName()))
 					.findFirst()
-				.orElse(new Cookie(null, null))
+				.orElse(new Cookie(name, ""))
 				.getValue(),
 				StandardCharsets.UTF_8
 		);
