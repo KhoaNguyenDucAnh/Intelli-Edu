@@ -5,7 +5,11 @@ package com.intelliedu.intelliedu.util;
  */
 public class EmailUtil {
 
-	public static void sendEmail(String content) {
+	public static Boolean validateEmail(String email) {
+		return true;
+	}
 
+	public static void sendEmail(String template, Object... args) {
+		System.out.println(String.format(template, args));
 	}
 }
