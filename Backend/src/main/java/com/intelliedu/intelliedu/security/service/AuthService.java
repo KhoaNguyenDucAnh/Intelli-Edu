@@ -1,12 +1,25 @@
 package com.intelliedu.intelliedu.security.service;
 
-
+import com.intelliedu.intelliedu.config.Role;
+import com.intelliedu.intelliedu.config.SecurityConfig;
+import com.intelliedu.intelliedu.dto.AccountLogInDto;
+import com.intelliedu.intelliedu.dto.AccountRegistrationDto;
+import com.intelliedu.intelliedu.entity.Account;
+import com.intelliedu.intelliedu.entity.ActivationToken;
+import com.intelliedu.intelliedu.mapper.AccountMapper;
+import com.intelliedu.intelliedu.repository.AccountRepo;
+import com.intelliedu.intelliedu.repository.ActivationTokenRepo;
+import com.intelliedu.intelliedu.security.util.JWTUtil;
+import com.intelliedu.intelliedu.util.EmailUtil;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.Optional;
-
+import org.apache.commons.codec.digest.HmacAlgorithms;
+import org.apache.commons.codec.digest.HmacUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,122 +33,121 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.intelliedu.intelliedu.config.Role;
-import com.intelliedu.intelliedu.config.SecurityConfig;
-import com.intelliedu.intelliedu.dto.AccountLogInDto;
-import com.intelliedu.intelliedu.dto.AccountRegistrationDto;
-import com.intelliedu.intelliedu.entity.Account;
-import com.intelliedu.intelliedu.entity.ActivationToken;
-import com.intelliedu.intelliedu.mapper.AccountMapper;
-import com.intelliedu.intelliedu.repository.AccountRepo;
-import com.intelliedu.intelliedu.repository.ActivationTokenRepo;
-import com.intelliedu.intelliedu.security.util.JWTUtil;
-import com.intelliedu.intelliedu.util.EmailUtil;
-
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
-
 @Service
 public class AuthService {
 
   @Autowired
-  private JWTUtil jwtUtil;
+	private JWTUtil jwtUtil;
 
   @Autowired
-  private PasswordEncoder passwordEncoder;
-
-  @Autowired 
-  private AuthenticationManager authenticationManager;
-
-  @Autowired 
-  private AccountRepo accountRepo;
+	private PasswordEncoder passwordEncoder;
 
   @Autowired
-  private ActivationTokenRepo activationTokenRepo;
+	private AuthenticationManager authenticationManager;
 
   @Autowired
-  private AccountMapper accountMapper;
+	private AccountRepo accountRepo;
+
+  @Autowired
+	private ActivationTokenRepo activationTokenRepo;
+
+  @Autowired
+	private AccountMapper accountMapper;
 
   private Logger logger = LoggerFactory.getLogger(AuthService.class);
 
   public void authenticateAccount(AccountLogInDto accountLogInDto, HttpServletResponse response) {
     try {
-			Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(accountLogInDto.getEmail(), accountLogInDto.getPassword()));
-			SecurityContextHolder.getContext().setAuthentication(authentication);
+      Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(accountLogInDto.getEmail(), accountLogInDto.getPassword()));
+      SecurityContextHolder.getContext().setAuthentication(authentication);
 
-      Cookie cookie = new Cookie(SecurityConfig.HEADER_STRING, URLEncoder.encode(SecurityConfig.BEARER_PREFIX + jwtUtil.generateJwtToken(authentication), StandardCharsets.UTF_8));
-      
+      Cookie cookie = new Cookie(
+        SecurityConfig.AUTHORIZATION,
+        URLEncoder.encode(SecurityConfig.BEARER_PREFIX + jwtUtil.generateJwtToken(authentication),StandardCharsets.UTF_8)
+			);
+
       cookie.setMaxAge((int) SecurityConfig.TOKEN_EXPIRATION_TIME);
       cookie.setPath("/");
       cookie.setHttpOnly(false);
       cookie.setSecure(false);
 
       response.addCookie(cookie);
-      
+
       logger.info(String.format("Account %s | Login successful", accountLogInDto.getEmail()));
-		} catch (AuthenticationException e) {
-			logger.error(String.format("Account %s | Login failed", accountLogInDto.getEmail()));
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+    } catch (AuthenticationException e) {
+      logger.error(String.format("Account %s | Login failed", accountLogInDto.getEmail()));
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
   }
 
   public void registerAccount(AccountRegistrationDto accountRegistrationDto) {
+    if (!EmailUtil.validateEmail(accountRegistrationDto.getEmail())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+		}
+
+		if (!accountRegistrationDto.getPassword().equals(accountRegistrationDto.getConfirmPassword())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+		}
+
 		accountRepo
 			.findByEmail(accountRegistrationDto.getEmail())
-			.ifPresent((account) -> {
-				if (account.getUsername().equals(accountRegistrationDto.getUsername())) {
-					throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+			.ifPresentOrElse((account) -> {
+				if (account.isEnabled()) {
+					EmailUtil.sendEmail("Reset password");
 				} else {
-					throw new ResponseStatusException(HttpStatus.CONFLICT);
+					verifyEmail(account);
 				}
-		});
+			}, () -> {
+				Account account = accountMapper.toAccount(accountRegistrationDto);
 
-    if (!accountRegistrationDto.getPassword().equals(accountRegistrationDto.getConfirmPassword())) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-    }
+				account.setPassword(passwordEncoder.encode(accountRegistrationDto.getPassword()));
+				account.setRole(Role.ROLE_USER);
+				account.setIsEnabled(false);
 
-    Account account = accountMapper.toAccount(accountRegistrationDto);
-    
-    account.setPassword(passwordEncoder.encode(accountRegistrationDto.getPassword()));
-    account.setRole(Role.ROLE_USER);
-    account.setIsEnabled(false);
+				logger.info(String.format("Account %s | Register"));
 
-    accountRepo.save(account);
+				verifyEmail(account);
+			}
+		);
+	}
 
-		verifyEmail(account);
-  }
+	private ActivationToken generateActivationToken(Account account) {
+    ActivationToken activationToken = Optional
+			.ofNullable(account.getActivationToken())
+      .orElse(ActivationToken.builder().account(account).build());
+
+    activationToken.setToken(new HmacUtils(HmacAlgorithms.HMAC_SHA_256, ZonedDateTime.now().toString()).hmacHex(account.getEmail()));
+    activationToken.setExpireDateTime(ZonedDateTime.now().plus(Duration.ofMillis(SecurityConfig.ACTIVATION_EXPIRATION_TIME)));
+
+    return activationToken;
+	}
 
 	private void verifyEmail(Account account) {
-		ActivationToken activationToken = Optional
-			.ofNullable(account.getActivationToken())
-			.orElse(
-				ActivationToken
-					.builder()
-					.account(account)
-					.email(account.getEmail())
-					.expireDateTime(ZonedDateTime.now().plus(Duration.ofMillis(SecurityConfig.ACTIVATION_EXPIRATION_TIME)))
-					.build()
-			);
+		account.setActivationToken(generateActivationToken(account));
+		accountRepo.save(account);
 
-		EmailUtil.sendEmail(activationToken.setToken());
+		EmailUtil.sendEmail("Activate: %s", account.getActivationToken().getToken());
 
-    activationTokenRepo.save(activationToken);
-
-		logger.info(String.format("Account %s | Register", account.getEmail()));
+		logger.info(String.format("Account %s | Verify email", account.getEmail()));
 	}
 
   public void activateAccount(String token) {
     ActivationToken activationToken = activationTokenRepo
-      .findById(token)
+      .findByToken(token)
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
     if (ZonedDateTime.now().isAfter(activationToken.getExpireDateTime())) {
+			activationTokenRepo.deleteById(activationToken.getId());
       throw new ResponseStatusException(HttpStatus.FORBIDDEN);
     }
 
-    accountRepo.save(activationToken.getAccount().enable());
+		Account account = activationToken.getAccount();
 
-    logger.info(String.format("Account %s: | Activate", activationToken.getEmail()));
+		account.setIsEnabled(true);
+
+    accountRepo.save(account);
+
+    logger.info(String.format("Account %s | Activate", account.getEmail()));
   }
 
   public Account getAccount(Authentication authentication) {
