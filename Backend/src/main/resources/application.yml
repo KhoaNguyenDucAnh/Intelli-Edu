@@ -22,7 +22,4 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
-  web:
-    resources:
-      static-locations: file:${user.dir}/../Frontend/
 ---
