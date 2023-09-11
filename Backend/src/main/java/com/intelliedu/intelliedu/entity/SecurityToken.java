@@ -2,8 +2,12 @@ package com.intelliedu.intelliedu.entity;
 
 import java.time.ZonedDateTime;
 
+import com.intelliedu.intelliedu.config.SecurityAction;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -21,7 +25,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-public class ActivationToken {
+public class SecurityToken {
 
   @Id
 	@GeneratedValue
@@ -30,6 +34,9 @@ public class ActivationToken {
   private String token;
 
   private ZonedDateTime expireDateTime;
+
+	@Enumerated(EnumType.STRING)
+	private SecurityAction securityAction;
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private Account account;

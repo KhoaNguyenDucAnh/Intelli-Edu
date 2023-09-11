@@ -49,8 +49,10 @@ public class Account implements UserDetails {
   @Enumerated(EnumType.STRING)
   private Role role;
 
+	private Integer point;
+
 	@OneToOne(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	private ActivationToken activationToken;
+	private SecurityToken securityToken;
 
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private List<Post> post;
