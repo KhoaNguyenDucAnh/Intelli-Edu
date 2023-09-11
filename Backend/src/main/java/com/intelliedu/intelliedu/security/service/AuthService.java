@@ -1,23 +1,11 @@
 package com.intelliedu.intelliedu.security.service;
 
-import com.intelliedu.intelliedu.config.Role;
-import com.intelliedu.intelliedu.config.SecurityConfig;
-import com.intelliedu.intelliedu.dto.AccountLogInDto;
-import com.intelliedu.intelliedu.dto.AccountRegistrationDto;
-import com.intelliedu.intelliedu.entity.Account;
-import com.intelliedu.intelliedu.entity.ActivationToken;
-import com.intelliedu.intelliedu.mapper.AccountMapper;
-import com.intelliedu.intelliedu.repository.AccountRepo;
-import com.intelliedu.intelliedu.repository.ActivationTokenRepo;
-import com.intelliedu.intelliedu.security.util.JWTUtil;
-import com.intelliedu.intelliedu.util.EmailUtil;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.Optional;
+
 import org.apache.commons.codec.digest.HmacAlgorithms;
 import org.apache.commons.codec.digest.HmacUtils;
 import org.slf4j.Logger;
@@ -32,6 +20,22 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.intelliedu.intelliedu.config.Role;
+import com.intelliedu.intelliedu.config.SecurityAction;
+import com.intelliedu.intelliedu.config.SecurityConfig;
+import com.intelliedu.intelliedu.dto.AccountLogInDto;
+import com.intelliedu.intelliedu.dto.AccountRegistrationDto;
+import com.intelliedu.intelliedu.entity.Account;
+import com.intelliedu.intelliedu.entity.SecurityToken;
+import com.intelliedu.intelliedu.mapper.AccountMapper;
+import com.intelliedu.intelliedu.repository.AccountRepo;
+import com.intelliedu.intelliedu.repository.SecurityTokenRepo;
+import com.intelliedu.intelliedu.security.util.JWTUtil;
+import com.intelliedu.intelliedu.util.EmailUtil;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Service
 public class AuthService {
@@ -49,7 +53,7 @@ public class AuthService {
 	private AccountRepo accountRepo;
 
   @Autowired
-	private ActivationTokenRepo activationTokenRepo;
+	private SecurityTokenRepo securityTokenRepo;
 
   @Autowired
 	private AccountMapper accountMapper;
@@ -92,56 +96,64 @@ public class AuthService {
 		accountRepo
 			.findByEmail(accountRegistrationDto.getEmail())
 			.ifPresentOrElse((account) -> {
-				if (account.isEnabled()) {
-					EmailUtil.sendEmail("Reset password");
-				} else {
-					verifyEmail(account);
+					if (account.isEnabled()) {
+						email(account, SecurityAction.RESET_PASSWORD);
+					} else {
+						email(account, SecurityAction.ACTIVATE);
+					}
+				},
+				() -> {
+					Account account = generateAccount(accountRegistrationDto, Role.ROLE_USER);
+
+					logger.info(String.format("Account %s | Register", account.getEmail()));
+
+					email(account, SecurityAction.ACTIVATE);
 				}
-			}, () -> {
-				Account account = accountMapper.toAccount(accountRegistrationDto);
-
-				account.setPassword(passwordEncoder.encode(accountRegistrationDto.getPassword()));
-				account.setRole(Role.ROLE_USER);
-				account.setIsEnabled(false);
-
-				logger.info(String.format("Account %s | Register"));
-
-				verifyEmail(account);
-			}
-		);
+			);
 	}
 
-	private ActivationToken generateActivationToken(Account account) {
-    ActivationToken activationToken = Optional
-			.ofNullable(account.getActivationToken())
-      .orElse(ActivationToken.builder().account(account).build());
+	private Account generateAccount(AccountRegistrationDto accountRegistrationDto, Role role) {
+		Account account = accountMapper.toAccount(accountRegistrationDto);
 
-    activationToken.setToken(new HmacUtils(HmacAlgorithms.HMAC_SHA_256, ZonedDateTime.now().toString()).hmacHex(account.getEmail()));
-    activationToken.setExpireDateTime(ZonedDateTime.now().plus(Duration.ofMillis(SecurityConfig.ACTIVATION_EXPIRATION_TIME)));
+		account.setPassword(passwordEncoder.encode(accountRegistrationDto.getPassword()));
+		account.setRole(role);
+		account.setIsEnabled(false);
 
-    return activationToken;
+		return accountRepo.save(account);
 	}
 
-	private void verifyEmail(Account account) {
-		account.setActivationToken(generateActivationToken(account));
+	private void email(Account account, SecurityAction securityAction) {
+		account.setSecurityToken(generateSecurityToken(account, securityAction));
 		accountRepo.save(account);
 
-		EmailUtil.sendEmail("Activate: %s", account.getActivationToken().getToken());
+		EmailUtil.sendEmail("%s: %s", securityAction.getEmailContent(), account.getSecurityToken());
 
-		logger.info(String.format("Account %s | Verify email", account.getEmail()));
+		logger.info(String.format("Account %s | %s", account.getEmail(), securityAction.toString()));
+	}
+
+	private SecurityToken generateSecurityToken(Account account, SecurityAction securityAction) {
+    SecurityToken securityToken = Optional
+			.ofNullable(account.getSecurityToken())
+      .orElse(SecurityToken.builder().account(account).build());
+
+		securityToken.setSecurityAction(securityAction);
+    securityToken.setToken(new HmacUtils(HmacAlgorithms.HMAC_SHA_256, ZonedDateTime.now().toString()).hmacHex(account.getEmail()));
+    securityToken.setExpireDateTime(ZonedDateTime.now().plus(Duration.ofMillis(SecurityConfig.ACTIVATION_EXPIRATION_TIME)));
+
+    return securityToken;
 	}
 
   public void activateAccount(String token) {
-    ActivationToken activationToken = activationTokenRepo
+    SecurityToken securityToken = securityTokenRepo
       .findByToken(token)
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-    if (ZonedDateTime.now().isAfter(activationToken.getExpireDateTime())) {
-			activationTokenRepo.deleteById(activationToken.getId());
+    if (ZonedDateTime.now().isAfter(securityToken.getExpireDateTime())) {
+			securityTokenRepo.deleteById(securityToken.getId());
       throw new ResponseStatusException(HttpStatus.FORBIDDEN);
     }
 
-		Account account = activationToken.getAccount();
+		Account account = securityToken.getAccount();
 
 		account.setIsEnabled(true);
 
