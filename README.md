@@ -7,22 +7,27 @@
 
 ### Auth
 - POST /auth/authenticate
+```
 {
-	email
-	password
+	email: ,
+	password: 
 }
+```
 - POST /auth/register
+```
 {
-	email
-	username
-	password
-	confirmPassword
+	email: ,
+	username: ,
+	password: ,
+	confirmPassword: 
 }
+```
 - GET /auth/activate/{token}
 ### Account
 - GET  /account
 ### Comment
 - POST /comment/{postId}
+```
 {
 	postDto: {
 		id: ,
@@ -33,7 +38,9 @@
 	},
 	content: 
 }
+```
 - PUT /comment
+```
 {
 	postDto: {
 		id: ,
@@ -44,11 +51,13 @@
 	},
 	content: 
 }
+```
 - DELETE /comment/{id}
 ### Document
 - GET /document?search={tên}
 - GET /document/{id}
 - POST /document
+```
 {
 	postDto: {
 		id: ,
@@ -61,7 +70,9 @@
 	subject: ,
 	content: 
 }
+```
 - PUT /document
+```
 {
 	postDto: {
 		id: ,
@@ -74,10 +85,12 @@
 	subject: ,
 	content: 
 }
+```
 - DELETE /document/{id}
 ### Event
 - GET /event
 - POST /event
+```
 {
 	id: ,
 	name: ,
@@ -87,7 +100,9 @@
 	eventType: ,
 	description: 
 }
+```
 - PUT /event
+```
 {
 	id: ,
 	name: ,
@@ -97,11 +112,13 @@
 	eventType: ,
 	description: 
 }
+```
 - DELETE /event/{id}
 ### Mind Map
 - GET /mindmap?search={tên}
 - GET /mindmap/{id}
 - POST /mindmap
+```
 {
 	postDto: {
 		id: ,
@@ -114,7 +131,9 @@
 	subject: ,
 	content: 
 }
+```
 - PUT /mindmap
+```
 {
 	postDto: {
 		id: ,
@@ -127,6 +146,7 @@
 	subject: ,
 	content: 
 }
+```
 - DELETE /mindmap/{id}
 ### Post
 - PUT /post/upvote/{id}
