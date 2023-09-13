@@ -1,23 +1,23 @@
 package com.intelliedu.intelliedu.security.exception;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-@Component
-public class AuthEntryPointJWT implements AuthenticationEntryPoint {
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
-  private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJWT.class);
+@Component
+@Slf4j
+public class AuthEntryPointJWT implements AuthenticationEntryPoint {
 
   @Override
   public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-    logger.error(String.format("Request URL %s | IP Address %s | Unauthorized access",request.getRequestURL(), request.getRemoteAddr()));
+    log.error(String.format("Request URL %s | IP Address %s | Unauthorized access",request.getRequestURL(), request.getRemoteAddr()));
     response.sendRedirect("/login");
   }
 }

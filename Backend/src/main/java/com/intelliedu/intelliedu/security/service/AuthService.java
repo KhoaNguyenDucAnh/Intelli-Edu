@@ -8,8 +8,6 @@ import java.util.Optional;
 
 import org.apache.commons.codec.digest.HmacAlgorithms;
 import org.apache.commons.codec.digest.HmacUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,8 +34,10 @@ import com.intelliedu.intelliedu.util.EmailUtil;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class AuthService {
 
   @Autowired
@@ -58,8 +58,6 @@ public class AuthService {
   @Autowired
 	private AccountMapper accountMapper;
 
-  private Logger logger = LoggerFactory.getLogger(AuthService.class);
-
   public void authenticateAccount(AccountLogInDto accountLogInDto, HttpServletResponse response) {
     try {
       Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(accountLogInDto.getEmail(), accountLogInDto.getPassword()));
@@ -77,9 +75,9 @@ public class AuthService {
 
       response.addCookie(cookie);
 
-      logger.info(String.format("Account %s | Login successful", accountLogInDto.getEmail()));
+      log.info(String.format("Account %s | Login successful", accountLogInDto.getEmail()));
     } catch (AuthenticationException e) {
-      logger.error(String.format("Account %s | Login failed", accountLogInDto.getEmail()));
+      log.error(String.format("Account %s | Login failed", accountLogInDto.getEmail()));
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
   }
@@ -105,7 +103,7 @@ public class AuthService {
 				() -> {
 					Account account = generateAccount(accountRegistrationDto, Role.ROLE_USER);
 
-					logger.info(String.format("Account %s | Register", account.getEmail()));
+					log.info(String.format("Account %s | Register", account.getEmail()));
 
 					email(account, SecurityAction.ACTIVATE);
 				}
@@ -117,7 +115,7 @@ public class AuthService {
 
 		account.setPassword(passwordEncoder.encode(accountRegistrationDto.getPassword()));
 		account.setRole(role);
-		account.setIsEnabled(false);
+		account.setIsEnabled(true);
 
 		return accountRepo.save(account);
 	}
@@ -128,7 +126,7 @@ public class AuthService {
 
 		EmailUtil.sendEmail("%s: %s", securityAction.getEmailContent(), account.getSecurityToken());
 
-		logger.info(String.format("Account %s | %s", account.getEmail(), securityAction.toString()));
+		log.info(String.format("Account %s | %s", account.getEmail(), securityAction.toString()));
 	}
 
 	private SecurityToken generateSecurityToken(Account account, SecurityAction securityAction) {
@@ -159,7 +157,7 @@ public class AuthService {
 
     accountRepo.save(account);
 
-    logger.info(String.format("Account %s | Activate", account.getEmail()));
+    log.info(String.format("Account %s | Activate", account.getEmail()));
   }
 
   public Account getAccount(Authentication authentication) {
