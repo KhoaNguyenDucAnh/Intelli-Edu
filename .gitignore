@@ -31,8 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-### AI ###
-*.ipynb*
-AI/__pycache__
-AI
