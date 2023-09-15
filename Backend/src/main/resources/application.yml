@@ -1,0 +1,25 @@
+server:
+  port: 8080
+  error:
+    include-stacktrace: never
+---
+spring:
+  devtools:
+    livereload:
+      enabled: true
+  main:
+    lazy-initialization: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+---

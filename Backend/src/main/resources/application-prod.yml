@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://ep-red-mouse-31349640.ap-southeast-1.aws.neon.tech/neondb # jdbc:postgresql://127.0.0.1:5432/intelliedu
+    username: robinkhoa06 
+    password: T3HiNgy4nawX
+  web:
+    resources:
+      static-locations: file:/Frontend/
+

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Homepage</title>
+</head>
+<body>
+  <h1>Welcome to the Homepage</h1>
+
+  <a href="/registration">Register</a>
+  <a href="/login">Login</a>
+
+  <form id="searchForm" onsubmit="search(event)">
+    <label for="searchQuery">Search:</label>
+    <input type="text" id="searchQuery" required>
+
+    <label for="searchType">Search Type:</label>
+    <select id="searchType">
+      <option value="mindmap">Mind Map</option>
+      <option value="user">User</option>
+      <option value="document">Document</option>
+      <option value="post">Post</option>
+    </select>
+
+    <input type="submit" value="Search">
+  </form>
+
+  <div id="searchResults"></div>
+
+  <script>
+    function search(event) {
+      event.preventDefault();
+
+      // Retrieve search inputs
+      var query = document.getElementById("searchQuery").value;
+      var searchType = document.getElementById("searchType").value;
+
+      // Perform search based on selected type
+      var searchResults = performSearch(query, searchType);
+
+      // Display search results
+      displayResults(searchResults);
+    }
+
+    function performSearch(query, searchType) {
+      // Perform the search based on the query and search type
+      // You can customize this function to make the actual search
+      // and return the results accordingly
+      var searchResults = [];
+
+      if (searchType === "mindmap") {
+        // Perform mind map search
+        // Add results to searchResults array
+      } else if (searchType === "user") {
+        // Perform user search
+        // Add results to searchResults array
+      } else if (searchType === "document") {
+        // Perform document search
+        // Add results to searchResults array
+      } else if (searchType === "post") {
+        // Perform post search
+        // Add results to searchResults array
+      }
+
+      return searchResults;
+    }
+
+    function displayResults(results) {
+      var searchResultsDiv = document.getElementById("searchResults");
+
+      // Clear previous results
+      searchResultsDiv.innerHTML = "";
+
+      if (results.length === 0) {
+        searchResultsDiv.innerHTML = "No results found.";
+      } else {
+        for (var i = 0; i < results.length; i++) {
+          var resultItem = document.createElement("p");
+          resultItem.textContent = results[i];
+          searchResultsDiv.appendChild(resultItem);
+        }
+      }
+    }
+  </script>
+</body>
+</html>

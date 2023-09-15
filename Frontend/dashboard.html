@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+</head>
+<body>
+  <h1>Welcome to the Dashboard</h1>
+
+  <h2>Mind Maps</h2>
+  <ul id="mindmapList"></ul>
+
+  <h2>Documents</h2>
+  <ul id="documentList"></ul>
+
+  <h2>Posts</h2>
+  <ul id="postList"></ul>
+
+  <a href="#" onclick="goToAccountPage()">Go to Account</a>
+
+  <script>
+    function fetchDashboardData() {
+      fetch('/api/v1/dashboard') // Make an API call to retrieve dashboard data
+        .then(response => response.json())
+        .then(data => {
+          // Populate the lists with dashboard data
+          populateList("mindmapList", data.mindmaps);
+          populateList("documentList", data.documents);
+          populateList("postList", data.posts);
+        })
+        .catch(error => console.error('Failed to fetch dashboard data:', error));
+    }
+
+    function populateList(listId, items) {
+      var list = document.getElementById(listId);
+      if (items.length === 0) {
+        list.innerHTML = "<li>No items found.</li>";
+      } else {
+        var itemsHtml = items.map(item => "<li>" + item + "</li>").join('');
+        list.innerHTML = itemsHtml;
+      }
+    }
+
+    function goToAccountPage() {
+      // Redirect to the account page
+      window.location.href = "/account";
+    }
+
+    // Call the fetchDashboardData function when the page is loaded
+    window.onload = fetchDashboardData;
+  </script>
+</body>
+</html>
+
