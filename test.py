@@ -6,5 +6,5 @@ new_chat = claude_api.create_new_chat()
 conversation_id = new_chat['uuid']
 prompt = "Hello, Claude!"
 conversation_id = conversation_id
-response = claude_api.send_message(prompt, conversation_id)
+response = claude_api.send_message(prompt, conversation_id, attachment=r'C:\Users\heins\Downloads\biopolitics.docx')
 print(response)
