@@ -3,7 +3,7 @@ package com.intelliedu.intelliedu.mapper;
 import java.util.List;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.MappingInheritanceStrategy;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
@@ -16,16 +16,19 @@ import com.intelliedu.intelliedu.entity.Document;
 /**
  * DocumentMapper
  */
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = PostMapper.class, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(
+	componentModel = "spring",
+	unmappedTargetPolicy = ReportingPolicy.IGNORE,
+	nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+	mappingInheritanceStrategy = MappingInheritanceStrategy.AUTO_INHERIT_FROM_CONFIG,
+	config = PostMapper.class
+)
 public interface DocumentMapper {
 
-	@Mapping(source = "postDto.id", target = "id")
   public Document toDocument(DocumentDto documentDto);
 
-	@Mapping(source = "postDto.id", target = "id")
 	public Document toDocument(DocumentDto documentDto, @MappingTarget Document document);
 
-	@Mapping(source = ".", target = "postDto")
   public DocumentDto toDocumentDto(Document document);
 
   public List<DocumentDto> toDocumentDto(List<Document> document);

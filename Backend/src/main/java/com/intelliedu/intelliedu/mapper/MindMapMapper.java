@@ -3,7 +3,7 @@ package com.intelliedu.intelliedu.mapper;
 import java.util.List;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.MappingInheritanceStrategy;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
@@ -13,16 +13,19 @@ import org.springframework.data.domain.PageImpl;
 import com.intelliedu.intelliedu.dto.MindMapDto;
 import com.intelliedu.intelliedu.entity.MindMap;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = PostMapper.class, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(
+	componentModel = "spring",
+	unmappedTargetPolicy = ReportingPolicy.IGNORE,
+	nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+	mappingInheritanceStrategy = MappingInheritanceStrategy.AUTO_INHERIT_FROM_CONFIG,
+	config = PostMapper.class
+)
 public interface MindMapMapper {
 
-	@Mapping(source = "postDto.id", target = "id")
 	public MindMap toMindMap(MindMapDto mindMapDto);
 
-	@Mapping(source = "postDto.id", target = "id")
 	public MindMap toMindMap(MindMapDto mindMapDto, @MappingTarget MindMap mindMap);
 
-	@Mapping(source = ".", target = "postDto")
   public MindMapDto toMindMapDto(MindMap mindMap);
 
   public List<MindMapDto> toMindMapDto(List<MindMap> mindMap);
