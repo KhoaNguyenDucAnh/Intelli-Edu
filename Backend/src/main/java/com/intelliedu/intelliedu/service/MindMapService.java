@@ -66,10 +66,10 @@ public class MindMapService {
     Account account = authService.getAccount(authentication);
 
     MindMap mindMap = mindMapRepo
-			.findByIdAndAccount(mindMapDto.getPostDto().getId(), account)
+			.findByIdAndAccount(mindMapDto.getId(), account)
 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-		if (mindMapRepo.existsByIdIsNotAndTitleAndAccount(mindMapDto.getPostDto().getId(), mindMapDto.getTitle(), account)) {
+		if (mindMapRepo.existsByIdIsNotAndTitleAndAccount(mindMapDto.getId(), mindMapDto.getTitle(), account)) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
 
