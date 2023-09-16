@@ -69,10 +69,10 @@ public class DocumentService {
     Account account = authService.getAccount(authentication);
 
 		Document document = documentRepo
-			.findByIdAndAccount(documentDto.getPostDto().getId(), account)
+			.findByIdAndAccount(documentDto.getId(), account)
 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-		if (documentRepo.existsByIdIsNotAndTitleAndAccount(documentDto.getPostDto().getId(), documentDto.getTitle(), account)) {
+		if (documentRepo.existsByIdIsNotAndTitleAndAccount(documentDto.getId(), documentDto.getTitle(), account)) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
 
