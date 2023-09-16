@@ -1,13 +1,13 @@
 package com.intelliedu.intelliedu.security.service;
 
-
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.sql.Timestamp;
-import java.time.Instant;
+import java.time.Duration;
+import java.time.ZonedDateTime;
+import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.codec.digest.HmacAlgorithms;
+import org.apache.commons.codec.digest.HmacUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,116 +20,149 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.intelliedu.intelliedu.config.Role;
+import com.intelliedu.intelliedu.config.SecurityAction;
 import com.intelliedu.intelliedu.config.SecurityConfig;
 import com.intelliedu.intelliedu.dto.AccountLogInDto;
 import com.intelliedu.intelliedu.dto.AccountRegistrationDto;
 import com.intelliedu.intelliedu.entity.Account;
-import com.intelliedu.intelliedu.entity.ActivationToken;
+import com.intelliedu.intelliedu.entity.SecurityToken;
 import com.intelliedu.intelliedu.mapper.AccountMapper;
 import com.intelliedu.intelliedu.repository.AccountRepo;
-import com.intelliedu.intelliedu.repository.ActivationTokenRepo;
+import com.intelliedu.intelliedu.repository.SecurityTokenRepo;
 import com.intelliedu.intelliedu.security.util.JWTUtil;
+import com.intelliedu.intelliedu.util.EmailUtil;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class AuthService {
 
   @Autowired
-  private JWTUtil jwtUtil;
+	private JWTUtil jwtUtil;
 
   @Autowired
-  private PasswordEncoder passwordEncoder;
-
-  @Autowired 
-  private AuthenticationManager authenticationManager;
-
-  @Autowired 
-  private AccountRepo accountRepo;
+	private PasswordEncoder passwordEncoder;
 
   @Autowired
-  private ActivationTokenRepo activationTokenRepo;
+	private AuthenticationManager authenticationManager;
 
   @Autowired
-  private AccountMapper accountMapper;
+	private AccountRepo accountRepo;
 
-  private Logger logger = LoggerFactory.getLogger(AuthService.class);
+  @Autowired
+	private SecurityTokenRepo securityTokenRepo;
+
+  @Autowired
+	private AccountMapper accountMapper;
 
   public void authenticateAccount(AccountLogInDto accountLogInDto, HttpServletResponse response) {
     try {
-			Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(accountLogInDto.getEmail(), accountLogInDto.getPassword()));
-			SecurityContextHolder.getContext().setAuthentication(authentication);
+      Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(accountLogInDto.getEmail(), accountLogInDto.getPassword()));
+      SecurityContextHolder.getContext().setAuthentication(authentication);
 
-      Cookie cookie = new Cookie(SecurityConfig.HEADER_STRING, URLEncoder.encode(SecurityConfig.BEARER_PREFIX + jwtUtil.generateJwtToken(authentication), StandardCharsets.UTF_8));
-      
+      Cookie cookie = new Cookie(
+        SecurityConfig.AUTHORIZATION,
+        URLEncoder.encode(SecurityConfig.BEARER_PREFIX + jwtUtil.generateJwtToken(authentication),StandardCharsets.UTF_8)
+			);
+
       cookie.setMaxAge((int) SecurityConfig.TOKEN_EXPIRATION_TIME);
       cookie.setPath("/");
       cookie.setHttpOnly(false);
       cookie.setSecure(false);
 
       response.addCookie(cookie);
-      
-      logger.info(String.format("Account %s | Login successful", accountLogInDto.getEmail()));
-		} catch (AuthenticationException e) {
-			logger.error(String.format("Account %s | Login failed", accountLogInDto.getEmail()));
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+
+      log.info(String.format("Account %s | Login successful", accountLogInDto.getEmail()));
+    } catch (AuthenticationException e) {
+      log.error(String.format("Account %s | Login failed", accountLogInDto.getEmail()));
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
   }
 
-  public String registerAccount(AccountRegistrationDto accountRegistrationDto) {
-    if (accountRepo.findByEmail(accountRegistrationDto.getEmail()).isPresent()) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT);
-    }
+  public void registerAccount(AccountRegistrationDto accountRegistrationDto) {
+    if (!EmailUtil.validateEmail(accountRegistrationDto.getEmail())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+		}
 
-    if (!accountRegistrationDto.getPassword().equals(accountRegistrationDto.getConfirmPassword())) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-    }
+		if (!accountRegistrationDto.getPassword().equals(accountRegistrationDto.getConfirmPassword())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+		}
 
-    Account account = accountMapper.toAccount(accountRegistrationDto);
-    
-    account.setPassword(passwordEncoder.encode(accountRegistrationDto.getPassword()));
-    account.setRole(Role.ROLE_USER);
-    account.setIsEnabled(false);
+		accountRepo
+			.findByEmail(accountRegistrationDto.getEmail())
+			.ifPresentOrElse((account) -> {
+					if (account.isEnabled()) {
+						email(account, SecurityAction.RESET_PASSWORD);
+					} else {
+						email(account, SecurityAction.ACTIVATE);
+					}
+				},
+				() -> {
+					Account account = generateAccount(accountRegistrationDto, Role.ROLE_USER);
 
-    accountRepo.save(account);
+					log.info(String.format("Account %s | Register", account.getEmail()));
 
-    ActivationToken activationToken = new ActivationToken();
+					email(account, SecurityAction.ACTIVATE);
+				}
+			);
+	}
 
-    String token = activationToken.setToken();
-    activationToken.setAccount(account);
-    activationToken.setExpireDateTime(Timestamp.from(Instant.now().plusMillis(SecurityConfig.TOKEN_EXPIRATION_TIME)));
+	private Account generateAccount(AccountRegistrationDto accountRegistrationDto, Role role) {
+		Account account = accountMapper.toAccount(accountRegistrationDto);
 
-    activationTokenRepo.save(activationToken);
+		account.setPassword(passwordEncoder.encode(accountRegistrationDto.getPassword()));
+		account.setRole(role);
+		account.setIsEnabled(true);
 
-		logger.info(String.format("Account %s | Register", accountRegistrationDto.getEmail()));	
+		return accountRepo.save(account);
+	}
 
-    return "http://localhost:8080/activate/" + token;
-  }
+	private void email(Account account, SecurityAction securityAction) {
+		account.setSecurityToken(generateSecurityToken(account, securityAction));
+		accountRepo.save(account);
+
+		EmailUtil.sendEmail("%s: %s", securityAction.getEmailContent(), account.getSecurityToken());
+
+		log.info(String.format("Account %s | %s", account.getEmail(), securityAction.toString()));
+	}
+
+	private SecurityToken generateSecurityToken(Account account, SecurityAction securityAction) {
+    SecurityToken securityToken = Optional
+			.ofNullable(account.getSecurityToken())
+      .orElse(SecurityToken.builder().account(account).build());
+
+		securityToken.setSecurityAction(securityAction);
+    securityToken.setToken(new HmacUtils(HmacAlgorithms.HMAC_SHA_256, ZonedDateTime.now().toString()).hmacHex(account.getEmail()));
+    securityToken.setExpireDateTime(ZonedDateTime.now().plus(Duration.ofMillis(SecurityConfig.ACTIVATION_EXPIRATION_TIME)));
+
+    return securityToken;
+	}
 
   public void activateAccount(String token) {
-    System.out.println(token);
-
-    ActivationToken activationToken = activationTokenRepo
-      .findById(token)
+    SecurityToken securityToken = securityTokenRepo
+      .findByToken(token)
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-    if (activationToken.getExpireDateTime().before(Timestamp.from(Instant.now()))) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    if (ZonedDateTime.now().isAfter(securityToken.getExpireDateTime())) {
+			securityTokenRepo.deleteById(securityToken.getId());
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN);
     }
 
-    Account account = activationToken.getAccount();
+		Account account = securityToken.getAccount();
 
-    account.setIsEnabled(true);
+		account.setIsEnabled(true);
 
     accountRepo.save(account);
 
-    logger.info(String.format("Account %s: | Activate", account.getEmail()));
+    log.info(String.format("Account %s | Activate", account.getEmail()));
   }
 
   public Account getAccount(Authentication authentication) {
     return accountRepo
-        .findByEmail(authentication.getPrincipal().toString())
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
+      .findByEmail(authentication.getPrincipal().toString())
+      .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
   }
 }

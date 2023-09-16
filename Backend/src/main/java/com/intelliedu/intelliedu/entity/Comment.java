@@ -1,5 +1,6 @@
 package com.intelliedu.intelliedu.entity;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
@@ -15,6 +16,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 @Entity
+@DiscriminatorValue("comment")
 public class Comment extends Post {
 
   private String content;

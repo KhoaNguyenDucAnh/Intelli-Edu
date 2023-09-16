@@ -17,6 +17,10 @@ public interface MindMapRepo extends JpaRepository<MindMap, Long> {
 
   Page<MindMap> findByTitleAndAccount(String title, Account account, Pageable pageable);
 
+	Optional<MindMap> findByTitleAndAccount(String title, Account account);
+
+	Boolean existsByIdIsNotAndTitleAndAccount(Long id, String title, Account account);
+
   Optional<MindMap> findByIdAndAccount(Long id, Account Account);
 
   void deleteByIdAndAccount(Long id, Account account);

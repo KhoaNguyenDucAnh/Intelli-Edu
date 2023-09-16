@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,28 +31,28 @@ public class MindMapController {
   @Autowired
   private MindMapService mindMapService;
 
-  @GetMapping("/find/{query}")
-  public Map<String, Page<MindMapDto>> findMindMap(@PathVariable(value = "query") String query, Authentication authentication, Pageable pageable) {
+  @GetMapping("")
+  public Map<String, Page<MindMapDto>> findMindMap(@RequestParam(name = "search",	defaultValue = "") String query, Authentication authentication, Pageable pageable) {
     return mindMapService.findMindMap(query, authentication, pageable);
   }
 
-  @GetMapping("/id/{id}")
-  public MindMapDto findMindMap(@PathVariable(value = "id") Long id, Authentication authentication) {
+  @GetMapping("/{id}")
+  public MindMapDto findMindMap(@PathVariable Long id, Authentication authentication) {
     return mindMapService.findMindMap(id, authentication);
   }
 
-  @PostMapping("/")
+  @PostMapping("")
   public MindMapDto createMindMap(@RequestBody @Valid MindMapDto mindMapDto, Authentication authentication) {
     return mindMapService.createMindMap(mindMapDto, authentication);
   }
 
-  @PutMapping("/")
+  @PutMapping("")
   public MindMapDto updateMindMap(@RequestBody @Valid MindMapDto mindMapDto, Authentication authentication) {
     return mindMapService.updateMindMap(mindMapDto, authentication);
   }
 
   @DeleteMapping("/{id}")
-  public void deleteMindMap(@PathVariable(value = "id") Long id, Authentication authentication) {
+  public void deleteMindMap(@PathVariable Long id, Authentication authentication) {
     mindMapService.deleteMindMap(id, authentication);
   }
 }

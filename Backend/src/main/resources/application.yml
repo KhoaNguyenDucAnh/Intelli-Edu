@@ -11,12 +11,7 @@ spring:
     lazy-initialization: true
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://ep-red-mouse-31349640.ap-southeast-1.aws.neon.tech/neondb?user=robinkhoa06&password=T3HiNgy4nawX # jdbc:postgresql://127.0.0.1:5432/intelliedu
-    username: robinkhoa06 
-    password: T3HiNgy4nawX
   jpa:
-    hibernate:
-      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
@@ -25,7 +20,6 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
-  web:
-    resources:
-      static-locations: file:${user.dir}/../Frontend/
 ---
+python:
+  port: 65432

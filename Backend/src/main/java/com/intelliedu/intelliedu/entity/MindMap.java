@@ -6,7 +6,10 @@ import com.intelliedu.intelliedu.config.Subject;
 import com.intelliedu.intelliedu.util.HashMapConverter;
 
 import jakarta.persistence.Convert;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,10 +22,12 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 @Entity
+@DiscriminatorValue("mind_map")
 public class MindMap extends Post {
 
 	private String title;
 
+	@Enumerated(EnumType.STRING)
 	private Subject subject;
 
   @Convert(converter = HashMapConverter.class)

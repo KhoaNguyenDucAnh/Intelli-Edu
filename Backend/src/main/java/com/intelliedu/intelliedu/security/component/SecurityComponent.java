@@ -32,8 +32,8 @@ public class SecurityComponent {
         Account account = accountRepo
           .findByEmail(email)
           .orElseThrow(() -> new UsernameNotFoundException(null));
-
-        if (account.isEnabled()) {
+        
+				if (account.isEnabled()) {
           boolean accountNonExpired = true;
           boolean credentialsNonExpired = true;
           boolean accountNonLocked = true;
@@ -47,7 +47,7 @@ public class SecurityComponent {
             accountNonLocked,
             account.getAuthorities());
         } else {
-          throw new UsernameNotFoundException(null);
+          throw new UsernameNotFoundException(email);
         }
       }
     }; 

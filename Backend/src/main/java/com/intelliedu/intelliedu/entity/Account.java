@@ -16,8 +16,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -49,23 +49,19 @@ public class Account implements UserDetails {
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  /*@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  private List<Document> document;
+	private Integer point;
+
+	@OneToOne(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	private SecurityToken securityToken;
 
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  private List<MindMap> mindMap;
-
-	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  private List<Comment> comment;*/
-
-	@ManyToMany(mappedBy = "account")
 	private List<Post> post;
 
-	@ManyToMany(mappedBy = "upvote")
-	private List<Post> upvote;
+	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	private List<Vote> vote;
 
-	@ManyToMany(mappedBy = "downvote")
-	private List<Post> downvote;
+	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	private List<Event> event;
 
   @Override
   public List<? extends GrantedAuthority> getAuthorities() {

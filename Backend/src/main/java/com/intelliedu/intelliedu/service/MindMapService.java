@@ -1,7 +1,5 @@
 package com.intelliedu.intelliedu.service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.intelliedu.intelliedu.dto.MindMapDto;
@@ -50,24 +49,15 @@ public class MindMapService {
   }
   
   public MindMapDto createMindMap(MindMapDto mindMapDto, Authentication authentication) {
-    MindMap mindMap = mindMapMapper.toMindMap(mindMapDto);
-
     Account account = authService.getAccount(authentication);
 
-    // Add mindmap to account
-    List<MindMap> accountMindMap = account.getMindMap();      
-    
-    if (accountMindMap == null) {
-      accountMindMap = new ArrayList<>();
-     }
+		if (mindMapRepo.findByTitleAndAccount(mindMapDto.getTitle(), account).isPresent()) {
+			throw new ResponseStatusException(HttpStatus.CONFLICT);
+		}
 
-    if (accountMindMap.stream().anyMatch(mindMapTemp -> mindMapTemp.getTitle().equals(mindMap.getTitle()))) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT);
-    }
+		MindMap mindMap = mindMapMapper.toMindMap(mindMapDto);
 
-    accountMindMap.add(mindMap);
-
-    mindMap.setAccount(account);
+		PostService.addPostToAccount(mindMap, account); 
 
     return mindMapMapper.toMindMapDto(mindMapRepo.save(mindMap));
   }
@@ -75,19 +65,18 @@ public class MindMapService {
   public MindMapDto updateMindMap(MindMapDto mindMapDto, Authentication authentication) {
     Account account = authService.getAccount(authentication);
 
-    MindMap mindMap = mindMapRepo.findByIdAndAccount(mindMapDto.getPostDto().getId(), account).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    MindMap mindMap = mindMapRepo
+			.findByIdAndAccount(mindMapDto.getPostDto().getId(), account)
+			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-    // Check duplicate name
-    if (account.getMindMap().stream().anyMatch(mindMapTemp -> mindMapTemp.getTitle().equals(mindMapDto.getTitle()) && !mindMapTemp.getTitle().equals(mindMap.getTitle()))) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT);
+		if (mindMapRepo.existsByIdIsNotAndTitleAndAccount(mindMapDto.getPostDto().getId(), mindMapDto.getTitle(), account)) {
+			throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
 
-    mindMap.setTitle(mindMapDto.getTitle());
-    mindMap.setContent(mindMapDto.getContent());
-
-    return mindMapMapper.toMindMapDto(mindMapRepo.save(mindMap));
+    return mindMapMapper.toMindMapDto(mindMapRepo.save(mindMapMapper.toMindMap(mindMapDto, mindMap)));
   }
 
+	@Transactional
   public void deleteMindMap(Long id, Authentication authentication) {
     mindMapRepo.deleteByIdAndAccount(id, authService.getAccount(authentication));
   }

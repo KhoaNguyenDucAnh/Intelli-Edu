@@ -1,64 +1,85 @@
 package com.intelliedu.intelliedu.service;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.intelliedu.intelliedu.entity.Document;
+import com.intelliedu.intelliedu.entity.MindMap;
 
 /** AIService */
 @Service
 public class AIService {
 
-  private ProcessBuilder processBuilder;
+	private Socket socket;
+	private BufferedReader input;
+  private PrintWriter output;
 
-  public void doc2query(String doc) {
-    try {
-      processBuilder = new ProcessBuilder("ipython");
-      processBuilder.directory(new File("/media/Data/Project/Intelli-Edu/Backend/AI/"));
+	private final ObjectMapper objectMapper = new ObjectMapper();
 
-      Process process = processBuilder.start();
+	@Value("${python.port}")
+	private Integer port;
 
-      InputStream inputStream = process.getInputStream();
-      BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+	public String request(String message) {
+		try {
+			startConnection();
 
-      OutputStream outputStream = process.getOutputStream();
-      PrintWriter writer = new PrintWriter(outputStream, true);
+			String response = sendMessage(objectMapper.writeValueAsString(
+				Map.of(
+					"message", message	
+				)
+			));
 
-      // Create a separate thread to continuously read IPython's output
-      Thread outputReaderThread = new Thread(() -> {
-        try {
-          String line;
-          while ((line = reader.readLine()) != null) {
-            System.out.println("IPython output: " + line);
-          }
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      });
-      
-      outputReaderThread.start();
+			stopConnection();
 
-      writer.println("print(0)");
+			return response;
+		} catch (IOException e) {
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+ 	}
 
-      writer.println("import doc2query");
+	public String request(Document document, MindMap mindMap) {
+		try {
+			startConnection();
 
-      writer.println("print(1)");
+			String response = sendMessage(objectMapper.writeValueAsString(
+				Map.of(
+					Document.class.toString(), document.getContent(),
+					MindMap.class.toString(), objectMapper.writeValueAsString(mindMap.getContent())
+				)
+			));
 
-      writer.println(String.format("doc2query.create_queries(\"%s\")", doc));
+			stopConnection();
 
-      writer.println("print(2)");
+			return response;
+		} catch (IOException e) {
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+ 	}
 
-      writer.println("exit()");
+  private void startConnection() throws IOException {
+		socket = new Socket("localhost", port);
+		output = new PrintWriter(socket.getOutputStream(), true);
+		input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+	}
 
-      process.waitFor();
-
-    } catch (IOException | InterruptedException e) {
-      e.printStackTrace();
-    }
+  private String sendMessage(String message) throws IOException {
+		output.println(message);
+		return input.readLine();
   }
+
+  private void stopConnection() throws IOException {
+		input.close();
+		output.close();
+		socket.close();
+	}
 }
