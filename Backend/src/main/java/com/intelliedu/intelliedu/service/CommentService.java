@@ -45,7 +45,7 @@ public class CommentService {
 
   public CommentDto updateComment(CommentDto commentDto, Authentication authentication) {
 		Comment comment = commentRepo
-			.findByIdAndAccount(commentDto.getPostDto().getId(), authService.getAccount(authentication))
+			.findByIdAndAccount(commentDto.getId(), authService.getAccount(authentication))
 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
 		return commentMapper.toCommentDto(commentRepo.save(commentMapper.toComment(commentDto, comment)));

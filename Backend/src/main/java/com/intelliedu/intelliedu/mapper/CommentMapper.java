@@ -3,7 +3,7 @@ package com.intelliedu.intelliedu.mapper;
 import java.util.List;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.MappingInheritanceStrategy;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
@@ -16,16 +16,19 @@ import com.intelliedu.intelliedu.entity.Comment;
 /**
  * CommentMapper
  */
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = PostMapper.class, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(
+	componentModel = "spring",
+	unmappedTargetPolicy = ReportingPolicy.IGNORE,
+	nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+	mappingInheritanceStrategy = MappingInheritanceStrategy.AUTO_INHERIT_FROM_CONFIG,
+	config = PostMapper.class
+)
 public interface CommentMapper {
 
-	@Mapping(source = "postDto.id", target = "id")
-  public Comment toComment(CommentDto commentDto);
+	public Comment toComment(CommentDto commentDto);	
 
-	@Mapping(source = "postDto.id", target = "id")
 	public Comment toComment(CommentDto commentDto, @MappingTarget Comment comment);
 
-	@Mapping(source = ".", target = "postDto")
   public CommentDto toCommentDto(Comment comment);
 
   public List<CommentDto> toCommentDto(List<Comment> comment);

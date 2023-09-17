@@ -1,0 +1,3 @@
+numpy
+sentence_transformers
+claude_api

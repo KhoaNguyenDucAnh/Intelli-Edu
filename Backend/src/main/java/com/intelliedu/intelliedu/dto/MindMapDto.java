@@ -5,17 +5,17 @@ import java.util.Map;
 import com.intelliedu.intelliedu.config.Subject;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class MindMapDto {
-
-	private PostDto postDto;
+@SuperBuilder
+@EqualsAndHashCode(callSuper = false)
+public class MindMapDto extends PostDto {
 
 	private String title;
 

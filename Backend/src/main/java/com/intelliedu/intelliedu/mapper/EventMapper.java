@@ -15,7 +15,11 @@ import com.intelliedu.intelliedu.entity.Event;
 /**
  * EventMapper
  */
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(
+	componentModel = "spring",
+	unmappedTargetPolicy = ReportingPolicy.IGNORE,
+	nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
+)
 public interface EventMapper {
   
 	public Event toEvent(EventDto eventDto);

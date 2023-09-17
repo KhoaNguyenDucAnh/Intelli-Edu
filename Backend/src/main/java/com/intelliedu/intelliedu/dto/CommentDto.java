@@ -1,9 +1,10 @@
 package com.intelliedu.intelliedu.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 /**
  * CommentDto
@@ -11,10 +12,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class CommentDto {
-
-	private PostDto postDto;
+@SuperBuilder
+@EqualsAndHashCode(callSuper = false)
+public class CommentDto extends PostDto {
   
 	private String content;
 }

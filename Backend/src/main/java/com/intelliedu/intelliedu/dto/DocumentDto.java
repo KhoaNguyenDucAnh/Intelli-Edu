@@ -3,9 +3,10 @@ package com.intelliedu.intelliedu.dto;
 import com.intelliedu.intelliedu.config.Subject;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 /**
  * DocumentDto
@@ -13,10 +14,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class DocumentDto {
-
-	private PostDto postDto;
+@SuperBuilder
+@EqualsAndHashCode(callSuper = false)
+public class DocumentDto extends PostDto {
 
 	private String title;
 
