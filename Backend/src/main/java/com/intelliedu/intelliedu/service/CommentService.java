@@ -19,40 +19,39 @@ import com.intelliedu.intelliedu.security.service.AuthService;
 @Service
 public class CommentService {
 
-	@Autowired
+  @Autowired
   private CommentRepo commentRepo;
 
-	@Autowired
-	private PostRepo postRepo;
+  @Autowired
+  private PostRepo postRepo;
 
   @Autowired
   private CommentMapper commentMapper;
 
   @Autowired
   private AuthService authService;
-	
+
   public CommentDto createComment(Long postId, CommentDto commentDto, Authentication authentication) {
-		Post post = postRepo.findById(postId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    Post post = postRepo.findById(postId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-		Comment comment = commentMapper.toComment(commentDto);
+    Comment comment = commentMapper.toComment(commentDto);
 
-		comment.setPost(post);
+    comment.setPost(post);
+    comment.setAccount(authService.getAccount(authentication));
 
-		PostService.addPostToAccount(comment, authService.getAccount(authentication)); 
-
-		return commentMapper.toCommentDto(commentRepo.save(comment));
-	}
+    return commentMapper.toCommentDto(commentRepo.save(comment));
+  }
 
   public CommentDto updateComment(CommentDto commentDto, Authentication authentication) {
-		Comment comment = commentRepo
-			.findByIdAndAccount(commentDto.getId(), authService.getAccount(authentication))
-			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    Comment comment = commentRepo
+      .findByIdAndAccount(commentDto.getId(), authService.getAccount(authentication))
+      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-		return commentMapper.toCommentDto(commentRepo.save(commentMapper.toComment(commentDto, comment)));
-	}
+    return commentMapper.toCommentDto(commentRepo.save(commentMapper.toComment(commentDto, comment)));
+  }
 
-	@Transactional
+  @Transactional
   public void deleteComment(Long id, Authentication authentication) {
-    commentRepo.deleteByIdAndAccount(id, authService.getAccount(authentication)); 
+    commentRepo.deleteByIdAndAccount(id, authService.getAccount(authentication));
   }
 }
