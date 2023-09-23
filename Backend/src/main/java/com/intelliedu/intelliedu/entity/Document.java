@@ -19,7 +19,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = false)
 @Entity
 @DiscriminatorValue("document")
-public class Document extends Post {
+public class Document extends Content {
 
 	private String title;
 

@@ -10,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,26 +32,21 @@ public class MindMapController {
 
   @GetMapping("")
   public Map<String, Page<MindMapDto>> findMindMap(@RequestParam(name = "search",	defaultValue = "") String query, Authentication authentication, Pageable pageable) {
-    return mindMapService.findMindMap(query, authentication, pageable);
+    return mindMapService.findContent(query, authentication, pageable);
   }
 
   @GetMapping("/{id}")
   public MindMapDto findMindMap(@PathVariable Long id, Authentication authentication) {
-    return mindMapService.findMindMap(id, authentication);
-  }
-
-  @PostMapping("")
-  public MindMapDto createMindMap(@RequestBody @Valid MindMapDto mindMapDto, Authentication authentication) {
-    return mindMapService.createMindMap(mindMapDto, authentication);
+    return mindMapService.findContent(id, authentication);
   }
 
   @PutMapping("")
   public MindMapDto updateMindMap(@RequestBody @Valid MindMapDto mindMapDto, Authentication authentication) {
-    return mindMapService.updateMindMap(mindMapDto, authentication);
+    return mindMapService.updateContent(mindMapDto, authentication);
   }
 
   @DeleteMapping("/{id}")
   public void deleteMindMap(@PathVariable Long id, Authentication authentication) {
-    mindMapService.deleteMindMap(id, authentication);
+    mindMapService.deleteContent(id, authentication);
   }
 }

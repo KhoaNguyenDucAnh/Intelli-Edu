@@ -23,7 +23,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = false)
 @Entity
 @DiscriminatorValue("mind_map")
-public class MindMap extends Post {
+public class MindMap extends Content {
 
 	private String title;
 

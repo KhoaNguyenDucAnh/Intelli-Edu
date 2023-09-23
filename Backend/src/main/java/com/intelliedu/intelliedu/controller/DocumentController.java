@@ -10,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,26 +35,21 @@ public class DocumentController {
 
   @GetMapping("")
   public Map<String, Page<DocumentDto>> findDocument(@RequestParam(name = "search",	defaultValue = "") String query, Authentication authentication, Pageable pageable) {
-    return documentService.findDocument(query, authentication, pageable);
+    return documentService.findContent(query, authentication, pageable);
   }
 
   @GetMapping("/{id}")
   public DocumentDto findDocument(@PathVariable Long id, Authentication authentication) {
-    return documentService.findDocument(id, authentication);
-  }
-
-  @PostMapping("")
-  public DocumentDto createDocument(@RequestBody @Valid DocumentDto documentDto, Authentication authentication) {
-    return documentService.createDocument(documentDto, authentication);
+    return documentService.findContent(id, authentication);
   }
 
   @PutMapping("")
   public DocumentDto updateDocument(@RequestBody @Valid DocumentDto documentDto, Authentication authentication) {
-    return documentService.updateDocument(documentDto, authentication);
+    return documentService.updateContent(documentDto, authentication);
   }
 
   @DeleteMapping("/{id}")
   public void deleteDocument(@PathVariable Long id, Authentication authentication) {
-    documentService.deleteDocument(id, authentication);
+    documentService.deleteContent(id, authentication);
   }
 }

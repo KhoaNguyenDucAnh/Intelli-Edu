@@ -44,9 +44,4 @@ public class PostService {
 
 		return voteRepo.countByVoteStatus(VoteStatus.UPVOTE) - voteRepo.countByVoteStatus(VoteStatus.DOWNVOTE); 
 	}
-
-	public static void addPostToAccount(Post post, Account account) {
-		post.setAccount(account);
-		account.getPost().add(post);
-	}
 }
