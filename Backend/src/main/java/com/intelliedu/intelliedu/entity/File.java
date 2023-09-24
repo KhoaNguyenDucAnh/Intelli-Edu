@@ -52,6 +52,9 @@ public class File {
   @OneToOne(mappedBy = "file", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private MindMap mindMap;
 
+  @OneToOne(mappedBy = "file", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  private Question question;
+
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private Account account;
 }

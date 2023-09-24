@@ -31,4 +31,6 @@ public class FileDto {
   private DocumentDto documentDto;
 
   private MindMapDto mindMapDto;
+
+  private QuestionDto questionDto;
 }
