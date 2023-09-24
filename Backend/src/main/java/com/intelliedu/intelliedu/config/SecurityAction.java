@@ -10,8 +10,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum SecurityAction {
 
-	ACTIVATE("Activate"),
-	RESET_PASSWORD("Reset password");
+	ACTIVATE("Send activation email", "Activate"),
+	RESET_PASSWORD("Send reset password email", "Reset password");
+
+  private final String log;
 
 	private final String emailContent;
 }

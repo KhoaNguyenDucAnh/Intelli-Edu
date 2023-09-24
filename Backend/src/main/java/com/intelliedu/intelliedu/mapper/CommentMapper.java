@@ -25,15 +25,15 @@ import com.intelliedu.intelliedu.entity.Comment;
 )
 public interface CommentMapper {
 
-	public Comment toComment(CommentDto commentDto);	
+	Comment toComment(CommentDto commentDto);	
 
-	public Comment toComment(CommentDto commentDto, @MappingTarget Comment comment);
+	Comment toComment(CommentDto commentDto, @MappingTarget Comment comment);
 
-  public CommentDto toCommentDto(Comment comment);
+  CommentDto toCommentDto(Comment comment);
 
-  public List<CommentDto> toCommentDto(List<Comment> comment);
+  List<CommentDto> toCommentDto(List<Comment> comment);
 
-  default public Page<CommentDto> toCommentDto(Page<Comment> comment) {
+  default Page<CommentDto> toCommentDto(Page<Comment> comment) {
     return new PageImpl<>(toCommentDto(comment.getContent()), comment.getPageable(), comment.getTotalElements());
   }
 }

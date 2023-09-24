@@ -22,15 +22,15 @@ import com.intelliedu.intelliedu.entity.Event;
 )
 public interface EventMapper {
   
-	public Event toEvent(EventDto eventDto);
+	Event toEvent(EventDto eventDto);
 
-	public Event toEvent(EventDto eventDto, @MappingTarget Event event);
+	Event toEvent(EventDto eventDto, @MappingTarget Event event);
 
-  public EventDto toEventDto(Event event);
+  EventDto toEventDto(Event event);
 
-  public List<EventDto> toEventDto(List<Event> event);
+  List<EventDto> toEventDto(List<Event> event);
 
-  default public Page<EventDto> toEventDto(Page<Event> event) {
+  default Page<EventDto> toEventDto(Page<Event> event) {
     return new PageImpl<>(toEventDto(event.getContent()), event.getPageable(), event.getTotalElements());
   }
 

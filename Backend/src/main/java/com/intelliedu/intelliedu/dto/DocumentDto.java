@@ -1,7 +1,5 @@
 package com.intelliedu.intelliedu.dto;
 
-import com.intelliedu.intelliedu.config.Subject;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,11 +14,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
-public class DocumentDto extends PostDto {
-
-	private String title;
-
-  private Subject subject;
+public class DocumentDto extends ContentDto {
 	
 	private String content;
 }
