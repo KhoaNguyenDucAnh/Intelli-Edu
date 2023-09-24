@@ -18,7 +18,8 @@ import com.intelliedu.intelliedu.entity.File;
 	nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
   uses = {
     DocumentMapper.class, 
-    MindMapMapper.class
+    MindMapMapper.class,
+    QuestionMapper.class
   }
 )
 public interface FileMapper {
@@ -30,5 +31,6 @@ public interface FileMapper {
 
   @Mapping(source = "document", target = "documentDto")
   @Mapping(source = "mindMap", target = "mindMapDto")
+  @Mapping(source = "question", target = "questionDto")
   FileDto toFileDto(File file); 
 }
