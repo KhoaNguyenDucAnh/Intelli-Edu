@@ -27,4 +27,8 @@ public class FileDto {
   private ZonedDateTime createdAt;
 
 	private ZonedDateTime lastOpened;
+
+  private DocumentDto documentDto;
+
+  private MindMapDto mindMapDto;
 }

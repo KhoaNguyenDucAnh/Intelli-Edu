@@ -12,5 +12,7 @@ import com.intelliedu.intelliedu.entity.File;
  */
 public interface FileRepo extends JpaRepository<File, Long> {
 
+  Boolean existsByTitleAndAccount(String title, Account account);
+
   Optional<File> findByIdAndAccount(Long id, Account Account);
 }
