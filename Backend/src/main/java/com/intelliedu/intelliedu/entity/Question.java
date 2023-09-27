@@ -1,5 +1,7 @@
 package com.intelliedu.intelliedu.entity;
 
+import java.util.Map;
+
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
@@ -8,14 +10,17 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Question
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@DiscriminatorValue("document")
-public class Document extends Content {
+@DiscriminatorValue("question")
+public class Question extends Content {
   
-	private String content;
-  }
+	private Map<String, String> content;
+}

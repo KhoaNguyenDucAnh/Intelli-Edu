@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.intelliedu.intelliedu.dto.FileDto;
 import com.intelliedu.intelliedu.dto.MindMapDto;
 import com.intelliedu.intelliedu.service.MindMapService;
 
@@ -33,26 +34,31 @@ public class MindMapController {
 
   @GetMapping("")
   public Map<String, Page<MindMapDto>> findMindMap(@RequestParam(name = "search",	defaultValue = "") String query, Authentication authentication, Pageable pageable) {
-    return mindMapService.findMindMap(query, authentication, pageable);
+    return mindMapService.findContent(query, authentication, pageable);
   }
 
   @GetMapping("/{id}")
-  public MindMapDto findMindMap(@PathVariable Long id, Authentication authentication) {
-    return mindMapService.findMindMap(id, authentication);
+  public FileDto findMindMap(@PathVariable Long id, Authentication authentication) {
+    return mindMapService.findContent(id, authentication);
   }
 
   @PostMapping("")
-  public MindMapDto createMindMap(@RequestBody @Valid MindMapDto mindMapDto, Authentication authentication) {
-    return mindMapService.createMindMap(mindMapDto, authentication);
+  public FileDto createMindMap(@RequestBody @Valid FileDto fileDto, Authentication authentication) {
+    return mindMapService.createContent(fileDto, authentication);
+  }
+
+  @PostMapping("/{fileId}")
+  public FileDto createMindMap(@PathVariable Long fileId, Authentication authentication) {
+    return mindMapService.createContent(fileId, authentication);
   }
 
   @PutMapping("")
   public MindMapDto updateMindMap(@RequestBody @Valid MindMapDto mindMapDto, Authentication authentication) {
-    return mindMapService.updateMindMap(mindMapDto, authentication);
+    return mindMapService.updateContent(mindMapDto, authentication);
   }
 
   @DeleteMapping("/{id}")
   public void deleteMindMap(@PathVariable Long id, Authentication authentication) {
-    mindMapService.deleteMindMap(id, authentication);
+    mindMapService.deleteContent(id, authentication);
   }
 }

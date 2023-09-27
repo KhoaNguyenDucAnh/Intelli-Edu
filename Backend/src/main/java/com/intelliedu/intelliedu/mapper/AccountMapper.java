@@ -15,7 +15,7 @@ import com.intelliedu.intelliedu.entity.Account;
 public interface AccountMapper {
 
   @Mapping(source = "password", target = "password", ignore = true)
-  public Account toAccount(AccountRegistrationDto accountRegistrationDto);
+  Account toAccount(AccountRegistrationDto accountRegistrationDto);
 
-  public AccountResponseDto toAccountResponseDto(Account account);
+  AccountResponseDto toAccountResponseDto(Account account);
 }

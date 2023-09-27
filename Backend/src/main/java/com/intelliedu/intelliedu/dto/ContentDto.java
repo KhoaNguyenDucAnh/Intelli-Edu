@@ -1,20 +1,18 @@
 package com.intelliedu.intelliedu.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 /**
- * CommentDto
+ * ContentDto
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class CommentDto {
- 
-  private Long id;
+@SuperBuilder
+public class ContentDto {
 
-	private String content;
+  private Long id;
 }

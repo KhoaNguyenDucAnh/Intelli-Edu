@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.intelliedu.intelliedu.dto.DocumentDto;
+import com.intelliedu.intelliedu.dto.FileDto;
 import com.intelliedu.intelliedu.service.DocumentService;
 
 import jakarta.validation.Valid;
@@ -36,26 +37,31 @@ public class DocumentController {
 
   @GetMapping("")
   public Map<String, Page<DocumentDto>> findDocument(@RequestParam(name = "search",	defaultValue = "") String query, Authentication authentication, Pageable pageable) {
-    return documentService.findDocument(query, authentication, pageable);
+    return documentService.findContent(query, authentication, pageable);
   }
 
   @GetMapping("/{id}")
-  public DocumentDto findDocument(@PathVariable Long id, Authentication authentication) {
-    return documentService.findDocument(id, authentication);
+  public FileDto findDocument(@PathVariable Long id, Authentication authentication) {
+    return documentService.findContent(id, authentication);
   }
 
   @PostMapping("")
-  public DocumentDto createDocument(@RequestBody @Valid DocumentDto documentDto, Authentication authentication) {
-    return documentService.createDocument(documentDto, authentication);
+  public FileDto createDocument(@RequestBody @Valid FileDto fileDto, Authentication authentication) {
+    return documentService.createContent(fileDto, authentication);
+  }
+
+  @PostMapping("/{fileId}")
+  public FileDto createDocument(@PathVariable Long fileId, Authentication authentication) {
+    return documentService.createContent(fileId, authentication);
   }
 
   @PutMapping("")
   public DocumentDto updateDocument(@RequestBody @Valid DocumentDto documentDto, Authentication authentication) {
-    return documentService.updateDocument(documentDto, authentication);
+    return documentService.updateContent(documentDto, authentication);
   }
 
   @DeleteMapping("/{id}")
   public void deleteDocument(@PathVariable Long id, Authentication authentication) {
-    documentService.deleteDocument(id, authentication);
+    documentService.deleteContent(id, authentication);
   }
 }

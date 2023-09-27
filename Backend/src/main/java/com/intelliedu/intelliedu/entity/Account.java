@@ -55,7 +55,7 @@ public class Account implements UserDetails {
 	private SecurityToken securityToken;
 
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	private List<Post> post;
+	private List<File> file;
 
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private List<Vote> vote;

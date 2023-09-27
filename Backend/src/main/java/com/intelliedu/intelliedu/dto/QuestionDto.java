@@ -1,21 +1,22 @@
-package com.intelliedu.intelliedu.entity;
+package com.intelliedu.intelliedu.dto;
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
+import java.util.Map;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * QuestionDto
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
-@Entity
-@DiscriminatorValue("document")
-public class Document extends Content {
-  
-	private String content;
-  }
+public class QuestionDto extends ContentDto {
+
+  private Map<String, String> content;
+}

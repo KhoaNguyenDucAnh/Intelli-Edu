@@ -3,9 +3,9 @@ package com.intelliedu.intelliedu.dto;
 import java.time.ZonedDateTime;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 /**
  * PostDto
@@ -13,10 +13,10 @@ import lombok.experimental.SuperBuilder;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
+@Builder
 public class PostDto {
 
-	private Long id;
+  private Long id;
 
 	private ZonedDateTime createdAt;
 

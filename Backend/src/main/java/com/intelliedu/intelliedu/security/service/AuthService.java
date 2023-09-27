@@ -41,22 +41,22 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthService {
 
   @Autowired
-	private JWTUtil jwtUtil;
+  private JWTUtil jwtUtil;
 
   @Autowired
-	private PasswordEncoder passwordEncoder;
+  private PasswordEncoder passwordEncoder;
 
   @Autowired
-	private AuthenticationManager authenticationManager;
+  private AuthenticationManager authenticationManager;
 
   @Autowired
-	private AccountRepo accountRepo;
+  private AccountRepo accountRepo;
 
   @Autowired
-	private SecurityTokenRepo securityTokenRepo;
+  private SecurityTokenRepo securityTokenRepo;
 
   @Autowired
-	private AccountMapper accountMapper;
+  private AccountMapper accountMapper;
 
   public void authenticateAccount(AccountLogInDto accountLogInDto, HttpServletResponse response) {
     try {
@@ -66,7 +66,7 @@ public class AuthService {
       Cookie cookie = new Cookie(
         SecurityConfig.AUTHORIZATION,
         URLEncoder.encode(SecurityConfig.BEARER_PREFIX + jwtUtil.generateJwtToken(authentication),StandardCharsets.UTF_8)
-			);
+      );
 
       cookie.setMaxAge((int) SecurityConfig.TOKEN_EXPIRATION_TIME);
       cookie.setPath("/");
@@ -84,62 +84,64 @@ public class AuthService {
 
   public void registerAccount(AccountRegistrationDto accountRegistrationDto) {
     if (!EmailUtil.validateEmail(accountRegistrationDto.getEmail())) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-		}
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
 
-		if (!accountRegistrationDto.getPassword().equals(accountRegistrationDto.getConfirmPassword())) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-		}
+    if (!accountRegistrationDto.getPassword().equals(accountRegistrationDto.getConfirmPassword())) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
 
-		accountRepo
-			.findByEmail(accountRegistrationDto.getEmail())
-			.ifPresentOrElse((account) -> {
-					if (account.isEnabled()) {
-						email(account, SecurityAction.RESET_PASSWORD);
-					} else {
-						email(account, SecurityAction.ACTIVATE);
-					}
-				},
-				() -> {
-					Account account = generateAccount(accountRegistrationDto, Role.ROLE_USER);
+    accountRepo
+      .findByEmail(accountRegistrationDto.getEmail())
+      .ifPresentOrElse((account) -> {
+        if (account.isEnabled()) {
+          email(account, SecurityAction.RESET_PASSWORD);
+        } else {
+          email(account, SecurityAction.ACTIVATE);
+        }
+      },
+      () -> {
+        Account account = generateAccount(accountRegistrationDto, Role.ROLE_USER);
 
-					log.info(String.format("Account %s | Register", account.getEmail()));
+        email(account, SecurityAction.ACTIVATE);
+      }
+    );
+  }
 
-					email(account, SecurityAction.ACTIVATE);
-				}
-			);
-	}
+  private Account generateAccount(AccountRegistrationDto accountRegistrationDto, Role role) {
+    Account account = accountMapper.toAccount(accountRegistrationDto);
 
-	private Account generateAccount(AccountRegistrationDto accountRegistrationDto, Role role) {
-		Account account = accountMapper.toAccount(accountRegistrationDto);
+    account.setPassword(passwordEncoder.encode(accountRegistrationDto.getPassword()));
+    account.setRole(role);
+    account.setIsEnabled(false);
 
-		account.setPassword(passwordEncoder.encode(accountRegistrationDto.getPassword()));
-		account.setRole(role);
-		account.setIsEnabled(true);
+    accountRepo.save(account);
+    
+    log.info(String.format("Account %s | Register", account.getEmail()));
 
-		return accountRepo.save(account);
-	}
+    return account;
+  }
 
-	private void email(Account account, SecurityAction securityAction) {
-		account.setSecurityToken(generateSecurityToken(account, securityAction));
-		accountRepo.save(account);
+  private void email(Account account, SecurityAction securityAction) {
+    account.setSecurityToken(generateSecurityToken(account, securityAction));
+    accountRepo.save(account);
 
-		EmailUtil.sendEmail("%s: %s", securityAction.getEmailContent(), account.getSecurityToken());
+    EmailUtil.sendEmail("%s: %s", securityAction.getEmailContent(), account.getSecurityToken().getToken());
 
-		log.info(String.format("Account %s | %s", account.getEmail(), securityAction.toString()));
-	}
+    log.info(String.format("Account %s | %s", account.getEmail(), securityAction.getLog()));
+  }
 
-	private SecurityToken generateSecurityToken(Account account, SecurityAction securityAction) {
+  private SecurityToken generateSecurityToken(Account account, SecurityAction securityAction) {
     SecurityToken securityToken = Optional
-			.ofNullable(account.getSecurityToken())
+      .ofNullable(account.getSecurityToken())
       .orElse(SecurityToken.builder().account(account).build());
 
-		securityToken.setSecurityAction(securityAction);
+    securityToken.setSecurityAction(securityAction);
     securityToken.setToken(new HmacUtils(HmacAlgorithms.HMAC_SHA_256, ZonedDateTime.now().toString()).hmacHex(account.getEmail()));
     securityToken.setExpireDateTime(ZonedDateTime.now().plus(Duration.ofMillis(SecurityConfig.ACTIVATION_EXPIRATION_TIME)));
 
     return securityToken;
-	}
+  }
 
   public void activateAccount(String token) {
     SecurityToken securityToken = securityTokenRepo
@@ -147,13 +149,13 @@ public class AuthService {
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
     if (ZonedDateTime.now().isAfter(securityToken.getExpireDateTime())) {
-			securityTokenRepo.deleteById(securityToken.getId());
+      securityTokenRepo.deleteById(securityToken.getId());
       throw new ResponseStatusException(HttpStatus.FORBIDDEN);
     }
 
-		Account account = securityToken.getAccount();
+    Account account = securityToken.getAccount();
 
-		account.setIsEnabled(true);
+    account.setIsEnabled(true);
 
     accountRepo.save(account);
 
