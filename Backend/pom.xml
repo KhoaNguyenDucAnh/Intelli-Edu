@@ -132,7 +132,14 @@
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 			<version>1.16.0</version>
-		</dependency>
+    </dependency>
+
+    <!-- security -->
+    <dependency>
+      <groupId>org.apache.tomcat.embed</groupId>
+      <artifactId>tomcat-embed-core</artifactId>
+      <version>[10.1.13,)</version>
+    </dependency>
   
   </dependencies>
 
