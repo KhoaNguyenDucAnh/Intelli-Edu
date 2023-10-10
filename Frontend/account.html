@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>User Page</title>
 </head>
+
 <body>
   <h1>User Page</h1>
 
@@ -30,19 +32,19 @@
     function fetchUserData() {
       // Make an API call to retrieve user data
       fetch('/api/v1/account')
-        .then(function(response) {
+        .then(function (response) {
           if (response.ok) {
             return response.json();
           }
           throw new Error('Failed to fetch user data.');
         })
-        .then(function(data) {
+        .then(function (data) {
           // Populate the page with user data
           document.getElementById("username").textContent = data.username;
           document.getElementById("displayUsername").textContent = data.username;
           document.getElementById("displayEmail").textContent = data.email;
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error.message);
         });
     }
@@ -71,4 +73,5 @@
     }
   </script>
 </body>
+
 </html>

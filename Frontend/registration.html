@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Registration Form</title>
 </head>
+
 <body>
   <h1>Registration Form</h1>
   <form id="registrationForm" onsubmit="submitForm(event)">
@@ -61,16 +63,17 @@
         },
         body: JSON.stringify(registrationData)
       })
-      .then(function(response) {
-        if (response.ok) {
-          window.location.href = "/dashboard";
-        }
-        return response.json();
-      })
-      .then(function(data) {
-        document.getElementById("result").innerHTML = data["message"];
-      })
+        .then(function (response) {
+          if (response.ok) {
+            window.location.href = "/dashboard";
+          }
+          return response.json();
+        })
+        .then(function (data) {
+          document.getElementById("result").innerHTML = data["message"];
+        })
     }
   </script>
 </body>
+
 </html>

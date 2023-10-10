@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-function Login(){
+function Login() {
     const [loginFormData, setLoginFormData] = useState({
         username: '',
         password: '',
@@ -10,28 +10,28 @@ function Login(){
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setLoginFormData({
-          ...loginFormData,
-          [name]: value,
+            ...loginFormData,
+            [name]: value,
         });
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
-    
+
         // Access form data from the loginFormData object
         const { username, password } = loginFormData;
-    
+
         // Reset the form if needed
         setLoginFormData({ username: '', password: '' });
     }
 
-    return(
+    return (
         <div className="loginPage">
             <div className="loginPageDecorations">
-                <img className="loginPageDecoration1" src={require("../../images/loginPageDecoration1.png")} alt=""/>
-                <img className="loginPageDecoration2" src={require("../../images/loginPageDecoration2.png")} alt=""/>
-                <img className="loginPageDecoration3" src={require("../../images/loginPageDecoration3.png")} alt=""/>
-                <div className="loginPageDecoration4"/>
+                <img className="loginPageDecoration1" src={require("../../images/loginPageDecoration1.png")} alt="" />
+                <img className="loginPageDecoration2" src={require("../../images/loginPageDecoration2.png")} alt="" />
+                <img className="loginPageDecoration3" src={require("../../images/loginPageDecoration3.png")} alt="" />
+                <div className="loginPageDecoration4" />
             </div>
             <div className="loginPageContent">
                 <p className="loginPageHeader">Chào mừng quay trở lại!</p>
@@ -62,8 +62,8 @@ function Login(){
                     <Link to="/register" className="loginPageRegisterButton">Đăng kí</Link>
                 </span>
                 <div className="alternateRegister">
-                    <img className="alternateRegisterIcon1" src={require("../../images/facebook.png")}/>
-                    <img className="alternateRegisterIcon2" src={require("../../images/google.png")}/>
+                    <img className="alternateRegisterIcon1" src={require("../../images/facebook.png")} />
+                    <img className="alternateRegisterIcon2" src={require("../../images/google.png")} />
                 </div>
             </div>
         </div>

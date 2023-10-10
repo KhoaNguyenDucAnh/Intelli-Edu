@@ -1,0 +1,77 @@
+* {
+    box-sizing: border-box;
+}
+
+.Ending {
+    display: flex;
+    padding: 40px 370px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    align-self: stretch;
+    background: var(--primaty-grey-light, #F6F5F4);
+    width: 1903px;
+    height: 170px;
+    box-sizing: border-box;
+}
+
+.CopyrightContent {
+    width: 1232px;
+    height: 90px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    box-sizing: border-box;
+}
+
+.CopyrightSentence {
+    color: var(--primaty-grey-dark, #757575);
+    width: 1232px;
+    height: 24px;
+    font-family: Montserrat;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 100%;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.CopyrightLine {
+    height: 1232px;
+    align-self: stretch;
+    stroke-width: 1.205px;
+    box-sizing: border-box;
+    stroke: var(--primaty-grey-medium, #E0E0E0);
+}
+
+.Contact {
+    display: flex;
+    width: 1180px;
+    height: 26px;
+    box-sizing: border-box;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Logos {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    width: 138px;
+    height: 20px;
+}
+
+.ContactEmail {
+    color: var(--primaty-grey-dark, #757575);
+    font-family: Montserrat;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 100%;
+    text-align: right;
+    width: 363px;
+    height: 20px;
+}

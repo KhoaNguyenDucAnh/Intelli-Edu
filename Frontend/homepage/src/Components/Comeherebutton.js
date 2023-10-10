@@ -1,9 +1,9 @@
 
 function Comeherebutton() {
-    return(
+    return (
         <div className="comehereButton">
             <p className="comehereText">Đến ngay →</p>
-            <div className='comehereBackground'/>
+            <div className='comehereBackground' />
         </div>
     )
 }

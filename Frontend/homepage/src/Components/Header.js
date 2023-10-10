@@ -1,18 +1,18 @@
 import { Link } from "react-router-dom"
 
 function Header() {
-    return(
+    return (
         <div className="header">
             <div className="frameHeader">
                 <div className="leftHeader">
                     <p className="logo">IntelliEdu</p>
                     <div className="navigation">
-                    <div className="navItem">
+                        <div className="navItem">
                             <p className="navText">Tài liệu</p>
                             <span class="material-symbols-outlined downArrow">
                                 expand_more
                             </span>
-                        </div> 
+                        </div>
                         <div className="withArrow navItem">
                             <p className="navText">Công cụ hỗ trợ</p>
                             <span class="material-symbols-outlined downArrow">
@@ -25,7 +25,7 @@ function Header() {
                                     <p className="toolListItem">Sơ đồ tư duy</p>
                                 </div>
                             </div>
-                        </div> 
+                        </div>
                         <div className="noArrow navItem">
                             <p className="navText">Kế hoạch</p>
                         </div>

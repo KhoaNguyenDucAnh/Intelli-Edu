@@ -1,6 +1,7 @@
-*{
+* {
   caret-color: transparent;
 }
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -14,63 +15,75 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-input{
+
+input {
   caret-color: auto;
 }
-.App{
+
+.App {
   overflow-x: hidden;
 }
-.header{
+
+.header {
   background-color: #F6F5F4;
   height: 4.84vw;
   display: flex;
   justify-content: center;
 }
-.frameHeader{
+
+.frameHeader {
   width: 94vw;
   height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.logo{
+
+.logo {
   font-family: 'Abril Fatface', cursive;
   font-size: 2.2vw;
 }
-.leftHeader{
+
+.leftHeader {
   display: flex;
   align-items: center;
 }
-.navigation{
+
+.navigation {
   display: flex;
   align-items: center;
   padding-left: 1.3vw;
   margin-left: 1.3vw;
   border-left: 0.2vw solid #E0E0E0;
 }
-.navItem{
+
+.navItem {
   cursor: pointer;
   caret-color: transparent;
   margin-right: 1vw;
   display: flex;
   align-items: center;
 }
-.navItem:hover .toolListWrapper{
+
+.navItem:hover .toolListWrapper {
   display: block;
 }
-.navText{
+
+.navText {
   font-size: 1vw;
   margin: 0;
   font-family: 'Montserrat', sans-serif;
 }
-.toolListWrapper{
+
+.toolListWrapper {
   position: absolute;
   top: 0;
   left: 0;
   padding-top: 2vw;
   display: none;
 }
-.toolList{
+
+.toolList {
   background-color: white;
   width: 10vw;
   height: 6.66vw;
@@ -80,26 +93,32 @@ input{
   justify-content: space-evenly;
   padding: 0.2vw 1vw;
 }
-.toolListItem{
+
+.toolListItem {
   margin: 0;
   font-size: 1vw;
   font-weight: 500;
   color: #828282;
 }
-.toolListItem:hover{
+
+.toolListItem:hover {
   color: black;
 }
-.withArrow{
+
+.withArrow {
   position: relative;
 }
-.noArrow:active{
+
+.noArrow:active {
   color: rgb(185, 185, 185);
 }
-.auth{
+
+.auth {
   display: flex;
   align-items: center;
 }
-.login{
+
+.login {
   cursor: pointer;
   caret-color: transparent;
   font-family: 'Montserrat', sans-serif;
@@ -115,11 +134,13 @@ input{
   color: #4BC8E7;
   text-decoration: none;
 }
-.login:active{
+
+.login:active {
   color: #7be5ff;
   background-color: rgb(250, 254, 255);
 }
-.register{
+
+.register {
   cursor: pointer;
   caret-color: transparent;
   font-family: 'Montserrat', sans-serif;
@@ -131,32 +152,38 @@ input{
   border-radius: 0.88vw;
   text-decoration: none;
 }
-.register:active{
+
+.register:active {
   background-color: #70dbf6;
 }
-.downArrow{
+
+.downArrow {
   font-size: 1.1vw;
 }
-.search{
+
+.search {
   background: url('images/SearchBackground.png');
   height: 40vw;
   background-size: cover;
   background-repeat: no-repeat;
   display: flex;
 }
-.searchContent{
+
+.searchContent {
   height: 100%;
   width: 40vw;
   margin-left: 13vw;
 }
-.slogan{
+
+.slogan {
   height: 17vw;
   width: 37vw;
   padding-top: 8.36vw;
   background-size: cover;
   margin-bottom: 1.32vw;
 }
-.searchBarBackground{
+
+.searchBarBackground {
   background-color: rgba(0, 0, 0, 0.2);
   height: 3.08vw;
   width: 100%;
@@ -168,7 +195,8 @@ input{
   margin: 0;
   position: relative;
 }
-.searchBar{
+
+.searchBar {
   width: 100%;
   height: 100%;
   border-radius: 0.308vw;
@@ -181,7 +209,8 @@ input{
   font-size: 1.76vw;
   color: gray;
 }
-.searchIcon{
+
+.searchIcon {
   position: absolute;
   left: 1.8vw;
   display: flex;
@@ -190,17 +219,20 @@ input{
   font-size: 1.76vw;
   color: gray;
 }
-.leaderboard{
+
+.leaderboard {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   position: relative;
 }
-.trophy{
+
+.trophy {
   width: 77%;
 }
-.trophyText1{
+
+.trophyText1 {
   position: absolute;
   top: 4vw;
   left: 21vw;
@@ -209,7 +241,8 @@ input{
   color: #5455D4;
   font-weight: 600;
 }
-.trophyText2{
+
+.trophyText2 {
   position: absolute;
   font-size: 1.7vw;
   top: 5.7vw;
@@ -218,7 +251,8 @@ input{
   font-weight: 600;
   color: white;
 }
-.LeaderboardItem{
+
+.LeaderboardItem {
   width: 11.56vw;
   height: 3.33vw;
   background-color: #aed4ff;
@@ -228,7 +262,8 @@ input{
   display: flex;
   align-items: center;
 }
-.LeaderboardItemBackground{
+
+.LeaderboardItemBackground {
   height: 80%;
   background-color: #cce4ff;
   aspect-ratio: 1;
@@ -238,61 +273,74 @@ input{
   justify-content: center;
   align-items: center;
 }
-.LeaderboardItemContent{
+
+.LeaderboardItemContent {
   margin-left: 0.5vw;
 }
-.LeaderboardItemUsername{
+
+.LeaderboardItemUsername {
   font-size: 1.25vw;
   margin: 0;
   font-weight: bold;
   color: #1F4A7C;
 }
-.LeaderboardItemLikes{
+
+.LeaderboardItemLikes {
   font-size: 0.73vw;
   margin: 0;
 }
-.LeaderboardIcon{
+
+.LeaderboardIcon {
   width: 1.59vw;
   aspect-ratio: 1;
 }
-.features{
+
+.features {
   background: url('./images/featurebackground.png');
   background-size: cover;
   background-repeat: no-repeat;
 }
-.feature{
+
+.feature {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 76vw;
   padding: 0 12vw 6.6vw 12vw;
 }
-.featureDescription{
+
+.featureDescription {
   width: 56%;
   margin: 3.08vw 22%;
 }
-.arrowText{
+
+.arrowText {
   font-size: 3.5vw;
   color: white;
 }
-.featurePicture{
+
+.featurePicture {
   width: 29vw;
 }
-.featureContent{
+
+.featureContent {
   width: 33vw;
 }
-.line{
+
+.line {
   background-color: #0066DE;
   height: 0.15vw;
   width: 4vw;
   margin-top: 0.6vw;
   margin-right: 0.8vw;
 }
-.featureContentHeader{
+
+.featureContentHeader {
   display: flex;
   width: 90%;
 }
-.featureContentHeaderText{
+
+.featureContentHeaderText {
   font-family: 'Lato', sans-serif;
   font-size: 1.25vw;
   margin: 0;
@@ -301,22 +349,26 @@ input{
   margin-bottom: 0.88vw;
   font-weight: 600;
 }
-.featureContentText{
+
+.featureContentText {
   font-size: 1.458vw;
   font-family: 'Montserrat', sans-serif;
   font-weight: 900;
 }
-.featureName{
+
+.featureName {
   width: 29vw;
   margin: 0.88vw 0;
 }
-.comehereButton{
+
+.comehereButton {
   width: 18.2vw;
   height: 4vw;
   position: relative;
   cursor: pointer;
 }
-.comehereText{
+
+.comehereText {
   color: white;
   background-color: #0066DE;
   width: 17.74vw;
@@ -333,7 +385,8 @@ input{
   font-size: 2.4vw;
   font-family: 'Quicksand', sans-serif;
 }
-.comehereBackground{
+
+.comehereBackground {
   position: absolute;
   background-color: black;
   bottom: 0;
@@ -342,61 +395,74 @@ input{
   height: 3.54vw;
   border-radius: 1.76vw;
 }
-.comehereButton:active .comehereBackground{
+
+.comehereButton:active .comehereBackground {
   background-color: transparent;
 }
-.comehereButton:active .comehereText{
+
+.comehereButton:active .comehereText {
   top: 0.115vw;
   left: 0.115vw;
 }
-.projectoverall{
+
+.projectoverall {
   background: url('./images/projectoverallbackground.png');
   background-size: cover;
   height: 38.4vw;
   width: 100vw;
 }
-.projectoverallUpperBackground{
+
+.projectoverallUpperBackground {
   margin-top: -0.44vw;
   width: 100vw;
 }
-.projectoverallTop{
+
+.projectoverallTop {
   display: flex;
   width: 84.4vw;
   justify-content: space-between;
   margin: 2.64vw 7.8vw;
 }
-.projectoverallPicture{
+
+.projectoverallPicture {
   width: 37.7vw;
   height: 26vw;
 }
-.projectoverallHeader{
+
+.projectoverallHeader {
   width: 36vw;
 }
-.projectoverallText{
+
+.projectoverallText {
   width: 36vw;
   font-family: 'Montserrat', sans-serif;
   font-weight: 900;
   text-indent: 3.5vw;
   font-size: 1.5vw;
 }
-.footer{
+
+.footer {
   position: relative;
   padding-bottom: 3.08vw;
 }
-.footerHeader{
+
+.footerHeader {
   position: absolute;
   width: 76.3vw;
   margin: 0 11.85vw;
   top: 0;
 }
-.footerUpperBackground{
+
+.footerUpperBackground {
   width: 100vw;
 }
-.footerAuth{
+
+.footerAuth {
   display: flex;
   align-items: center;
 }
-.footerLogin{
+
+.footerLogin {
   cursor: pointer;
   caret-color: transparent;
   font-family: 'Montserrat', sans-serif;
@@ -409,11 +475,13 @@ input{
   background-color: #F6F5F4;
   text-decoration: none;
 }
-.footerLogin:active{
+
+.footerLogin:active {
   color: #7be5ff;
   background-color: rgb(250, 254, 255);
 }
-.footerRegister{
+
+.footerRegister {
   cursor: pointer;
   caret-color: transparent;
   font-family: 'Montserrat', sans-serif;
@@ -425,39 +493,46 @@ input{
   border-radius: 0.88vw;
   text-decoration: none;
 }
-.footerRegister:active{
+
+.footerRegister:active {
   background-color: #70dbf6;
 }
-.footerContent{
+
+.footerContent {
   display: flex;
   align-items: center;
   width: 75vw;
   justify-content: space-between;
   margin-left: 16vw;
 }
-.footerStats{
+
+.footerStats {
   display: flex;
   justify-content: space-between;
   width: 11.5vw;
 }
-.footerStat{
+
+.footerStat {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.footerStatNum{
+
+.footerStatNum {
   font-family: 'Lato', sans-serif;
   font-weight: bold;
   font-size: 1.5625vw;
   margin: 0;
   margin-bottom: 0.44vw;
 }
-.footerStatText{
+
+.footerStatText {
   font-family: 'Lato', sans-serif;
   font-size: 1.2vw;
   margin: 0;
 }
-.footerComment{
+
+.footerComment {
   background-color: #ebfffc;
   width: 25.5vw;
   height: 12.1875vw;
@@ -465,77 +540,90 @@ input{
   padding: 0 1.5vw;
   position: relative;
 }
-.stars{
+
+.stars {
   display: flex;
   justify-content: space-between;
   width: 7vw;
   height: 1.4vw;
   margin: 2.2vw 0 1.76vw 0;
 }
-.star{
+
+.star {
   width: 1.362vw;
   height: 1.4vw;
 }
-.footerCommentText{
+
+.footerCommentText {
   font-weight: 600;
   margin: 0;
   margin-bottom: 0.88vw;
   font-family: 'Lato', sans-serif;
   font-size: 1.25vw;
 }
-.commentUser{
+
+.commentUser {
   display: flex;
   align-items: center;
 }
-.commentUserAvatar{
+
+.commentUserAvatar {
   width: 2.97vw;
   height: 2.97vw;
   margin-right: 1vw;
 }
-.commentUsername{
+
+.commentUsername {
   margin: 0;
   font-weight: bold;
   font-family: 'Lato', sans-serif;
   font-size: 1.25vw;
 }
-.commentUserJob{
+
+.commentUserJob {
   margin: 0;
   font-family: 'Lato', sans-serif;
   font-size: 1vw;
 }
-.commentAccessory{
+
+.commentAccessory {
   position: absolute;
   width: 4.87vw;
   height: 3.96vw;
   right: 1.5vw;
   top: -2.7vw;
 }
-.loginPage{
+
+.loginPage {
   overflow: hidden;
   background-color: #EBEFFF;
   height: 100vh;
   width: 100vw;
 }
-.loginPageHeader{
+
+.loginPageHeader {
   text-align: center;
   font-weight: bold;
   font-size: 2vw;
 }
-.loginPageDecoration1{
+
+.loginPageDecoration1 {
   position: absolute;
   width: 14.64vw;
   height: 10.4vw;
   left: 0;
   bottom: 0;
 }
-.loginPageDecoration2{
+
+.loginPageDecoration2 {
   position: absolute;
   width: 14.4vw;
   height: 9.76vw;
   left: 0;
   bottom: 0;
 }
-.loginPageDecoration3{
+
+.loginPageDecoration3 {
   position: absolute;
   width: 31.2vw;
   height: 27.816vw;
@@ -543,7 +631,8 @@ input{
   top: calc((100% - 27.816vw)/2);
   z-index: 1;
 }
-.loginPageDecoration4{
+
+.loginPageDecoration4 {
   position: absolute;
   width: 34.22vw;
   height: 100vh;
@@ -551,7 +640,8 @@ input{
   right: 0;
   background-color: #AFB3FF;
 }
-.loginPageContent{
+
+.loginPageContent {
   width: 57vw;
   padding-top: 10vh;
   position: absolute;
@@ -560,15 +650,18 @@ input{
   display: flex;
   flex-direction: column;
 }
-.loginForm{
+
+.loginForm {
   width: 60%;
   margin-left: 20%;
 }
-.loginUsernameLabel{
+
+.loginUsernameLabel {
   display: block;
   font-size: 1.3vw;
 }
-.loginUsernameInput{
+
+.loginUsernameInput {
   display: block;
   width: calc(100% - 1.4vw);
   border-radius: 100vh;
@@ -579,12 +672,14 @@ input{
   background-color: #EBEFFF;
   font-size: 1.3vw;
 }
-.loginPasswordLabel{
+
+.loginPasswordLabel {
   margin-top: 2.5vh;
   font-size: 1.3vw;
   display: block;
 }
-.loginPasswordInput{
+
+.loginPasswordInput {
   display: block;
   width: calc(100% - 1.4vw);
   border-radius: 100vh;
@@ -595,7 +690,8 @@ input{
   background-color: #EBEFFF;
   font-size: 1.3vw;
 }
-.loginSubmitButton{
+
+.loginSubmitButton {
   width: 100%;
   aspect-ratio: 11;
   border-radius: 100vh;
@@ -605,29 +701,35 @@ input{
   color: white;
   font-size: 1.3vw;
 }
-.loginSubmitButton:active{
+
+.loginSubmitButton:active {
   background-color: #818aed;
 }
-.loginPageRegisterText{
+
+.loginPageRegisterText {
   text-align: center;
   margin-top: 6vh;
   font-size: 1.3vw;
 }
-.loginPageRegisterButton{
+
+.loginPageRegisterButton {
   margin-left: 0.5vw;
   text-decoration: none;
   font-weight: 600;
   color: #656ED3;
 }
-.loginPageRegisterButton:active{
+
+.loginPageRegisterButton:active {
   color: #0015ff;
 }
-.alternateLogin{
+
+.alternateLogin {
   display: flex;
   justify-content: center;
   margin-top: 3vh;
 }
-.alternateLoginIcon1{
+
+.alternateLoginIcon1 {
   width: 2.5vw;
   aspect-ratio: 1;
   padding: 0.7vw;
@@ -635,13 +737,16 @@ input{
   border-radius: 100vh;
   cursor: pointer;
 }
-.alternateLoginIcon1:hover{
+
+.alternateLoginIcon1:hover {
   background-color: white;
 }
-.alternateLoginIcon1:active{
+
+.alternateLoginIcon1:active {
   background-color: rgb(222, 222, 222);
 }
-.alternateLoginIcon2{
+
+.alternateLoginIcon2 {
   width: 2.5vw;
   aspect-ratio: 1;
   padding: 0.7vw;
@@ -650,33 +755,39 @@ input{
   margin-left: 2vw;
   cursor: pointer;
 }
-.alternateLoginIcon2:hover{
+
+.alternateLoginIcon2:hover {
   background-color: white;
 }
-.alternateLoginIcon2:active{
+
+.alternateLoginIcon2:active {
   background-color: rgb(222, 222, 222);
 }
-.registerPage{
+
+.registerPage {
   overflow: hidden;
   background-color: #EBEFFF;
   height: 100vh;
   width: 100vw;
 }
-.registerPageDecoration1{
+
+.registerPageDecoration1 {
   position: absolute;
   width: 29vw;
   aspect-ratio: 1;
   left: 9vw;
   top: 0;
 }
-.registerPageDecoration2{
+
+.registerPageDecoration2 {
   position: absolute;
   width: 26.45vw;
   aspect-ratio: 0.85;
   left: 12.89vw;
   top: 0;
 }
-.registerPageDecoration3{
+
+.registerPageDecoration3 {
   position: absolute;
   width: 30vw;
   height: 28vw;
@@ -684,29 +795,34 @@ input{
   top: 10vw;
   z-index: 1;
 }
-.registerPageContent{
+
+.registerPageContent {
   width: 28.67vw;
   padding-right: 12.1vw;
   position: absolute;
   right: 0;
   top: 0;
 }
-.registerPageHeader{
+
+.registerPageHeader {
   margin: 0;
   margin-top: 6vh;
   font-weight: bold;
   font-size: 1.7vw;
   text-align: center;
 }
-.registerForm{
+
+.registerForm {
   width: 100%;
 }
-.registerLabel{
+
+.registerLabel {
   display: block;
   margin-top: 1.5vh;
   font-size: 1.2vw;
 }
-.registerInput{
+
+.registerInput {
   display: block;
   display: block;
   width: calc(100% - 1.4vw);
@@ -718,7 +834,8 @@ input{
   background-color: #EBEFFF;
   font-size: 1.2vw;
 }
-.registerSubmitButton{
+
+.registerSubmitButton {
   width: 100%;
   aspect-ratio: 13;
   border-radius: 100vh;
@@ -728,30 +845,36 @@ input{
   color: white;
   font-size: 1.2vw;
 }
-.registerSubmitButton:active{
+
+.registerSubmitButton:active {
   background-color: #818aed;
 }
-.registerPageLoginText{
+
+.registerPageLoginText {
   display: block;
   text-align: center;
   margin-top: 3vh;
   font-size: 1.3vw;
 }
-.registerPageLoginButton{
+
+.registerPageLoginButton {
   margin-left: 0.5vw;
   text-decoration: none;
   font-weight: 600;
   color: #656ED3;
 }
-.registerPageLoginButton:active{
+
+.registerPageLoginButton:active {
   color: #0015ff;
 }
-.alternateRegister{
+
+.alternateRegister {
   display: flex;
   justify-content: center;
   margin-top: 3vh;
 }
-.alternateRegisterIcon1{
+
+.alternateRegisterIcon1 {
   width: 2.5vw;
   aspect-ratio: 1;
   padding: 0.7vw;
@@ -759,13 +882,16 @@ input{
   border-radius: 100vh;
   cursor: pointer;
 }
-.alternateRegisterIcon1:hover{
+
+.alternateRegisterIcon1:hover {
   background-color: white;
 }
-.alternateRegisterIcon1:active{
+
+.alternateRegisterIcon1:active {
   background-color: rgb(222, 222, 222);
 }
-.alternateRegisterIcon2{
+
+.alternateRegisterIcon2 {
   width: 2.5vw;
   aspect-ratio: 1;
   padding: 0.7vw;
@@ -774,9 +900,11 @@ input{
   margin-left: 2vw;
   cursor: pointer;
 }
-.alternateRegisterIcon2:hover{
+
+.alternateRegisterIcon2:hover {
   background-color: white;
 }
-.alternateRegisterIcon2:active{
+
+.alternateRegisterIcon2:active {
   background-color: rgb(222, 222, 222);
 }
