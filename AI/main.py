@@ -17,7 +17,31 @@ flat=[[None for i in range(100000)],[None for i in range(100000)]]
 n=1
 d1=0
 d2=0
+
 model = SentenceTransformer('keepitreal/vietnamese-sbert')
+
+from claude_api import Client
+import os
+cookie='intercom-device-id-lupk8zyo=435acf1c-a907-4409-ae7b-593d8b45e4a5; __cf_bm=v6JqButMzKBvfpTQXoJTrFdg8h.CA.L4ELkCO4K665w-1694945465-0-ATdUa52goRTNwsvZayww9rer2sGOMP3E1gwX8nZD0mQkgrmADeiIFTPZUfTntdHsA1tLtBNuh6R4k5KbPnMHY04=; cf_clearance=yP6Y7jTzeRGd2O_HnKCEKFToerLmWY8GLP0FojwkK0Q-1694945468-0-1-2d56ae04.e69e4851.7a57f1e4-0.2.1694945468; sessionKey=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; intercom-session-lupk8zyo=VTRoNlBWOUpoNDdEYXAvWGJNOHdGUThVNGhEUlFicFBEWWRxanMyWlhmbFh1Q0xoVThQQldwVDhoYjhqbVhNOC0tZGVMV1lPQ3Y2bmZzbGo0VU1zL2hOQT09--00f859741b60b442d2c9c692d09479ec9e329c09'
+claude_api=Client(cookie)
+json1={}
+json2={}
+def get_map():
+  file=''
+  global json1,json2
+  json2='user mindmap'
+  new_chat = claude_api.create_new_chat()
+  conversation_id = new_chat['uuid']
+  prompt='Convert the file to Vietnamese'
+  claude_api.send_message(prompt, conversation_id, attachment=file)
+  prompt='Create a comprehensive mind map in vietnamese for that essay, please provide a code box with Markdown language'
+  claude_api.send_message(prompt, conversation_id)
+  prompt='Thêm những nhánh về ví dụ và số liệu quan trọng nếu có'
+  claude_api.send_message(prompt, conversation_id)
+  prompt='convert mindmap to json with type : title -> root -> label -> children'
+  json1=claude_api.send_message(prompt, conversation_id)
+  claude_api.delete_conversation(conversation_id)
+  return
 
 json1={
   "title": "Sự thành lập Liên hợp quốc",
@@ -178,6 +202,7 @@ def to_tree(index,js,u):
         adj[index][n].append(u)
         parent[index][n]=u
         to_tree(index,js[i],n)
+
 def dfs(index,u):
     nChild[index][u]=1
     for v in adj[index][u]:
@@ -218,6 +243,15 @@ def find(text,n):
   position=hits[0][0]['corpus_id']
   return position
 
+def compare(ct,up):
+  new_chat = claude_api.create_new_chat()
+  conversation_id = new_chat['uuid']
+  prompt=str(ct)+' '+str(up)+'\n'
+  prompt+='Can you see if the second text is missing any information or numbers or wrong order compare to the first text in less than 5 sentences'
+  response = claude_api.send_message(prompt, conversation_id)
+  claude_api.delete_conversation(conversation_id)
+  return response
+
 to_tree(0,json1,1)
 d1=n
 n=1
@@ -238,7 +272,7 @@ for i in range(int(nChain[0])):
   user_text=[]
   if(End_index==Head_index):
     user_text=flat[1][int(pos[1][int(Head_index)]):int(pos[1][int(End_index)])+1]
-    print(comp_text,user_text)
+    print(compare(comp_text,user_text))
   loca=0
   while(End_index!=Head_index):
     user_chain=int(chainInd[1][int(End_index)])
@@ -253,4 +287,4 @@ for i in range(int(nChain[0])):
     user_chain=int(chainInd[1][int(End_index)])
   if(loca==-1):
     print('sai vi tri dang le',flat[1][findHead],'va',flat[1][findEnd],'o cung 1 chuoi')
-  print(comp_text,user_text)
+  print(compare(comp_text,user_text))
