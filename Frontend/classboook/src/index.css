@@ -1,5 +1,6 @@
 * {
   caret-color: transparent;
+  box-sizing: border-box;
 }
 
 body {
@@ -41,8 +42,13 @@ input {
 }
 
 .logo {
-  font-family: 'Abril Fatface', cursive;
-  font-size: 2.2vw;
+  color: #000;
+  font-family: Abril Fatface;
+  font-size: 2.0833333333333333333333333333333vw;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 100%;
+  letter-spacing: -0.8px;
 }
 
 .leftHeader {
@@ -203,6 +209,46 @@ input {
   background-color: white;
 }
 
+.Frame20NewMindMap {
+  display: flex;
+  width: 99vw;
+  height: 110px;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  gap: 5.0520833333333333333333333333333vw;
+  top: 180px;
+  left: 0;
+  background-color: white;
+}
+
+.searchBarBackground {
+  height: 3.59375vw;
+  width: 40.364583333333333333333333333333vw;
+  border-radius: 0.44vw;
+  padding: 0.66vw 1vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  position: relative;
+  border-radius: 8px;
+  background: var(--light-untitled-white, #FFF);
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.12);
+}
+
+.searchBar {
+  width: 36.09375vw;
+  height: 3.59375vw;
+  border-radius: 0.308vw;
+  caret-color: auto;
+  padding: 0 1vw 0 3vw;
+  margin-left: 1.5625vw;
+  outline: none;
+  border: none;
+  font-size: 1.5625vw;
+}
+
 .Frame8 {
   background-color: white;
   width: 49.4vw;
@@ -281,7 +327,6 @@ input {
 
 .Frame8NewText {
   width: 9.2vw;
-
   font-family: Dongle;
   font-size: 2.34375vw;
   font-style: normal;
@@ -320,7 +365,7 @@ input {
 .Frame9Text {
   width: 17vw;
   font-family: Dongle;
-  font-size: 40px;
+  font-size: 2.34375vw;
   font-style: normal;
   font-weight: 400;
   line-height: 100%;
@@ -345,12 +390,10 @@ input {
 
   border: none;
   display: flex;
-  padding: 40px 528px 100px 528px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 40px;
-  align-self: stretch;
+  gap: 2.0833333333333333333333333333333vw;
   background: var(--primaty-grey-light, #F6F5F4);
   width: 100vw;
   height: 1318px;
@@ -358,36 +401,11 @@ input {
 
 }
 
-.Frame35259 {
+.ChathistoryContent {
   margin-top: 40px;
   display: flex;
-  width: 926px;
+  width: 48.229166666666666666666666666667vw;
   height: 288px;
-  padding-right: 0px;
-  align-items: flex-start;
-  border-radius: 14px;
-  background: #fff;
-  box-shadow: 0px 22.89813px 45.79626px -11.44906px rgba(52, 41, 39, 0.08);
-}
-
-.Frame35260 {
-  margin-top: 40px;
-  display: flex;
-  width: 926px;
-  height: 288px;
-  padding-right: 0px;
-  align-items: flex-start;
-  border-radius: 14px;
-  background: #fff;
-  box-shadow: 0px 22.89813px 45.79626px -11.44906px rgba(52, 41, 39, 0.08);
-}
-
-.Frame35262 {
-  margin-top: 40px;
-  display: flex;
-  width: 926px;
-  height: 288px;
-  padding-right: 0px;
   align-items: flex-start;
   border-radius: 14px;
   background: #fff;
@@ -395,31 +413,30 @@ input {
 }
 
 .Frame15 {
-  width: 864px;
-  height: 44px;
+  display: flex;
+  width: 45vw;
+  height: 2.2916666666666666666666666666667vw;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 24px;
-  align-self: stretch;
+  gap: 1.25vw;
 }
 
 .Frame40 {
   display: flex;
-  padding: 14px 17px;
   justify-content: center;
   align-items: center;
   gap: 19px;
   border-radius: 100px;
   border: 3px solid #4BC8E7;
-  width: 44px;
-  height: 44px;
+  width: 2.2916666666666666666666666666667vw;
+  height: 2.2916666666666666666666666666667vw;
 }
 
 .Frame40Text {
   color: #4BC8E7;
   font-family: Montserrat;
-  font-size: 16px;
+  font-size: 0.83333333333333333333333333333333vw;
   font-style: normal;
   font-weight: 700;
   line-height: 100%;
@@ -427,137 +444,21 @@ input {
   letter-spacing: -0.64px;
 }
 
-.Frame41 {
+.Pagenumber {
   display: flex;
-  padding: 14px 17px;
   justify-content: center;
   align-items: center;
   gap: 19px;
   border-radius: 100px;
   border: 3px solid #4BC8E7;
-  width: 44px;
-  height: 44px;
+  width: 2.2916666666666666666666666666667vw;
+  height: 2.2916666666666666666666666666667vw;
 }
 
-.Frame41Text {
+.PagenumberText {
   color: #4BC8E7;
   font-family: Montserrat;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 100%;
-  /* 16px */
-  letter-spacing: -0.64px;
-}
-
-.Frame42 {
-  display: flex;
-  padding: 14px 17px;
-  justify-content: center;
-  align-items: center;
-  gap: 19px;
-  border-radius: 100px;
-  border: 3px solid #4BC8E7;
-  width: 44px;
-  height: 44px;
-}
-
-.Frame42Text {
-  color: #4BC8E7;
-  font-family: Montserrat;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 100%;
-  /* 16px */
-  letter-spacing: -0.64px;
-}
-
-.Frame43 {
-  display: flex;
-  padding: 14px 17px;
-  justify-content: center;
-  align-items: center;
-  gap: 19px;
-  border-radius: 100px;
-  border: 3px solid #4BC8E7;
-  width: 44px;
-  height: 44px;
-}
-
-.Frame43Text {
-  color: #4BC8E7;
-  font-family: Montserrat;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 100%;
-  /* 16px */
-  letter-spacing: -0.64px;
-}
-
-.Frame46 {
-  display: flex;
-  padding: 14px 17px;
-  justify-content: center;
-  align-items: center;
-  gap: 19px;
-  border-radius: 100px;
-  border: 3px solid #4BC8E7;
-  width: 44px;
-  height: 44px;
-}
-
-.Frame46Text {
-  color: #4BC8E7;
-  font-family: Montserrat;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 100%;
-  /* 16px */
-  letter-spacing: -0.64px;
-}
-
-.Frame47 {
-  display: flex;
-  padding: 14px 17px;
-  justify-content: center;
-  align-items: center;
-  gap: 19px;
-  border-radius: 100px;
-  border: 3px solid #4BC8E7;
-  width: 44px;
-  height: 44px;
-}
-
-.Frame47Text {
-  color: #4BC8E7;
-  font-family: Montserrat;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 100%;
-  /* 16px */
-  letter-spacing: -0.64px;
-}
-
-.Frame48 {
-  display: flex;
-  padding: 14px 17px;
-  justify-content: center;
-  align-items: center;
-  gap: 19px;
-  border-radius: 100px;
-  border: 3px solid #4BC8E7;
-  width: 44px;
-  height: 44px;
-}
-
-.Frame48Text {
-  color: #4BC8E7;
-  font-family: Montserrat;
-  font-size: 16px;
+  font-size: 0.83333333333333333333333333333333vw;
   font-style: normal;
   font-weight: 700;
   line-height: 100%;
@@ -567,19 +468,18 @@ input {
 
 .Frame2 {
   display: flex;
-  padding: 14px 17px;
   justify-content: center;
   align-items: center;
   gap: 19px;
   border-radius: 100px;
   border: 3px solid #4BC8E7;
-  width: 44px;
-  height: 44px;
+  width: 2.2916666666666666666666666666667vw;
+  height: 2.2916666666666666666666666666667vw;
 }
 
 .More {
   display: flex;
-  width: 15px;
+  width: 0.83333333333333333333333333333333vw;
   flex-direction: column;
   justify-content: flex-end;
   align-self: stretch;
@@ -602,7 +502,7 @@ input {
   gap: 40px;
   align-self: stretch;
   background: var(--primaty-grey-light, #F6F5F4);
-  width: 1903px;
+  width: 100vw;
   height: 547px;
   box-sizing: border-box;
 }
@@ -632,9 +532,10 @@ input {
   align-items: flex-start;
   gap: 40px;
   flex: 1 0 0;
-  width: 490px;
+  width: 25.52vw;
   height: 200px;
 }
+
 
 .Frame18 {
   display: flex;
@@ -688,15 +589,21 @@ input {
 
 .Frame35MindMap {
   display: flex;
-  padding: 40px 528px 100px 528px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 40px;
-  align-self: stretch;
   background: var(--primaty-grey-light, #F6F5F4);
-  width: 1903px;
+  width: 100vw;
   height: 1294px;
+}
+
+.ContentsMindmap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 51.458333333333333333333333333333vw;
 }
 
 .LeftSidebar {

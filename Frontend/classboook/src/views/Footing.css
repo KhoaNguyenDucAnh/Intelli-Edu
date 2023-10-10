@@ -4,19 +4,18 @@
 
 .Ending {
     display: flex;
-    padding: 40px 370px;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    align-content: center;
     gap: 10px;
-    align-self: stretch;
     background: var(--primaty-grey-light, #F6F5F4);
-    width: 1903px;
+    width: 100vw;
     height: 170px;
     box-sizing: border-box;
 }
 
 .CopyrightContent {
-    width: 1232px;
+    width: 64.166666666666666666666666666667vw;
     height: 90px;
     box-sizing: border-box;
     display: flex;
@@ -28,10 +27,10 @@
 
 .CopyrightSentence {
     color: var(--primaty-grey-dark, #757575);
-    width: 1232px;
-    height: 24px;
+    width: 64.166666666666666666666666666667vw;
+    height: 1.25vw;
     font-family: Montserrat;
-    font-size: 24px;
+    font-size: 1.25vw;
     font-style: normal;
     font-weight: 600;
     line-height: 100%;
@@ -40,8 +39,7 @@
 }
 
 .CopyrightLine {
-    height: 1232px;
-    align-self: stretch;
+    height: 64.166666666666666666666666666667vw;
     stroke-width: 1.205px;
     box-sizing: border-box;
     stroke: var(--primaty-grey-medium, #E0E0E0);
@@ -49,7 +47,7 @@
 
 .Contact {
     display: flex;
-    width: 1180px;
+    width: 61.458333333333333333333333333333vw;
     height: 26px;
     box-sizing: border-box;
     justify-content: space-between;
@@ -59,19 +57,19 @@
 .Logos {
     display: flex;
     align-items: center;
-    gap: 30px;
-    width: 138px;
-    height: 20px;
+    gap: 1.5625vw;
+    width: 7.1875vw;
+    height: 1.0416666666666666666666666666667vw;
 }
 
 .ContactEmail {
     color: var(--primaty-grey-dark, #757575);
     font-family: Montserrat;
-    font-size: 20px;
+    font-size: 1.0416666666666666666666666666667vw;
     font-style: normal;
     font-weight: 600;
     line-height: 100%;
     text-align: right;
-    width: 363px;
-    height: 20px;
+    width: 18.90625vw;
+    height: 1.0416666666666666666666666666667vw;
 }

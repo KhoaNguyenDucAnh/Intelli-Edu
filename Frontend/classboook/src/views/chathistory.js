@@ -54,31 +54,31 @@ class Heading extends React.Component {
                 <div className='Main'>
 
                     <div className='Frame35ChatHistory'>
-                        <div className='Frame35259'>
+                        <div className='ChathistoryContent'>
                         </div>
-                        <div className='Frame35260'>
+                        <div className='ChathistoryContent'>
                         </div>
-                        <div className='Frame35262'>
+                        <div className='ChathistoryContent'>
                         </div>
                         <div className='Frame15'>
                             <div className='Frame40'>
                                 <div className='Frame40Text'>←
                                 </div>
                             </div>
-                            <div className='Frame41'><div className='Frame41Text'>1
+                            <div className='Pagenumber'><div className='PagenumberText'>1
                             </div></div>
-                            <div className='Frame42'><div className='Frame40Text'>2
+                            <div className='Pagenumber'><div className='PagenumberText'>2
                             </div></div>
-                            <div className='Frame43'><div className='Frame40Text'>3
+                            <div className='Pagenumber'><div className='PagenumberText'>3
                             </div></div>
                             <div className='More'>...</div>
-                            <div className='Frame46'><div className='Frame40Text'>27
+                            <div className='Pagenumber'><div className='PagenumberText'>27
                             </div></div>
-                            <div className='Frame47'><div className='Frame40Text'>28
+                            <div className='Pagenumber'><div className='PagenumberText'>28
                             </div></div>
-                            <div className='Frame48'><div className='Frame40Text'>29
+                            <div className='Pagenumber'><div className='PagenumberText'>29
                             </div></div>
-                            <div className='Frame2'><div className='Frame40Text'>→
+                            <div className='Frame2'><div className='PagenumberText'>→
                             </div>
                             </div>
                         </div>

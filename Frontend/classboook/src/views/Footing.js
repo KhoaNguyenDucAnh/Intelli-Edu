@@ -7,7 +7,7 @@ class Heading extends React.Component {
                 <div className="Ending">
                     <div className='CopyrightContent'>
                         <div className='CopyrightSentence'>Một dự án vì cộng đồng nhằm nâng cao khả năng tự học của học sinh được thực hiện bởi IntelliEdu</div>
-                        <svg className='CopyrightLine' xmlns="http://www.w3.org/2000/svg" width="1232" height="2" viewBox="0 0 1232 2" fill="none">
+                        <svg className='CopyrightLine' xmlns="http://www.w3.org/2000/svg" width="64.166666666666666666666666666667vw" height="2" viewBox="0 0 1232 2" fill="none">
                             <path d="M0 1L1232 0.999946" stroke="#E0E0E0" stroke-width="1.20466" />
                         </svg>
                         <div className='Contact'>

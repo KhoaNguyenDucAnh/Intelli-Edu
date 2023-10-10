@@ -6,8 +6,8 @@ class mindmap extends React.Component {
         return (
             <>
                 <div className='Frame35'>
-                    <div className='Frame20'>
-                        <div className='Frame8'>
+                    <div className='Frame20NewMindMap'>
+                        <span className='Frame8'>
                             <Link to="/mindmap" className='Frame3' onClick={this.HandleMindMap}>
                                 <svg className='icon1' xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
                                     <path d="M6.66667 23.6667V18.6454L12.08 22.1827C13.2456 22.9442 14.6077 23.3498 16 23.3498C17.3923 23.3498 18.7544 22.9442 19.92 22.1827L25.3333 18.6454V23.6667C25.3333 23.8831 25.2632 24.0936 25.1333 24.2667L25.132 24.268L25.1307 24.2707L25.1267 24.276L25.1147 24.2893L25.0987 24.3107L25.0813 24.3333L24.9667 24.468C24.8321 24.6207 24.6911 24.7675 24.544 24.908C24.1747 25.264 23.624 25.7267 22.8773 26.1853C21.3827 27.1053 19.1187 28 16 28C12.8813 28 10.6187 27.1067 9.12133 26.1853C8.52218 25.8202 7.96349 25.3925 7.45467 24.9093C7.25281 24.7146 7.0627 24.508 6.88533 24.2907L6.87333 24.2773L6.86933 24.2707V24.268C6.73872 24.0947 6.66763 23.8837 6.66667 23.6667ZM29.5467 13.504L18.8267 20.508C17.9862 21.0573 17.004 21.3498 16 21.3498C14.996 21.3498 14.0138 21.0573 13.1733 20.508L4 14.5147V21.6667C4 21.9319 3.89464 22.1863 3.70711 22.3738C3.51957 22.5613 3.26522 22.6667 3 22.6667C2.73478 22.6667 2.48043 22.5613 2.29289 22.3738C2.10536 22.1863 2 21.9319 2 21.6667V13.3333C2 13.216 2.02 13.104 2.05733 13C1.98224 12.7875 1.98116 12.5558 2.05425 12.3426C2.12734 12.1294 2.27032 11.9471 2.46 11.8253L13.212 4.93202C14.0441 4.3987 15.0117 4.11523 16 4.11523C16.9883 4.11523 17.9559 4.3987 18.788 4.93202L29.54 11.8253C29.6804 11.9155 29.7961 12.0394 29.8764 12.1857C29.9566 12.3319 29.9991 12.496 29.9997 12.6629C30.0004 12.8297 29.9593 12.9941 29.8801 13.141C29.801 13.288 29.6864 13.4127 29.5467 13.504Z" fill="#000" />
@@ -36,16 +36,28 @@ class mindmap extends React.Component {
                                 </svg>
                                 <div className='Frame9Text' style={{ color: "#757575" }}>Lịch sử  trò chuyện  </div>
                             </Link>
-                        </div>
+                        </span>
+                        <span className='searchBarBackground'>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M10 17C13.866 17 17 13.866 17 10C17 6.13401 13.866 3 10 3C6.13401 3 3 6.13401 3 10C3 13.866 6.13401 17 10 17Z" stroke="#272937" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M21 21L15 15" stroke="#272937" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <input
+                                className="searchBar"
+                                placeholder="Tìm kiếm"
+                            />
+                        </span>
                     </div>
                 </div>
 
                 <div className='Frame35MindMap'>
-                    <div className='LeftSidebar'>
-                        <div className='SidebarContent'>
-                            <div className='ContentBox'>
-                                <div className='NewBox'>
-                                    <div className='NewBoxText'>Gần đây</div>
+                    <div className='ContentsMindmap'>
+                        <div className='LeftSidebar'>
+                            <div className='SidebarContent'>
+                                <div className='ContentBox'>
+                                    <div className='NewBox'>
+                                        <div className='NewBoxText'>Gần đây</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -55,20 +67,20 @@ class mindmap extends React.Component {
                             <div className='Frame40Text'>←
                             </div>
                         </div>
-                        <div className='Frame41'><div className='Frame41Text'>1
+                        <div className='Pagenumber'><div className='PagenumberText'>1
                         </div></div>
-                        <div className='Frame42'><div className='Frame40Text'>2
+                        <div className='Pagenumber'><div className='PagenumberText'>2
                         </div></div>
-                        <div className='Frame43'><div className='Frame40Text'>3
+                        <div className='Pagenumber'><div className='PagenumberText'>3
                         </div></div>
                         <div className='More'>...</div>
-                        <div className='Frame46'><div className='Frame40Text'>27
+                        <div className='Pagenumber'><div className='PagenumberText'>27
                         </div></div>
-                        <div className='Frame47'><div className='Frame40Text'>28
+                        <div className='Pagenumber'><div className='PagenumberText'>28
                         </div></div>
-                        <div className='Frame48'><div className='Frame40Text'>29
+                        <div className='Pagenumber'><div className='PagenumberText'>29
                         </div></div>
-                        <div className='Frame2'><div className='Frame40Text'>→
+                        <div className='Pagenumber'><div className='Frame40Text'>→
                         </div>
                         </div>
                     </div>
