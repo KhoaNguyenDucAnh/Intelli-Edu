@@ -1,6 +1,6 @@
 FROM maven:3.9.4-eclipse-temurin-17 as builder
 WORKDIR /app
-COPY pom.xml .
+COPY Backend/pom.xml .
 COPY Backend/src ./src
 RUN mvn clean package -Dspring.profiles.active=prod
 
