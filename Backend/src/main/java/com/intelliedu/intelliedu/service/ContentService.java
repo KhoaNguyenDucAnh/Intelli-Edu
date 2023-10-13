@@ -10,14 +10,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.intelliedu.intelliedu.dto.ContentDto;
-import com.intelliedu.intelliedu.dto.FileDto;
 import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.entity.Content;
 import com.intelliedu.intelliedu.entity.File;
 import com.intelliedu.intelliedu.mapper.ContentMapper;
-import com.intelliedu.intelliedu.mapper.FileMapper;
 import com.intelliedu.intelliedu.repository.ContentRepo;
-import com.intelliedu.intelliedu.repository.FileRepo;
 import com.intelliedu.intelliedu.security.service.AuthService;
 
 import jakarta.transaction.Transactional;
@@ -31,13 +28,10 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto,
   private ContentRepo<C> contentRepo;
 
   @Autowired
-  private FileRepo fileRepo;
-
-  @Autowired
   private CMapper contentMapper;
 
   @Autowired
-  private FileMapper fileMapper;
+  private FileService fileService;
 
   @Autowired
 	private AuthService authService;
@@ -54,57 +48,42 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto,
     }
   }
 
-  public FileDto findContent(Long id, Authentication authentication) {
-    return fileMapper.toFileDto(contentRepo
-      .findByIdAndFileAccount(id, authService.getAccount(authentication))
-      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND))
-      .getFile());
-  }
-  
-  public FileDto createContent(FileDto fileDto, Authentication authentication) {
-    Account account = authService.getAccount(authentication);
-
-    if (fileRepo.existsByTitleAndAccount(fileDto.getTitle(), account)) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT);
-    }
-
-    File file = fileMapper.toFile(fileDto);
-
-    file.setAccount(account);
-    account.getFile().add(file);
-
-    return fileMapper.toFileDto(
-      contentRepo.save(createContent(file))
-      .getFile()
+  public CDto findContent(String token, Authentication authentication) {
+    return contentMapper.toDto(
+      contentRepo
+        .findByFileTokenAndFileAccount(token, authService.getAccount(authentication))
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND))
     );
   }
 
-
-  public FileDto createContent(Long fileId, Authentication authentication) {
-    return fileMapper.toFileDto(
-      contentRepo.save(
-        createContent(fileRepo
-          .findByIdAndAccount(fileId, authService.getAccount(authentication))
-          .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST))
-        )
-      )
-      .getFile()
-    );
+  public CDto createContent(String token, Authentication authentication) {
+    return contentMapper.toDto(contentRepo.save(createContent(fileService.findFile(token, authentication))));
   }
 
   protected abstract C createContent(File file);
 
-  public CDto updateContent(CDto contentDto, Authentication authentication) {
-		C content = contentRepo
-			.findByIdAndFileAccount(contentDto.getId(), authService.getAccount(authentication))
-			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-    return contentMapper.toDto(contentRepo.save(contentMapper.toEntity(contentDto, content)));
+  public CDto updateContent(String token, CDto contentDto, Authentication authentication) {
+    return contentMapper.toDto(
+      contentRepo.save(
+        contentMapper.toEntity(
+          contentDto, 
+          contentRepo
+			      .findByFileTokenAndFileAccount(token, authService.getAccount(authentication))
+			      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND))
+        )
+      )
+    );
   }
 
-
   @Transactional
-  public void deleteContent(Long id, Authentication authentication) {
-    contentRepo.deleteByIdAndFileAccount(id, authService.getAccount(authentication));
+  public void deleteContent(String token, Authentication authentication) {
+    contentRepo.deleteByFileTokenAndFileAccount(token, authService.getAccount(authentication));
+  }
+
+  public void shareContent(String token, Authentication authentication) {
+    contentRepo
+      .findByFileTokenAndFileAccount(token, authService.getAccount(authentication))
+      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND))
+    .setIsShared(true)  ;
   }
 }

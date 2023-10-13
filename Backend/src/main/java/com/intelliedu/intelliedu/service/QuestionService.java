@@ -15,6 +15,10 @@ public class QuestionService extends ContentService<Question, QuestionDto, Quest
 
   @Override
   protected Question createContent(File file) {
+    if (file.getQuestion() != null) {
+      return file.getQuestion();
+    }
+
     Question question = new Question();
 
     file.setQuestion(question);

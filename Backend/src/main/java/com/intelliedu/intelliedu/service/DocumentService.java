@@ -15,6 +15,10 @@ public class DocumentService extends ContentService<Document, DocumentDto, Docum
 
   @Override
   protected Document createContent(File file) {
+    if (file.getDocument() != null) {
+      return file.getDocument();
+    }
+
     Document document = new Document();
 
     file.setDocument(document);

@@ -16,5 +16,5 @@ import com.intelliedu.intelliedu.entity.Document;
 	nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
 )
 public interface DocumentMapper extends ContentMapper<Document, DocumentDto> {
-  
+
 }

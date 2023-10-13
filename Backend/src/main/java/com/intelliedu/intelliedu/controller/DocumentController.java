@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.intelliedu.intelliedu.dto.DocumentDto;
-import com.intelliedu.intelliedu.dto.FileDto;
 import com.intelliedu.intelliedu.service.DocumentService;
 
 import jakarta.validation.Valid;
@@ -40,28 +39,23 @@ public class DocumentController {
     return documentService.findContent(query, authentication, pageable);
   }
 
-  @GetMapping("/{id}")
-  public FileDto findDocument(@PathVariable Long id, Authentication authentication) {
-    return documentService.findContent(id, authentication);
+  @GetMapping("/{token}")
+  public DocumentDto findDocument(@PathVariable String token, Authentication authentication) {
+    return documentService.findContent(token, authentication);
   }
 
-  @PostMapping("")
-  public FileDto createDocument(@RequestBody @Valid FileDto fileDto, Authentication authentication) {
-    return documentService.createContent(fileDto, authentication);
+  @PostMapping("/{token}")
+  public DocumentDto createDocument(@PathVariable String token, Authentication authentication) {
+    return documentService.createContent(token, authentication);
   }
 
-  @PostMapping("/{fileId}")
-  public FileDto createDocument(@PathVariable Long fileId, Authentication authentication) {
-    return documentService.createContent(fileId, authentication);
+  @PutMapping("/{token}")
+  public DocumentDto updateDocument(@PathVariable String token, @RequestBody @Valid DocumentDto documentDto, Authentication authentication) {
+    return documentService.updateContent(token, documentDto, authentication);
   }
 
-  @PutMapping("")
-  public DocumentDto updateDocument(@RequestBody @Valid DocumentDto documentDto, Authentication authentication) {
-    return documentService.updateContent(documentDto, authentication);
-  }
-
-  @DeleteMapping("/{id}")
-  public void deleteDocument(@PathVariable Long id, Authentication authentication) {
-    documentService.deleteContent(id, authentication);
+  @DeleteMapping("/{token}")
+  public void deleteDocument(@PathVariable String token, Authentication authentication) {
+    documentService.deleteContent(token, authentication);
   }
 }

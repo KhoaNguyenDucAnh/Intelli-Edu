@@ -12,6 +12,10 @@ public class MindMapService extends ContentService<MindMap, MindMapDto, MindMapM
 
   @Override
   protected MindMap createContent(File file) {
+    if (file.getMindMap() != null) {
+      return file.getMindMap();
+    }
+
     MindMap mindMap = new MindMap();
 
     file.setMindMap(mindMap);
