@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.intelliedu.intelliedu.dto.FileDto;
 import com.intelliedu.intelliedu.dto.QuestionDto;
 import com.intelliedu.intelliedu.service.QuestionService;
 
@@ -40,28 +39,23 @@ public class QuestionController {
     return questionService.findContent(query, authentication, pageable);
   }
 
-  @GetMapping("/{id}")
-  public FileDto findQuestion(@PathVariable Long id, Authentication authentication) {
-    return questionService.findContent(id, authentication);
-  }
-
-  @PostMapping("")
-  public FileDto createQuestion(@RequestBody @Valid FileDto fileDto, Authentication authentication) {
-    return questionService.createContent(fileDto, authentication);
+  @GetMapping("/{token}")
+  public QuestionDto findQuestion(@PathVariable String token, Authentication authentication) {
+    return questionService.findContent(token, authentication);
   }
 
   @PostMapping("/{fileId}")
-  public FileDto createQuestion(@PathVariable Long fileId, Authentication authentication) {
-    return questionService.createContent(fileId, authentication);
+  public QuestionDto createQuestion(@PathVariable String token, Authentication authentication) {
+    return questionService.createContent(token, authentication);
   }
 
-  @PutMapping("")
-  public QuestionDto updateQuestion(@RequestBody @Valid QuestionDto questionDto, Authentication authentication) {
-    return questionService.updateContent(questionDto, authentication);
+  @PutMapping("/{token}")
+  public QuestionDto updateQuestion(@PathVariable String token, @RequestBody @Valid QuestionDto questionDto, Authentication authentication) {
+    return questionService.updateContent(token, questionDto, authentication);
   }
 
-  @DeleteMapping("/{id}")
-  public void deleteQuestion(@PathVariable Long id, Authentication authentication) {
-    questionService.deleteContent(id, authentication);
+  @DeleteMapping("/{token}")
+  public void deleteQuestion(@PathVariable String token, Authentication authentication) {
+    questionService.deleteContent(token, authentication);
   }
 }

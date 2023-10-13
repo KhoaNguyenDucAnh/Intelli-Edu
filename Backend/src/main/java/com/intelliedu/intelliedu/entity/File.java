@@ -35,6 +35,8 @@ public class File {
   @GeneratedValue 
   private Long id;
 
+  private String token;
+
   private String title;
 
   @Enumerated(EnumType.STRING)
@@ -46,13 +48,13 @@ public class File {
 	@UpdateTimestamp
 	private ZonedDateTime lastOpened;
   
-  @OneToOne(mappedBy = "file", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  @OneToOne(mappedBy = "file", cascade = CascadeType.PERSIST)
   private Document document;
 
-  @OneToOne(mappedBy = "file", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  @OneToOne(mappedBy = "file", cascade = CascadeType.PERSIST)
   private MindMap mindMap;
 
-  @OneToOne(mappedBy = "file", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  @OneToOne(mappedBy = "file", cascade = CascadeType.PERSIST)
   private Question question;
 
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
