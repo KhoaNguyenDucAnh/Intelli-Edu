@@ -1,11 +1,12 @@
 package com.intelliedu.intelliedu.service;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Map;
+
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -20,9 +21,9 @@ import com.intelliedu.intelliedu.entity.MindMap;
 @Service
 public class AIService {
 
-	private Socket socket;
-	private BufferedReader input;
-  private PrintWriter output;
+	private SSLSocket socket;
+	private InputStream input;
+  private OutputStream output;
 
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -67,14 +68,14 @@ public class AIService {
  	}
 
   private void startConnection() throws IOException {
-		socket = new Socket("localhost", port);
-		output = new PrintWriter(socket.getOutputStream(), true);
-		input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		socket = (SSLSocket) SSLSocketFactory.getDefault().createSocket("localhost", port);
+		input = socket.getInputStream();
+    output = socket.getOutputStream();
 	}
 
   private String sendMessage(String message) throws IOException {
-		output.println(message);
-		return input.readLine();
+		output.write(message.getBytes());
+		return new String(input.readAllBytes());
   }
 
   private void stopConnection() throws IOException {
