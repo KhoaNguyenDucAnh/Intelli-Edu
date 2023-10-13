@@ -4,7 +4,8 @@ spring:
     username: robinkhoa06 
     password: T3HiNgy4nawX
   jpa:
-    hibernate: update
+    hibernate:
+      ddl-auto: update
   web:
     resources:
       static-locations: file:/Frontend/
