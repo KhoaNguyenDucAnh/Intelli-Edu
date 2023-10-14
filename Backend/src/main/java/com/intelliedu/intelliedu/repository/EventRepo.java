@@ -14,9 +14,9 @@ import com.intelliedu.intelliedu.entity.Event;
  */
 public interface EventRepo extends JpaRepository<Event, Long> {
 
-	Page<Event> findByAccount(Pageable pageable, Account account);
+	Page<Event> findByScheduleAccount(Pageable pageable, Account account);
 
-	Optional<Event> findByIdAndAccount(Long id, Account account);
+	Optional<Event> findByIdAndScheduleAccount(Long id, Account account);
 
-	void deleteByIdAndAccount(Long id, Account account);
+	void deleteByIdAndScheduleAccount(Long id, Account account);
 }

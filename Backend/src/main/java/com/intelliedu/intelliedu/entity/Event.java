@@ -44,5 +44,5 @@ public class Event {
 	private String description;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-  private Account account;
+  private Schedule schedule;
 }

@@ -1,10 +1,11 @@
 spring:
   datasource:
-    url: jdbc:postgresql://ep-red-mouse-31349640.ap-southeast-1.aws.neon.tech/neondb
+    url: jdbc:postgresql://ep-nameless-cake-76008135.ap-southeast-1.aws.neon.tech/neondb
     username: robinkhoa06 
-    password: T3HiNgy4nawX
+    password: DoHMj8tam4LY
   jpa:
-    hibernate: update
+    hibernate:
+      ddl-auto: update
   web:
     resources:
       static-locations: file:/Frontend/
