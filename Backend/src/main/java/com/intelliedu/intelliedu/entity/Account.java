@@ -61,7 +61,7 @@ public class Account implements UserDetails {
 	private List<Vote> vote;
 
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	private List<Event> event;
+	private List<Schedule> schedule;
 
   @Override
   public List<? extends GrantedAuthority> getAuthorities() {
