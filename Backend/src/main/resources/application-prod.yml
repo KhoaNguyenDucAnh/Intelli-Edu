@@ -1,10 +1,12 @@
 spring:
   datasource:
-    url: jdbc:postgres://fl0user:A7wTKc4BQUHJ@ep-wispy-grass-57153605.ap-southeast-1.aws.neon.fl0.io:5432/testing-database?sslmode=require
+    url: jdbc:postgresql://ep-wispy-grass-57153605.ap-southeast-1.aws.neon.fl0.io/testing-database
+    username: fl0user 
+    password: A7wTKc4BQUHJ
   jpa:
     hibernate:
       ddl-auto: update
-  #web:
-    #resources:
-      #static-locations: file:/Frontend/
+  #  web:
+    # resources:
+      # static-locations: file:/Frontend/
 
