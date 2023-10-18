@@ -36,11 +36,6 @@ public class MindMapController {
     return mindMapService.findContent(query, authentication, pageable);
   }
 
-  @GetMapping("/{token}")
-  public MindMapDto findMindMap(@PathVariable String token, Authentication authentication) {
-    return mindMapService.findContent(token, authentication);
-  }
-
   @PostMapping("/{token}")
   public MindMapDto createMindMap(@PathVariable String token, Authentication authentication) {
     return mindMapService.createContent(token, authentication);

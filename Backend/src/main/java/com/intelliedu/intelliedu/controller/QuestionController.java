@@ -39,11 +39,6 @@ public class QuestionController {
     return questionService.findContent(query, authentication, pageable);
   }
 
-  @GetMapping("/{token}")
-  public QuestionDto findQuestion(@PathVariable String token, Authentication authentication) {
-    return questionService.findContent(token, authentication);
-  }
-
   @PostMapping("/{fileId}")
   public QuestionDto createQuestion(@PathVariable String token, Authentication authentication) {
     return questionService.createContent(token, authentication);

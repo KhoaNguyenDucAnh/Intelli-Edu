@@ -20,6 +20,7 @@ public class MindMapService extends ContentService<MindMap, MindMapDto, MindMapM
 
     file.setMindMap(mindMap);
     mindMap.setFile(file);
+    mindMap.setId(file.getId());
 
     return mindMap;
   }

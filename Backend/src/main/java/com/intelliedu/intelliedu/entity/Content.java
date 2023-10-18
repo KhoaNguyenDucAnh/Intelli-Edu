@@ -8,7 +8,6 @@ import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
@@ -30,9 +29,8 @@ import lombok.experimental.SuperBuilder;
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING)
 public class Content {
 
-	@Id 
-  @GeneratedValue 
-  private Long id;
+	@Id
+  private String id;
 
   @ElementCollection
   private List<String> keyword;

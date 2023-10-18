@@ -23,6 +23,7 @@ public class QuestionService extends ContentService<Question, QuestionDto, Quest
 
     file.setQuestion(question);
     question.setFile(file);
+    question.setId(file.getId());
 
     return question;
   }

@@ -42,33 +42,25 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto,
     } else {
       Account account = authService.getAccount(authentication);
       return Map.of(
-        "other", contentMapper.toDto(contentRepo.findByKeywordAndFileAccountIsNot(query, account, pageable)),
+        "other", contentMapper.toDto(contentRepo.findByKeywordAndFileAccountIsNotAndIsSharedIsTrue(query, account, pageable)),
         "own", contentMapper.toDto(contentRepo.findByKeywordAndFileAccount(query, account, pageable))
       );
     }
   }
 
-  public CDto findContent(String token, Authentication authentication) {
-    return contentMapper.toDto(
-      contentRepo
-        .findByFileTokenAndFileAccount(token, authService.getAccount(authentication))
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND))
-    );
-  }
-
-  public CDto createContent(String token, Authentication authentication) {
-    return contentMapper.toDto(contentRepo.save(createContent(fileService.findFile(token, authentication))));
+  public CDto createContent(String id, Authentication authentication) {
+    return contentMapper.toDto(contentRepo.save(createContent(fileService.findFile(id, authentication))));
   }
 
   protected abstract C createContent(File file);
 
-  public CDto updateContent(String token, CDto contentDto, Authentication authentication) {
+  public CDto updateContent(String id, CDto contentDto, Authentication authentication) {
     return contentMapper.toDto(
       contentRepo.save(
         contentMapper.toEntity(
           contentDto, 
           contentRepo
-			      .findByFileTokenAndFileAccount(token, authService.getAccount(authentication))
+			      .findByIdAndFileAccount(id, authService.getAccount(authentication))
 			      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND))
         )
       )
@@ -76,13 +68,13 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto,
   }
 
   @Transactional
-  public void deleteContent(String token, Authentication authentication) {
-    contentRepo.deleteByFileTokenAndFileAccount(token, authService.getAccount(authentication));
+  public void deleteContent(String id, Authentication authentication) {
+    contentRepo.deleteByIdAndFileAccount(id, authService.getAccount(authentication));
   }
 
-  public void shareContent(String token, Authentication authentication) {
+  public void shareContent(String id, Authentication authentication) {
     contentRepo
-      .findByFileTokenAndFileAccount(token, authService.getAccount(authentication))
+      .findByIdAndFileAccount(id, authService.getAccount(authentication))
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND))
     .setIsShared(true)  ;
   }

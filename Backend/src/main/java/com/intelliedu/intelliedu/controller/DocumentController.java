@@ -39,11 +39,6 @@ public class DocumentController {
     return documentService.findContent(query, authentication, pageable);
   }
 
-  @GetMapping("/{token}")
-  public DocumentDto findDocument(@PathVariable String token, Authentication authentication) {
-    return documentService.findContent(token, authentication);
-  }
-
   @PostMapping("/{token}")
   public DocumentDto createDocument(@PathVariable String token, Authentication authentication) {
     return documentService.createContent(token, authentication);

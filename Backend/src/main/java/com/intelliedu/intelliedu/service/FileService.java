@@ -3,6 +3,7 @@ package com.intelliedu.intelliedu.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.intelliedu.intelliedu.dto.FileDto;
@@ -19,6 +20,7 @@ import jakarta.persistence.PersistenceContext;
 /**
  * FileService
  */
+@Service
 public class FileService {
 
   @Autowired
@@ -33,9 +35,9 @@ public class FileService {
   @Autowired
 	private AuthService authService;
 
-  public File findFile(String token, Authentication authentication) {
+  public File findFile(String id, Authentication authentication) {
     return fileRepo
-      .findByTokenAndAccount(token, authService.getAccount(authentication))
+      .findByIdAndAccount(id, authService.getAccount(authentication))
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
   }
 
@@ -52,7 +54,7 @@ public class FileService {
 
     File file = fileMapper.toFile(fileDto);
 
-    file.setToken(HashUtil.timeBasedHash());
+    file.setId(HashUtil.timeBasedHash());
     file.setAccount(account);
     account.getFile().add(file);
 
@@ -63,9 +65,9 @@ public class FileService {
     return fileMapper.toFileDto(file);
   }
 
-  public FileDto addSharedContent(String token, Authentication authentication) {
+  public FileDto addSharedContent(String id, Authentication authentication) {
     File file = fileRepo
-      .findByToken(token)
+      .findById(id)
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
     entityManager.detach(file);

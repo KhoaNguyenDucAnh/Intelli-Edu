@@ -12,7 +12,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
@@ -31,11 +30,8 @@ import lombok.NoArgsConstructor;
 @Entity
 public class File {
 
-  @Id 
-  @GeneratedValue 
-  private Long id;
-
-  private String token;
+  @Id
+  private String id;
 
   private String title;
 
@@ -48,13 +44,13 @@ public class File {
 	@UpdateTimestamp
 	private ZonedDateTime lastOpened;
   
-  @OneToOne(mappedBy = "file", cascade = CascadeType.PERSIST)
+  @OneToOne(mappedBy = "file", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private Document document;
 
-  @OneToOne(mappedBy = "file", cascade = CascadeType.PERSIST)
+  @OneToOne(mappedBy = "file", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private MindMap mindMap;
 
-  @OneToOne(mappedBy = "file", cascade = CascadeType.PERSIST)
+  @OneToOne(mappedBy = "file", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private Question question;
 
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)

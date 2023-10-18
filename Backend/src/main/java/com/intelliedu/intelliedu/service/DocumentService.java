@@ -23,6 +23,7 @@ public class DocumentService extends ContentService<Document, DocumentDto, Docum
 
     file.setDocument(document);
     document.setFile(file);
+    document.setId(file.getId());
 
     return document;
   }
