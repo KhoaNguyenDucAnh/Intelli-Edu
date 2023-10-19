@@ -1,6 +1,5 @@
 package com.intelliedu.intelliedu.entity;
 
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,8 +13,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@DiscriminatorValue("document")
 public class Document extends Content {
   
 	private String content;
-  }
+}

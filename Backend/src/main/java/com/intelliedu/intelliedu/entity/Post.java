@@ -28,8 +28,8 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Post {
 
-  @Id 
-  @GeneratedValue 
+  @Id
+  @GeneratedValue
   private Long id;
 
   @CreationTimestamp

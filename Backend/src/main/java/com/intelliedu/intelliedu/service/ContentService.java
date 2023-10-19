@@ -3,6 +3,7 @@ package com.intelliedu.intelliedu.service;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,7 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto,
   private CMapper contentMapper;
 
   @Autowired
+  @Lazy
   private FileService fileService;
 
   @Autowired
@@ -48,11 +50,28 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto,
     }
   }
 
-  public CDto createContent(String id, Authentication authentication) {
-    return contentMapper.toDto(contentRepo.save(createContent(fileService.findFile(id, authentication))));
+  public CDto findContent(String id) {
+    return contentMapper.toDto(contentRepo.findById(id).orElse(null));
   }
 
-  protected abstract C createContent(File file);
+  public CDto createContent(String id, Authentication authentication) {
+    return contentMapper.toDto(contentRepo.save(createContent(fileService.findFileHelper(id, authentication))));
+  }
+
+  private C createContent(File file) {
+    if (contentRepo.existsById(file.getId())) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
+
+    C content = createContent();
+
+    content.addKeyword(file.getTitle());
+    content.setFile(file);
+
+    return content;
+  }
+
+  protected abstract C createContent();
 
   public CDto updateContent(String id, CDto contentDto, Authentication authentication) {
     return contentMapper.toDto(

@@ -14,7 +14,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,7 +42,8 @@ public class File {
 
 	@UpdateTimestamp
 	private ZonedDateTime lastOpened;
-  
+ 
+  /*
   @OneToOne(mappedBy = "file", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private Document document;
 
@@ -52,7 +52,13 @@ public class File {
 
   @OneToOne(mappedBy = "file", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private Question question;
+  */
 
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
   private Account account;
+
+  public void setAccount(Account account) {
+    this.account = account;
+    account.getFile().add(this);
+  }
 }

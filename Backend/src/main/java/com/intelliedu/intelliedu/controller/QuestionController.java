@@ -39,18 +39,18 @@ public class QuestionController {
     return questionService.findContent(query, authentication, pageable);
   }
 
-  @PostMapping("/{fileId}")
-  public QuestionDto createQuestion(@PathVariable String token, Authentication authentication) {
-    return questionService.createContent(token, authentication);
+  @PostMapping("/{id}")
+  public QuestionDto createQuestion(@PathVariable String id, Authentication authentication) {
+    return questionService.createContent(id, authentication);
   }
 
-  @PutMapping("/{token}")
-  public QuestionDto updateQuestion(@PathVariable String token, @RequestBody @Valid QuestionDto questionDto, Authentication authentication) {
-    return questionService.updateContent(token, questionDto, authentication);
+  @PutMapping("/{id}")
+  public QuestionDto updateQuestion(@PathVariable String id, @RequestBody @Valid QuestionDto questionDto, Authentication authentication) {
+    return questionService.updateContent(id, questionDto, authentication);
   }
 
-  @DeleteMapping("/{token}")
-  public void deleteQuestion(@PathVariable String token, Authentication authentication) {
-    questionService.deleteContent(token, authentication);
+  @DeleteMapping("/{id}")
+  public void deleteQuestion(@PathVariable String id, Authentication authentication) {
+    questionService.deleteContent(id, authentication);
   }
 }

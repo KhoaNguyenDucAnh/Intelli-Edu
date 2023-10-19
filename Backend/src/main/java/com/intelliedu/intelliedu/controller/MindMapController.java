@@ -36,18 +36,18 @@ public class MindMapController {
     return mindMapService.findContent(query, authentication, pageable);
   }
 
-  @PostMapping("/{token}")
-  public MindMapDto createMindMap(@PathVariable String token, Authentication authentication) {
-    return mindMapService.createContent(token, authentication);
+  @PostMapping("/{id}")
+  public MindMapDto createMindMap(@PathVariable String id, Authentication authentication) {
+    return mindMapService.createContent(id, authentication);
   }
 
-  @PutMapping("/{token}")
-  public MindMapDto updateMindMap(@PathVariable String token, @RequestBody @Valid MindMapDto mindMapDto, Authentication authentication) {
-    return mindMapService.updateContent(token, mindMapDto, authentication);
+  @PutMapping("/{id}")
+  public MindMapDto updateMindMap(@PathVariable String id, @RequestBody @Valid MindMapDto mindMapDto, Authentication authentication) {
+    return mindMapService.updateContent(id, mindMapDto, authentication);
   }
 
-  @DeleteMapping("/{token}")
-  public void deleteMindMap(@PathVariable String token, Authentication authentication) {
-    mindMapService.deleteContent(token, authentication);
+  @DeleteMapping("/{id}")
+  public void deleteMindMap(@PathVariable String id, Authentication authentication) {
+    mindMapService.deleteContent(id, authentication);
   }
 }
