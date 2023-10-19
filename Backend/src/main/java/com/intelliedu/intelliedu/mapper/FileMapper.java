@@ -27,13 +27,7 @@ public interface FileMapper {
   @BeanMapping(ignoreByDefault = true)
   @Mapping(source = "title", target = "title")
   @Mapping(source = "subject", target = "subject")
-  @Mapping(source = "documentDto", target = "document")
-  @Mapping(source = "mindMapDto", target = "mindMap")
-  @Mapping(source = "questionDto", target = "question")
   File toFile(FileDto fileDto);
 
-  @Mapping(source = "document", target = "documentDto")
-  @Mapping(source = "mindMap", target = "mindMapDto")
-  @Mapping(source = "question", target = "questionDto")
   FileDto toFileDto(File file); 
 }

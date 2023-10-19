@@ -3,6 +3,7 @@ package com.intelliedu.intelliedu.service;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,7 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto,
   private CMapper contentMapper;
 
   @Autowired
+  @Lazy
   private FileService fileService;
 
   @Autowired
@@ -42,33 +44,42 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto,
     } else {
       Account account = authService.getAccount(authentication);
       return Map.of(
-        "other", contentMapper.toDto(contentRepo.findByKeywordAndFileAccountIsNot(query, account, pageable)),
+        "other", contentMapper.toDto(contentRepo.findByKeywordAndFileAccountIsNotAndIsSharedIsTrue(query, account, pageable)),
         "own", contentMapper.toDto(contentRepo.findByKeywordAndFileAccount(query, account, pageable))
       );
     }
   }
 
-  public CDto findContent(String token, Authentication authentication) {
-    return contentMapper.toDto(
-      contentRepo
-        .findByFileTokenAndFileAccount(token, authService.getAccount(authentication))
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND))
-    );
+  public CDto findContent(String id) {
+    return contentMapper.toDto(contentRepo.findById(id).orElse(null));
   }
 
-  public CDto createContent(String token, Authentication authentication) {
-    return contentMapper.toDto(contentRepo.save(createContent(fileService.findFile(token, authentication))));
+  public CDto createContent(String id, Authentication authentication) {
+    return contentMapper.toDto(contentRepo.save(createContent(fileService.findFileHelper(id, authentication))));
   }
 
-  protected abstract C createContent(File file);
+  private C createContent(File file) {
+    if (contentRepo.existsById(file.getId())) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
 
-  public CDto updateContent(String token, CDto contentDto, Authentication authentication) {
+    C content = createContent();
+
+    content.addKeyword(file.getTitle());
+    content.setFile(file);
+
+    return content;
+  }
+
+  protected abstract C createContent();
+
+  public CDto updateContent(String id, CDto contentDto, Authentication authentication) {
     return contentMapper.toDto(
       contentRepo.save(
         contentMapper.toEntity(
           contentDto, 
           contentRepo
-			      .findByFileTokenAndFileAccount(token, authService.getAccount(authentication))
+			      .findByIdAndFileAccount(id, authService.getAccount(authentication))
 			      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND))
         )
       )
@@ -76,13 +87,13 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto,
   }
 
   @Transactional
-  public void deleteContent(String token, Authentication authentication) {
-    contentRepo.deleteByFileTokenAndFileAccount(token, authService.getAccount(authentication));
+  public void deleteContent(String id, Authentication authentication) {
+    contentRepo.deleteByIdAndFileAccount(id, authService.getAccount(authentication));
   }
 
-  public void shareContent(String token, Authentication authentication) {
+  public void shareContent(String id, Authentication authentication) {
     contentRepo
-      .findByFileTokenAndFileAccount(token, authService.getAccount(authentication))
+      .findByIdAndFileAccount(id, authService.getAccount(authentication))
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND))
     .setIsShared(true)  ;
   }

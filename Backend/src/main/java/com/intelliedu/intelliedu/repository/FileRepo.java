@@ -10,11 +10,11 @@ import com.intelliedu.intelliedu.entity.File;
 /**
  * FileRepo
  */
-public interface FileRepo extends JpaRepository<File, Long> {
+public interface FileRepo extends JpaRepository<File, String> {
 
   Boolean existsByTitleAndAccount(String title, Account account);
 
-  Optional<File> findByTokenAndAccount(String token, Account Account);
+  Optional<File> findByIdAndAccount(String id, Account Account);
 
-  Optional<File> findByToken(String token);
+  Optional<File> findById(String id);
 }

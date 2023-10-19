@@ -18,7 +18,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class FileDto {
 
-  private Long id;
+  private String id;
 
   private String title;
 

@@ -4,7 +4,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.ZonedDateTime;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -121,26 +120,24 @@ public class AuthService {
     return account;
   }
 
-  private void email(Account account, SecurityAction securityAction) {
-    account.setSecurityToken(generateSecurityToken(account, securityAction));
-    accountRepo.save(account);
-
-    EmailUtil.sendEmail("%s: %s", securityAction.getEmailContent(), account.getSecurityToken().getToken());
-
-    log.info(String.format("Account %s | %s", account.getEmail(), securityAction.getLog()));
-  }
-
   private SecurityToken generateSecurityToken(Account account, SecurityAction securityAction) {
-    SecurityToken securityToken = Optional
-      .ofNullable(account.getSecurityToken())
+    SecurityToken securityToken = securityTokenRepo
+      .findById(account.getId())
       .orElse(SecurityToken.builder().account(account).build());
 
     securityToken.setSecurityAction(securityAction);
     securityToken.setToken(HashUtil.timeBasedHash(account.getEmail()));
     securityToken.setExpireDateTime(ZonedDateTime.now().plus(Duration.ofMillis(SecurityConfig.ACTIVATION_EXPIRATION_TIME)));
 
-    return securityToken;
+    return securityTokenRepo.save(securityToken);
   }
+
+  private void email(Account account, SecurityAction securityAction) {
+    EmailUtil.sendEmail("%s: %s", securityAction.getEmailContent(), generateSecurityToken(account, securityAction).getToken());
+
+    log.info(String.format("Account %s | %s", account.getEmail(), securityAction.getLog()));
+  }
+
 
   public void activateAccount(String token) {
     SecurityToken securityToken = securityTokenRepo
