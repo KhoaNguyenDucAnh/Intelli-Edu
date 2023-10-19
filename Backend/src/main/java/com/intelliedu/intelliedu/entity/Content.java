@@ -41,5 +41,7 @@ public class Content {
   private Post post;
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  private File file; 
+  private File file;
+
+  private Boolean isShared;
 }

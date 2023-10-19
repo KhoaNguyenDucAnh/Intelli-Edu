@@ -30,8 +30,8 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file Backend/ -Dspring.profiles.active=prod
 
-    - name: Build with Docker
-      run: |
-        docker login --username KhoaNguyenDucAnh --password ${{ secrets.GHCR }} ghcr.io
-        docker build Backend/ -t ghcr.io/khoanguyenducanh/intelli-edu:snapshot
-        docker push ghcr.io/khoanguyenducanh/intelli-edu:snapshot 
+#    - name: Build with Docker
+#      run: |
+#        docker login --username KhoaNguyenDucAnh --password ${{ secrets.GHCR }} ghcr.io
+#        docker build Backend/ -t ghcr.io/khoanguyenducanh/intelli-edu:snapshot
+#        docker push ghcr.io/khoanguyenducanh/intelli-edu:snapshot 

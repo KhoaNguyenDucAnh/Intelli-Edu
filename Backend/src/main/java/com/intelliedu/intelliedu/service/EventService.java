@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.intelliedu.intelliedu.dto.EventDto;
-import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.entity.Event;
 import com.intelliedu.intelliedu.mapper.EventMapper;
 import com.intelliedu.intelliedu.repository.EventRepo;
@@ -32,24 +31,17 @@ public class EventService {
 	private AuthService authService;
 
 	public Page<EventDto> findEvent(Pageable pageable, Authentication authentication) {
-		return eventMapper.toEventDto(eventRepo.findByAccount(pageable, authService.getAccount(authentication)));
+		return eventMapper.toEventDto(eventRepo.findByScheduleAccount(pageable, authService.getAccount(authentication)));
 	}
 
 	public EventDto createEvent(EventDto eventDto, Authentication authentication) {
-		Account account = authService.getAccount(authentication);
-
 		Event event = eventMapper.toEvent(eventDto);
-
-		event.setAccount(account);
-		
-		account.getEvent().add(event);
-
-		return eventMapper.toEventDto(eventRepo.save(event));
+    return eventMapper.toEventDto(eventRepo.save(event));
 	}
 
 	public EventDto updateEvent(EventDto eventDto, Authentication authentication) {
     Event event = eventRepo
-			.findByIdAndAccount(eventDto.getId(), authService.getAccount(authentication))
+			.findByIdAndScheduleAccount(eventDto.getId(), authService.getAccount(authentication))
 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
     return eventMapper.toEventDto(eventRepo.save(eventMapper.toEvent(eventDto, event)));
@@ -57,6 +49,6 @@ public class EventService {
 
 	@Transactional
 	public void deleteEvent(Long id, Authentication authentication) {
-		eventRepo.deleteByIdAndAccount(id, authService.getAccount(authentication));
+		eventRepo.deleteByIdAndScheduleAccount(id, authService.getAccount(authentication));
 	}
 }

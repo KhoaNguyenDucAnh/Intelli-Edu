@@ -14,5 +14,7 @@ public interface FileRepo extends JpaRepository<File, Long> {
 
   Boolean existsByTitleAndAccount(String title, Account account);
 
-  Optional<File> findByIdAndAccount(Long id, Account Account);
+  Optional<File> findByTokenAndAccount(String token, Account Account);
+
+  Optional<File> findByToken(String token);
 }

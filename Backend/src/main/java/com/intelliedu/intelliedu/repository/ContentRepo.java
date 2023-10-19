@@ -20,8 +20,7 @@ public interface ContentRepo<C extends Content> extends JpaRepository<C, Long> {
 
   Page<C> findByKeywordAndFileAccount(String keyword, Account account, Pageable pageable);
 
-  Optional<C> findByIdAndFileAccount(Long id, Account Account);
+  Optional<C> findByFileTokenAndFileAccount(String token, Account Account);
 
-  void deleteByIdAndFileAccount(Long id, Account account);
-
+  void deleteByFileTokenAndFileAccount(String token, Account account);
 }
