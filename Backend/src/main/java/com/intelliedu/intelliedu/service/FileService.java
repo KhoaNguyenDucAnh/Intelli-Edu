@@ -3,6 +3,8 @@ package com.intelliedu.intelliedu.service;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,10 @@ public class FileService {
 
   @Autowired
   private QuestionService questionService;
+
+  public Page<FileDto> findFile(String title, Authentication authentication, Pageable pageable) {
+    return fileMapper.toFileDto(fileRepo.findByTitleAndAccount(title, authService.getAccount(authentication), pageable));
+  }
 
   public FileDto findFile(String id, Authentication authentication) {
     FileDto fileDto = fileMapper.toFileDto(findFileHelper(id, authentication));
