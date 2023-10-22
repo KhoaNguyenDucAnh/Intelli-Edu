@@ -26,70 +26,6 @@ def get_map():
   claude_api.delete_conversation(conversation_id)
   return
 
-
-def to_tree(index,js,u):
-    values[index][u]=js['label']
-    if 'children' not in js:
-        return 1
-    js=js['children']
-    dem=0
-    for i in range(len(js)):
-        adj[index][u].append(n)
-        adj[index][n].append(u)
-        parent[index][n]=u
-        dem+=to_tree(index,js[i],n)
-    return dem+1
-
-def dfs(index,u):
-    nChild[index][u]=1
-    for v in adj[index][u]:
-      if v!=parent[index][u]:
-            dfs(index,v)
-            nChild[index][u]+=nChild[index][v]
-
-def hld(index,u):
-    if int(chainHead[index][int(nChain[index])])==0:
-        chainHead[index][int(nChain[index])]=u 
-    chainInd[index][u]=nChain[index]
-    nBase[index]+=1
-    pos[index][u]=nBase[index]
-    rev[index][int(pos[index][u])]=u
-    spec=-1
-    for i in range(len(adj[index][u])):
-        v=adj[index][u][i]
-        if(v!=parent[index][u]):
-            if(spec==-1 or nChild[index][v]>nChild[index][spec]):
-                spec=v
-    if(spec>-1):
-        hld(index,spec)
-    if(spec==-1):
-        chainEnd[index][int(nChain[index])]=u
-    for v in adj[index][u]:
-        if(v!=parent[index][u] and v!=spec):
-            nChain[index]+=1
-            hld(index,v)
-
-def flatten(index,n):
-  for i in range(n):
-    flat[index][int(pos[index][i])]=values[index][i]
-
-def find(text,n):
-  corpus_em=model.encode(flat[1][1:n+1])
-  text=model.encode(text)
-  hits = util.semantic_search(text, corpus_em, score_function=util.dot_score)
-  position=hits[0][0]['corpus_id']
-  return position
-
-def compare(text):
-  new_chat = claude_api.create_new_chat()
-  conversation_id = new_chat['uuid']
-  prompt=text + '\n'
-  print(prompt)
-  prompt+='Can you see if the second text is missing any information or numbers or wrong order compare to the first text in less than 3 sentences in Vietnamese'
-  response = claude_api.send_message(prompt, conversation_id)
-  claude_api.delete_conversation(conversation_id)
-  return response
-
 def main():
   nChain=np.zeros(2)
   chainHead=np.zeros((2,500))
@@ -251,6 +187,65 @@ def main():
   
   json1=json1['root']
   json2=json2['root']
+
+  def compare(text):
+    new_chat = claude_api.create_new_chat()
+    conversation_id = new_chat['uuid']
+    prompt=text + '\n'
+    print(prompt)
+    prompt+='Can you see if the second text is missing any information or numbers or wrong order compare to the first text in less than 3 sentences in Vietnamese'
+    response = claude_api.send_message(prompt, conversation_id)
+    claude_api.delete_conversation(conversation_id)
+    return response
+  def to_tree(index,js,u):
+    values[index][u]=js['label']
+    if 'children' not in js:
+        return 1
+    js=js['children']
+    dem=0
+    for i in range(len(js)):
+        adj[index][u].append(n)
+        adj[index][n].append(u)
+        parent[index][n]=u
+        dem+=to_tree(index,js[i],n)
+    return dem+1
+  def dfs(index,u):
+    nChild[index][u]=1
+    for v in adj[index][u]:
+      if v!=parent[index][u]:
+            dfs(index,v)
+            nChild[index][u]+=nChild[index][v]
+  def hld(index,u):
+    if int(chainHead[index][int(nChain[index])])==0:
+        chainHead[index][int(nChain[index])]=u 
+    chainInd[index][u]=nChain[index]
+    nBase[index]+=1
+    pos[index][u]=nBase[index]
+    rev[index][int(pos[index][u])]=u
+    spec=-1
+    for i in range(len(adj[index][u])):
+        v=adj[index][u][i]
+        if(v!=parent[index][u]):
+            if(spec==-1 or nChild[index][v]>nChild[index][spec]):
+                spec=v
+    if(spec>-1):
+        hld(index,spec)
+    if(spec==-1):
+        chainEnd[index][int(nChain[index])]=u
+    for v in adj[index][u]:
+        if(v!=parent[index][u] and v!=spec):
+            nChain[index]+=1
+            hld(index,v)
+  def flatten(index,n):
+    for i in range(n):
+      flat[index][int(pos[index][i])]=values[index][i]
+  def find(text,n):
+    corpus_em=model.encode(flat[1][1:n+1])
+    text=model.encode(text)
+    hits = util.semantic_search(text, corpus_em, score_function=util.dot_score)
+    position=hits[0][0]['corpus_id']
+    return position
+  
   d1=to_tree(0,json1,1)
   d2=to_tree(1,json2,1)
   dfs(0,1)
