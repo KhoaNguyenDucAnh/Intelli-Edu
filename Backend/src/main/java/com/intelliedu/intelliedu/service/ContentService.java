@@ -23,13 +23,13 @@ import jakarta.transaction.Transactional;
 /**
  * ContentService
  */
-public abstract class ContentService<C extends Content, CDto extends ContentDto, CMapper extends ContentMapper<C, CDto>> {
+public abstract class ContentService<C extends Content, CDto extends ContentDto> {
 
   @Autowired
   private ContentRepo<C> contentRepo;
 
   @Autowired
-  private CMapper contentMapper;
+  private ContentMapper<C, CDto> contentMapper;
 
   @Autowired
   @Lazy
