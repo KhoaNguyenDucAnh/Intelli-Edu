@@ -39,23 +39,18 @@ public class DocumentController {
     return documentService.findContent(query, authentication, pageable);
   }
 
-  @GetMapping("/{token}")
-  public DocumentDto findDocument(@PathVariable String token, Authentication authentication) {
-    return documentService.findContent(token, authentication);
+  @PostMapping("/{id}")
+  public DocumentDto createDocument(@PathVariable String id, Authentication authentication) {
+    return documentService.createContent(id, authentication);
   }
 
-  @PostMapping("/{token}")
-  public DocumentDto createDocument(@PathVariable String token, Authentication authentication) {
-    return documentService.createContent(token, authentication);
+  @PutMapping("/{id}")
+  public DocumentDto updateDocument(@PathVariable String id, @RequestBody @Valid DocumentDto documentDto, Authentication authentication) {
+    return documentService.updateContent(id, documentDto, authentication);
   }
 
-  @PutMapping("/{token}")
-  public DocumentDto updateDocument(@PathVariable String token, @RequestBody @Valid DocumentDto documentDto, Authentication authentication) {
-    return documentService.updateContent(token, documentDto, authentication);
-  }
-
-  @DeleteMapping("/{token}")
-  public void deleteDocument(@PathVariable String token, Authentication authentication) {
-    documentService.deleteContent(token, authentication);
+  @DeleteMapping("/{id}")
+  public void deleteDocument(@PathVariable String id, Authentication authentication) {
+    documentService.deleteContent(id, authentication);
   }
 }

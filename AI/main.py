@@ -3,17 +3,17 @@ import json
 from sentence_transformers import SentenceTransformer,util
 
 nChain=np.zeros(2)
-chainHead=np.zeros((2,100000))
-chainEnd=np.zeros((2,100000))
-chainInd=np.zeros((2,100000))
-values=[[None for i in range(100000)],[None for i in range(100000)]]
+chainHead=np.zeros((2,100))
+chainEnd=np.zeros((2,100))
+chainInd=np.zeros((2,1000))
+values=[[None for i in range(100)],[None for i in range(100)]]
 adj=[[[] for i in range(100)],[[] for i in range(100)]]
 nBase=np.zeros(2)
-pos=np.zeros((2,100000))
-parent=np.zeros((2,100000))
-nChild=np.zeros((2,100000))
-rev=np.zeros((2,100000))
-flat=[[None for i in range(100000)],[None for i in range(100000)]]
+pos=np.zeros((2,100))
+parent=np.zeros((2,100))
+nChild=np.zeros((2,100))
+rev=np.zeros((2,100))
+flat=[[None for i in range(100)],[None for i in range(100)]]
 n=1
 d1=0
 d2=0
@@ -22,7 +22,7 @@ model = SentenceTransformer('keepitreal/vietnamese-sbert')
 
 from claude_api import Client
 import os
-cookie='intercom-device-id-lupk8zyo=435acf1c-a907-4409-ae7b-593d8b45e4a5; __cf_bm=v6JqButMzKBvfpTQXoJTrFdg8h.CA.L4ELkCO4K665w-1694945465-0-ATdUa52goRTNwsvZayww9rer2sGOMP3E1gwX8nZD0mQkgrmADeiIFTPZUfTntdHsA1tLtBNuh6R4k5KbPnMHY04=; cf_clearance=yP6Y7jTzeRGd2O_HnKCEKFToerLmWY8GLP0FojwkK0Q-1694945468-0-1-2d56ae04.e69e4851.7a57f1e4-0.2.1694945468; sessionKey=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; intercom-session-lupk8zyo=VTRoNlBWOUpoNDdEYXAvWGJNOHdGUThVNGhEUlFicFBEWWRxanMyWlhmbFh1Q0xoVThQQldwVDhoYjhqbVhNOC0tZGVMV1lPQ3Y2bmZzbGo0VU1zL2hOQT09--00f859741b60b442d2c9c692d09479ec9e329c09'
+cookie='intercom-device-id-lupk8zyo=435acf1c-a907-4409-ae7b-593d8b45e4a5; sessionKey=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; __cf_bm=RGzu1LECTrv29702PLmCvu84AEEtDCMgUjiIqSbOB08-1696352140-0-AQk7C19qjH55PzRVC97N2LXQBZqZSTQuVvsk7C8UC8ufxbn8EQBk8Lahr9rSIa+/5cSa0TFH4UXIHUdkrvy31zA=; cf_clearance=tbE70HjXmD2oTnKzKY2Ad8C8_AOpfEqo40y3c7KUhv0-1696352142-0-1-4531d092.d096f8f8.12308f72-0.2.1696352142; intercom-session-lupk8zyo=dE00NTJlNGRsb2F1NGQyWmJ3TkJOQ1RtMmt6NFg0Q2NLSllMbER3WUQrb1VwL01OcUxXY0owWkRHY3J1dndSNS0tcmdIU3VMMHlBM3pGNFVHUitGUnRVUT09--65ed3e3e98a24a503c62d79e9b4a12434beceef4'
 claude_api=Client(cookie)
 json1={}
 json2={}
@@ -243,11 +243,12 @@ def find(text,n):
   position=hits[0][0]['corpus_id']
   return position
 
-def compare(ct,up):
+def compare(text):
   new_chat = claude_api.create_new_chat()
   conversation_id = new_chat['uuid']
-  prompt=str(ct)+' '+str(up)+'\n'
-  prompt+='Can you see if the second text is missing any information or numbers or wrong order compare to the first text in less than 5 sentences'
+  prompt=text + '\n'
+  print(prompt)
+  prompt+='Can you see if the second text is missing any information or numbers or wrong order compare to the first text in less than 3 sentences in Vietnamese'
   response = claude_api.send_message(prompt, conversation_id)
   claude_api.delete_conversation(conversation_id)
   return response
@@ -263,6 +264,7 @@ hld(0,1)
 hld(1,1)
 flatten(0,d1)
 flatten(1,d2)
+text=''
 for i in range(int(nChain[0])):
   findHead=int(find(values[0][int(chainHead[0][i])],d2))+1
   findEnd=int(find(values[0][int(chainEnd[0][i])],d2))+1
@@ -272,7 +274,7 @@ for i in range(int(nChain[0])):
   user_text=[]
   if(End_index==Head_index):
     user_text=flat[1][int(pos[1][int(Head_index)]):int(pos[1][int(End_index)])+1]
-    print(compare(comp_text,user_text))
+    text+=str(comp_text)+' '+str(user_text)+'\n'
   loca=0
   while(End_index!=Head_index):
     user_chain=int(chainInd[1][int(End_index)])
@@ -287,4 +289,6 @@ for i in range(int(nChain[0])):
     user_chain=int(chainInd[1][int(End_index)])
   if(loca==-1):
     print('sai vi tri dang le',flat[1][findHead],'va',flat[1][findEnd],'o cung 1 chuoi')
-  print(compare(comp_text,user_text))
+    continue
+  text+=str(comp_text)+' '+str(user_text)+'\n'
+print(compare(text))

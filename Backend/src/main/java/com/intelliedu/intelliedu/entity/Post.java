@@ -11,6 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,8 +28,8 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Post {
 
-  @Id 
-  @GeneratedValue 
+  @Id
+  @GeneratedValue
   private Long id;
 
   @CreationTimestamp
@@ -36,6 +37,9 @@ public class Post {
 
 	@UpdateTimestamp
 	private ZonedDateTime lastOpened;
+
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  private Account account;
 	
 	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private List<Vote> vote;

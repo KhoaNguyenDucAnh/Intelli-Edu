@@ -5,7 +5,6 @@ import java.util.Map;
 import com.intelliedu.intelliedu.util.HashMapConverter;
 
 import jakarta.persistence.Convert;
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +18,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@DiscriminatorValue("mind_map")
 public class MindMap extends Content {
 
   @Convert(converter = HashMapConverter.class)
