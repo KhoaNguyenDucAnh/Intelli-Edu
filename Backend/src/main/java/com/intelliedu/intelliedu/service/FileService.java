@@ -1,8 +1,13 @@
 package com.intelliedu.intelliedu.service;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.intelliedu.intelliedu.dto.FileDto;
@@ -11,7 +16,6 @@ import com.intelliedu.intelliedu.entity.File;
 import com.intelliedu.intelliedu.mapper.FileMapper;
 import com.intelliedu.intelliedu.repository.FileRepo;
 import com.intelliedu.intelliedu.security.service.AuthService;
-import com.intelliedu.intelliedu.util.HashUtil;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -19,6 +23,7 @@ import jakarta.persistence.PersistenceContext;
 /**
  * FileService
  */
+@Service
 public class FileService {
 
   @Autowired
@@ -33,17 +38,36 @@ public class FileService {
   @Autowired
 	private AuthService authService;
 
-  public File findFile(String token, Authentication authentication) {
+  @Autowired
+  private DocumentService documentService;
+
+  @Autowired
+  private MindMapService mindMapService;
+
+  @Autowired
+  private QuestionService questionService;
+
+  public Page<FileDto> findFile(String title, Authentication authentication, Pageable pageable) {
+    return fileMapper.toFileDto(fileRepo.findByTitleAndAccount(title, authService.getAccount(authentication), pageable));
+  }
+
+  public FileDto findFile(String id, Authentication authentication) {
+    FileDto fileDto = fileMapper.toFileDto(findFileHelper(id, authentication));
+
+    fileDto.setDocumentDto(documentService.findContent(id));
+    fileDto.setMindMapDto(mindMapService.findContent(id));
+    fileDto.setQuestionDto(questionService.findContent(id));
+
+    return fileDto;
+  }
+
+  public File findFileHelper(String id, Authentication authentication) {
     return fileRepo
-      .findByTokenAndAccount(token, authService.getAccount(authentication))
+      .findByIdAndAccount(id, authService.getAccount(authentication))
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
   }
-
-  public FileDto findFile(File file) {
-    return fileMapper.toFileDto(file);
-  }
-
-  public File createFile(FileDto fileDto, Authentication authentication) {
+    
+  public FileDto createFile(FileDto fileDto, Authentication authentication) {
     Account account = authService.getAccount(authentication);
 
     if (fileRepo.existsByTitleAndAccount(fileDto.getTitle(), account)) {
@@ -52,33 +76,18 @@ public class FileService {
 
     File file = fileMapper.toFile(fileDto);
 
-    file.setToken(HashUtil.timeBasedHash());
+    file.setId(UUID.randomUUID().toString());
     file.setAccount(account);
-    account.getFile().add(file);
 
-    return fileRepo.save(file);
+    return fileMapper.toFileDto(fileRepo.save(file));
   }
 
-  public FileDto createFile(File file) {
-    return fileMapper.toFileDto(file);
-  }
-
-  public FileDto addSharedContent(String token, Authentication authentication) {
+  public FileDto addSharedContent(String id, Authentication authentication) {
     File file = fileRepo
-      .findByToken(token)
+      .findById(id)
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
     entityManager.detach(file);
-
-    if (!file.getDocument().getIsShared()) {
-      file.setDocument(null);
-    }
-    if (!file.getMindMap().getIsShared()) {
-      file.setMindMap(null);
-    }
-    if (!file.getQuestion().getIsShared()) {
-      file.setQuestion(null);
-    }
     
     Account account = authService.getAccount(authentication);
     account.getFile().add(file);

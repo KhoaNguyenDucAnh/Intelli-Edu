@@ -2,7 +2,6 @@ package com.intelliedu.intelliedu.entity;
 
 import java.util.Map;
 
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +18,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@DiscriminatorValue("question")
 public class Question extends Content {
   
 	private Map<String, String> content;

@@ -1,10 +1,13 @@
 package com.intelliedu.intelliedu.mapper;
 
-import org.mapstruct.BeanMapping;
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import com.intelliedu.intelliedu.dto.FileDto;
 import com.intelliedu.intelliedu.entity.File;
@@ -15,25 +18,20 @@ import com.intelliedu.intelliedu.entity.File;
 @Mapper(
 	componentModel = "spring",
 	unmappedTargetPolicy = ReportingPolicy.IGNORE,
-	nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-  uses = {
-    DocumentMapper.class, 
-    MindMapMapper.class,
-    QuestionMapper.class
-  }
+	nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
 )
 public interface FileMapper {
 
-  @BeanMapping(ignoreByDefault = true)
-  @Mapping(source = "title", target = "title")
-  @Mapping(source = "subject", target = "subject")
-  @Mapping(source = "documentDto", target = "document")
-  @Mapping(source = "mindMapDto", target = "mindMap")
-  @Mapping(source = "questionDto", target = "question")
+  @Mapping(source = "id", target = "id", ignore = true)
+  @Mapping(source = "createdAt", target = "createdAt", ignore = true)
+  @Mapping(source = "lastOpened", target = "lastOpened", ignore = true)
   File toFile(FileDto fileDto);
 
-  @Mapping(source = "document", target = "documentDto")
-  @Mapping(source = "mindMap", target = "mindMapDto")
-  @Mapping(source = "question", target = "questionDto")
-  FileDto toFileDto(File file); 
+  FileDto toFileDto(File file);
+
+  List<FileDto> toFileDto(List<File> file);
+
+  default Page<FileDto> toFileDto(Page<File> file) {
+    return new PageImpl<>(toFileDto(file.getContent()), file.getPageable(), file.getTotalElements());
+  }
 }
