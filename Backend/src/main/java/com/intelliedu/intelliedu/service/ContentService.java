@@ -63,7 +63,7 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
 
-    C content = createContent();
+    C content = createContent(file.getTitle());
 
     content.addKeyword(file.getTitle());
     content.setFile(file);
@@ -71,7 +71,7 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
     return content;
   }
 
-  protected abstract C createContent();
+  protected abstract C createContent(String title);
 
   public CDto updateContent(String id, CDto contentDto, Authentication authentication) {
     return contentMapper.toDto(
@@ -89,6 +89,11 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
   @Transactional
   public void deleteContent(String id, Authentication authentication) {
     contentRepo.deleteByIdAndFileAccount(id, authService.getAccount(authentication));
+  }
+
+  @Transactional
+  public void deleteContent(String id, Account account) {
+    contentRepo.deleteByIdAndFileAccount(id, account);
   }
 
   public void shareContent(String id, Authentication authentication) {
