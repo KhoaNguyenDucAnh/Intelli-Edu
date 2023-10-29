@@ -43,26 +43,14 @@ class mindmap extends React.Component {
                             </div>
 
 
-
-
                             <div className='Schedule'>
                                 <div className='ScheduleTitle'>Lịch trình sắp tới</div>
 
                                 <div className='ScheduleInformation'>Khi bạn thực hiện hành động trên IntelliEdu, chúng tôi sẽ cung cấp thông tin tóm tắt tại đây</div>
                             </div>
-
                             <DocType />
 
-
-
-
                         </div>
-
-
-
-
-
-
 
                         <div className='MindmapContent'>
                             <div className='mainContents'>

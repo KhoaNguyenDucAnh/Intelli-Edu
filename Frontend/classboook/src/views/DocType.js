@@ -10,7 +10,7 @@ class DocType extends React.Component {
                         <div className='caret'></div>
                     </div>
                     <ul className='menu'>
-                        <li className='active'>Sơ đồ tư duy</li>
+                        <li>Sơ đồ tư duy</li>
                         <li>Văn bản</li>
                         <li>Câu hỏi</li>
                     </ul>

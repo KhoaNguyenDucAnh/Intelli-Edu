@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.intelliedu.intelliedu.dto.FileDto;
 import com.intelliedu.intelliedu.dto.QuestionDto;
 import com.intelliedu.intelliedu.service.QuestionService;
 
@@ -40,28 +39,18 @@ public class QuestionController {
     return questionService.findContent(query, authentication, pageable);
   }
 
-  @GetMapping("/{id}")
-  public FileDto findQuestion(@PathVariable Long id, Authentication authentication) {
-    return questionService.findContent(id, authentication);
+  @PostMapping("/{id}")
+  public QuestionDto createQuestion(@PathVariable String id, Authentication authentication) {
+    return questionService.createContent(id, authentication);
   }
 
-  @PostMapping("")
-  public FileDto createQuestion(@RequestBody @Valid FileDto fileDto, Authentication authentication) {
-    return questionService.createContent(fileDto, authentication);
-  }
-
-  @PostMapping("/{fileId}")
-  public FileDto createQuestion(@PathVariable Long fileId, Authentication authentication) {
-    return questionService.createContent(fileId, authentication);
-  }
-
-  @PutMapping("")
-  public QuestionDto updateQuestion(@RequestBody @Valid QuestionDto questionDto, Authentication authentication) {
-    return questionService.updateContent(questionDto, authentication);
+  @PutMapping("/{id}")
+  public QuestionDto updateQuestion(@PathVariable String id, @RequestBody @Valid QuestionDto questionDto, Authentication authentication) {
+    return questionService.updateContent(id, questionDto, authentication);
   }
 
   @DeleteMapping("/{id}")
-  public void deleteQuestion(@PathVariable Long id, Authentication authentication) {
+  public void deleteQuestion(@PathVariable String id, Authentication authentication) {
     questionService.deleteContent(id, authentication);
   }
 }

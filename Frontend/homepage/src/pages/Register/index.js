@@ -91,10 +91,6 @@ function Register(){
                     Bạn đã có tài khoản?
                     <Link to="/login" className="registerPageLoginButton">Đăng nhập</Link>
                 </span>
-                <div className="alternateRegister">
-                    <img className="alternateRegisterIcon1" src={require("../../images/facebook.png")}/>
-                    <img className="alternateRegisterIcon2" src={require("../../images/google.png")}/>
-                </div>
             </div>
         </div>
     )

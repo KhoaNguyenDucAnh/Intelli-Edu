@@ -20,7 +20,6 @@ function Header() {
                             </span>
                             <div className="toolListWrapper">
                                 <div className="toolList">
-                                    <p className="toolListItem">Tăng tốc độ đọc</p>
                                     <p className="toolListItem">Chatbot</p>
                                     <p className="toolListItem">Sơ đồ tư duy</p>
                                 </div>
@@ -31,6 +30,9 @@ function Header() {
                         </div>
                         <div className="noArrow navItem">
                             <p className="navText">Giải trí</p>
+                        </div>
+                        <div className="noArrow navItem">
+                            <p className="navText">Bảng xếp hạng</p>
                         </div>
                         <div className="noArrow navItem">
                             <p className="navText">Liên hệ</p>

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.intelliedu.intelliedu.dto.FileDto;
 import com.intelliedu.intelliedu.dto.MindMapDto;
 import com.intelliedu.intelliedu.service.MindMapService;
 
@@ -37,28 +36,18 @@ public class MindMapController {
     return mindMapService.findContent(query, authentication, pageable);
   }
 
-  @GetMapping("/{id}")
-  public FileDto findMindMap(@PathVariable Long id, Authentication authentication) {
-    return mindMapService.findContent(id, authentication);
+  @PostMapping("/{id}")
+  public MindMapDto createMindMap(@PathVariable String id, Authentication authentication) {
+    return mindMapService.createContent(id, authentication);
   }
 
-  @PostMapping("")
-  public FileDto createMindMap(@RequestBody @Valid FileDto fileDto, Authentication authentication) {
-    return mindMapService.createContent(fileDto, authentication);
-  }
-
-  @PostMapping("/{fileId}")
-  public FileDto createMindMap(@PathVariable Long fileId, Authentication authentication) {
-    return mindMapService.createContent(fileId, authentication);
-  }
-
-  @PutMapping("")
-  public MindMapDto updateMindMap(@RequestBody @Valid MindMapDto mindMapDto, Authentication authentication) {
-    return mindMapService.updateContent(mindMapDto, authentication);
+  @PutMapping("/{id}")
+  public MindMapDto updateMindMap(@PathVariable String id, @RequestBody @Valid MindMapDto mindMapDto, Authentication authentication) {
+    return mindMapService.updateContent(id, mindMapDto, authentication);
   }
 
   @DeleteMapping("/{id}")
-  public void deleteMindMap(@PathVariable Long id, Authentication authentication) {
+  public void deleteMindMap(@PathVariable String id, Authentication authentication) {
     mindMapService.deleteContent(id, authentication);
   }
 }

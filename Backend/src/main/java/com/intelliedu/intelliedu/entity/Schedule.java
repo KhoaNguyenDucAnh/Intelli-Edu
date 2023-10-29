@@ -1,10 +1,6 @@
 package com.intelliedu.intelliedu.entity;
 
-import java.time.ZonedDateTime;
 import java.util.List;
-
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -19,31 +15,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * CommentAble
+ * Schedule
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-public class Post {
+public class Schedule {
 
-  @Id
-  @GeneratedValue
+  @Id 
+  @GeneratedValue 
   private Long id;
 
-  @CreationTimestamp
-	private ZonedDateTime createdAt;
-
-	@UpdateTimestamp
-	private ZonedDateTime lastOpened;
+  @OneToMany(mappedBy = "schedule", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	private List<Event> event;
 
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private Account account;
-	
-	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	private List<Vote> vote;
-
-	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  private List<Comment> comment;
 }

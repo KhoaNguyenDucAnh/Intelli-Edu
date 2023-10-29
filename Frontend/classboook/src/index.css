@@ -412,7 +412,7 @@ input {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 173px;
+  height: 190px;
   border-radius: 16px;
   background: #FFF;
   cursor: pointer;
@@ -482,7 +482,7 @@ input {
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-top: 6px solid #484848;
-  transition: 0.3s;
+  transition: 0.5s;
 }
 
 .caret-rotate {
@@ -504,7 +504,7 @@ input {
   margin: 70px;
   opacity: 0;
   display: none;
-  transition: 0.2s;
+  transition: 0.5s;
   z-index: 1;
 }
 
@@ -525,10 +525,22 @@ input {
   box-shadow: 4px 4px 20px 0px rgba(0, 0, 0, 0.25);
 }
 
-.menu-open {
+
+
+.select:hover .caret {
+  transform: rotate(180deg);
+}
+
+.select:hover+.menu {
   display: block;
   opacity: 1;
 }
+
+.menu:hover {
+  display: block;
+  opacity: 1;
+}
+
 
 /* *********************************************************************** */
 .MindmapContent {

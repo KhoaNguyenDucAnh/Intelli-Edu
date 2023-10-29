@@ -2,6 +2,7 @@ package com.intelliedu.intelliedu.mapper;
 
 import java.util.List;
 
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -18,6 +19,7 @@ public interface ContentMapper<C extends Content, CDto extends ContentDto> {
 
 	C toEntity(CDto cDto, @MappingTarget C c);
 
+  @Mapping(source = "post", target = "postDto")
   CDto toDto(C c);
 
   List<CDto> toDto(List<C> c);

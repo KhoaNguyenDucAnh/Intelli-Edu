@@ -4,10 +4,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.ZonedDateTime;
-import java.util.Optional;
 
-import org.apache.commons.codec.digest.HmacAlgorithms;
-import org.apache.commons.codec.digest.HmacUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,6 +28,7 @@ import com.intelliedu.intelliedu.repository.AccountRepo;
 import com.intelliedu.intelliedu.repository.SecurityTokenRepo;
 import com.intelliedu.intelliedu.security.util.JWTUtil;
 import com.intelliedu.intelliedu.util.EmailUtil;
+import com.intelliedu.intelliedu.util.HashUtil;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -122,26 +120,24 @@ public class AuthService {
     return account;
   }
 
-  private void email(Account account, SecurityAction securityAction) {
-    account.setSecurityToken(generateSecurityToken(account, securityAction));
-    accountRepo.save(account);
+  private SecurityToken generateSecurityToken(Account account, SecurityAction securityAction) {
+    SecurityToken securityToken = securityTokenRepo
+      .findById(account.getId())
+      .orElse(SecurityToken.builder().account(account).build());
 
-    EmailUtil.sendEmail("%s: %s", securityAction.getEmailContent(), account.getSecurityToken().getToken());
+    securityToken.setSecurityAction(securityAction);
+    securityToken.setToken(HashUtil.timeBasedHash(account.getEmail()));
+    securityToken.setExpireDateTime(ZonedDateTime.now().plus(Duration.ofMillis(SecurityConfig.ACTIVATION_EXPIRATION_TIME)));
+
+    return securityTokenRepo.save(securityToken);
+  }
+
+  private void email(Account account, SecurityAction securityAction) {
+    EmailUtil.sendEmail("%s: %s", securityAction.getEmailContent(), generateSecurityToken(account, securityAction).getToken());
 
     log.info(String.format("Account %s | %s", account.getEmail(), securityAction.getLog()));
   }
 
-  private SecurityToken generateSecurityToken(Account account, SecurityAction securityAction) {
-    SecurityToken securityToken = Optional
-      .ofNullable(account.getSecurityToken())
-      .orElse(SecurityToken.builder().account(account).build());
-
-    securityToken.setSecurityAction(securityAction);
-    securityToken.setToken(new HmacUtils(HmacAlgorithms.HMAC_SHA_256, ZonedDateTime.now().toString()).hmacHex(account.getEmail()));
-    securityToken.setExpireDateTime(ZonedDateTime.now().plus(Duration.ofMillis(SecurityConfig.ACTIVATION_EXPIRATION_TIME)));
-
-    return securityToken;
-  }
 
   public void activateAccount(String token) {
     SecurityToken securityToken = securityTokenRepo

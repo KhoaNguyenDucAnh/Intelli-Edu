@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Body from './Body';
 import Heading from './heading'
 import Footing from './Footing'
 import Mindmap from "./mindmap";

@@ -14,5 +14,5 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class ContentDto {
 
-  private Long id;
+  private PostDto postDto;
 }

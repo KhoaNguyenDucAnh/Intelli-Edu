@@ -9,8 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,7 +28,6 @@ import lombok.NoArgsConstructor;
 public class SecurityToken {
 
   @Id
-	@GeneratedValue
 	private Long id;
 
   private String token;
@@ -38,6 +37,7 @@ public class SecurityToken {
 	@Enumerated(EnumType.STRING)
 	private SecurityAction securityAction;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@MapsId
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private Account account;
 }
