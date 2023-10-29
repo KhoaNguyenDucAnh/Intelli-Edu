@@ -23,4 +23,6 @@ public interface FileRepo extends JpaRepository<File, String> {
   Optional<File> findByIdAndAccount(String id, Account Account);
 
   Optional<File> findById(String id);
+  
+  void deleteByIdAndAccount(String id, Account account);
 }
