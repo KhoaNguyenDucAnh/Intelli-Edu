@@ -1,6 +1,10 @@
 import React from 'react'
 import { Link } from "react-router-dom"
 import DocType from './DocType';
+import Schedule from './schedule';
+import SidebarContent from './sidebarcontent';
+import MindmapContent from './MindmapContent';
+import Pagenumber from './PageNumber';
 class mindmap extends React.Component {
 
     render() {
@@ -25,67 +29,14 @@ class mindmap extends React.Component {
                     </div>
                     <div className='ContentsMindmap'>
                         <div className='LeftSidebar'>
-
-
-
-                            <div className='SidebarContent'>
-                                <div className='ContentBox'>
-                                    <div className='Content'>
-                                        <div className='ContentText'>Gần đây</div>
-                                    </div>
-                                    <div className='Content'>
-                                        <div className='ContentText'>Nổi bật</div>
-                                    </div>
-                                    <div className='Content'>
-                                        <div className='ContentText'>Đang theo dõi</div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div className='Schedule'>
-                                <div className='ScheduleTitle'>Lịch trình sắp tới</div>
-
-                                <div className='ScheduleInformation'>Khi bạn thực hiện hành động trên IntelliEdu, chúng tôi sẽ cung cấp thông tin tóm tắt tại đây</div>
-                            </div>
+                            <SidebarContent />
                             <DocType />
-
+                            <Schedule />
                         </div>
 
-                        <div className='MindmapContent'>
-                            <div className='mainContents'>
-
-                            </div>
-                            <div className='mainContents'>
-
-                            </div>
-                            <div className='mainContents'>
-
-                            </div>
-                        </div>
+                        <MindmapContent />
                     </div>
-                    <div className='Frame15'>
-                        <div className='Frame40'>
-                            <div className='Frame40Text'>←
-                            </div>
-                        </div>
-                        <div className='Pagenumber'><div className='PagenumberText'>1
-                        </div></div>
-                        <div className='Pagenumber'><div className='PagenumberText'>2
-                        </div></div>
-                        <div className='Pagenumber'><div className='PagenumberText'>3
-                        </div></div>
-                        <div className='More'>...</div>
-                        <div className='Pagenumber'><div className='PagenumberText'>27
-                        </div></div>
-                        <div className='Pagenumber'><div className='PagenumberText'>28
-                        </div></div>
-                        <div className='Pagenumber'><div className='PagenumberText'>29
-                        </div></div>
-                        <div className='Pagenumber'><div className='Frame40Text'>→
-                        </div>
-                        </div>
-                    </div>
+                    <Pagenumber />
                 </div>
             </>
 

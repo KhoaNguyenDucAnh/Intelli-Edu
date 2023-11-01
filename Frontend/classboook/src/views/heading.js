@@ -10,9 +10,6 @@ class Heading extends React.Component {
         ChatHistoryColor: "#757575",
     }
     render() {
-        let MindColor = this.state.MindMapColor
-        let NColor = this.state.NewColor
-        let HistoryColor = this.state.ChatHistoryColor
         return (
             <>
                 <div className="header">
@@ -23,6 +20,10 @@ class Heading extends React.Component {
 
                                 <div className="noArrow navItem">
                                     <p className="navText">Trang chủ</p>
+                                </div>
+
+                                <div className="noArrow navItem">
+                                    <p className="navText">Diễn đàn</p>
                                 </div>
 
                                 <div className="withArrow navItem">

@@ -1,9 +1,9 @@
-import Heading from './heading'
+import Header from 'Frontend\homepage\src\Components\Header.js'
 import Footing from './Footing'
 function Body() {
   return (
     <div>
-      <Heading />
+      <Header />
       <Footing />
     </div>
   )
