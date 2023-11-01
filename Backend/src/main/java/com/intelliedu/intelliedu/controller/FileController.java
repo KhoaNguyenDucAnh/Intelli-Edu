@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,5 +44,10 @@ public class FileController {
   @PostMapping("")
   public FileDto createFile(@RequestBody @Valid FileDto fileDto, Authentication authentication) {
     return fileService.createFile(fileDto, authentication);
+  }
+
+  @DeleteMapping("/{id}")
+  public void deleteFile(@PathVariable String id, Authentication authentication) {
+    fileService.deleteFile(id, authentication);
   }
 }
