@@ -19,6 +19,7 @@ import com.intelliedu.intelliedu.security.service.AuthService;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 
 /**
  * FileService
@@ -80,6 +81,15 @@ public class FileService {
     file.setAccount(account);
 
     return fileMapper.toFileDto(fileRepo.save(file));
+  }
+
+  @Transactional
+  public void deleteFile(String id, Authentication authentication) {
+    Account account = authService.getAccount(authentication);
+    documentService.deleteContent(id, account);
+    mindMapService.deleteContent(id, account);
+    questionService.deleteContent(id, account);
+    fileRepo.deleteByIdAndAccount(id, account);
   }
 
   public FileDto addSharedContent(String id, Authentication authentication) {

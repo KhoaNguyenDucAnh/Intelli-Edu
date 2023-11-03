@@ -12,7 +12,7 @@ import com.intelliedu.intelliedu.entity.Document;
 public class DocumentService extends ContentService<Document, DocumentDto> {
 
   @Override
-  protected Document createContent() {
-    return new Document(); 
+  protected Document createContent(String title) {
+    return Document.builder().content("").build(); 
   }
 }

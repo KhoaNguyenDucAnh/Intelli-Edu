@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://ep-rough-mountain-85292401.ap-southeast-1.aws.neon.tech/Intelli%20Edu?user=robinkhoa06&password=Dq5loepZr8PW
+  jpa:
+    hibernate:
+      ddl-auto: update
+  #  web:
+    # resources:
+      # static-locations: file:/Frontend/
+
