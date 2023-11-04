@@ -28,7 +28,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn -B package --file Backend/ -Dspring.profiles.active=test
+      run: mvn -qB package --file Backend/ -Dspring.profiles.active=test
 
 #    - name: Build with Docker
 #      run: |
