@@ -48,12 +48,12 @@ jobs:
 
       - name: Build and tag Docker image
         run: |
-          docker build -t ghcr.io/${{ github.repository_owner }}/${{ github.repository_name }}:test -f test.dockerfile .
+          docker build -t ghcr.io/${{ github.repository_owner }}/intelliedu:test -f test.dockerfile .
         working-directory: Backend/
 
       - name: Push Docker image to GitHub Container Registry
         run: |
-          docker push ghcr.io/${{ github.repository_owner }}/${{ github.repository_name }}:test
+          docker push ghcr.io/${{ github.repository_owner }}/intelliedu:test
   
   analyze:
     name: Analyze
