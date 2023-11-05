@@ -71,7 +71,7 @@ jobs:
       uses: github/codeql-action/init@v2
       with:
         languages: "java"
-        root: Backend
+        source-root: Backend
         
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
