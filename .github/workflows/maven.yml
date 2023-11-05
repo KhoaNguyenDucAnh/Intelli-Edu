@@ -51,8 +51,8 @@ jobs:
 
       - name: Build and tag Docker image
         run: |
-          docker build -f Backend/test.Dockerfile -t ghcr.io/khoanguyenducanh/intelliedu:test .
+          docker build -f Backend/test.Dockerfile -t ghcr.io/khoanguyenducanh/intelli-edu:test .
 
       - name: Push Docker image to GitHub Container Registry
         run: |
-          docker push ghcr.io/khoanguyenducanh/intelliedu:test
+          docker push ghcr.io/khoanguyenducanh/intelli-edu:test
