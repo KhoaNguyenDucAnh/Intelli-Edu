@@ -48,7 +48,7 @@ jobs:
 
       - name: Build and tag Docker image
         run: |
-          docker build -f test.Dockerfile -t ghcr.io/khoanguyenducanh/intelliedu:test .
+          docker build -f Backend/test.Dockerfile -t ghcr.io/khoanguyenducanh/intelliedu:test .
 
       - name: Push Docker image to GitHub Container Registry
         run: |
@@ -69,9 +69,9 @@ jobs:
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v2
-        
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
       with:
         languages: "java"
         root: Backend
+        
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
