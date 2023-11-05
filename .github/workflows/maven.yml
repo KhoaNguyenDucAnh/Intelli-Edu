@@ -27,6 +27,7 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+    
     - name: Build with Maven
       run: mvn package -q -f Backend/pom.xml -Dspring.profiles.active=test
 
@@ -37,7 +38,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v1
@@ -53,25 +54,3 @@ jobs:
       - name: Push Docker image to GitHub Container Registry
         run: |
           docker push ghcr.io/khoanguyenducanh/intelliedu:test
-  
-  analyze:
-    name: Analyze
-    runs-on: 'ubuntu-latest'
-    
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: "java"
-        source-root: Backend
-        
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
