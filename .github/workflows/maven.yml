@@ -63,6 +63,11 @@ jobs:
     #   - https://gh.io/using-larger-runners
     # Consider using larger runners for possible analysis time improvements.
     runs-on: 'ubuntu-latest'
+
+    defaults:
+      run:
+        working-directory: Backend/
+    
     permissions:
       actions: read
       contents: read
@@ -111,5 +116,3 @@ jobs:
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
-      with:
-        category: "/language:${{matrix.language}}"
