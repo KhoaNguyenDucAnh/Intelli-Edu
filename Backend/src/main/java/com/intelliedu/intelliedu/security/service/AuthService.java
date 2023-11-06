@@ -4,6 +4,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.util.function.Consumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -91,19 +92,10 @@ public class AuthService {
 
     accountRepo
       .findByEmail(accountRegistrationDto.getEmail())
-      .ifPresentOrElse((account) -> {
-        if (account.isEnabled()) {
-          email(account, SecurityAction.RESET_PASSWORD);
-        } else {
-          email(account, SecurityAction.ACTIVATE);
-        }
-      },
-      () -> {
-        Account account = generateAccount(accountRegistrationDto, Role.ROLE_USER);
-
-        email(account, SecurityAction.ACTIVATE);
-      }
-    );
+      .ifPresentOrElse(
+        account -> {if (account.isEnabled()) email(account, SecurityAction.RESET_PASSWORD); else email(account, SecurityAction.ACTIVATE);},
+        () -> email(generateAccount(accountRegistrationDto, Role.ROLE_USER), SecurityAction.ACTIVATE)
+      );
   }
 
   private Account generateAccount(AccountRegistrationDto accountRegistrationDto, Role role) {
@@ -126,7 +118,7 @@ public class AuthService {
       .orElse(SecurityToken.builder().account(account).build());
 
     securityToken.setSecurityAction(securityAction);
-    securityToken.setToken(HashUtil.timeBasedHash(account.getEmail()));
+    securityToken.setToken(HashUtil.HMACSHA256(account.getEmail()));
     securityToken.setExpireDateTime(ZonedDateTime.now().plus(Duration.ofMillis(SecurityConfig.ACTIVATION_EXPIRATION_TIME)));
 
     return securityTokenRepo.save(securityToken);
