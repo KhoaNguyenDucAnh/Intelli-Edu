@@ -18,11 +18,11 @@ public interface ContentRepo<C extends Content> extends JpaRepository<C, String>
 
 	Page<C> findByKeyword(String keyword, Pageable pageable);
 
-  Page<C> findByKeywordAndFileAccountIsNotAndIsSharedIsTrue(String keyword, Account account, Pageable pageable);
+  Page<C> findByKeywordAndAccountIsNotAndIsSharedIsTrue(String keyword, Account account, Pageable pageable);
 
-  Page<C> findByKeywordAndFileAccount(String keyword, Account account, Pageable pageable);
+  Page<C> findByKeywordAndAccount(String keyword, Account account, Pageable pageable);
 
-  Optional<C> findByIdAndFileAccount(String id, Account Account);
+  Optional<C> findByIdAndAccount(String id, Account account);
 
-  void deleteByIdAndFileAccount(String id, Account account);
+  void deleteByIdAndAccount(String id, Account account);
 }

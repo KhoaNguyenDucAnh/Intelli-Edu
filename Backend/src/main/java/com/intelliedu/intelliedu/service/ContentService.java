@@ -44,8 +44,8 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
     } else {
       Account account = authService.getAccount(authentication);
       return Map.of(
-        "other", contentMapper.toDto(contentRepo.findByKeywordAndFileAccountIsNotAndIsSharedIsTrue(query, account, pageable)),
-        "own", contentMapper.toDto(contentRepo.findByKeywordAndFileAccount(query, account, pageable))
+        "other", contentMapper.toDto(contentRepo.findByKeywordAndAccountIsNotAndIsSharedIsTrue(query, account, pageable)),
+        "own", contentMapper.toDto(contentRepo.findByKeywordAndAccount(query, account, pageable))
       );
     }
   }
@@ -55,20 +55,18 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
   }
 
   public CDto createContent(String id, Authentication authentication) {
-    return contentMapper.toDto(contentRepo.save(createContent(fileService.findFileHelper(id, authentication))));
-  }
+    File file = fileService.findFileHelper(id, authentication); 
 
-  private C createContent(File file) {
     if (contentRepo.existsById(file.getId())) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
 
     C content = createContent(file.getTitle());
 
-    content.addKeyword(file.getTitle());
+    content.getKeyword().add(file.getTitle());
     content.setFile(file);
 
-    return content;
+    return contentMapper.toDto(contentRepo.save(content));
   }
 
   protected abstract C createContent(String title);
@@ -79,7 +77,7 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
         contentMapper.toEntity(
           contentDto, 
           contentRepo
-			      .findByIdAndFileAccount(id, authService.getAccount(authentication))
+			      .findByIdAndAccount(id, authService.getAccount(authentication))
 			      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND))
         )
       )
@@ -88,17 +86,17 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
 
   @Transactional
   public void deleteContent(String id, Authentication authentication) {
-    contentRepo.deleteByIdAndFileAccount(id, authService.getAccount(authentication));
+    deleteContent(id, authService.getAccount(authentication));
   }
 
   @Transactional
   public void deleteContent(String id, Account account) {
-    contentRepo.deleteByIdAndFileAccount(id, account);
+    contentRepo.deleteByIdAndAccount(id, account);
   }
 
   public void shareContent(String id, Authentication authentication) {
     contentRepo
-      .findByIdAndFileAccount(id, authService.getAccount(authentication))
+      .findByIdAndAccount(id, authService.getAccount(authentication))
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND))
     .setIsShared(true)  ;
   }
