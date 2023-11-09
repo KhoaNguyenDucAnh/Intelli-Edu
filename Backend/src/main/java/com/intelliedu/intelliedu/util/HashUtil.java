@@ -18,4 +18,8 @@ public class HashUtil {
   public static String HMACSHA256() {
     return HMACSHA256("");
   }
+
+  public static String UUID() {
+    return UUID.randomUUID().toString();
+  }
 }

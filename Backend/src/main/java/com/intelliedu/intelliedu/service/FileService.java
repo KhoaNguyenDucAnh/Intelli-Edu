@@ -1,7 +1,5 @@
 package com.intelliedu.intelliedu.service;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -77,10 +75,13 @@ public class FileService {
 
     File file = fileMapper.toFile(fileDto);
 
-    file.setId(UUID.randomUUID().toString());
     file.setAccount(account);
 
     return fileMapper.toFileDto(fileRepo.save(file));
+  }
+
+  public FileDto updateFile(String id, FileDto fileDto, Authentication authentication) {
+    return fileMapper.toFileDto(fileRepo.save(fileMapper.toFile(fileDto, fileRepo.findByIdAndAccount(id, authService.getAccount(authentication)).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)))));
   }
 
   @Transactional
