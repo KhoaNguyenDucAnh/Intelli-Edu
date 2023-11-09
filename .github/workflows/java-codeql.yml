@@ -14,14 +14,16 @@ name: "CodeQL"
 on:
   push:
     branches: [ "master" ]
+    paths: "Backend/**"
   pull_request:
     branches: [ "master" ]
+    paths: "Backend/**"
   schedule:
     - cron: "0 0 * * 0"
 
 jobs:
   analyze:
-    name: Analyze
+    name: Analyze Java
     # Runner size impacts CodeQL analysis time. To learn more, please see:
     #   - https://gh.io/recommended-hardware-resources-for-running-codeql
     #   - https://gh.io/supported-runners-and-hardware-resources
@@ -79,7 +81,7 @@ jobs:
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
 
-    - name: Upload artifacts
+    - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
           name: backend
