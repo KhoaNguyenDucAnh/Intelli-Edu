@@ -34,6 +34,7 @@ jobs:
   
   dockerize:
     name: Dockerize
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
