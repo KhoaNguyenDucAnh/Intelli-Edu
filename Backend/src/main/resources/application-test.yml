@@ -4,7 +4,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-  #  web:
-    # resources:
-      # static-locations: file:/Frontend/
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
 

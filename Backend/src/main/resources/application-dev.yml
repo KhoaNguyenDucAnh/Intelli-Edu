@@ -1,14 +1,19 @@
 spring:
+  devtools:
+    livereload:
+      enabled: true
+  main:
+    lazy-initialization: false
   datasource:
     url: jdbc:postgresql://localhost:5432/intelliedu?user=postgres&password=1234567890
   jpa:
     hibernate:
-      ddl-auto: update 
+      ddl-auto: update
+    show-sql: true
     properties:
       hibernate:
-        temp:
-          use_jdbc_metadata_defaults: false
+        format_sql: true
+        use_sql_comments: true
   web:
     resources:
-      static-locations: file:${user.dir}/../Frontend/
-
+      static-locations: file:/media/Data/Project/Intelli-Edu/Frontend/homepage/build/

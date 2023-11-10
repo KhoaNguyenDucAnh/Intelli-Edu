@@ -4,22 +4,12 @@ server:
     include-stacktrace: never
 ---
 spring:
-  devtools:
-    livereload:
-      enabled: true
-  main:
-    lazy-initialization: true
   datasource:
     driver-class-name: org.postgresql.Driver
   jpa:
-    show-sql: true
     properties:
       hibernate:
-        format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        jdbc:
-          lob:
-            non_contextual_creation: true
 ---
 python:
   port: 65432
