@@ -50,4 +50,9 @@ public class MindMapController {
   public void deleteMindMap(@PathVariable String id, Authentication authentication) {
     mindMapService.deleteContent(id, authentication);
   }
+
+  @GetMapping("/check/{id}")
+  public String checkMindMap(@PathVariable String id, Authentication authentication) {
+    return mindMapService.checkMindMap(id, authentication);
+  }
 }
