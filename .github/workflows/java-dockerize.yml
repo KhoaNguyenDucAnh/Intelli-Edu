@@ -10,7 +10,7 @@ name: Java
 
 on:
   pull_request:
-    branches: [ "master", "testing" ]
+    branches: [ "testing" ]
     paths: "Backend/**"
 
 jobs:
