@@ -3,7 +3,7 @@ spring:
     livereload:
       enabled: true
   main:
-    lazy-initialization: false
+    lazy-initialization: true
   datasource:
     url: jdbc:postgresql://localhost:5432/intelliedu?user=postgres&password=1234567890
   jpa:
@@ -16,4 +16,4 @@ spring:
         use_sql_comments: true
   web:
     resources:
-      static-locations: file:/media/Data/Project/Intelli-Edu/Frontend/homepage/build/
+      static-locations: file:/media/Data/Project/Intelli-Edu/Frontend/homepage/
