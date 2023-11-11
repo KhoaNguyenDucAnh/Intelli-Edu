@@ -1,7 +1,8 @@
 package com.intelliedu.intelliedu.dto;
 
+import com.intelliedu.intelliedu.constraint.PasswordMatch;
+
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,21 +12,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@PasswordMatch
 public class AccountRegistrationDto {
 
-  @NotNull
-  @NotEmpty
+  @NotEmpty(message = "Email must not be empty")
   private String email;
 
-  @NotNull
-  @NotEmpty
+  @NotEmpty(message = "Username must not be empty")
   private String username;
 
-  @NotNull
-  @NotEmpty
+  @NotEmpty(message = "Password must not be empty")
   private String password;
 
-  @NotNull
-  @NotEmpty
+  @NotEmpty(message = "Confirm password must not be empty")
   private String confirmPassword;
 }

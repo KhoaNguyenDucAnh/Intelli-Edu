@@ -85,16 +85,12 @@ public class AuthService {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
 
-    if (!accountRegistrationDto.getPassword().equals(accountRegistrationDto.getConfirmPassword())) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-    }
-
     accountRepo
       .findByEmail(accountRegistrationDto.getEmail())
       .ifPresentOrElse(
         account -> {if (account.isEnabled()) email(account, SecurityAction.RESET_PASSWORD); else email(account, SecurityAction.ACTIVATE);},
         () -> email(generateAccount(accountRegistrationDto, Role.ROLE_USER), SecurityAction.ACTIVATE)
-      );
+    );
   }
 
   private Account generateAccount(AccountRegistrationDto accountRegistrationDto, Role role) {
