@@ -47,7 +47,6 @@ public class AIService {
       stopConnection();
       return response;
 		} catch (IOException e) {
-      System.out.println(e.getMessage());
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
  	}
