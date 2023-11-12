@@ -22,7 +22,7 @@ public interface ContentRepo<C extends Content> extends JpaRepository<C, String>
 
   Page<C> findByKeywordAndAccount(String keyword, Account account, Pageable pageable);
 
-  Optional<C> findByIdAndAccount(String id, Account account);
+  Boolean existsByIdAndAccount(String id, Account account);
 
-  void deleteByIdAndAccount(String id, Account account);
+  Optional<C> findByIdAndAccount(String id, Account account);
 }

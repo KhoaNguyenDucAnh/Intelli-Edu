@@ -4,7 +4,9 @@ import java.time.ZonedDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import com.intelliedu.intelliedu.config.Subject;
 
@@ -30,6 +32,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
+@SQLDelete(sql = "UPDATE file SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 public class File {
 
   @Id
@@ -50,6 +54,9 @@ public class File {
 
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private Account account;
+
+  @Builder.Default
+  private boolean deleted = Boolean.FALSE;
 
   public void setAccount(Account account) {
     this.account = account;

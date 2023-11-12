@@ -18,6 +18,8 @@ public interface FileRepo extends JpaRepository<File, String> {
 
   Boolean existsByTitleAndAccount(String title, Account account);
 
+  Boolean existsByIdAndAccount(String id, Account account);
+
   Optional<File> findByIdAndAccount(String id, Account account);
 
   void deleteByIdAndAccount(String id, Account account);

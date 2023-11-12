@@ -46,6 +46,9 @@ public class Content {
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private Post post;
 
+  @Builder.Default
+  private boolean deleted = Boolean.FALSE;
+
   public void setFile(File file) {
     this.file = file;
     this.account = file.getAccount();
