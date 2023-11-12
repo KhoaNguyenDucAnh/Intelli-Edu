@@ -15,4 +15,9 @@ public class DocumentService extends ContentService<Document, DocumentDto> {
   protected Document createContent(String title) {
     return Document.builder().content("").build(); 
   }
+
+  @Override
+  protected Class<Document> getGenericClass() {
+    return Document.class;
+  }
 }

@@ -37,6 +37,11 @@ public class MindMapService extends ContentService<MindMap, MindMapDto> {
     return MindMap.builder().content(Map.of("title", title)).build();
   }
 
+  @Override
+  protected Class<MindMap> getGenericClass() {
+    return MindMap.class; 
+  }
+
   public String checkMindMap(String id, Authentication authentication) {
     Account account = authService.getAccount(authentication);
 
