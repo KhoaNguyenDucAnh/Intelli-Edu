@@ -53,7 +53,6 @@ public class CommentService {
     Post post = postRepo.findById(postId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
     Comment comment = commentMapper.toComment(commentDto);
-
     comment.setPost(post);
     comment.setAccount(authService.getAccount(authentication));
 
