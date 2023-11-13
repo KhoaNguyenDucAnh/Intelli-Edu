@@ -85,7 +85,7 @@ input {
 
 .toolList {
   background-color: white;
-  width: 10vw;
+  width: 12vw;
   height: 5.5vw;
   border-radius: 1vh;
   display: flex;
@@ -386,8 +386,17 @@ input {
   font-size: 2.4vw;
   font-family: 'Quicksand', sans-serif;
 }
+<<<<<<< HEAD
 
 .comehereBackground {
+=======
+.comehereTextArrow{
+  height: 1.6vw;
+  width: 2.8vw;
+  margin-left: 0.8vw;
+}
+.comehereBackground{
+>>>>>>> fcc652d50c9757427ceccfcba651678750b72e1b
   position: absolute;
   background-color: black;
   bottom: 0;
