@@ -29,15 +29,19 @@ public class AIService {
 
   private ObjectMapper objectMapper = new ObjectMapper();
   
-  public String request(Document document, MindMap mindMap) throws JsonProcessingException {
-    return request(
-      objectMapper.writeValueAsString(
-        Map.of(
-          Document.class.getSimpleName(), document.getContent(),
-          MindMap.class.getSimpleName(), objectMapper.writeValueAsString(mindMap.getContent())
+  public String request(Document document, MindMap mindMap) {
+    try {
+      return request(
+        objectMapper.writeValueAsString(
+          Map.of(
+            Document.class.getSimpleName(), document.getContent(),
+            MindMap.class.getSimpleName(), objectMapper.writeValueAsString(mindMap.getContent())
+          )
         )
-      )
-    );
+      );
+    } catch (JsonProcessingException ex) {
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
  	}
 	
   private String request(String message) {
