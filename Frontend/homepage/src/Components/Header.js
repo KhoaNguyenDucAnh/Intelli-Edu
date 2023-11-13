@@ -9,9 +9,6 @@ function Header() {
                     <div className="navigation">
                     <div className="navItem">
                             <p className="navText">Tài liệu</p>
-                            <span class="material-symbols-outlined downArrow">
-                                expand_more
-                            </span>
                         </div> 
                         <div className="withArrow navItem">
                             <p className="navText">Công cụ hỗ trợ</p>
@@ -20,16 +17,13 @@ function Header() {
                             </span>
                             <div className="toolListWrapper">
                                 <div className="toolList">
-                                    <p className="toolListItem">Chatbot</p>
+                                    <p className="toolListItem">Mô hình ngôn ngữ lớn</p>
                                     <p className="toolListItem">Sơ đồ tư duy</p>
                                 </div>
                             </div>
                         </div> 
                         <div className="noArrow navItem">
                             <p className="navText">Kế hoạch</p>
-                        </div>
-                        <div className="noArrow navItem">
-                            <p className="navText">Giải trí</p>
                         </div>
                         <div className="noArrow navItem">
                             <p className="navText">Bảng xếp hạng</p>

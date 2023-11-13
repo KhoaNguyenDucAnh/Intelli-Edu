@@ -72,7 +72,7 @@ input{
 }
 .toolList{
   background-color: white;
-  width: 10vw;
+  width: 12vw;
   height: 5.5vw;
   border-radius: 1vh;
   display: flex;
@@ -332,6 +332,11 @@ input{
   align-items: center;
   font-size: 2.4vw;
   font-family: 'Quicksand', sans-serif;
+}
+.comehereTextArrow{
+  height: 1.6vw;
+  width: 2.8vw;
+  margin-left: 0.8vw;
 }
 .comehereBackground{
   position: absolute;
