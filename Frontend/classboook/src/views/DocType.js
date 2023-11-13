@@ -6,14 +6,15 @@ class DocType extends React.Component {
         return (
             <>
                 <body>
+                    <script></script>
                     <div className='dropdown'>
                         <div className='select'>
                             <span className='selected'>
                                 <Routes>
                                     <Route path="/" element={"Chọn loại tài liệu"} />
-                                    <Route path="/mindmap" element={"mindmap"} />
-                                    <Route path="/text" element={"Van Ban"} />
-                                    <Route path="/question" element={"Cau hoi"} />
+                                    <Route path="/mindmap" element={"Sơ đồ tư duy"} />
+                                    <Route path="/text" element={"Văn bản"} />
+                                    <Route path="/question" element={"Câu hỏi"} />
                                 </Routes>
                             </span>
                             <div className='caret'></div>

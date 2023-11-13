@@ -1,7 +1,6 @@
 * {
   caret-color: transparent;
   box-sizing: border-box;
-  cursor: pointer;
 }
 
 body {
@@ -197,7 +196,6 @@ input {
   border-radius: 0.308vw;
   caret-color: auto;
   padding: 0 1vw 0 3vw;
-  margin-left: 1.5625vw;
   outline: none;
   border: none;
   font-size: 1.5625vw;
@@ -374,16 +372,28 @@ input {
 .Content {
   display: flex;
   width: 100%;
-  height: 60px;
+  height: 80px;
   padding-left: 40px;
-  flex-direction: column;
-  justify-content: center;
+  /* flex-direction: column; */
+  align-items: center;
   gap: 10px;
   border-radius: 6px;
   background: #FFF;
 }
 
+.IconContent {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  padding: 4px;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 6px;
+  background: var(--Dark-4, #2C353D);
+}
+
 .ContentText {
+  width: 50%;
   color: #000;
   font-family: Montserrat;
   font-size: 1.4vw;
@@ -391,6 +401,19 @@ input {
   font-weight: 600;
   line-height: 18px;
   /* 64.286% */
+}
+
+.FollowingNum {
+  display: flex;
+  height: 21px;
+  width: auto;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 2px;
+  background: var(--red-red-80, #FF6934);
 }
 
 .Schedule {
@@ -451,7 +474,7 @@ input {
   transition: background 0.3s;
   justify-content: space-between;
   padding: 1em;
-  cursor: pointer;
+  cursor: default;
   justify-content: space-between;
   align-items: center;
 }
@@ -557,6 +580,24 @@ input {
   display: flex;
   padding-right: 0px;
   width: 65.09375vw;
+  height: 274px;
+  border-radius: 14px;
+  background: #FFF;
+  box-shadow: 0px 22.89813px 45.79626px -11.44906px rgba(52, 41, 39, 0.08);
+}
+
+.MindmapBox {
+  display: flex;
+  padding-right: 0px;
+  width: 65.09375vw;
+  height: 33%;
+  justify-content: space-between;
+}
+
+.MindmapObject {
+  display: flex;
+  padding-right: 0px;
+  width: 30%;
   height: 274px;
   border-radius: 14px;
   background: #FFF;

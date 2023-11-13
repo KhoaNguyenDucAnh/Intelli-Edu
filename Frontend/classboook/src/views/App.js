@@ -8,12 +8,13 @@ function App() {
         <Router>
             <div className="App">
                 <Header />
-                <Routes>
+                {/* <Routes>
                     <Route path="/" element={<Mindmap />} />
                     <Route path="/question" element={<Mindmap />} />
                     <Route path="/mindmap" element={<Mindmap />} />
                     <Route path="/text" element={<Mindmap />} />
-                </Routes>
+                </Routes> */}
+                <Mindmap />
                 <Footing />
             </div>
         </Router>
