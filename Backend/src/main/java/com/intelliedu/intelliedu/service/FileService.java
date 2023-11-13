@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.intelliedu.intelliedu.dto.FileDto;
 import com.intelliedu.intelliedu.entity.Account;
+import com.intelliedu.intelliedu.entity.Document;
 import com.intelliedu.intelliedu.entity.File;
+import com.intelliedu.intelliedu.entity.MindMap;
 import com.intelliedu.intelliedu.exception.AlreadyExistsException;
 import com.intelliedu.intelliedu.exception.NotFoundException;
 import com.intelliedu.intelliedu.mapper.FileMapper;
@@ -45,6 +47,9 @@ public class FileService {
 
   @Autowired
   private QuestionService questionService;
+
+  @Autowired
+  private AIService aiService;
 
   public Page<FileDto> findFile(String title, Authentication authentication, Pageable pageable) {
     return fileMapper.toFileDto(fileRepo.findByTitleAndAccount(title, authService.getAccount(authentication), pageable));
@@ -109,5 +114,14 @@ public class FileService {
     account.getFile().add(file);
 
     return fileMapper.toFileDto(file);
+  }
+
+  public String checkMindMap(String id, Authentication authentication) {
+    Account account = authService.getAccount(authentication);
+
+    Document document = documentService.findContent(id, account);
+    MindMap mindMap = mindMapService.findContent(id, account);
+
+    return aiService.request(document, mindMap);
   }
 }
