@@ -17,4 +17,9 @@ public class QuestionService extends ContentService<Question, QuestionDto> {
   protected Question createContent(String title) {
     return Question.builder().content(Map.of()).build(); 
   }
+
+  @Override
+  protected Class<Question> getGenericClass() {
+    return Question.class; 
+  }
 }

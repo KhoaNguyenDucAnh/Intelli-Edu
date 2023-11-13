@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.intelliedu.intelliedu.dto.ContentDto;
 import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.entity.Content;
 import com.intelliedu.intelliedu.entity.File;
+import com.intelliedu.intelliedu.exception.AlreadyExistsException;
+import com.intelliedu.intelliedu.exception.NotFoundException;
 import com.intelliedu.intelliedu.mapper.ContentMapper;
 import com.intelliedu.intelliedu.repository.ContentRepo;
 import com.intelliedu.intelliedu.security.service.AuthService;
@@ -36,7 +36,7 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
   private FileService fileService;
 
   @Autowired
-	private AuthService authService;
+  private AuthService authService;
 
   public Map<String, Page<CDto>> findContent(String query, Authentication authentication, Pageable pageable) {
     if (authentication == null) {
@@ -44,8 +44,8 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
     } else {
       Account account = authService.getAccount(authentication);
       return Map.of(
-        "other", contentMapper.toDto(contentRepo.findByKeywordAndFileAccountIsNotAndIsSharedIsTrue(query, account, pageable)),
-        "own", contentMapper.toDto(contentRepo.findByKeywordAndFileAccount(query, account, pageable))
+        "other", contentMapper.toDto(contentRepo.findByKeywordAndAccountIsNotAndIsSharedIsTrue(query, account, pageable)),
+        "own", contentMapper.toDto(contentRepo.findByKeywordAndAccount(query, account, pageable))
       );
     }
   }
@@ -54,52 +54,53 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
     return contentMapper.toDto(contentRepo.findById(id).orElse(null));
   }
 
-  public CDto createContent(String id, Authentication authentication) {
-    return contentMapper.toDto(contentRepo.save(createContent(fileService.findFileHelper(id, authentication))));
+  private C findContent(String id, Authentication authentication) {
+    return contentRepo
+      .findByIdAndAccount(id, authService.getAccount(authentication))
+      .orElseThrow(() -> new NotFoundException(getGenericClass(), id));
   }
 
-  private C createContent(File file) {
+  protected abstract Class<C> getGenericClass();
+
+  protected abstract C createContent(String title);
+ 
+  private CDto saveContent(C content) {
+    return contentMapper.toDto(contentRepo.save(content));
+  } 
+  
+  public CDto createContent(String id, Authentication authentication) {
+    File file = fileService.findFileHelper(id, authentication); 
+
     if (contentRepo.existsById(file.getId())) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+      throw new AlreadyExistsException(getGenericClass(), "id", id);
     }
 
     C content = createContent(file.getTitle());
-
-    content.addKeyword(file.getTitle());
+    content.getKeyword().add(file.getTitle());
     content.setFile(file);
 
-    return content;
+    return saveContent(content);
   }
 
-  protected abstract C createContent(String title);
-
   public CDto updateContent(String id, CDto contentDto, Authentication authentication) {
-    return contentMapper.toDto(
-      contentRepo.save(
-        contentMapper.toEntity(
-          contentDto, 
-          contentRepo
-			      .findByIdAndFileAccount(id, authService.getAccount(authentication))
-			      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND))
-        )
-      )
-    );
+    return saveContent(contentMapper.toEntity(contentDto, findContent(id, authentication)));
   }
 
   @Transactional
   public void deleteContent(String id, Authentication authentication) {
-    contentRepo.deleteByIdAndFileAccount(id, authService.getAccount(authentication));
+    if (!contentRepo.existsByIdAndAccount(id, authService.getAccount(authentication))) {
+      throw new NotFoundException(getGenericClass(), id);
+    }
+    
+    deleteContent(id);
   }
 
   @Transactional
-  public void deleteContent(String id, Account account) {
-    contentRepo.deleteByIdAndFileAccount(id, account);
+  public void deleteContent(String id) {
+    contentRepo.deleteById(id);
   }
 
   public void shareContent(String id, Authentication authentication) {
-    contentRepo
-      .findByIdAndFileAccount(id, authService.getAccount(authentication))
-      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND))
-    .setIsShared(true)  ;
+    findContent(id, authentication).setIsShared(true);
   }
 }

@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://ep-rough-mountain-85292401.ap-southeast-1.aws.neon.tech/Intelli%20Edu?user=robinkhoa06&password=Dq5loepZr8PW
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+

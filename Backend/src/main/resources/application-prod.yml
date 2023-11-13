@@ -1,12 +1,4 @@
 spring:
   datasource:
-    url: jdbc:postgresql://ep-wispy-grass-57153605.ap-southeast-1.aws.neon.fl0.io/testing-database
-    username: fl0user 
-    password: A7wTKc4BQUHJ
-  jpa:
-    hibernate:
-      ddl-auto: update
-  #  web:
-    # resources:
-      # static-locations: file:/Frontend/
+    url: jdbc:postgresql://ep-winter-brook-48494983.ap-southeast-1.aws.neon.tech/Intelli%20Edu?user=robinkhoa06&password=Dq5loepZr8PW
 
