@@ -1,48 +1,48 @@
 import React from 'react'
-class Cauhoi extends React.Component {
+class Vanban extends React.Component {
     render() {
         return (
             <>
                 <div className='MindmapBox'>
                     <div className='MindmapObject'>
-                        Câu hỏi 1
+                        Văn bản 1
                         <img></img>
                     </div>
 
                     <div className='MindmapObject'>
-                        Câu hỏi 2
+                        Văn bản 2
                     </div>
 
                     <div className='MindmapObject'>
-                        Câu hỏi 3
-                    </div>
-                </div>
-
-                <div className='MindmapBox'>
-                    <div className='MindmapObject'>
-                        Câu hỏi 1
-                    </div>
-
-                    <div className='MindmapObject'>
-                        Câu hỏi 2
-                    </div>
-
-                    <div className='MindmapObject'>
-                        Câu hỏi 3
+                        Văn bản 3
                     </div>
                 </div>
 
                 <div className='MindmapBox'>
                     <div className='MindmapObject'>
-                        Câu hỏi 1
+                        Văn bản 1
                     </div>
 
                     <div className='MindmapObject'>
-                        Câu hỏi 2
+                        Văn bản 2
                     </div>
 
                     <div className='MindmapObject'>
-                        Câu hỏi 3
+                        Văn bản 3
+                    </div>
+                </div>
+
+                <div className='MindmapBox'>
+                    <div className='MindmapObject'>
+                        Văn bản 1
+                    </div>
+
+                    <div className='MindmapObject'>
+                        Văn bản 2
+                    </div>
+
+                    <div className='MindmapObject'>
+                        Văn bản 3
                     </div>
                 </div>
 
@@ -52,4 +52,4 @@ class Cauhoi extends React.Component {
     }
 }
 
-export default Cauhoi;
+export default Vanban;

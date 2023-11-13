@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route } from "react-router-dom";
 import Cauhoi from './Cauhoi';
 import Sodo from './Sodo';
+import Vanban from './Vanban';
 export class MindmapContent extends React.Component {
     render() {
         return (
@@ -10,7 +11,7 @@ export class MindmapContent extends React.Component {
                     <Routes>
                         <Route path="/" element={<Cauhoi />} />
                         <Route path="/mindmap" element={<Sodo />} />
-                        <Route path="/text" element={"Văn bản"} />
+                        <Route path="/text" element={<Vanban />} />
                         <Route path="/question" element={<Cauhoi />} />
                     </Routes>
                 </div>
