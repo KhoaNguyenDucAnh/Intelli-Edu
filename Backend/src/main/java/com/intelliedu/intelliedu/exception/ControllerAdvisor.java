@@ -24,25 +24,30 @@ import com.intelliedu.intelliedu.dto.ErrorDto;
 @ControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
-  private Map<String, Object> createResponse(List<String> message, int status) {
-    List<ErrorDto> errorDto = message.stream().map(m -> new ErrorDto(status, HttpStatus.valueOf(status).getReasonPhrase(), m)).toList();
+  private Map<String, Object> createResponse(List<String> message, HttpStatus status) {
+    List<ErrorDto> errorDto = message.stream().map(m -> new ErrorDto(status.value(), status.getReasonPhrase(), m)).toList();
     return Map.of(
       "timestamp", LocalDateTime.now(),
       "errors", errorDto
     );
   }
 
-  private Map<String, Object> createResponse(String message, int status) {
+  private Map<String, Object> createResponse(String message, HttpStatus status) {
     return createResponse(Arrays.asList(message), status);
+  }
+
+  @ExceptionHandler(UnauthorizedException.class)
+  public ResponseEntity<Object> handleUnauthorizedException(UnauthorizedException ex, WebRequest request) {
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(createResponse(ex.getMessage(), HttpStatus.UNAUTHORIZED));
   }
 
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<Object> handleNotFoundException(NotFoundException ex, WebRequest request) {
-    return ResponseEntity.badRequest().body(createResponse(ex.getMessage(), 404));
+    return ResponseEntity.badRequest().body(createResponse(ex.getMessage(), HttpStatus.NOT_FOUND));
   }
 
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-    return ResponseEntity.badRequest().body(createResponse(ex.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList(), status.value()));
+    return ResponseEntity.badRequest().body(createResponse(ex.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList(), HttpStatus.valueOf(status.value())));
   }
 }
