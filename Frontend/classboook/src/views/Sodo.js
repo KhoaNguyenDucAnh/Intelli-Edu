@@ -6,6 +6,7 @@ class Sodo extends React.Component {
                 <div className='MindmapBox'>
                     <div className='MindmapObject'>
                         Mindmap 1
+                        <img></img>
                     </div>
 
                     <div className='MindmapObject'>
@@ -16,6 +17,7 @@ class Sodo extends React.Component {
                         Mindmap 3
                     </div>
                 </div>
+
                 <div className='MindmapBox'>
                     <div className='MindmapObject'>
                         Mindmap 1
@@ -29,6 +31,7 @@ class Sodo extends React.Component {
                         Mindmap 3
                     </div>
                 </div>
+
                 <div className='MindmapBox'>
                     <div className='MindmapObject'>
                         Mindmap 1
