@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,8 @@ public interface FileMapper {
   @Mapping(source = "createdAt", target = "createdAt", ignore = true)
   @Mapping(source = "lastOpened", target = "lastOpened", ignore = true)
   File toFile(FileDto fileDto);
+
+  File toFile(FileDto fileDto, @MappingTarget File file);
 
   FileDto toFileDto(File file);
 

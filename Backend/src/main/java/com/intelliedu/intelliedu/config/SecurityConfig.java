@@ -1,7 +1,13 @@
 package com.intelliedu.intelliedu.config;
 
+import javax.crypto.SecretKey;
+
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+
 public class SecurityConfig {
   public static final String SECRET = "ThisIsAFuckingSecretKeySoPleaseDoNotTouchAtAllCost";
+  public static final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET));
   public static final String AUTHORIZATION = "Authorization";
   public static final String BEARER_PREFIX = "Bearer ";
 	public static final String HMAC_ALGORITHM = "HmacSHA256";
