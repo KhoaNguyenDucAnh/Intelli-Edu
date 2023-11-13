@@ -34,7 +34,8 @@ public class Content {
   @ElementCollection
   private List<String> keyword = new ArrayList<>();
 
-  private Boolean isShared;
+  @Builder.Default
+  private boolean shared = Boolean.FALSE;
 
   @MapsId
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
