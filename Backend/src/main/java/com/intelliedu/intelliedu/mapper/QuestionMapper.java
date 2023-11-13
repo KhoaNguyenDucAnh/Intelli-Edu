@@ -13,7 +13,8 @@ import com.intelliedu.intelliedu.entity.Question;
 @Mapper(
 	componentModel = "spring",
 	unmappedTargetPolicy = ReportingPolicy.IGNORE,
-	nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
+	nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+  uses = PostMapper.class
 )
 public interface QuestionMapper extends ContentMapper<Question, QuestionDto> {
 

@@ -10,7 +10,8 @@ import com.intelliedu.intelliedu.entity.MindMap;
 @Mapper(
 	componentModel = "spring",
 	unmappedTargetPolicy = ReportingPolicy.IGNORE,
-	nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
+	nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+  uses = PostMapper.class
 )
 public interface MindMapMapper extends ContentMapper<MindMap, MindMapDto> {
 
