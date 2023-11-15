@@ -1,12 +1,13 @@
 import numpy as np
 import json 
 from sentence_transformers import SentenceTransformer,util
+from collections import deque
 
 model = SentenceTransformer('keepitreal/vietnamese-sbert')
 
 from claude_api import Client
 import os
-cookie='intercom-device-id-lupk8zyo=435acf1c-a907-4409-ae7b-593d8b45e4a5; sessionKey=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; __cf_bm=RGzu1LECTrv29702PLmCvu84AEEtDCMgUjiIqSbOB08-1696352140-0-AQk7C19qjH55PzRVC97N2LXQBZqZSTQuVvsk7C8UC8ufxbn8EQBk8Lahr9rSIa+/5cSa0TFH4UXIHUdkrvy31zA=; cf_clearance=tbE70HjXmD2oTnKzKY2Ad8C8_AOpfEqo40y3c7KUhv0-1696352142-0-1-4531d092.d096f8f8.12308f72-0.2.1696352142; intercom-session-lupk8zyo=dE00NTJlNGRsb2F1NGQyWmJ3TkJOQ1RtMmt6NFg0Q2NLSllMbER3WUQrb1VwL01OcUxXY0owWkRHY3J1dndSNS0tcmdIU3VMMHlBM3pGNFVHUitGUnRVUT09--65ed3e3e98a24a503c62d79e9b4a12434beceef4'
+cookie='intercom-device-id-lupk8zyo=435acf1c-a907-4409-ae7b-593d8b45e4a5; __ssid=ae3af040adac10d2aec8d3d99438209; __stripe_mid=439d2fe6-7918-47a3-aece-aea314af663ae04ec2; activitySessionId=5f50df88-6356-4f92-a0bb-e9f7ae4eb16a; __cf_bm=JTPSITiXx2kIJODe63Wc5GU5V1ioqJ7.SArRK7jihQI-1699882511-0-AdRvfn4+F3OjaQOB4JGMKZmKy2m3r9m6c48tCul+COKF8daiyPfragC2wzisd+71zcD476o2/KQMUT7kji6Ceps=; cf_clearance=NpgAAP8bQAGceYC22UXrbLa_CVQTYhmvvUGO5o0B0zo-1699882513-0-1-ff3e925e.7e64c691.a83fcdbe-0.2.1699882513; __stripe_sid=c8038001-5c14-4a25-afd6-e6aa398673468faf9c; sessionKey=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'
 claude_api=Client(cookie)
 
 def get_map():
@@ -39,6 +40,9 @@ def main():
   nChild=np.zeros((2,500))
   rev=np.zeros((2,500))
   flat=[[None for i in range(100)],[None for i in range(100)]]
+  count=deque([0])
+  for i in range(500):
+     count.append(i+1)
   json1={
   "title": "Sự thành lập Liên hợp quốc",
   "root": {
@@ -199,15 +203,17 @@ def main():
     return response
   def to_tree(index,js,u):
     values[index][u]=js['label']
+    count.popleft()
     if 'children' not in js:
         return 1
     js=js['children']
     dem=0
     for i in range(len(js)):
-        adj[index][u].append(n)
-        adj[index][n].append(u)
-        parent[index][n]=u
-        dem+=to_tree(index,js[i],n)
+        v=count[0]
+        adj[index][u].append(v)
+        adj[index][v].append(u)
+        parent[index][v]=u
+        dem+=to_tree(index,js[i],v)
     return dem+1
   def dfs(index,u):
     nChild[index][u]=1
@@ -247,6 +253,9 @@ def main():
     return position
   
   d1=to_tree(0,json1,1)
+  count=deque([0])
+  for i in range(500):
+     count.append(i+1)
   d2=to_tree(1,json2,1)
   dfs(0,1)
   dfs(1,1)
@@ -262,10 +271,13 @@ def main():
     Head_index=int(rev[1][findHead])
     End_index=int(rev[1][findEnd])
     user_text=[]
+    if(Head_index>End_index):
+       Head_index,End_index=End_index,Head_index
     if(End_index==Head_index):
       user_text=flat[1][int(pos[1][int(Head_index)]):int(pos[1][int(End_index)])+1]
       text+=str(comp_text)+' '+str(user_text)+'\n'
     loca=0
+    print(Head_index,' ',End_index)
     while(End_index!=Head_index):
       user_chain=int(chainInd[1][int(End_index)])
       if(chainInd[1][int(End_index)]==chainInd[1][int(Head_index)]):
@@ -273,7 +285,7 @@ def main():
         break
       user_text=flat[1][int(pos[1][int(chainHead[1][int(user_chain)])]):int(pos[1][int(End_index)])+1]+user_text
       End_index=int(parent[1][int(chainHead[1][user_chain])]) 
-      if(End_index==0):
+      if(End_index==1):
         loca=-1
         break
       user_chain=int(chainInd[1][int(End_index)])
@@ -282,3 +294,4 @@ def main():
       continue
     text+=str(comp_text)+' '+str(user_text)+'\n'
   print(compare(text))
+main()
