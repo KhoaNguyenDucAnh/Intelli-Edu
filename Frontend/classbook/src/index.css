@@ -1,6 +1,11 @@
 * {
   caret-color: transparent;
   box-sizing: border-box;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
 
 body {
@@ -22,7 +27,7 @@ input {
 }
 
 .App {
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }
 
 .header {
@@ -250,6 +255,44 @@ input {
   letter-spacing: -0.64px;
 }
 
+.pagination {
+  margin-top: 44px;
+  display: flex;
+  width: 100%;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  marker: none;
+  user-select: none;
+
+}
+
+.page-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 19px;
+  border-radius: 100px;
+  border: 3px solid #4BC8E7;
+  width: 45px;
+  height: 100%;
+  cursor: pointer;
+  color: #4BC8E7;
+  font-family: Montserrat;
+  font-size: 0.83333333333333333333333333333333vw;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 100%;
+  letter-spacing: -0.64px;
+}
+
+.page-item.active {
+  color: #fff;
+  background: #4BC8E7;
+}
+
 .Pagenumber {
   display: flex;
   justify-content: center;
@@ -424,7 +467,7 @@ input {
 
 /* *********************************************************************** */
 .Schedule {
-  margin-top: 60px;
+  margin-top: 10px;
   width: 96%;
   padding: 40px;
   gap: 10px;
@@ -472,7 +515,7 @@ input {
 
 .select {
   display: flex;
-  margin-top: 60px;
+  margin-top: 0px;
   padding-right: 0px;
   align-items: center;
   gap: 8px;
@@ -633,3 +676,5 @@ input {
   transform: scale(1.2);
   /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
 }
+
+/* *********************************************************************** */

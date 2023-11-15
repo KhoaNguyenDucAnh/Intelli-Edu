@@ -5,6 +5,8 @@ import Schedule from './schedule';
 import SidebarContent from './sidebarcontent';
 import MindmapContent from './MindmapContent';
 import Pagenumber from './PageNumber';
+import SubjectSelect from './SubjectSelect';
+import { Stack } from '@mantine/core';
 class mindmap extends React.Component {
 
     render() {
@@ -32,8 +34,8 @@ class mindmap extends React.Component {
                             <SidebarContent />
                             <DocType />
                             <Schedule />
+                            <SubjectSelect />
                         </div>
-
                         <MindmapContent />
                     </div>
                     <Pagenumber />
