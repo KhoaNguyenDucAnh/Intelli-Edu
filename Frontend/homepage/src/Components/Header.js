@@ -9,9 +9,6 @@ function Header() {
                     <div className="navigation">
                         <div className="navItem">
                             <p className="navText">Tài liệu</p>
-                            <span class="material-symbols-outlined downArrow">
-                                expand_more
-                            </span>
                         </div>
                         <div className="withArrow navItem">
                             <p className="navText">Công cụ hỗ trợ</p>
