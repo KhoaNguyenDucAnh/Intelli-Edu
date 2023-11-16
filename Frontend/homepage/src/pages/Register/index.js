@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-function Register(){
-    
+function Register() {
+
     const [registerFormData, setRegisterFormData] = useState({
         fullname: '',
         username: '',
@@ -14,31 +14,31 @@ function Register(){
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setRegisterFormData({
-          ...registerFormData,
-          [name]: value,
+            ...registerFormData,
+            [name]: value,
         });
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
-    
+
         // Access form data from the registerFormData object
         const { fullname, username, email, password } = registerFormData;
-    
+
         // Reset the form if needed
         setRegisterFormData({ fullname: '', username: '', email: '', password: '', confirmpassword: '' });
     }
-    return(
+    return (
         <div className="registerPage">
             <div className="registerPageDecoration">
-                <img className="registerPageDecoration1" src={require("../../images/registerPageDecoration1.png")} alt=""/>
-                <img className="registerPageDecoration2" src={require("../../images/registerPageDecoration2.png")} alt=""/>
-                <img className="registerPageDecoration3" src={require("../../images/registerPageDecoration3.png")} alt=""/>
+                <img className="registerPageDecoration1" src={require("../../images/registerPageDecoration1.png")} alt="" />
+                <img className="registerPageDecoration2" src={require("../../images/registerPageDecoration2.png")} alt="" />
+                <img className="registerPageDecoration3" src={require("../../images/registerPageDecoration3.png")} alt="" />
             </div>
             <div className="registerPageContent">
                 <p className="registerPageHeader">Đăng kí tài khoản</p>
                 <form className="registerForm" onSubmit={handleSubmit}>
-                <label className="registerLabel" htmlFor="fullname">Họ tên:</label>
+                    <label className="registerLabel" htmlFor="fullname">Họ tên:</label>
                     <input
                         className="registerInput"
                         type="text"
@@ -85,7 +85,8 @@ function Register(){
                         value={registerFormData.confirmpassword}
                         onChange={handleInputChange}
                     />
-                    <button className="registerSubmitButton" type="submit">Đăng kí</button>
+
+                    <Link to="/classbook"><button className="registerSubmitButton" type="submit">Đăng kí</button></Link>
                 </form>
                 <span className="registerPageLoginText">
                     Bạn đã có tài khoản?

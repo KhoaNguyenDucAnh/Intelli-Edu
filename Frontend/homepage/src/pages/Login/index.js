@@ -53,18 +53,14 @@ function Login() {
                         id="password"
                         name="password"
                         value={loginFormData.password}
-                        onChange={handleInputChange}
-                    />
-                    <button className="loginSubmitButton" type="submit">Đăng nhập</button>
+                        onChange={handleInputChange} />
+                    <Link to="/classbook"><button className="loginSubmitButton" type="submit">Đăng nhập</button></Link>
+
                 </form>
                 <span className="loginPageRegisterText">
                     Bạn chưa có tài khoản?
                     <Link to="/register" className="loginPageRegisterButton">Đăng kí</Link>
                 </span>
-                <div className="alternateRegister">
-                    <img className="alternateRegisterIcon1" src={require("../../images/facebook.png")} />
-                    <img className="alternateRegisterIcon2" src={require("../../images/google.png")} />
-                </div>
             </div>
         </div>
     )

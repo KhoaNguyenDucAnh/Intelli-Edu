@@ -286,6 +286,7 @@ input {
   font-weight: 600;
   line-height: 100%;
   letter-spacing: -0.64px;
+  height: 100%;
 }
 
 .page-item.active {
