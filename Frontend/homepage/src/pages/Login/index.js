@@ -61,10 +61,6 @@ function Login() {
                     Bạn chưa có tài khoản?
                     <Link to="/register" className="loginPageRegisterButton">Đăng kí</Link>
                 </span>
-                <div className="alternateRegister">
-                    <img className="alternateRegisterIcon1" src={require("../../images/facebook.png")} />
-                    <img className="alternateRegisterIcon2" src={require("../../images/google.png")} />
-                </div>
             </div>
         </div>
     )
