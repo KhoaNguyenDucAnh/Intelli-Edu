@@ -9,14 +9,10 @@ function Header() {
                     <div className="navigation">
                         <div className="navItem">
                             <p className="navText">Tài liệu</p>
-<<<<<<< HEAD
                             <span class="material-symbols-outlined downArrow">
                                 expand_more
                             </span>
                         </div>
-=======
-                        </div> 
->>>>>>> fcc652d50c9757427ceccfcba651678750b72e1b
                         <div className="withArrow navItem">
                             <p className="navText">Công cụ hỗ trợ</p>
                             <span class="material-symbols-outlined downArrow">
