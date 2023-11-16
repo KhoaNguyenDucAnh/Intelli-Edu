@@ -662,37 +662,14 @@ input {
   margin-left: 20%;
 }
 
-.loginUsernameLabel {
-  display: block;
-  font-size: 1.3vw;
-}
-
-.loginUsernameInput {
+.loginInput {
   display: block;
   width: calc(100% - 1.4vw);
-  border-radius: 100vh;
+  border-radius: 2vh;
   aspect-ratio: 11;
   padding: 0 0.7vw;
   border: 0.3vh solid #656ED3;
-  margin-top: 1.5vh;
-  background-color: #EBEFFF;
-  font-size: 1.3vw;
-}
-
-.loginPasswordLabel {
-  margin-top: 2.5vh;
-  font-size: 1.3vw;
-  display: block;
-}
-
-.loginPasswordInput {
-  display: block;
-  width: calc(100% - 1.4vw);
-  border-radius: 100vh;
-  aspect-ratio: 11;
-  padding: 0 0.7vw;
-  border: 0.3vh solid #656ED3;
-  margin-top: 1.5vh;
+  margin-top: 5vh;
   background-color: #EBEFFF;
   font-size: 1.3vw;
 }
@@ -702,7 +679,7 @@ input {
   aspect-ratio: 11;
   border-radius: 100vh;
   border: none;
-  margin-top: 8vh;
+  margin-top: 6vh;
   background-color: #656ED3;
   color: white;
   font-size: 1.3vw;
@@ -731,6 +708,12 @@ input {
 
 .loginPageRegisterButton:active {
   color: #0015ff;
+}
+
+.loginFormValidationMessage{
+  font-size: 1.2vw;
+  margin: 0.4vw 0 0 0.2vw;
+  color:#d9212c;
 }
 
 .registerPage {
@@ -775,7 +758,7 @@ input {
 
 .registerPageHeader {
   margin: 0;
-  margin-top: 6vh;
+  margin: 6vh 0;
   font-weight: bold;
   font-size: 1.7vw;
   text-align: center;
@@ -795,7 +778,7 @@ input {
   display: block;
   display: block;
   width: calc(100% - 1.4vw);
-  border-radius: 100vh;
+  border-radius: 1.5vh;
   aspect-ratio: 11;
   padding: 0 0.7vw;
   border: 0.3vh solid #656ED3;
@@ -809,7 +792,7 @@ input {
   aspect-ratio: 11;
   border-radius: 100vh;
   border: none;
-  margin-top: 5vh;
+  margin-top: 3vh;
   background-color: #656ED3;
   color: white;
   font-size: 1.2vw;
@@ -839,4 +822,12 @@ input {
 
 .registerPageLoginButton:active {
   color: #0015ff;
+}
+.registerFormValidationMessage{
+  font-size: 1vw;
+  margin: 0.4vw 0 0.7vw 0.2vw;
+  color:#d9212c;
+}
+.validationSpace{
+  height: 3vh;
 }

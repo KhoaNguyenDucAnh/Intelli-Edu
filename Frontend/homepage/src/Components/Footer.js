@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 function Footer() {
     return(
         <div className='footer'>
-            <img className="footerUpperBackground" src={require('../images/footerupperbackground.png')}/>
-            <img className='footerHeader' src={require('../images/footerheader.png')}/>
+            <img alt="" className="footerUpperBackground" src={require('../images/footerupperbackground.png')}/>
+            <img alt="" className='footerHeader' src={require('../images/footerheader.png')}/>
             <div className='footerContent'>
                 <div className="footerAuth">
                     <Link to="/login" className="footerLogin">Đăng nhập</Link>
@@ -21,17 +21,17 @@ function Footer() {
                     </div>
                 </div>
                 <div className='footerComment'>
-                    <img className='commentAccessory' src={require('../images/commentaccessory.png')}/>
+                    <img alt="" className='commentAccessory' src={require('../images/commentaccessory.png')}/>
                     <div className='stars'>
-                        <img className='star' src={require('../images/star.png')}/>
-                        <img className='star' src={require('../images/star.png')}/>
-                        <img className='star' src={require('../images/star.png')}/>
-                        <img className='star' src={require('../images/star.png')}/>
-                        <img className='star' src={require('../images/star.png')}/>
+                        <img alt="" className='star' src={require('../images/star.png')}/>
+                        <img alt="" className='star' src={require('../images/star.png')}/>
+                        <img alt="" className='star' src={require('../images/star.png')}/>
+                        <img alt="" className='star' src={require('../images/star.png')}/>
+                        <img alt="" className='star' src={require('../images/star.png')}/>
                     </div>
                     <p className='footerCommentText'>Dự án tuyệt zời vloz</p>
                     <div className='commentUser'>
-                        <img className='commentUserAvatar' src={require('../images/commentuseravatar.png')}/>
+                        <img alt="" className='commentUserAvatar' src={require('../images/commentuseravatar.png')}/>
                         <div className='commentUserInfo'>
                             <p className='commentUsername'>Kathryn Murphy</p>
                             <p className='commentUserJob'>General Electric</p>

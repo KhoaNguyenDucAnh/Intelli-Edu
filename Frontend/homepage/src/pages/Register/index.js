@@ -11,6 +11,15 @@ function Register(){
         confirmpassword: ''
     });
 
+    const [validationErrors, setValidationErrors] = useState({
+        fullname: false,
+        username: false,
+        email: false,
+        password: false,
+        confirmpassword: false,
+        wrongconfirm: false
+    });
+
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setRegisterFormData({
@@ -19,14 +28,61 @@ function Register(){
         });
     }
 
+    const validateForm = () => {
+        let isValid = true;
+
+        const errors = {
+            fullname: false,
+            username: false,
+            email: false,
+            password: false,
+            confirmpassword: false,
+            wrongconfirm: false
+        };
+
+        if (!registerFormData.fullname.trim()) {
+            isValid = false;
+            errors.fullname = true
+        }
+
+        if (!registerFormData.username.trim()) {
+            isValid = false;
+            errors.username = true
+        }
+
+        if (!registerFormData.email.trim()) {
+            isValid = false;
+            errors.email = true
+        }
+
+        if (!registerFormData.password.trim()) {
+            isValid = false;
+            errors.password = true
+        }
+
+        if (!registerFormData.confirmpassword.trim()) {
+            isValid = false;
+            errors.confirmpassword = true
+        }
+
+        if(registerFormData.password !== registerFormData.confirmpassword && registerFormData.confirmpassword.trim()){
+            isValid = false
+            errors.wrongconfirm = true
+        }
+
+        setValidationErrors(errors);
+        return isValid;
+    }
+
     const handleSubmit = (event) => {
-        event.preventDefault();
-    
-        // Access form data from the registerFormData object
-        const { fullname, username, email, password } = registerFormData;
-    
-        // Reset the form if needed
-        setRegisterFormData({ fullname: '', username: '', email: '', password: '', confirmpassword: '' });
+        event.preventDefault()
+
+        if (validateForm()) {
+            // Access form data from the registerFormData object
+            const { fullname, username, email, password, confirmpassword } = registerFormData;
+            // Reset the form if needed
+            setRegisterFormData({ fullname: '', username: '', email: '', password: '', confirmpassword: '' });
+        }
     }
     return(
         <div className="registerPage">
@@ -38,7 +94,6 @@ function Register(){
             <div className="registerPageContent">
                 <p className="registerPageHeader">Đăng kí tài khoản</p>
                 <form className="registerForm" onSubmit={handleSubmit}>
-                <label className="registerLabel" htmlFor="fullname">Họ tên:</label>
                     <input
                         className="registerInput"
                         type="text"
@@ -47,8 +102,10 @@ function Register(){
                         value={registerFormData.fullname}
                         onChange={handleInputChange}
                         autocomplete="off"
+                        placeholder="Họ tên"
                     />
-                    <label className="registerLabel" htmlFor="username">Tên người dùng:</label>
+                    {!validationErrors.fullname && <div className="validationSpace"/>}
+                    {validationErrors.fullname && <p className="registerFormValidationMessage">Họ tên không được trống</p>}
                     <input
                         className="registerInput"
                         type="text"
@@ -57,8 +114,10 @@ function Register(){
                         value={registerFormData.username}
                         onChange={handleInputChange}
                         autocomplete="off"
+                        placeholder="Tên người dùng"
                     />
-                    <label className="registerLabel" htmlFor="email">Email:</label>
+                    {!validationErrors.username && <div className="validationSpace"/>}
+                    {validationErrors.username && <p className="registerFormValidationMessage">Tên người dùng không được trống</p>}
                     <input
                         className="registerInput"
                         type="email"
@@ -66,8 +125,10 @@ function Register(){
                         name="email"
                         value={registerFormData.email}
                         onChange={handleInputChange}
+                        placeholder="Email"
                     />
-                    <label className="registerLabel" htmlFor="password">Mật khẩu:</label>
+                    {!validationErrors.email && <div className="validationSpace"/>}
+                    {validationErrors.email && <p className="registerFormValidationMessage">Email không được trống</p>}
                     <input
                         className="registerInput"
                         type="password"
@@ -75,8 +136,10 @@ function Register(){
                         name="password"
                         value={registerFormData.password}
                         onChange={handleInputChange}
+                        placeholder="Mật khẩu"
                     />
-                    <label className="registerLabel" htmlFor="confirmpassword">Xác nhận mật khẩu:</label>
+                    {!validationErrors.password && <div className="validationSpace"/>}
+                    {validationErrors.password && <p className="registerFormValidationMessage">Mật khẩu không được trống</p>}
                     <input
                         className="registerInput"
                         type="password"
@@ -84,7 +147,11 @@ function Register(){
                         name="confirmpassword"
                         value={registerFormData.confirmpassword}
                         onChange={handleInputChange}
+                        placeholder="Xác nhận mật khẩu"
                     />
+                    {!(validationErrors.confirmpassword || validationErrors.wrongconfirm) && <div className="validationSpace"/>}
+                    {validationErrors.confirmpassword && <p className="registerFormValidationMessage">Mật khẩu không được trống</p>}
+                    {validationErrors.wrongconfirm && <p className="registerFormValidationMessage">Mật khẩu xác nhận không đúng</p>}
                     <button className="registerSubmitButton" type="submit">Đăng kí</button>
                 </form>
                 <span className="registerPageLoginText">
