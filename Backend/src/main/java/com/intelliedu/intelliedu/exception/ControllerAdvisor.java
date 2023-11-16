@@ -36,11 +36,6 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     return createResponse(Arrays.asList(message), status);
   }
 
-  @ExceptionHandler(UnauthorizedException.class)
-  public ResponseEntity<Object> handleUnauthorizedException(UnauthorizedException ex, WebRequest request) {
-    return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(createResponse(ex.getMessage(), HttpStatus.UNAUTHORIZED));
-  }
-
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<Object> handleNotFoundException(NotFoundException ex, WebRequest request) {
     return ResponseEntity.badRequest().body(createResponse(ex.getMessage(), HttpStatus.NOT_FOUND));
