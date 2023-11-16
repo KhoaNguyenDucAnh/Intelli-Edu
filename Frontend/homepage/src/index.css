@@ -204,11 +204,10 @@ input {
   padding: 0 1vw 0 3vw;
   margin: 0;
   outline: none;
+  box-shadow: none;
+  border: none;
   font-size: 1.76vw;
   color: gray;
-  border-radius: 8px;
-  background: var(--light-untitled-white, #FFF);
-  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.12);
 }
 
 .searchIcon {
@@ -387,551 +386,457 @@ input {
   font-family: 'Quicksand', sans-serif;
 }
 
-<<<<<<< HEAD .comehereBackground {
-  =======.comehereTextArrow {
-    height: 1.6vw;
-    width: 2.8vw;
-    margin-left: 0.8vw;
-  }
-
-  .comehereBackground {
-    >>>>>>>fcc652d50c9757427ceccfcba651678750b72e1b position: absolute;
-    background-color: black;
-    bottom: 0;
-    right: 0;
-    width: 17.74vw;
-    height: 3.54vw;
-    border-radius: 1.76vw;
-  }
-
-  .comehereButton:active .comehereBackground {
-    background-color: transparent;
-  }
-
-  .comehereButton:active .comehereText {
-    top: 0.115vw;
-    left: 0.115vw;
-  }
-
-  .projectoverall {
-    background: url('./images/projectoverallbackground.png');
-    background-size: cover;
-    height: 38.4vw;
-    width: 100vw;
-  }
-
-  .projectoverallUpperBackground {
-    margin-top: -0.44vw;
-    width: 100vw;
-  }
-
-  .projectoverallTop {
-    display: flex;
-    width: 84.4vw;
-    justify-content: space-between;
-    margin: 2.64vw 7.8vw;
-  }
-
-  .projectoverallPicture {
-    width: 37.7vw;
-    height: 26vw;
-  }
-
-  .projectoverallHeader {
-    width: 36vw;
-  }
-
-  .projectoverallText {
-    width: 36vw;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 900;
-    text-indent: 3.5vw;
-    font-size: 1.5vw;
-  }
-
-  .footer {
-    position: relative;
-    padding-bottom: 3.08vw;
-  }
-
-  .footerHeader {
-    position: absolute;
-    width: 76.3vw;
-    margin: 0 11.85vw;
-    top: 0;
-  }
-
-  .footerUpperBackground {
-    width: 100vw;
-  }
-
-  .footerAuth {
-    display: flex;
-    align-items: center;
-  }
-
-  .footerLogin {
-    cursor: pointer;
-    caret-color: transparent;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 900;
-    font-size: 2vw;
-    margin-right: 1.5vw;
-    color: #4BC8E7;
-    padding: 0.88vw 1.3vw;
-    border-radius: 0.88vw;
-    background-color: #F6F5F4;
-    text-decoration: none;
-  }
-
-  .footerLogin:active {
-    color: #7be5ff;
-    background-color: rgb(250, 254, 255);
-  }
-
-  .footerRegister {
-    cursor: pointer;
-    caret-color: transparent;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: bold;
-    font-size: 2vw;
-    color: #FFFFFF;
-    background-color: #4BC8E7;
-    padding: 0.88vw 1.3vw;
-    border-radius: 0.88vw;
-    text-decoration: none;
-  }
-
-  .footerRegister:active {
-    background-color: #70dbf6;
-  }
-
-  .footerContent {
-    display: flex;
-    align-items: center;
-    width: 75vw;
-    justify-content: space-between;
-    margin-left: 16vw;
-  }
-
-  .footerStats {
-    display: flex;
-    justify-content: space-between;
-    width: 11.5vw;
-  }
-
-  .footerStat {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .footerStatNum {
-    font-family: 'Lato', sans-serif;
-    font-weight: bold;
-    font-size: 1.5625vw;
-    margin: 0;
-    margin-bottom: 0.44vw;
-  }
-
-  .footerStatText {
-    font-family: 'Lato', sans-serif;
-    font-size: 1.2vw;
-    margin: 0;
-  }
-
-  .footerComment {
-    background-color: #ebfffc;
-    width: 25.5vw;
-    height: 12.1875vw;
-    border-radius: 0.748vw;
-    padding: 0 1.5vw;
-    position: relative;
-  }
-
-  .stars {
-    display: flex;
-    justify-content: space-between;
-    width: 7vw;
-    height: 1.4vw;
-    margin: 2.2vw 0 1.76vw 0;
-  }
-
-  .star {
-    width: 1.362vw;
-    height: 1.4vw;
-  }
-
-  .footerCommentText {
-    font-weight: 600;
-    margin: 0;
-    margin-bottom: 0.88vw;
-    font-family: 'Lato', sans-serif;
-    font-size: 1.25vw;
-  }
-
-  .commentUser {
-    display: flex;
-    align-items: center;
-  }
-
-  .commentUserAvatar {
-    width: 2.97vw;
-    height: 2.97vw;
-    margin-right: 1vw;
-  }
-
-  .commentUsername {
-    margin: 0;
-    font-weight: bold;
-    font-family: 'Lato', sans-serif;
-    font-size: 1.25vw;
-  }
-
-  .commentUserJob {
-    margin: 0;
-    font-family: 'Lato', sans-serif;
-    font-size: 1vw;
-  }
-
-  .commentAccessory {
-    position: absolute;
-    width: 4.87vw;
-    height: 3.96vw;
-    right: 1.5vw;
-    top: -2.7vw;
-  }
-
-  .loginPage {
-    overflow: hidden;
-    background-color: #EBEFFF;
-    height: 100vh;
-    width: 100vw;
-  }
-
-  .loginPageHeader {
-    text-align: center;
-    font-weight: bold;
-    font-size: 2vw;
-  }
-
-  .loginPageDecoration1 {
-    position: absolute;
-    width: 14.64vw;
-    height: 10.4vw;
-    left: 0;
-    bottom: 0;
-  }
-
-  .loginPageDecoration2 {
-    position: absolute;
-    width: 14.4vw;
-    height: 9.76vw;
-    left: 0;
-    bottom: 0;
-  }
-
-  .loginPageDecoration3 {
-    position: absolute;
-    width: 31.2vw;
-    height: 27.816vw;
-    left: 52vw;
-    top: calc((100% - 27.816vw)/2);
-    z-index: 1;
-  }
-
-  .loginPageDecoration4 {
-    position: absolute;
-    width: 34.22vw;
-    height: 100vh;
-    top: 0;
-    right: 0;
-    background-color: #AFB3FF;
-  }
-
-  .loginPageContent {
-    width: 57vw;
-    padding-top: 10vh;
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .loginForm {
-    width: 60%;
-    margin-left: 20%;
-  }
-
-  .loginUsernameLabel {
-    display: block;
-    font-size: 1.3vw;
-  }
-
-  .loginUsernameInput {
-    display: block;
-    width: calc(100% - 1.4vw);
-    border-radius: 100vh;
-    aspect-ratio: 11;
-    padding: 0 0.7vw;
-    border: 0.3vh solid #656ED3;
-    margin-top: 1.5vh;
-    background-color: #EBEFFF;
-    font-size: 1.3vw;
-  }
-
-  .loginPasswordLabel {
-    margin-top: 2.5vh;
-    font-size: 1.3vw;
-    display: block;
-  }
-
-  .loginPasswordInput {
-    display: block;
-    width: calc(100% - 1.4vw);
-    border-radius: 100vh;
-    aspect-ratio: 11;
-    padding: 0 0.7vw;
-    border: 0.3vh solid #656ED3;
-    margin-top: 1.5vh;
-    background-color: #EBEFFF;
-    font-size: 1.3vw;
-  }
-
-  .loginSubmitButton {
-    width: 100%;
-    aspect-ratio: 11;
-    border-radius: 100vh;
-    border: none;
-    margin-top: 8vh;
-    background-color: #656ED3;
-    color: white;
-    font-size: 1.3vw;
-  }
-
-  <<<<<<< HEAD .loginSubmitButton:active {
-    background-color: #818aed;
-
-    =======.loginSubmitButton:hover {
-      background-color: #5761c4;
-    }
-
-    .loginSubmitButton:active {
-      background-color: #767fdf;
-      >>>>>>>5f64f2e9fa3f11b1e3f64912418db9e07d82acd4
-    }
-
-    .loginPageRegisterText {
-      text-align: center;
-      margin-top: 6vh;
-      font-size: 1.3vw;
-    }
-
-    .loginPageRegisterButton {
-      margin-left: 0.5vw;
-      text-decoration: none;
-      font-weight: 600;
-      color: #656ED3;
-    }
-
-    .loginPageRegisterButton:active {
-      color: #0015ff;
-    }
-
-    <<<<<<< HEAD .alternateLogin {
-      display: flex;
-      justify-content: center;
-      margin-top: 3vh;
-    }
-
-    .alternateLoginIcon1 {
-      width: 2.5vw;
-      aspect-ratio: 1;
-      padding: 0.7vw;
-      border: 0.35vh solid #656ED3;
-      border-radius: 100vh;
-      cursor: pointer;
-    }
-
-    .alternateLoginIcon1:hover {
-      background-color: white;
-    }
-
-    .alternateLoginIcon1:active {
-      background-color: rgb(222, 222, 222);
-    }
-
-    .alternateLoginIcon2 {
-      width: 2.5vw;
-      aspect-ratio: 1;
-      padding: 0.7vw;
-      border: 0.35vh solid #656ED3;
-      border-radius: 100vh;
-      margin-left: 2vw;
-      cursor: pointer;
-    }
-
-    .alternateLoginIcon2:hover {
-      background-color: white;
-    }
-
-    .alternateLoginIcon2:active {
-      background-color: rgb(222, 222, 222);
-    }
-
-    .registerPage {
-      =======.registerPage {
-        >>>>>>>5f64f2e9fa3f11b1e3f64912418db9e07d82acd4 overflow: hidden;
-        background-color: #EBEFFF;
-        height: 100vh;
-        width: 100vw;
-      }
-
-      .registerPageDecoration1 {
-        position: absolute;
-        width: 29vw;
-        aspect-ratio: 1;
-        left: 9vw;
-        top: 0;
-      }
-
-      .registerPageDecoration2 {
-        position: absolute;
-        width: 26.45vw;
-        aspect-ratio: 0.85;
-        left: 12.89vw;
-        top: 0;
-      }
-
-      .registerPageDecoration3 {
-        position: absolute;
-        width: 30vw;
-        height: 28vw;
-        left: 15vw;
-        top: 10vw;
-        z-index: 1;
-      }
-
-      .registerPageContent {
-        width: 28.67vw;
-        padding-right: 12.1vw;
-        position: absolute;
-        right: 0;
-        top: 0;
-      }
-
-      .registerPageHeader {
-        margin: 0;
-        margin-top: 6vh;
-        font-weight: bold;
-        font-size: 1.7vw;
-        text-align: center;
-      }
-
-      .registerForm {
-        width: 100%;
-      }
-
-      .registerLabel {
-        display: block;
-        margin-top: 1.5vh;
-        font-size: 1.2vw;
-      }
-
-      .registerInput {
-        display: block;
-        display: block;
-        width: calc(100% - 1.4vw);
-        border-radius: 100vh;
-        aspect-ratio: 11;
-        padding: 0 0.7vw;
-        border: 0.3vh solid #656ED3;
-        margin-top: 1vh;
-        background-color: #EBEFFF;
-        font-size: 1.2vw;
-      }
-
-      .registerSubmitButton {
-        width: 100%;
-        aspect-ratio: 11;
-        border-radius: 100vh;
-        border: none;
-        margin-top: 5vh;
-        background-color: #656ED3;
-        color: white;
-        font-size: 1.2vw;
-      }
-
-      <<<<<<< HEAD .registerSubmitButton:active {
-        background-color: #818aed;
-
-        =======.registerSubmitButton:hover {
-          background-color: #5761c4;
-        }
-
-        .registerSubmitButton:active {
-          background-color: #767fdf;
-          >>>>>>>5f64f2e9fa3f11b1e3f64912418db9e07d82acd4
-        }
-
-        .registerPageLoginText {
-          display: block;
-          text-align: center;
-          margin-top: 5vh;
-          font-size: 1.3vw;
-        }
-
-        .registerPageLoginButton {
-          margin-left: 0.5vw;
-          text-decoration: none;
-          font-weight: 600;
-          color: #656ED3;
-        }
-
-        .registerPageLoginButton:active {
-          color: #0015ff;
-          <<<<<<< HEAD
-        }
-
-        .alternateRegister {
-          display: flex;
-          justify-content: center;
-          margin-top: 3vh;
-        }
-
-        .alternateRegisterIcon1 {
-          width: 2.5vw;
-          aspect-ratio: 1;
-          padding: 0.7vw;
-          border: 0.35vh solid #656ED3;
-          border-radius: 100vh;
-          cursor: pointer;
-        }
-
-        .alternateRegisterIcon1:hover {
-          background-color: white;
-        }
-
-        .alternateRegisterIcon1:active {
-          background-color: rgb(222, 222, 222);
-        }
-
-        .alternateRegisterIcon2 {
-          width: 2.5vw;
-          aspect-ratio: 1;
-          padding: 0.7vw;
-          border: 0.35vh solid #656ED3;
-          border-radius: 100vh;
-          margin-left: 2vw;
-          cursor: pointer;
-        }
-
-        .alternateRegisterIcon2:hover {
-          background-color: white;
-        }
-
-        .alternateRegisterIcon2:active {
-          background-color: rgb(222, 222, 222);
-          =======>>>>>>>5f64f2e9fa3f11b1e3f64912418db9e07d82acd4
-        }
+.comehereTextArrow {
+  height: 1.6vw;
+  width: 2.8vw;
+  margin-left: 0.8vw;
+}
+
+.comehereBackground {
+  position: absolute;
+  background-color: black;
+  bottom: 0;
+  right: 0;
+  width: 17.74vw;
+  height: 3.54vw;
+  border-radius: 1.76vw;
+}
+
+.comehereButton:active .comehereBackground {
+  background-color: transparent;
+}
+
+.comehereButton:active .comehereText {
+  top: 0.115vw;
+  left: 0.115vw;
+}
+
+.projectoverall {
+  background: url('./images/projectoverallbackground.png');
+  background-size: cover;
+  height: 38.4vw;
+  width: 100vw;
+}
+
+.projectoverallUpperBackground {
+  margin-top: -0.44vw;
+  width: 100vw;
+}
+
+.projectoverallTop {
+  display: flex;
+  width: 84.4vw;
+  justify-content: space-between;
+  margin: 2.64vw 7.8vw;
+}
+
+.projectoverallPicture {
+  width: 37.7vw;
+  height: 26vw;
+}
+
+.projectoverallHeader {
+  width: 36vw;
+}
+
+.projectoverallText {
+  width: 36vw;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  text-indent: 3.5vw;
+  font-size: 1.5vw;
+}
+
+.footer {
+  position: relative;
+  padding-bottom: 3.08vw;
+}
+
+.footerHeader {
+  position: absolute;
+  width: 76.3vw;
+  margin: 0 11.85vw;
+  top: 0;
+}
+
+.footerUpperBackground {
+  width: 100vw;
+}
+
+.footerAuth {
+  display: flex;
+  align-items: center;
+}
+
+.footerLogin {
+  cursor: pointer;
+  caret-color: transparent;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  font-size: 2vw;
+  margin-right: 1.5vw;
+  color: #4BC8E7;
+  padding: 0.88vw 1.3vw;
+  border-radius: 0.88vw;
+  background-color: #F6F5F4;
+  text-decoration: none;
+}
+
+.footerLogin:active {
+  color: #7be5ff;
+  background-color: rgb(250, 254, 255);
+}
+
+.footerRegister {
+  cursor: pointer;
+  caret-color: transparent;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  font-size: 2vw;
+  color: #FFFFFF;
+  background-color: #4BC8E7;
+  padding: 0.88vw 1.3vw;
+  border-radius: 0.88vw;
+  text-decoration: none;
+}
+
+.footerRegister:active {
+  background-color: #70dbf6;
+}
+
+.footerContent {
+  display: flex;
+  align-items: center;
+  width: 75vw;
+  justify-content: space-between;
+  margin-left: 16vw;
+}
+
+.footerStats {
+  display: flex;
+  justify-content: space-between;
+  width: 11.5vw;
+}
+
+.footerStat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footerStatNum {
+  font-family: 'Lato', sans-serif;
+  font-weight: bold;
+  font-size: 1.5625vw;
+  margin: 0;
+  margin-bottom: 0.44vw;
+}
+
+.footerStatText {
+  font-family: 'Lato', sans-serif;
+  font-size: 1.2vw;
+  margin: 0;
+}
+
+.footerComment {
+  background-color: #ebfffc;
+  width: 25.5vw;
+  height: 12.1875vw;
+  border-radius: 0.748vw;
+  padding: 0 1.5vw;
+  position: relative;
+}
+
+.stars {
+  display: flex;
+  justify-content: space-between;
+  width: 7vw;
+  height: 1.4vw;
+  margin: 2.2vw 0 1.76vw 0;
+}
+
+.star {
+  width: 1.362vw;
+  height: 1.4vw;
+}
+
+.footerCommentText {
+  font-weight: 600;
+  margin: 0;
+  margin-bottom: 0.88vw;
+  font-family: 'Lato', sans-serif;
+  font-size: 1.25vw;
+}
+
+.commentUser {
+  display: flex;
+  align-items: center;
+}
+
+.commentUserAvatar {
+  width: 2.97vw;
+  height: 2.97vw;
+  margin-right: 1vw;
+}
+
+.commentUsername {
+  margin: 0;
+  font-weight: bold;
+  font-family: 'Lato', sans-serif;
+  font-size: 1.25vw;
+}
+
+.commentUserJob {
+  margin: 0;
+  font-family: 'Lato', sans-serif;
+  font-size: 1vw;
+}
+
+.commentAccessory {
+  position: absolute;
+  width: 4.87vw;
+  height: 3.96vw;
+  right: 1.5vw;
+  top: -2.7vw;
+}
+
+.loginPage {
+  overflow: hidden;
+  background-color: #EBEFFF;
+  height: 100vh;
+  width: 100vw;
+}
+
+.loginPageHeader {
+  text-align: center;
+  font-weight: bold;
+  font-size: 2vw;
+}
+
+.loginPageDecoration1 {
+  position: absolute;
+  width: 14.64vw;
+  height: 10.4vw;
+  left: 0;
+  bottom: 0;
+}
+
+.loginPageDecoration2 {
+  position: absolute;
+  width: 14.4vw;
+  height: 9.76vw;
+  left: 0;
+  bottom: 0;
+}
+
+.loginPageDecoration3 {
+  position: absolute;
+  width: 31.2vw;
+  height: 27.816vw;
+  left: 52vw;
+  top: calc((100% - 27.816vw)/2);
+  z-index: 1;
+}
+
+.loginPageDecoration4 {
+  position: absolute;
+  width: 34.22vw;
+  height: 100vh;
+  top: 0;
+  right: 0;
+  background-color: #AFB3FF;
+}
+
+.loginPageContent {
+  width: 57vw;
+  padding-top: 10vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.loginForm {
+  width: 60%;
+  margin-left: 20%;
+}
+
+.loginUsernameLabel {
+  display: block;
+  font-size: 1.3vw;
+}
+
+.loginUsernameInput {
+  display: block;
+  width: calc(100% - 1.4vw);
+  border-radius: 100vh;
+  aspect-ratio: 11;
+  padding: 0 0.7vw;
+  border: 0.3vh solid #656ED3;
+  margin-top: 1.5vh;
+  background-color: #EBEFFF;
+  font-size: 1.3vw;
+}
+
+.loginPasswordLabel {
+  margin-top: 2.5vh;
+  font-size: 1.3vw;
+  display: block;
+}
+
+.loginPasswordInput {
+  display: block;
+  width: calc(100% - 1.4vw);
+  border-radius: 100vh;
+  aspect-ratio: 11;
+  padding: 0 0.7vw;
+  border: 0.3vh solid #656ED3;
+  margin-top: 1.5vh;
+  background-color: #EBEFFF;
+  font-size: 1.3vw;
+}
+
+.loginSubmitButton {
+  width: 100%;
+  aspect-ratio: 11;
+  border-radius: 100vh;
+  border: none;
+  margin-top: 8vh;
+  background-color: #656ED3;
+  color: white;
+  font-size: 1.3vw;
+}
+
+.loginSubmitButton:hover {
+  background-color: #5761c4;
+}
+
+.loginSubmitButton:active {
+  background-color: #767fdf;
+}
+
+.loginPageRegisterText {
+  text-align: center;
+  margin-top: 6vh;
+  font-size: 1.3vw;
+}
+
+.loginPageRegisterButton {
+  margin-left: 0.5vw;
+  text-decoration: none;
+  font-weight: 600;
+  color: #656ED3;
+}
+
+.loginPageRegisterButton:active {
+  color: #0015ff;
+}
+
+.registerPage {
+  overflow: hidden;
+  background-color: #EBEFFF;
+  height: 100vh;
+  width: 100vw;
+}
+
+.registerPageDecoration1 {
+  position: absolute;
+  width: 29vw;
+  aspect-ratio: 1;
+  left: 9vw;
+  top: 0;
+}
+
+.registerPageDecoration2 {
+  position: absolute;
+  width: 26.45vw;
+  aspect-ratio: 0.85;
+  left: 12.89vw;
+  top: 0;
+}
+
+.registerPageDecoration3 {
+  position: absolute;
+  width: 30vw;
+  height: 28vw;
+  left: 15vw;
+  top: 10vw;
+  z-index: 1;
+}
+
+.registerPageContent {
+  width: 28.67vw;
+  padding-right: 12.1vw;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.registerPageHeader {
+  margin: 0;
+  margin-top: 6vh;
+  font-weight: bold;
+  font-size: 1.7vw;
+  text-align: center;
+}
+
+.registerForm {
+  width: 100%;
+}
+
+.registerLabel {
+  display: block;
+  margin-top: 1.5vh;
+  font-size: 1.2vw;
+}
+
+.registerInput {
+  display: block;
+  display: block;
+  width: calc(100% - 1.4vw);
+  border-radius: 100vh;
+  aspect-ratio: 11;
+  padding: 0 0.7vw;
+  border: 0.3vh solid #656ED3;
+  margin-top: 1vh;
+  background-color: #EBEFFF;
+  font-size: 1.2vw;
+}
+
+.registerSubmitButton {
+  width: 100%;
+  aspect-ratio: 11;
+  border-radius: 100vh;
+  border: none;
+  margin-top: 5vh;
+  background-color: #656ED3;
+  color: white;
+  font-size: 1.2vw;
+}
+
+.registerSubmitButton:hover {
+  background-color: #5761c4;
+}
+
+.registerSubmitButton:active {
+  background-color: #7780e1;
+}
+
+.registerPageLoginText {
+  display: block;
+  text-align: center;
+  margin-top: 5vh;
+  font-size: 1.3vw;
+}
+
+.registerPageLoginButton {
+  margin-left: 0.5vw;
+  text-decoration: none;
+  font-weight: 600;
+  color: #656ED3;
+}
+
+.registerPageLoginButton:active {
+  color: #0015ff;
+}

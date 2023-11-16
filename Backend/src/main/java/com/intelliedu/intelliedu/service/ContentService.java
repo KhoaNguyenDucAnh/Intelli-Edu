@@ -12,6 +12,7 @@ import com.intelliedu.intelliedu.dto.ContentDto;
 import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.entity.Content;
 import com.intelliedu.intelliedu.entity.File;
+import com.intelliedu.intelliedu.entity.Post;
 import com.intelliedu.intelliedu.exception.AlreadyExistsException;
 import com.intelliedu.intelliedu.exception.NotFoundException;
 import com.intelliedu.intelliedu.mapper.ContentMapper;
@@ -44,7 +45,7 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
     } else {
       Account account = authService.getAccount(authentication);
       return Map.of(
-        "other", contentMapper.toDto(contentRepo.findByKeywordAndAccountIsNotAndIsSharedIsTrue(query, account, pageable)),
+        "other", contentMapper.toDto(contentRepo.findByKeywordAndAccountIsNotAndSharedIsTrue(query, account, pageable)),
         "own", contentMapper.toDto(contentRepo.findByKeywordAndAccount(query, account, pageable))
       );
     }
@@ -54,10 +55,14 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
     return contentMapper.toDto(contentRepo.findById(id).orElse(null));
   }
 
-  private C findContent(String id, Authentication authentication) {
+  protected C findContent(String id, Account account) {
     return contentRepo
-      .findByIdAndAccount(id, authService.getAccount(authentication))
+      .findByIdAndAccount(id, account)
       .orElseThrow(() -> new NotFoundException(getGenericClass(), id));
+  }
+
+  protected C findContent(String id, Authentication authentication) {
+    return findContent(id, authService.getAccount(authentication));
   }
 
   protected abstract Class<C> getGenericClass();
@@ -91,7 +96,6 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
     if (!contentRepo.existsByIdAndAccount(id, authService.getAccount(authentication))) {
       throw new NotFoundException(getGenericClass(), id);
     }
-    
     deleteContent(id);
   }
 
@@ -101,6 +105,10 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
   }
 
   public void shareContent(String id, Authentication authentication) {
-    findContent(id, authentication).setIsShared(true);
+    Account account = authService.getAccount(authentication);
+    C content = findContent(id, account);
+    content.setShared(true);
+    content.setPost(Post.builder().account(account).build());
+    contentRepo.save(content);
   }
 }

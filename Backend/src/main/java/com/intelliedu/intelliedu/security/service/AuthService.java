@@ -23,6 +23,7 @@ import com.intelliedu.intelliedu.dto.AccountLogInDto;
 import com.intelliedu.intelliedu.dto.AccountRegistrationDto;
 import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.entity.SecurityToken;
+import com.intelliedu.intelliedu.exception.UnauthorizedException;
 import com.intelliedu.intelliedu.mapper.AccountMapper;
 import com.intelliedu.intelliedu.repository.AccountRepo;
 import com.intelliedu.intelliedu.repository.SecurityTokenRepo;
@@ -75,8 +76,7 @@ public class AuthService {
 
       log.info(String.format("Account %s | Login successful", accountLogInDto.getEmail()));
     } catch (AuthenticationException e) {
-      log.error(String.format("Account %s | Login failed", accountLogInDto.getEmail()));
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException();
     }
   }
 
