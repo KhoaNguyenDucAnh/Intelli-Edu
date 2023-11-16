@@ -13,8 +13,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import com.intelliedu.intelliedu.config.SecurityConfig;
-import com.intelliedu.intelliedu.security.exception.AuthEntryPointJWT;
-import com.intelliedu.intelliedu.security.filter.AuthTokenFilter;
+import com.intelliedu.intelliedu.security.exception.CustomAuthenticationEntryPoint;
+import com.intelliedu.intelliedu.security.filter.JWTFilter;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -26,28 +26,28 @@ public class WebSecurityConfig {
   private DaoAuthenticationProvider authenticationProvider;
 
   @Autowired
-  private AuthEntryPointJWT authEntryPointJWT;
-
+  private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+  
   @Autowired
-  private AuthTokenFilter authTokenFilter;
+  private JWTFilter jwtFilter;
 
   @Bean
   SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
       .csrf(CsrfConfigurer::disable)
       .authenticationProvider(authenticationProvider)
-      .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPointJWT))
+      .exceptionHandling(exception -> exception.authenticationEntryPoint(customAuthenticationEntryPoint))
       .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .authorizeHttpRequests(auth -> auth
         .requestMatchers(new RequestMatcher() {
           @Override
           public boolean matches(HttpServletRequest request) {
             return request.getRequestURI().matches(SecurityConfig.PERMITALL_REGEX)
-                || request.getRequestURI().matches(SecurityConfig.PERMITALLWITHAUTH_REGEX); 
+                || (request.getMethod().equals("GET") && request.getRequestURI().matches(SecurityConfig.PERMITALLWITHAUTH_REGEX)); 
           }
         }).permitAll()
         .anyRequest().authenticated())
-      .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
+      .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
   }

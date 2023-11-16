@@ -23,7 +23,6 @@ import com.intelliedu.intelliedu.dto.AccountLogInDto;
 import com.intelliedu.intelliedu.dto.AccountRegistrationDto;
 import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.entity.SecurityToken;
-import com.intelliedu.intelliedu.exception.UnauthorizedException;
 import com.intelliedu.intelliedu.mapper.AccountMapper;
 import com.intelliedu.intelliedu.repository.AccountRepo;
 import com.intelliedu.intelliedu.repository.SecurityTokenRepo;
@@ -57,30 +56,29 @@ public class AuthService {
   @Autowired
   private AccountMapper accountMapper;
 
-  public void authenticateAccount(AccountLogInDto accountLogInDto, HttpServletResponse response) {
+  public void login(AccountLogInDto accountLogInDto, HttpServletResponse response) {
     try {
       Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(accountLogInDto.getEmail(), accountLogInDto.getPassword()));
       SecurityContextHolder.getContext().setAuthentication(authentication);
 
+      log.info(String.format("Account %s | Login successful", accountLogInDto.getEmail()));
+      
       Cookie cookie = new Cookie(
         SecurityConfig.AUTHORIZATION,
         URLEncoder.encode(SecurityConfig.BEARER_PREFIX + jwtUtil.generateJwtToken(authentication),StandardCharsets.UTF_8)
       );
-
       cookie.setMaxAge((int) SecurityConfig.TOKEN_EXPIRATION_TIME);
       cookie.setPath("/");
       cookie.setHttpOnly(false);
       cookie.setSecure(false);
 
       response.addCookie(cookie);
-
-      log.info(String.format("Account %s | Login successful", accountLogInDto.getEmail()));
     } catch (AuthenticationException e) {
-      throw new UnauthorizedException();
+
     }
   }
 
-  public void registerAccount(AccountRegistrationDto accountRegistrationDto) {
+  public void register(AccountRegistrationDto accountRegistrationDto) {
     if (!EmailUtil.validateEmail(accountRegistrationDto.getEmail())) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
@@ -95,7 +93,6 @@ public class AuthService {
 
   private Account generateAccount(AccountRegistrationDto accountRegistrationDto, Role role) {
     Account account = accountMapper.toAccount(accountRegistrationDto);
-
     account.setPassword(passwordEncoder.encode(accountRegistrationDto.getPassword()));
     account.setRole(role);
     account.setIsEnabled(false);
@@ -137,7 +134,6 @@ public class AuthService {
     }
 
     Account account = securityToken.getAccount();
-
     account.setIsEnabled(true);
 
     accountRepo.save(account);
