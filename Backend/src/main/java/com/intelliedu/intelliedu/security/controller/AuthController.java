@@ -25,6 +25,11 @@ public class AuthController {
     authService.login(accountLogInDto, response);
   }
 
+  @PostMapping("/api/v1/auth/logout")
+  public void logout(HttpServletResponse response) {
+    authService.logout(response);
+  }
+
   @PostMapping("/api/v1/auth/register")
   public void register(@RequestBody @Valid AccountRegistrationDto accountRegistrationDto) {
     authService.register(accountRegistrationDto);

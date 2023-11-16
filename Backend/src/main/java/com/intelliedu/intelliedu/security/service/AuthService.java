@@ -78,6 +78,16 @@ public class AuthService {
     }
   }
 
+  public void logout(HttpServletResponse response) {
+    Cookie cookie = new Cookie(SecurityConfig.AUTHORIZATION, null);
+    cookie.setMaxAge(-1);
+    cookie.setPath("/");
+    cookie.setHttpOnly(false);
+    cookie.setSecure(false);
+    
+    response.addCookie(cookie);
+  }
+
   public void register(AccountRegistrationDto accountRegistrationDto) {
     if (!EmailUtil.validateEmail(accountRegistrationDto.getEmail())) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
