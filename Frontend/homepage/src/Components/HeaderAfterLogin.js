@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom"
-import { Avatar } from '@mantine/core';
-
-function HeaderAfterLogin() {
+import AfterLoginAuth from "./AfterLoginAuth";
+function HeaderAfterLogin(props) {
     return (
         <div className="header">
             <div className="frameHeader">
@@ -32,10 +31,7 @@ function HeaderAfterLogin() {
                     </div>
                 </div>
                 <div className="auth">
-                    <div className="noArrow navItem">
-                        <p className="navText">Nguyễn Ngọc Đạt</p>
-                        <Avatar variant="light" radius="" size="lg" color="rgba(2, 198, 242, 1)" src={require('../images/Dat.png')} />
-                    </div>
+                    <AfterLoginAuth isLoggedIn={props.isLoggedIn} />
                 </div>
             </div>
         </div>

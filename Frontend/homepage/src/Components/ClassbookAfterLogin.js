@@ -11,7 +11,7 @@ class Classbook extends React.Component {
                 <MantineProvider >
                     <div className="App">
 
-                        <HeaderAfterLogin />
+                        <HeaderAfterLogin isLoggedIn={this.props.isLoggedIn} />
                         <Mindmap isLoggedIn={this.props.isLoggedIn} />
                         <Footing />
                     </div>

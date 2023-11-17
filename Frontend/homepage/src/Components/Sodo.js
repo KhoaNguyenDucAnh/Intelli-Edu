@@ -1,5 +1,4 @@
 import React from 'react'
-import ModalImage from "react-modal-image";
 class Sodo extends React.Component {
     render() {
         return (
