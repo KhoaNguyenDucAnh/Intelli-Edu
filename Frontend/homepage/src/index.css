@@ -664,7 +664,7 @@ input {
 
 .loginInput {
   display: block;
-  width: calc(100% - 1.4vw);
+  width: 100%;
   border-radius: 2vh;
   aspect-ratio: 11;
   padding: 0 0.7vw;
@@ -749,7 +749,7 @@ input {
 }
 
 .registerPageContent {
-  width: 28.67vw;
+  width: 40vw;
   padding-right: 12.1vw;
   position: absolute;
   right: 0;
@@ -777,7 +777,7 @@ input {
 .registerInput {
   display: block;
   display: block;
-  width: calc(100% - 1.4vw);
+  width: 100%;
   border-radius: 1.5vh;
   aspect-ratio: 11;
   padding: 0 0.7vw;
