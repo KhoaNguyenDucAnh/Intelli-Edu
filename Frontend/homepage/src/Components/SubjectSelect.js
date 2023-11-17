@@ -11,7 +11,6 @@ class SubjectSelect extends React.Component {
                     size={"lg"}
                     placeholder="Chọn môn học"
                     checkIconPosition="right"
-
                     data={['Toán Học', 'Vật Lí', 'Hóa Học', 'Sinh Học', 'Ngữ Văn', 'Ngoại Ngữ', 'Lịch Sử', 'Địa Lý', 'Công Nghệ', 'GDCD', 'GDQP', 'Tin Học']}
                 />
             </>

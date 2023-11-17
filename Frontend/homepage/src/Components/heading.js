@@ -19,7 +19,7 @@ class Heading extends React.Component {
                             <div className="navigation">
 
                                 <div className="noArrow navItem">
-                                    <p className="navText">Trang chủ</p>
+                                    <Link to="/" className='homePage'><p className="navText">Trang chủ</p></Link>
                                 </div>
 
                                 <div className="noArrow navItem">
@@ -45,7 +45,7 @@ class Heading extends React.Component {
                                         <path d="M3.76456 6.60889L7.22673 10.0713L10.6891 6.60889" stroke="#757575" stroke-width="1.6" />
                                     </svg>
                                     <div className="toolListWrapper">
-                                        <div className="toolList2">
+                                        <div className="toolList">
                                             <p className="toolListItem">Tinh linh đại chiến →</p>
                                             <p className="toolListItem">Bảng xếp hạng →</p>
                                         </div>

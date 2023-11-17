@@ -5,9 +5,15 @@ import SidebarContent from './sidebarcontent';
 import MindmapContent from './MindmapContent';
 import Pagenumber from './PageNumber';
 import SubjectSelect from './SubjectSelect';
+import { useState } from 'react';
+import { Select } from '@mantine/core';
+import '@mantine/core/styles.css'
 class mindmap extends React.Component {
-
     render() {
+        let Type = ''
+        const TypeChange = ({ target }) => {
+            Type = target;
+        }
         return (
             <>
                 <head>
@@ -31,10 +37,20 @@ class mindmap extends React.Component {
                         <div className='LeftSidebar'>
                             <SidebarContent />
                             <DocType />
+
+                            <Select
+                                onChange={TypeChange}
+                                ml={30}
+                                size={"lg"}
+                                placeholder="Chọn loại tài liệu"
+                                checkIconPosition="right"
+                                data={['Sơ đồ tư duy', 'Văn bản', 'Câu hỏi']}
+                            />
+                            <h1>{Type}</h1>
                             <Schedule />
                             <SubjectSelect />
                         </div>
-                        <MindmapContent />
+                        <MindmapContent props={Type} />
                     </div>
                     <Pagenumber />
                 </div>
