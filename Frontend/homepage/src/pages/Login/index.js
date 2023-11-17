@@ -82,17 +82,11 @@ function Login() {
                         id="password"
                         name="password"
                         value={loginFormData.password}
-<<<<<<< HEAD
-                        onChange={handleInputChange} />
-                    <Link to="/classbook"><button className="loginSubmitButton" type="submit">Đăng nhập</button></Link>
-
-=======
                         onChange={handleInputChange}
                         placeholder="Mật khẩu"
                     />
                     {validationErrors.password && <p className="loginFormValidationMessage">Mật khẩu không được trống</p>}
                     <button className="loginSubmitButton" type="submit">Đăng nhập</button>
->>>>>>> e39eab93f3c28b0d0643517242827a02216804de
                 </form>
                 <span className="loginPageRegisterText">
                     Bạn chưa có tài khoản?
