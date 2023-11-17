@@ -1,24 +1,32 @@
 import React from 'react';
-import { Routes, Route } from "react-router-dom";
 import Cauhoi from './Cauhoi';
 import Sodo from './Sodo';
 import Vanban from './Vanban';
 export class MindmapContent extends React.Component {
     render() {
-        return (
-            <>
+        if (this.props.value == 'Sơ đồ tư duy') {
+            return (
                 <div className='MindmapContent'>
-                    <Routes>
-                        <Route path="/" element={<Cauhoi />} />
-                        <Route path="/mindmap" element={<Sodo />} />
-                        <Route path="/text" element={<Vanban />} />
-                        <Route path="/question" element={<Cauhoi />} />
-                    </Routes>
+                    <Sodo />
                 </div>
-            </>
-        );
+            )
+        }
+        if (this.props.value == "Văn bản") {
+            return (
+
+                <div className='MindmapContent'>
+                    <Vanban />
+                </div>
+            )
+        }
+        if (this.props.value == "Câu hỏi") {
+            return (
+                <div className='MindmapContent'>
+                    <Cauhoi />
+                </div>
+            )
+        }
     }
 }
-
 
 export default MindmapContent; 

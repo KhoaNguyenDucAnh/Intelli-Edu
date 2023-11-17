@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
+import { Avatar } from '@mantine/core';
 
-function Header() {
+function HeaderAfterLogin() {
     return (
         <div className="header">
             <div className="frameHeader">
@@ -8,7 +9,7 @@ function Header() {
                     <p className="logo">IntelliEdu</p>
                     <div className="navigation">
                         <div className="navItem">
-                            <p className="navText">Tài liệu</p>
+                            <Link to="/homePage" className='homePage'><p className="navText">Trang chủ</p></Link>
                         </div>
                         <div className="withArrow navItem">
                             <p className="navText">Công cụ hỗ trợ</p>
@@ -31,12 +32,14 @@ function Header() {
                     </div>
                 </div>
                 <div className="auth">
-                    <Link to="/login" className="login">Đăng nhập</Link>
-                    <Link to="/register" className="register">Đăng kí</Link>
+                    <div className="noArrow navItem">
+                        <p className="navText">Nguyễn Ngọc Đạt</p>
+                        <Avatar variant="light" radius="" size="lg" color="rgba(2, 198, 242, 1)" src={require('../images/Dat.png')} />
+                    </div>
                 </div>
             </div>
         </div>
     )
 }
 
-export default Header
+export default HeaderAfterLogin

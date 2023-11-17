@@ -5,12 +5,13 @@ class Sodo extends React.Component {
             <>
                 <div className='MindmapBox'>
                     <div className='MindmapObject'>
-                        Mindmap 1
-                        <img></img>
+                        <img className='MindmapData' src={require('../images/mindmap1.jpg')} alt='logo'></img>
+                        <div className='MindmapTitle'>Mindmap 1</div>
                     </div>
 
                     <div className='MindmapObject'>
-                        Mindmap 2
+                        <img className='MindmapData' src={require('../images/mindmap2.png')} alt='logo'></img>
+                        <div className='MindmapTitle'>Mindmap 2</div>
                     </div>
 
                     <div className='MindmapObject'>

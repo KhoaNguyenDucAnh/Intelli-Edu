@@ -86,7 +86,9 @@ function Login() {
                         placeholder="Mật khẩu"
                     />
                     {validationErrors.password && <p className="loginFormValidationMessage">Mật khẩu không được trống</p>}
-                    <button className="loginSubmitButton" type="submit">Đăng nhập</button>
+                    <Link to="/classbook">
+                        <button className="loginSubmitButton" type="submit">Đăng nhập</button>
+                    </Link>
                 </form>
                 <span className="loginPageRegisterText">
                     Bạn chưa có tài khoản?

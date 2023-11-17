@@ -26,10 +26,6 @@ input {
   caret-color: auto;
 }
 
-.App {
-  /* overflow-x: hidden; */
-}
-
 .header {
   background-color: #F6F5F4;
   height: 4.84vw;

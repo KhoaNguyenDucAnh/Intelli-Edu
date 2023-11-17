@@ -186,7 +186,7 @@ input {
 .searchBarBackground {
   background-color: rgba(0, 0, 0, 0.2);
   height: 3.08vw;
-  width: 100%;
+  width: 50%;
   border-radius: 0.44vw;
   padding: 0.66vw 1vw;
   display: flex;
@@ -833,3 +833,695 @@ input {
 .validationSpace {
   height: 3vh;
 }
+
+* {
+  caret-color: transparent;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.homePage {
+  text-decoration: none;
+  color: black;
+}
+
+.header {
+  background-color: #F6F5F4;
+  height: 4.84vw;
+  display: flex;
+  justify-content: center;
+}
+
+.frameHeader {
+  cursor: default;
+  width: 94vw;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-family: 'Abril Fatface', cursive;
+  font-size: 2.2vw;
+}
+
+.leftHeader {
+  display: flex;
+  align-items: center;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  padding-left: 1.3vw;
+  margin-left: 1.3vw;
+  border-left: 0.2vw solid #E0E0E0;
+}
+
+.navItem {
+  cursor: pointer;
+  caret-color: transparent;
+  margin-right: 1vw;
+  display: flex;
+  align-items: center;
+}
+
+.navItem:hover .toolListWrapper {
+  display: block;
+}
+
+.navText {
+  font-size: 1vw;
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.toolListWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-top: 2vw;
+  display: none;
+  z-index: 10;
+}
+
+.toolList {
+  background-color: white;
+  width: 10vw;
+  height: 5.5vw;
+  border-radius: 1vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 0.2vw 1vw;
+}
+
+.toolListItem {
+  margin: 0;
+  font-size: 1vw;
+  font-weight: 500;
+  color: #828282;
+}
+
+.toolListItem:hover {
+  color: black;
+}
+
+.withArrow {
+  position: relative;
+}
+
+.noArrow:active {
+  color: rgb(185, 185, 185);
+}
+
+.auth {
+  display: flex;
+  align-items: center;
+}
+
+.register {
+  cursor: pointer;
+  caret-color: transparent;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  font-size: 1.1vw;
+  margin-right: 1.5vw;
+  background-color: white;
+  padding: 0.88vw 1.3vw;
+  border-radius: 0.88vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #4BC8E7;
+  text-decoration: none;
+}
+
+.register:active {
+  color: #7be5ff;
+  background-color: rgb(250, 254, 255);
+}
+
+.login {
+  cursor: pointer;
+  caret-color: transparent;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  font-size: 1.1vw;
+  color: #FFFFFF;
+  background-color: #4BC8E7;
+  padding: 0.88vw 1.3vw;
+  border-radius: 0.88vw;
+  text-decoration: none;
+}
+
+.login:active {
+  background-color: #70dbf6;
+}
+
+.downArrow {
+  font-size: 1.1vw;
+}
+
+
+.Frame20NewMindMap {
+  display: flex;
+  width: 100%;
+  height: 110px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  left: 0;
+  background-color: white;
+}
+
+.searchBarBackground {
+  height: 3.59375vw;
+  width: 40.56.25vw;
+  border-radius: 0.44vw;
+  padding: 0.66vw 1vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  position: relative;
+  border-radius: 8px;
+  background: var(--light-untitled-white, #FFF);
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.12);
+}
+
+.searchBar {
+  width: 56.25vw;
+  height: 3.59375vw;
+  border-radius: 0.308vw;
+  caret-color: auto;
+  padding: 0 1vw 0 3vw;
+  outline: none;
+  border: none;
+  font-size: 1.5625vw;
+  cursor: text;
+}
+
+.SideBar {
+  border: solid red;
+  display: flex;
+  width: 402px;
+  height: 988px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  position: absolute;
+  margin-top: 37px;
+  left: 56px;
+}
+
+.Frame15 {
+  margin-top: 44px;
+  display: flex;
+  width: 100%;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.25vw;
+}
+
+.Frame40 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 19px;
+  border-radius: 100px;
+  border: 3px solid #4BC8E7;
+  width: 45px;
+  height: 100%;
+  cursor: pointer;
+}
+
+.Frame40Text {
+  color: #4BC8E7;
+  font-family: Montserrat;
+  font-size: 0.83333333333333333333333333333333vw;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%;
+  /* 16px */
+  letter-spacing: -0.64px;
+}
+
+.pagination {
+  margin-top: 44px;
+  display: flex;
+  width: 100%;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  marker: none;
+  user-select: none;
+
+}
+
+.page-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 19px;
+  border-radius: 100px;
+  border: 3px solid #4BC8E7;
+  width: 45px;
+  height: 100%;
+  cursor: pointer;
+  color: #4BC8E7;
+  font-family: Montserrat;
+  font-size: 0.83333333333333333333333333333333vw;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 100%;
+  letter-spacing: -0.64px;
+  height: 100%;
+}
+
+.page-item.active {
+  color: #fff;
+  background: #4BC8E7;
+}
+
+.Pagenumber {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 19px;
+  border-radius: 100px;
+  border: 3px solid #4BC8E7;
+  width: 45px;
+  height: 100%;
+  cursor: pointer;
+}
+
+.PagenumberText {
+  color: #4BC8E7;
+  font-family: Montserrat;
+  font-size: 0.83333333333333333333333333333333vw;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%;
+  /* 16px */
+  letter-spacing: -0.64px;
+}
+
+.Frame2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 19px;
+  border-radius: 100px;
+  border: 3px solid #4BC8E7;
+  width: 45px;
+  height: 100%;
+}
+
+.More {
+  display: flex;
+  width: 0.83333333333333333333333333333333vw;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-self: stretch;
+  color: var(--primaty-grey-dark, #757575);
+  font-family: Montserrat;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140%;
+  /* 25.2px */
+  letter-spacing: 0.72px;
+
+  cursor: default;
+}
+
+.Frame35MindMap {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background: var(--primaty-grey-light, #F6F5F4);
+  width: 100vw;
+  height: 1294px;
+}
+
+.ContentsMindmap {
+  margin-top: 60px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  height: 980px;
+  gap: 6.927vw;
+}
+
+/* *********************************************************************** */
+.LeftSidebar {
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-self: stretch;
+  background: var(--primaty-grey-light, #fff);
+  width: 26%;
+  height: 100%;
+  border-radius: 3%;
+}
+
+.SidebarContent {
+  width: 96%;
+  padding: 10px;
+  gap: 5px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 173px;
+  border-radius: 16px;
+  background: #FFF;
+  cursor: pointer;
+}
+
+.Content:hover {
+  background-color: #E0E0E0;
+  padding: 10px;
+}
+
+.ContentBox {
+  display: flex;
+  width: 100%;
+  height: 146px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.ContentActive {
+  display: flex;
+  width: 19.53125vw;
+  height: 40px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 6px;
+  background: #E0E0E0;
+}
+
+.Content {
+  display: flex;
+  width: 100%;
+  height: 80px;
+  padding-left: 40px;
+  /* flex-direction: column; */
+  align-items: center;
+  animation: 2s;
+  gap: 10px;
+  border-radius: 6px;
+  background: #FFF;
+}
+
+.IconContent {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  padding: 4px;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 6px;
+  background: var(--Dark-4, #2C353D);
+}
+
+.ContentText {
+  width: 50%;
+  color: #000;
+  font-size: 1.4vw;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 18px;
+  /* 64.286% */
+}
+
+.FollowingNum {
+  display: flex;
+  height: 21px;
+  width: auto;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 2px;
+  background: var(--red-red-80, #FF6934);
+}
+
+/* methangtuanbeovaidaitintaodi
+
+/* *********************************************************************** */
+.Schedule {
+  margin-top: 10px;
+  width: 96%;
+  padding: 40px;
+  gap: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 190px;
+  border-radius: 16px;
+  background: #FFF;
+  cursor: pointer;
+}
+
+.ScheduleTitle {
+  width: 100%;
+  height: auto;
+  color: var(--primaty-black, #000);
+  font-family: Montserrat;
+  font-size: 2vw;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 18px;
+  /* 64.286% */
+  letter-spacing: -1.12px;
+}
+
+.ScheduleInformation {
+  margin-top: 1vw;
+  color: var(--primaty-grey-dark, #757575);
+  font-family: Montserrat;
+  font-size: 1.2vw;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140%;
+  /* 25.2px */
+  letter-spacing: -0.72px;
+}
+
+/* *********************************************************************** */
+.dropdown {
+  min-width: 15em;
+  position: relative;
+  margin: 2em;
+  width: 50%;
+}
+
+.select {
+  display: flex;
+  margin-top: 0px;
+  padding-right: 0px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 14px;
+  border: 1px solid var(--grey-grey-90, #E6E6E6);
+  background: var(--neutral-white, #FFF);
+  transition: background 0.3s;
+  justify-content: space-between;
+  padding: 1em;
+  cursor: default;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1;
+}
+
+.select:hover {
+  background: var(--primaty-cyan-light, #C3DCE3);
+  box-shadow: 4px 4px 20px 0px rgba(0, 0, 0, 0.25);
+}
+
+.select-clicked {
+  border: 2px;
+  box-shadow: 0 0 0.8em;
+}
+
+.caret {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid #484848;
+  transition: 0.5s;
+}
+
+.caret-rotate {
+  transform: rotate(180deg);
+}
+
+.menu {
+  list-style: none;
+  padding: 0.2em 0.5em;
+  border-radius: 8px;
+  background: var(--neutral-white, #FFF);
+  border: 1px;
+  box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: -0.2em;
+  left: 27%;
+  width: 100%;
+  transform: translateX(-50%);
+  margin: 70px;
+  opacity: 0;
+  display: none;
+  transition: 0.5s;
+  z-index: 1;
+}
+
+.menu li {
+  padding: 0.7em 0.5em;
+  margin: 0.3em 0;
+  border-radius: 0.5em;
+  cursor: pointer;
+
+}
+
+.menu li:hover {
+  background: var(--primaty-cyan-light, #C3DCE3);
+  box-shadow: 4px 4px 20px 0px rgba(0, 0, 0, 0.25);
+}
+
+.active {
+  background: var(--primaty-cyan-light, #C3DCE3);
+  box-shadow: 4px 4px 20px 0px rgba(0, 0, 0, 0.25);
+}
+
+.menu-item {
+  text-decoration: none;
+  caret-color: transparent;
+  color: #000;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1;
+}
+
+.select:hover+.menu {
+  display: block;
+  opacity: 1;
+}
+
+.menu:hover {
+  display: block;
+  opacity: 1;
+}
+
+.dropdown:hover .caret {
+  transform: rotate(180deg);
+}
+
+
+/* *********************************************************************** */
+.MindmapContent {
+  display: flex;
+  width: 56.09375vw;
+  height: 974px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 76px;
+}
+
+.mainContents {
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  padding-right: 0px;
+  width: 65.09375vw;
+  height: 274px;
+  border-radius: 14px;
+  background: #FFF;
+  box-shadow: 0px 22.89813px 45.79626px -11.44906px rgba(52, 41, 39, 0.08);
+  transition: transform .2s;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  /* Animation */
+}
+
+.mainContents:hover {
+  transform: scale(1.05);
+  /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+.MindmapBox {
+  display: flex;
+  height: 100%;
+  padding-right: 0px;
+  width: 65.09375vw;
+  height: 33%;
+  justify-content: space-between;
+}
+
+.MindmapObject {
+  position: relative;
+
+  padding-top: 2px;
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  padding-right: 0px;
+  width: 30%;
+  height: 274px;
+  border-radius: 14px;
+  background: #FFF;
+  box-shadow: 0px 22.89813px 45.79626px -11.44906px rgba(52, 41, 39, 0.08);
+  transition: transform .2s;
+  cursor: pointer;
+  justify-content: center;
+  /* Animation */
+}
+
+.MindmapData {
+  position: relative;
+  size: inherit;
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  /* filter: blur(10px);
+  transition: 100ms filter linear; */
+  -webkit-filter: blur(1px) brightness(0.5);
+  -moz-filter: blur(1px) brightness(0.5);
+  -ms-filter: blur(1px) brightness(0.5);
+  -o-filter: blur(1px) brightness(0.5);
+  filter: blur(1px) brightness(0.5);
+  box-shadow: 0px 22.89813px 45.79626px -11.44906px rgba(52, 41, 39, 0.08);
+}
+
+.MindmapTitle {
+  position: absolute;
+  color: white;
+}
+
+.MindmapObject:hover {
+  transform: scale(1.2);
+  /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+
+/* *********************************************************************** */

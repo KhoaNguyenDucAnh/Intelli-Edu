@@ -152,7 +152,9 @@ function Register() {
                     {!(validationErrors.confirmpassword || validationErrors.wrongconfirm) && <div className="validationSpace" />}
                     {validationErrors.confirmpassword && <p className="registerFormValidationMessage">Mật khẩu không được trống</p>}
                     {validationErrors.wrongconfirm && <p className="registerFormValidationMessage">Mật khẩu xác nhận không đúng</p>}
-                    <button className="registerSubmitButton" type="submit">Đăng kí</button>
+                    <Link to="/classbook">
+                        <button className="registerSubmitButton" type="submit">Đăng kí</button>
+                    </Link>
                 </form>
                 <span className="registerPageLoginText">
                     Bạn đã có tài khoản?

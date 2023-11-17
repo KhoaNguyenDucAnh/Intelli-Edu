@@ -1,4 +1,6 @@
 import React from 'react'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import UserProducts from './UserProducts';
 class SidebarContent extends React.Component {
     render() {
         return (
@@ -31,6 +33,9 @@ class SidebarContent extends React.Component {
                             <div className='ContentText'>Đang theo dõi</div>
                             <div className='FollowingNum'>8000000000</div>
                         </div>
+                        <Routes>
+                            <Route path="/classbook" element={<UserProducts />} />
+                        </Routes>
                     </div>
                 </div>
 
