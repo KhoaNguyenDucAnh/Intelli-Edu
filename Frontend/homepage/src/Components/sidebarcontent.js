@@ -5,7 +5,6 @@ class SidebarContent extends React.Component {
     render() {
         return (
             <>
-
                 <div className='SidebarContent'>
                     <div className='ContentBox'>
                         <div className='Content'>
@@ -31,11 +30,9 @@ class SidebarContent extends React.Component {
                             </svg>
 
                             <div className='ContentText'>Đang theo dõi</div>
-                            <div className='FollowingNum'>8000000000</div>
+                            <div className='FollowingNum'>{this.props.following}</div>
                         </div>
-                        <Routes>
-                            <Route path="/classbook" element={<UserProducts />} />
-                        </Routes>
+                        <UserProducts isLoggedIn={this.props.isLoggedIn} />
                     </div>
                 </div>
 

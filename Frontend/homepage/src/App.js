@@ -13,7 +13,7 @@ function App() {
           <Route path="/homePage" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/classbook" element={<ClassbookAfterLogin />} />
+          <Route path="/classbook" element={<ClassbookAfterLogin isLoggedIn={true} />} />
         </Routes>
       </div>
     </Router>

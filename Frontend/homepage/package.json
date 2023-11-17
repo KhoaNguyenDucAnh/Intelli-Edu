@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^13.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-modal-image": "^2.6.0",
     "react-paginate": "^8.2.0",
     "react-router-dom": "^6.17.0",
     "react-scripts": "5.0.1",

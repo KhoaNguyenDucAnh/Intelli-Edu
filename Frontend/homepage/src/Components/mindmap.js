@@ -1,5 +1,4 @@
 import React from 'react'
-import DocType from './DocType';
 import Schedule from './schedule';
 import SidebarContent from './sidebarcontent';
 import MindmapContent from './MindmapContent';
@@ -8,9 +7,9 @@ import SubjectSelect from './SubjectSelect';
 import { useState } from 'react';
 import { Select } from '@mantine/core';
 import '@mantine/core/styles.css'
-function Mindmap() {
+function Mindmap(props) {
     const [type, setType] = useState('Sơ đồ tư duy');
-
+    let followingCount = 12
     return (
         <>
             <head>
@@ -32,7 +31,7 @@ function Mindmap() {
                 </div>
                 <div className='ContentsMindmap'>
                     <div className='LeftSidebar'>
-                        <SidebarContent />
+                        <SidebarContent following={followingCount} isLoggedIn={props.isLoggedIn} />
                         <Select
                             defaultValue={"Sơ đồ tư duy"}
                             value={type}
@@ -43,10 +42,9 @@ function Mindmap() {
                             placeholder="Chọn loại tài liệu"
                             checkIconPosition="right"
                             data={['Sơ đồ tư duy', 'Văn bản', 'Câu hỏi']}
-
                         />
-                        <Schedule />
                         <SubjectSelect />
+                        <Schedule isLoggedIn={props.isLoggedIn} />
                     </div>
                     <MindmapContent value={type} />
                 </div>

@@ -3,8 +3,7 @@ import Footing from './Footing'
 import Mindmap from "./mindmap";
 import HeaderAfterLogin from "./HeaderAfterLogin"
 import React from 'react'
-
-import { MantineProvider, Select } from "@mantine/core";
+import { MantineProvider } from "@mantine/core";
 class Classbook extends React.Component {
     render() {
         return (
@@ -13,7 +12,7 @@ class Classbook extends React.Component {
                     <div className="App">
 
                         <HeaderAfterLogin />
-                        <Mindmap />
+                        <Mindmap isLoggedIn={this.props.isLoggedIn} />
                         <Footing />
                     </div>
                 </MantineProvider>

@@ -7,6 +7,7 @@ class SubjectSelect extends React.Component {
         return (
             <>
                 <Select
+                    mt={30}
                     ml={30}
                     size={"lg"}
                     placeholder="Chọn môn học"
