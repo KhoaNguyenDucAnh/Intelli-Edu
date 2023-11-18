@@ -8,5 +8,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        use_sql_comments: true
-
+  web:
+    resources:
+      # static-locations: file:/media/Data/Project/Intelli-Edu/Frontend, file:/media/Data/Project/Intelli-Edu/Frontend/homepage/build/, file:/media/Data/Project/Intelli-Edu/Frontend/mindmap/dist/
+      static-locations: file:/Frontend, file:/Frontend/homepage/build/, file:/Frontend/mindmap/dist/
