@@ -1,5 +1,12 @@
 * {
   caret-color: transparent;
+  caret-color: transparent;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
 
 body {
@@ -835,36 +842,13 @@ input {
   height: 3vh;
 }
 
-* {
-  caret-color: transparent;
-  box-sizing: border-box;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -o-user-select: none;
-  user-select: none;
-}
+
 
 .homePage {
   text-decoration: none;
   color: black;
 }
 
-.header {
-  background-color: #F6F5F4;
-  height: 4.84vw;
-  display: flex;
-  justify-content: center;
-}
-
-.frameHeader {
-  cursor: default;
-  width: 94vw;
-  height: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
 
 .Frame20NewMindMap {
   display: flex;
@@ -877,7 +861,7 @@ input {
   background-color: white;
 }
 
-.searchBarBackground {
+.searchBarBackground1 {
   height: 3.59375vw;
   width: 40.56.25vw;
   border-radius: 0.44vw;
@@ -892,7 +876,7 @@ input {
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.12);
 }
 
-.searchBar {
+.searchBar1 {
   width: 56.25vw;
   height: 3.59375vw;
   border-radius: 0.308vw;
