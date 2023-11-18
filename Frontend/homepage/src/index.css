@@ -969,6 +969,16 @@ input {
   height: 100%;
 }
 
+.page-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 100px;
+
+}
+
 .page-item.active {
   color: #fff;
   background: #4BC8E7;

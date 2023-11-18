@@ -50,10 +50,11 @@ function Mindmap(props) {
                     <MindmapContent value={type} pageSelected={Selected} />
                 </div>
                 <ReactPaginate
-                    breakLabel="..."
+                    // breakLabel="..."
                     nextLabel="→"
-                    pageRangeDisplayed={3}
-                    pageCount={1231}
+                    pageRangeDisplayed={5}
+                    marginPagesDisplayed={0}
+                    pageCount={100}
                     previousLabel="←"
                     pageClassName='page-item'
                     pageLinkClassName='page-link'
