@@ -93,7 +93,7 @@ input {
 
 .toolList {
   background-color: white;
-  width: 12vw;
+  width: 13vw;
   height: 5.5vw;
   border-radius: 1vh;
   display: flex;
@@ -184,8 +184,8 @@ input {
 }
 
 .slogan {
-  height: 17vw;
-  width: 37vw;
+  width: 39vw;
+  aspect-ratio: 1.5;
   padding-top: 8.36vw;
   background-size: cover;
   margin-bottom: 1.32vw;
@@ -193,8 +193,8 @@ input {
 
 .searchBarBackground {
   background-color: rgba(0, 0, 0, 0.2);
-  height: 3.08vw;
-  width: 50%;
+  height: 4vw;
+  width: 40vw;
   border-radius: 0.44vw;
   padding: 0.66vw 1vw;
   display: flex;
@@ -242,8 +242,8 @@ input {
 
 .trophyText1 {
   position: absolute;
-  top: 4vw;
-  left: 21vw;
+  top: 4.4vw;
+  left: 19.6vw;
   font-size: 1.51vw;
   transform: rotate(-5deg);
   color: #5455D4;
@@ -253,8 +253,8 @@ input {
 .trophyText2 {
   position: absolute;
   font-size: 1.7vw;
-  top: 5.7vw;
-  left: 19.5vw;
+  top: 6.1vw;
+  left: 18.4vw;
   transform: rotate(-5deg);
   font-weight: 600;
   color: white;
@@ -307,6 +307,9 @@ input {
   background: url('./images/featurebackground.png');
   background-size: cover;
   background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .feature {
@@ -314,7 +317,7 @@ input {
   justify-content: space-between;
   align-items: center;
   width: 76vw;
-  padding: 0 12vw 6.6vw 12vw;
+  padding-bottom: 7vw;
 }
 
 .featureDescription {

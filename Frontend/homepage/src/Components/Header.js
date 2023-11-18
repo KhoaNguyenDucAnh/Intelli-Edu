@@ -7,7 +7,7 @@ function Header() {
                 <div className="leftHeader">
                     <p className="logo">IntelliEdu</p>
                     <div className="navigation">
-                        <div className="navItem">
+                        <div className="noArrow navItem">
                             <p className="navText">Tài liệu</p>
                         </div>
                         <div className="withArrow navItem">
