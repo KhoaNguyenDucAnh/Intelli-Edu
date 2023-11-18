@@ -9,8 +9,8 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          <Route path="/" element={<ClassbookAfterLogin isLoggedIn={false} />} />
-          <Route path="/homePage" element={<Home />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/search" element={<ClassbookAfterLogin isLoggedIn={false} />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/classbook" element={<ClassbookAfterLogin isLoggedIn={true} />} />

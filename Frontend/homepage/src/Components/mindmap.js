@@ -10,7 +10,7 @@ import '@mantine/core/styles.css'
 function Mindmap(props) {
     const [type, setType] = useState('Sơ đồ tư duy');
     let followingCount = 12
-    let CurrentObjects = 132
+    let CurrentObjects = 12
     const [Selected, setSelected] = useState(0);
     return (
         <>

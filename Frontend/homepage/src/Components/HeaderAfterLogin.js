@@ -8,7 +8,7 @@ function HeaderAfterLogin(props) {
                     <p className="logo">IntelliEdu</p>
                     <div className="navigation">
                         <div className="navItem">
-                            <Link to="/homePage" className='homePage'><p className="navText">Trang chủ</p></Link>
+                            <Link to="/" className='homePage'><p className="navText">Trang chủ</p></Link>
                         </div>
                         <div className="withArrow navItem">
                             <p className="navText">Công cụ hỗ trợ</p>

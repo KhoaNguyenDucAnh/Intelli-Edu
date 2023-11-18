@@ -21,8 +21,6 @@ class Vanban extends React.Component {
                     <ObjectText static={8} Selected={this.props.Selected} max={this.props.CurrentObjects} />
                     <ObjectText static={9} Selected={this.props.Selected} max={this.props.CurrentObjects} />
                 </div>
-
-
             </>
         );
     }
