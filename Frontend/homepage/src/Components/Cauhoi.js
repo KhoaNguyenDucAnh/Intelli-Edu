@@ -1,49 +1,25 @@
 import React from 'react'
+import ObjectQuestion from './ObjectQuestion';
 class Cauhoi extends React.Component {
     render() {
         return (
             <>
                 <div className='MindmapBox'>
-                    <div className='MindmapObject'>
-                        Câu hỏi {this.props.Selected * 9 + 1}
-                        <img></img>
-                    </div>
-
-                    <div className='MindmapObject'>
-                        Câu hỏi {this.props.Selected * 9 + 2}
-                    </div>
-
-                    <div className='MindmapObject'>
-                        Câu hỏi {this.props.Selected * 9 + 3}
-                    </div>
+                    <ObjectQuestion static={1} Selected={this.props.Selected} max={this.props.CurrentObjects} />
+                    <ObjectQuestion static={2} Selected={this.props.Selected} max={this.props.CurrentObjects} />
+                    <ObjectQuestion static={3} Selected={this.props.Selected} max={this.props.CurrentObjects} />
                 </div>
 
                 <div className='MindmapBox'>
-                    <div className='MindmapObject'>
-                        Câu hỏi {this.props.Selected * 9 + 4}
-                    </div>
-
-                    <div className='MindmapObject'>
-                        Câu hỏi {this.props.Selected * 9 + 5}
-                    </div>
-
-                    <div className='MindmapObject'>
-                        Câu hỏi {this.props.Selected * 9 + 6}
-                    </div>
+                    <ObjectQuestion static={4} Selected={this.props.Selected} max={this.props.CurrentObjects} />
+                    <ObjectQuestion static={5} Selected={this.props.Selected} max={this.props.CurrentObjects} />
+                    <ObjectQuestion static={6} Selected={this.props.Selected} max={this.props.CurrentObjects} />
                 </div>
 
                 <div className='MindmapBox'>
-                    <div className='MindmapObject'>
-                        Câu hỏi {this.props.Selected * 9 + 7}
-                    </div>
-
-                    <div className='MindmapObject'>
-                        Câu hỏi {this.props.Selected * 9 + 8}
-                    </div>
-
-                    <div className='MindmapObject'>
-                        Câu hỏi {this.props.Selected * 9 + 9}
-                    </div>
+                    <ObjectQuestion static={7} Selected={this.props.Selected} max={this.props.CurrentObjects} />
+                    <ObjectQuestion static={8} Selected={this.props.Selected} max={this.props.CurrentObjects} />
+                    <ObjectQuestion static={9} Selected={this.props.Selected} max={this.props.CurrentObjects} />
                 </div>
             </>
         );

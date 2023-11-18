@@ -1,49 +1,25 @@
 import React from 'react'
+import ObjectText from './ObjectText';
 class Vanban extends React.Component {
     render() {
         return (
             <>
                 <div className='MindmapBox'>
-                    <div className='MindmapObject'>
-                        Văn bản {this.props.Selected * 9 + 1}
-                        <img></img>
-                    </div>
-
-                    <div className='MindmapObject'>
-                        Văn bản {this.props.Selected * 9 + 2}
-                    </div>
-
-                    <div className='MindmapObject'>
-                        Văn bản {this.props.Selected * 9 + 3}
-                    </div>
+                    <ObjectText static={1} Selected={this.props.Selected} max={this.props.CurrentObjects} />
+                    <ObjectText static={2} Selected={this.props.Selected} max={this.props.CurrentObjects} />
+                    <ObjectText static={3} Selected={this.props.Selected} max={this.props.CurrentObjects} />
                 </div>
 
                 <div className='MindmapBox'>
-                    <div className='MindmapObject'>
-                        Văn bản {this.props.Selected * 9 + 4}
-                    </div>
-
-                    <div className='MindmapObject'>
-                        Văn bản {this.props.Selected * 9 + 5}
-                    </div>
-
-                    <div className='MindmapObject'>
-                        Văn bản {this.props.Selected * 9 + 6}
-                    </div>
+                    <ObjectText static={4} Selected={this.props.Selected} max={this.props.CurrentObjects} />
+                    <ObjectText static={5} Selected={this.props.Selected} max={this.props.CurrentObjects} />
+                    <ObjectText static={6} Selected={this.props.Selected} max={this.props.CurrentObjects} />
                 </div>
 
                 <div className='MindmapBox'>
-                    <div className='MindmapObject'>
-                        Văn bản {this.props.Selected * 9 + 7}
-                    </div>
-
-                    <div className='MindmapObject'>
-                        Văn bản {this.props.Selected * 9 + 8}
-                    </div>
-
-                    <div className='MindmapObject'>
-                        Văn bản {this.props.Selected * 9 + 9}
-                    </div>
+                    <ObjectText static={7} Selected={this.props.Selected} max={this.props.CurrentObjects} />
+                    <ObjectText static={8} Selected={this.props.Selected} max={this.props.CurrentObjects} />
+                    <ObjectText static={9} Selected={this.props.Selected} max={this.props.CurrentObjects} />
                 </div>
 
 

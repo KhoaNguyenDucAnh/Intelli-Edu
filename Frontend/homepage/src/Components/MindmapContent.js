@@ -15,14 +15,14 @@ export class MindmapContent extends React.Component {
             return (
 
                 <div className='MindmapContent'>
-                    <Vanban Selected={this.props.pageSelected} />
+                    <Vanban Selected={this.props.pageSelected} CurrentObjects={this.props.CurrentObjects} />
                 </div>
             )
         }
         if (this.props.value == "Câu hỏi") {
             return (
                 <div className='MindmapContent'>
-                    <Cauhoi Selected={this.props.pageSelected} />
+                    <Cauhoi Selected={this.props.pageSelected} CurrentObjects={this.props.CurrentObjects} />
                 </div>
             )
         }
