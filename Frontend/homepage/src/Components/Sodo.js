@@ -5,53 +5,24 @@ class Sodo extends React.Component {
         return (
             <>
                 <div className='MindmapBox'>
-                    <div className='MindmapObject'>
-                        <img className='MindmapData' src={require("../images/mindmap1" + ".jpg")} alt='Chưa có thông tin'></img>
-                        <div className='MindmapTitle'>Mindmap {this.props.Selected * 9 + 1}</div>
-
-                    </div>
-                    <div className='MindmapObject'>
-                        <img className='MindmapData' src={require('../images/mindmap2.png')} alt='Chưa có thông tin'></img>
-                        <div className='MindmapTitle'>Mindmap {this.props.Selected * 9 + 2}</div>
-                    </div>
-
-                    <div className='MindmapObject'>
-                        <img className='MindmapData' src={require('../images/mindmap3.jpeg')} alt='Chưa có thông tin'></img>
-                        <div className='MindmapTitle'>Mindmap {this.props.Selected * 9 + 3}</div>
-                    </div>
+                    <ObjectMindmap
+                        static={1}
+                        Selected={this.props.Selected}
+                        max={this.props.CurrentObjects} />
+                    <ObjectMindmap static={2} Selected={this.props.Selected} max={this.props.CurrentObjects} />
+                    <ObjectMindmap static={3} Selected={this.props.Selected} max={this.props.CurrentObjects} />
                 </div >
 
                 <div className='MindmapBox'>
-                    <div className='MindmapObject'>
-                        <img className='MindmapData' src={require('../images/mindmap4.jpg')} alt='Chưa có thông tin'></img>
-                        <div className='MindmapTitle'>Mindmap {this.props.Selected * 9 + 4}</div>
-                    </div>
-
-                    <div className='MindmapObject'>
-                        <img className='MindmapData' src={require('../images/mindmap1.jpg')} alt='Chưa có thông tin'></img>
-                        <div className='MindmapTitle'>Mindmap {this.props.Selected * 9 + 5}</div>
-                    </div>
-                    <div className='MindmapObject'>
-                        <img className='MindmapData' src={require('../images/mindmap1.jpg')} alt='Chưa có thông tin'></img>
-                        <div className='MindmapTitle'>Mindmap {this.props.Selected * 9 + 6}</div>
-                    </div>
+                    <ObjectMindmap static={4} Selected={this.props.Selected} max={this.props.CurrentObjects} />
+                    <ObjectMindmap static={5} Selected={this.props.Selected} max={this.props.CurrentObjects} />
+                    <ObjectMindmap static={6} Selected={this.props.Selected} max={this.props.CurrentObjects} />
                 </div>
 
                 <div className='MindmapBox'>
-                    <div className='MindmapObject'>
-                        <img className='MindmapData' src={require('../images/mindmap1.jpg')} alt='Chưa có thông tin'></img>
-                        <div className='MindmapTitle'>Mindmap {this.props.Selected * 9 + 7}</div>
-                    </div>
-
-                    <div className='MindmapObject'>
-                        <img className='MindmapData' src={require('../images/mindmap1.jpg')} alt='Chưa có thông tin'></img>
-                        <div className='MindmapTitle'>Mindmap {this.props.Selected * 9 + 8}</div>
-                    </div>
-
-                    <div className='MindmapObject'>
-                        <img className='MindmapData' src={require('../images/mindmap1.jpg')} alt='Chưa có thông tin'></img>
-                        <div className='MindmapTitle'>Mindmap {this.props.Selected * 9 + 9}</div>
-                    </div>
+                    <ObjectMindmap static={7} Selected={this.props.Selected} max={this.props.CurrentObjects} />
+                    <ObjectMindmap static={8} Selected={this.props.Selected} max={this.props.CurrentObjects} />
+                    <ObjectMindmap static={9} Selected={this.props.Selected} max={this.props.CurrentObjects} />
                 </div>
 
 

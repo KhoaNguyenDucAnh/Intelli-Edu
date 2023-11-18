@@ -1347,7 +1347,8 @@ input {
   padding-right: 0px;
   width: 65.09375vw;
   height: 33%;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 3.3%;
 }
 
 .MindmapObject {

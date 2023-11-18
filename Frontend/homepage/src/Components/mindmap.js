@@ -10,6 +10,7 @@ import '@mantine/core/styles.css'
 function Mindmap(props) {
     const [type, setType] = useState('Sơ đồ tư duy');
     let followingCount = 12
+    let CurrentObjects = 132
     const [Selected, setSelected] = useState(0);
     return (
         <>
@@ -47,14 +48,14 @@ function Mindmap(props) {
                         <SubjectSelect />
                         <Schedule isLoggedIn={props.isLoggedIn} />
                     </div>
-                    <MindmapContent value={type} pageSelected={Selected} />
+                    <MindmapContent value={type} pageSelected={Selected} CurrentObjects={CurrentObjects} />
                 </div>
                 <ReactPaginate
                     // breakLabel="..."
                     nextLabel="→"
                     pageRangeDisplayed={5}
                     marginPagesDisplayed={0}
-                    pageCount={100}
+                    pageCount={Math.ceil(CurrentObjects / 9)}
                     previousLabel="←"
                     pageClassName='page-item'
                     pageLinkClassName='page-link'

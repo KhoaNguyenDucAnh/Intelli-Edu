@@ -7,7 +7,7 @@ export class MindmapContent extends React.Component {
         if (this.props.value == 'Sơ đồ tư duy') {
             return (
                 <div className='MindmapContent'>
-                    <Sodo Selected={this.props.pageSelected} />
+                    <Sodo Selected={this.props.pageSelected} CurrentObjects={this.props.CurrentObjects} />
                 </div>
             )
         }
