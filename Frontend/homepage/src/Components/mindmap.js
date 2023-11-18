@@ -2,14 +2,15 @@ import React from 'react'
 import Schedule from './schedule';
 import SidebarContent from './sidebarcontent';
 import MindmapContent from './MindmapContent';
-import Pagenumber from './PageNumber';
 import SubjectSelect from './SubjectSelect';
 import { useState } from 'react';
 import { Select } from '@mantine/core';
+import ReactPaginate from 'react-paginate';
 import '@mantine/core/styles.css'
 function Mindmap(props) {
     const [type, setType] = useState('Sơ đồ tư duy');
     let followingCount = 12
+    const [Selected, setSelected] = useState(0);
     return (
         <>
             <head>
@@ -18,13 +19,13 @@ function Mindmap(props) {
             </head>
             <div className='Frame35MindMap'>
                 <div className='Frame20NewMindMap'>
-                    <span className='searchBarBackground'>
+                    <span className='searchBarBackground1'>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M10 17C13.866 17 17 13.866 17 10C17 6.13401 13.866 3 10 3C6.13401 3 3 6.13401 3 10C3 13.866 6.13401 17 10 17Z" stroke="#272937" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             <path d="M21 21L15 15" stroke="#272937" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                         <input
-                            className="searchBar"
+                            className="searchBar1"
                             placeholder="Tìm kiếm"
                         />
                     </span>
@@ -46,9 +47,28 @@ function Mindmap(props) {
                         <SubjectSelect />
                         <Schedule isLoggedIn={props.isLoggedIn} />
                     </div>
-                    <MindmapContent value={type} />
+                    <MindmapContent value={type} pageSelected={Selected} />
                 </div>
-                <Pagenumber />
+                <ReactPaginate
+                    breakLabel="..."
+                    nextLabel="→"
+                    pageRangeDisplayed={3}
+                    pageCount={1231}
+                    previousLabel="←"
+                    pageClassName='page-item'
+                    pageLinkClassName='page-link'
+                    previousClassName='page-item'
+                    previousLinkClassName='jpage-link'
+                    nextClassName='page-item'
+                    nextLinkClassName='page-link'
+                    breakClassName='page-item'
+                    breakLinkClassName='page-link'
+                    containerClassName='pagination'
+                    activeClassName='active'
+                    onClick={(clickEvent) => {
+                        setSelected(clickEvent.nextSelectedPage)
+                    }}
+                />
             </div>
         </>
 

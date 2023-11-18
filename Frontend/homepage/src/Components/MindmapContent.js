@@ -7,7 +7,7 @@ export class MindmapContent extends React.Component {
         if (this.props.value == 'Sơ đồ tư duy') {
             return (
                 <div className='MindmapContent'>
-                    <Sodo />
+                    <Sodo Selected={this.props.pageSelected} />
                 </div>
             )
         }
@@ -15,14 +15,14 @@ export class MindmapContent extends React.Component {
             return (
 
                 <div className='MindmapContent'>
-                    <Vanban />
+                    <Vanban Selected={this.props.pageSelected} />
                 </div>
             )
         }
         if (this.props.value == "Câu hỏi") {
             return (
                 <div className='MindmapContent'>
-                    <Cauhoi />
+                    <Cauhoi Selected={this.props.pageSelected} />
                 </div>
             )
         }
