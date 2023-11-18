@@ -81,6 +81,7 @@ input {
   left: 0;
   padding-top: 2vw;
   display: none;
+  z-index: 100;
 }
 
 .toolList {
@@ -864,130 +865,6 @@ input {
   justify-content: space-between;
   align-items: center;
 }
-
-.logo {
-  font-family: 'Abril Fatface', cursive;
-  font-size: 2.2vw;
-}
-
-.leftHeader {
-  display: flex;
-  align-items: center;
-}
-
-.navigation {
-  display: flex;
-  align-items: center;
-  padding-left: 1.3vw;
-  margin-left: 1.3vw;
-  border-left: 0.2vw solid #E0E0E0;
-}
-
-.navItem {
-  cursor: pointer;
-  caret-color: transparent;
-  margin-right: 1vw;
-  display: flex;
-  align-items: center;
-}
-
-.navItem:hover .toolListWrapper {
-  display: block;
-}
-
-.navText {
-  font-size: 1vw;
-  margin: 0;
-  font-family: 'Montserrat', sans-serif;
-}
-
-.toolListWrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding-top: 2vw;
-  display: none;
-  z-index: 10;
-}
-
-.toolList {
-  background-color: white;
-  width: 10vw;
-  height: 5.5vw;
-  border-radius: 1vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  padding: 0.2vw 1vw;
-}
-
-.toolListItem {
-  margin: 0;
-  font-size: 1vw;
-  font-weight: 500;
-  color: #828282;
-}
-
-.toolListItem:hover {
-  color: black;
-}
-
-.withArrow {
-  position: relative;
-}
-
-.noArrow:active {
-  color: rgb(185, 185, 185);
-}
-
-.auth {
-  display: flex;
-  align-items: center;
-}
-
-.register {
-  cursor: pointer;
-  caret-color: transparent;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 900;
-  font-size: 1.1vw;
-  margin-right: 1.5vw;
-  background-color: white;
-  padding: 0.88vw 1.3vw;
-  border-radius: 0.88vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #4BC8E7;
-  text-decoration: none;
-}
-
-.register:active {
-  color: #7be5ff;
-  background-color: rgb(250, 254, 255);
-}
-
-.login {
-  cursor: pointer;
-  caret-color: transparent;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: bold;
-  font-size: 1.1vw;
-  color: #FFFFFF;
-  background-color: #4BC8E7;
-  padding: 0.88vw 1.3vw;
-  border-radius: 0.88vw;
-  text-decoration: none;
-}
-
-.login:active {
-  background-color: #70dbf6;
-}
-
-.downArrow {
-  font-size: 1.1vw;
-}
-
 
 .Frame20NewMindMap {
   display: flex;
