@@ -30,7 +30,9 @@ class SidebarContent extends React.Component {
                             </svg>
 
                             <div className='ContentText'>Đang theo dõi</div>
-                            <div className='FollowingNum'>{this.props.following}</div>
+                            {this.props.isLoggedIn &&
+                                <div className='FollowingNum'>{this.props.following}</div>
+                            }
                         </div>
                         <UserProducts isLoggedIn={this.props.isLoggedIn} />
                     </div>
