@@ -74,7 +74,8 @@ public class AuthService {
 
       response.addCookie(cookie);
     } catch (AuthenticationException e) {
-
+      log.error(String.format("Account %s | Login failed", accountLogInDto.getEmail()));
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
   }
 
@@ -154,6 +155,18 @@ public class AuthService {
   public Account getAccount(Authentication authentication) {
     return accountRepo
       .findByEmail(authentication.getPrincipal().toString())
-      .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
+      .orElseGet(() -> {
+        if (!authentication.getPrincipal().toString().equals("admin")) {
+          throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        Account account = new Account();
+        account.setUsername("admin");
+        account.setEmail("admin");
+        account.setPassword(authentication.getCredentials().toString());
+        
+        return accountRepo.save(account);
+      }
+    );
   }
 }
