@@ -66,6 +66,11 @@ public class SecurityComponent {
         .withUsername("admin")
         .password("admin")
         .passwordEncoder(passwordEncoder()::encode)
+        .build(),
+      User
+        .withUsername("nimda")
+        .password("nimda")
+        .passwordEncoder(passwordEncoder()::encode)
         .build()
     );
   }
