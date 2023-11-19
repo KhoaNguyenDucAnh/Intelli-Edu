@@ -46,7 +46,7 @@ public class Post {
 	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private List<Vote> vote = new ArrayList<>();
 
-  @Builder.Default
-	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  private List<Comment> comment = new ArrayList<>();
+  //@Builder.Default
+	//@OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  //private List<Comment> comment = new ArrayList<>();
 }
