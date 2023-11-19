@@ -6,8 +6,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 
 import com.intelliedu.intelliedu.dto.EventDto;
 import com.intelliedu.intelliedu.entity.Event;
@@ -30,8 +28,7 @@ public interface EventMapper {
 
   List<EventDto> toEventDto(List<Event> event);
 
-  default Page<EventDto> toEventDto(Page<Event> event) {
+  /*default Page<EventDto> toEventDto(Page<Event> event) {
     return new PageImpl<>(toEventDto(event.getContent()), event.getPageable(), event.getTotalElements());
-  }
-
+  }*/
 }
