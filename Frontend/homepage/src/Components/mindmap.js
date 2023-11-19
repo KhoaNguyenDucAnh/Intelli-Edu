@@ -35,6 +35,7 @@ function Mindmap(props) {
                     <div className='LeftSidebar'>
                         <SidebarContent following={followingCount} isLoggedIn={props.isLoggedIn} />
                         <Select
+                            mt={30}
                             defaultValue={"Sơ đồ tư duy"}
                             value={type}
                             onChange={setType}
