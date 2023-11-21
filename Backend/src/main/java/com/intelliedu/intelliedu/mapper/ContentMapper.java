@@ -2,6 +2,7 @@ package com.intelliedu.intelliedu.mapper;
 
 import java.util.List;
 
+import org.mapstruct.InheritConfiguration;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.springframework.data.domain.Page;
@@ -14,9 +15,11 @@ import com.intelliedu.intelliedu.entity.Content;
  * ContentMapper
  */
 public interface ContentMapper<C extends Content, CDto extends ContentDto> {
-  
+ 
+  @Mapping(target = "shared", ignore = true)
   C toEntity(CDto cDto);
 
+  @InheritConfiguration
 	C toEntity(CDto cDto, @MappingTarget C c);
 
   @Mapping(source = "post", target = "postDto")

@@ -14,5 +14,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class ContentDto {
 
+  private boolean shared;
+  
   private PostDto postDto;
 }

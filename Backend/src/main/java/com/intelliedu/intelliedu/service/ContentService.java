@@ -65,6 +65,10 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
     return findContent(id, authService.getAccount(authentication));
   }
 
+  public boolean isShared(String id) {
+    return contentRepo.existsByIdAndSharedIsTrue(id);
+  }
+
   protected abstract Class<C> getGenericClass();
 
   protected abstract C createContent(String title);
@@ -106,9 +110,14 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
 
   public void shareContent(String id, Authentication authentication) {
     Account account = authService.getAccount(authentication);
+    
     C content = findContent(id, account);
     content.setShared(true);
-    content.setPost(Post.builder().account(account).build());
+
+    if (content.getPost() != null) {
+      content.setPost(Post.builder().account(account).build());
+    }
+    
     contentRepo.save(content);
   }
 }

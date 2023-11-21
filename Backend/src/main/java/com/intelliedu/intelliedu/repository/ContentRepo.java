@@ -28,5 +28,7 @@ public interface ContentRepo<C extends Content> extends JpaRepository<C, String>
 
   Boolean existsByIdAndAccount(String id, Account account);
 
+  Boolean existsByIdAndSharedIsTrue(String id);
+
   Optional<C> findByIdAndAccount(String id, Account account);
 }
