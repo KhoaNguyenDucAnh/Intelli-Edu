@@ -3,8 +3,10 @@ package com.intelliedu.intelliedu.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.intelliedu.intelliedu.dto.FileDto;
 import com.intelliedu.intelliedu.entity.Account;
@@ -57,22 +59,14 @@ public class FileService {
 
   public FileDto findFile(String id, Authentication authentication) {
     FileDto fileDto = fileMapper.toFileDto(findFileHelper(id, authentication));
-    
     fileDto.setDocumentDto(documentService.findContent(id));
     fileDto.setMindMapDto(mindMapService.findContent(id));
     fileDto.setQuestionDto(questionService.findContent(id));
-    
     return fileDto;
   }
 
-  private File findFile(String id, Account account) {
-    return fileRepo
-      .findByIdAndAccount(id, account)
-      .orElseThrow(() -> new NotFoundException(File.class, id));
-  }
-
   public File findFileHelper(String id, Authentication authentication) {
-    return findFile(id, authService.getAccount(authentication));
+    return fileRepo.findByIdAndAccount(id, authService.getAccount(authentication)).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
   }
     
   public FileDto createFile(FileDto fileDto, Authentication authentication) {
@@ -105,13 +99,15 @@ public class FileService {
   }
 
   public FileDto addSharedContent(String id, Authentication authentication) {
-    Account account = authService.getAccount(authentication);
+    if (!(documentService.isShared(id) || mindMapService.isShared(id) || questionService.isShared(id))) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+    }
     
-    File file = findFile(id, account);
+    File file = fileRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     
     entityManager.detach(file);
-    file.setAccount(account);
-    account.getFile().add(file);
+    
+    file.setAccount(authService.getAccount(authentication));
 
     return fileMapper.toFileDto(file);
   }
