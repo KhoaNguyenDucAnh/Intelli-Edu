@@ -106,7 +106,7 @@ public class AuthService {
     Account account = accountMapper.toAccount(accountRegistrationDto);
     account.setPassword(passwordEncoder.encode(accountRegistrationDto.getPassword()));
     account.setRole(role);
-    account.setIsEnabled(false);
+    account.setEnabled(false);
 
     accountRepo.save(account);
     
@@ -145,7 +145,7 @@ public class AuthService {
     }
 
     Account account = securityToken.getAccount();
-    account.setIsEnabled(true);
+    account.setEnabled(true);
 
     accountRepo.save(account);
 
