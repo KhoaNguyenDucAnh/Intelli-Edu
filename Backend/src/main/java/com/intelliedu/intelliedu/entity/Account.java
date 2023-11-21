@@ -43,7 +43,8 @@ public class Account implements UserDetails {
 
   private String password;
 
-  private Boolean isEnabled;
+  @Builder.Default
+  private boolean isEnabled = false;
 
   @Enumerated(EnumType.STRING)
   private Role role;

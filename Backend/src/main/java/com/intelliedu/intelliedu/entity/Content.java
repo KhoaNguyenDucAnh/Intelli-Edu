@@ -35,7 +35,7 @@ public class Content {
   private List<String> keyword = new ArrayList<>();
 
   @Builder.Default
-  private boolean shared = Boolean.FALSE;
+  private boolean shared = false;
 
   @MapsId
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
@@ -48,7 +48,7 @@ public class Content {
   private Post post;
 
   @Builder.Default
-  private boolean deleted = Boolean.FALSE;
+  private boolean deleted = false;
 
   public void setFile(File file) {
     this.file = file;

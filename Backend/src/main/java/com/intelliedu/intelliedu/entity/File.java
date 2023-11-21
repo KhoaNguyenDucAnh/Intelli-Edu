@@ -56,7 +56,7 @@ public class File {
   private Account account;
 
   @Builder.Default
-  private boolean deleted = Boolean.FALSE;
+  private boolean deleted = false;
 
   public void setAccount(Account account) {
     this.account = account;
