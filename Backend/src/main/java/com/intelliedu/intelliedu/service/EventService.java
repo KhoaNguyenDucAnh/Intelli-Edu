@@ -41,9 +41,7 @@ public class EventService {
 	}
 
 	public EventDto createEvent(EventDto eventDto, Authentication authentication) {
-		System.out.println(eventDto);
     Event event = eventMapper.toEvent(eventDto);
-    System.out.println(event);
     event.addSchedule(Schedule.builder().account(authService.getAccount(authentication)).event(event).owned(true).build());
     return eventMapper.toEventDto(eventRepo.save(event));
 	}
@@ -72,9 +70,17 @@ public class EventService {
     }
   }
 
+  public void shareEvent(Long id, Authentication authentication) {
+    Event event = eventRepo
+			.findByIdAndScheduleAccount(id, authService.getAccount(authentication))
+			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    event.setShared(true);
+    eventRepo.save(event);
+  }
+
   public EventDto addSharedEvent(Long id, Authentication authentication) {
     Account account = authService.getAccount(authentication);
-    Event event = eventRepo.findByIdAndSharedIsTrueAndScheduleAccountIsNot(id, account).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    Event event = eventRepo.findByIdAndSharedIsTrueAndScheduleAccountIsNot(id, account).orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN));
     event.addSchedule(Schedule.builder().account(account).event(event).build());
     return eventMapper.toEventDto(eventRepo.save(event));
   }

@@ -49,6 +49,11 @@ public class EventController {
 		eventService.deleteEvent(id, authentication);
 	}
 
+  @PostMapping("/share/{id}")
+  public void shareEvent(@PathVariable Long id, Authentication authentication) {
+		eventService.shareEvent(id, authentication);
+	}
+
   @PostMapping("/add/{id}")
   public EventDto addSharedEvent(@PathVariable Long id, Authentication authentication) {
 		return eventService.addSharedEvent(id, authentication);
