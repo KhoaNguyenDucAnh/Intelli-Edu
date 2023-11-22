@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java
+name: Docker (Testing)
 
 on:
   pull_request:
@@ -15,7 +15,7 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: window-latest
+    runs-on: windows-latest
 
     steps:
     - name: Checkout repository
