@@ -3,16 +3,15 @@ package com.intelliedu.intelliedu.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.Socket;
 import java.util.Map;
-
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.intelliedu.intelliedu.entity.Document;
 import com.intelliedu.intelliedu.entity.MindMap;
@@ -21,54 +20,43 @@ import com.intelliedu.intelliedu.entity.MindMap;
 @Service
 public class AIService {
 
-	private SSLSocket socket;
+	private Socket socket;
 	private InputStream input;
   private OutputStream output;
-
-	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	@Value("${python.port}")
 	private Integer port;
 
-	public String request(String message) {
-		try {
-			startConnection();
-
-			String response = sendMessage(objectMapper.writeValueAsString(
-				Map.of(
-					"message", message	
-				)
-			));
-
-			stopConnection();
-
-			return response;
-		} catch (IOException e) {
-			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+  private ObjectMapper objectMapper = new ObjectMapper();
+  
+  public String request(Document document, MindMap mindMap) {
+    try {
+      return request(
+        objectMapper.writeValueAsString(
+          Map.of(
+            Document.class.getSimpleName(), document.getContent(),
+            MindMap.class.getSimpleName(), objectMapper.writeValueAsString(mindMap.getContent())
+          )
+        )
+      );
+    } catch (JsonProcessingException ex) {
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
  	}
-
-	public String request(Document document, MindMap mindMap) {
+	
+  private String request(String message) {
 		try {
 			startConnection();
-
-			String response = sendMessage(objectMapper.writeValueAsString(
-				Map.of(
-					Document.class.toString(), document.getContent(),
-					MindMap.class.toString(), objectMapper.writeValueAsString(mindMap.getContent())
-				)
-			));
-
-			stopConnection();
-
-			return response;
+      String response = sendMessage(message);
+      stopConnection();
+      return response;
 		} catch (IOException e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
  	}
 
   private void startConnection() throws IOException {
-		socket = (SSLSocket) SSLSocketFactory.getDefault().createSocket("localhost", port);
+		socket = new Socket("localhost", port); 
 		input = socket.getInputStream();
     output = socket.getOutputStream();
 	}

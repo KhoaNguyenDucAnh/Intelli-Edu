@@ -1,6 +1,7 @@
 import socket
 import logging
 import threading
+import json
 
 logging.basicConfig(
     level = logging.INFO,
@@ -12,16 +13,16 @@ logging.basicConfig(
 
 def handle_client(connection):
     request = connection.recv(1024)
-    
     if request:
-        response = request
-
+        request = json.loads(request)
+        print(request)
+        response = json.dumps(request, indent=4).encode("utf-8")
         connection.send(response)
-
     connection.close()
 
 def main(host, port):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
+        server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         server.bind((host, port)) 
         server.listen()
         logging.info(f"Server listening on {host}:{port}")

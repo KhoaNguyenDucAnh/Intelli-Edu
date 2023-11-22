@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Login Page</title>
 </head>
+
 <body>
   <h1>Login</h1>
   <form id="loginForm" onsubmit="login(event)">
@@ -45,17 +47,18 @@
         },
         body: JSON.stringify(requestBody)
       })
-      .then(function(response) {
-        if (response.ok) {
-          window.location.href = "/dashboard";
-        } else {
-          document.getElementById("loginResult").innerHTML = "Invalid email or password.";
-        }
-      })
-      .catch(function(error) {
-        console.log(error.message);
-      });
+        .then(function (response) {
+          if (response.ok) {
+            window.location.href = "/dashboard";
+          } else {
+            document.getElementById("loginResult").innerHTML = "Invalid email or password.";
+          }
+        })
+        .catch(function (error) {
+          console.log(error.message);
+        });
     }
   </script>
 </body>
+
 </html>

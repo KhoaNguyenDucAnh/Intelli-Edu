@@ -4,7 +4,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.ZonedDateTime;
-import java.util.function.Consumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,36 +56,41 @@ public class AuthService {
   @Autowired
   private AccountMapper accountMapper;
 
-  public void authenticateAccount(AccountLogInDto accountLogInDto, HttpServletResponse response) {
+  public void login(AccountLogInDto accountLogInDto, HttpServletResponse response) {
     try {
       Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(accountLogInDto.getEmail(), accountLogInDto.getPassword()));
       SecurityContextHolder.getContext().setAuthentication(authentication);
 
+      log.info(String.format("Account %s | Login successful", accountLogInDto.getEmail()));
+      
       Cookie cookie = new Cookie(
         SecurityConfig.AUTHORIZATION,
         URLEncoder.encode(SecurityConfig.BEARER_PREFIX + jwtUtil.generateJwtToken(authentication),StandardCharsets.UTF_8)
       );
-
       cookie.setMaxAge((int) SecurityConfig.TOKEN_EXPIRATION_TIME);
       cookie.setPath("/");
       cookie.setHttpOnly(false);
       cookie.setSecure(false);
 
       response.addCookie(cookie);
-
-      log.info(String.format("Account %s | Login successful", accountLogInDto.getEmail()));
     } catch (AuthenticationException e) {
       log.error(String.format("Account %s | Login failed", accountLogInDto.getEmail()));
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
   }
 
-  public void registerAccount(AccountRegistrationDto accountRegistrationDto) {
-    if (!EmailUtil.validateEmail(accountRegistrationDto.getEmail())) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-    }
+  public void logout(HttpServletResponse response) {
+    Cookie cookie = new Cookie(SecurityConfig.AUTHORIZATION, null);
+    cookie.setMaxAge(-1);
+    cookie.setPath("/");
+    cookie.setHttpOnly(false);
+    cookie.setSecure(false);
+    
+    response.addCookie(cookie);
+  }
 
-    if (!accountRegistrationDto.getPassword().equals(accountRegistrationDto.getConfirmPassword())) {
+  public void register(AccountRegistrationDto accountRegistrationDto) {
+    if (!EmailUtil.validateEmail(accountRegistrationDto.getEmail())) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
 
@@ -95,15 +99,14 @@ public class AuthService {
       .ifPresentOrElse(
         account -> {if (account.isEnabled()) email(account, SecurityAction.RESET_PASSWORD); else email(account, SecurityAction.ACTIVATE);},
         () -> email(generateAccount(accountRegistrationDto, Role.ROLE_USER), SecurityAction.ACTIVATE)
-      );
+    );
   }
 
   private Account generateAccount(AccountRegistrationDto accountRegistrationDto, Role role) {
     Account account = accountMapper.toAccount(accountRegistrationDto);
-
     account.setPassword(passwordEncoder.encode(accountRegistrationDto.getPassword()));
     account.setRole(role);
-    account.setIsEnabled(false);
+    account.setEnabled(false);
 
     accountRepo.save(account);
     
@@ -142,8 +145,7 @@ public class AuthService {
     }
 
     Account account = securityToken.getAccount();
-
-    account.setIsEnabled(true);
+    account.setEnabled(true);
 
     accountRepo.save(account);
 
@@ -153,6 +155,18 @@ public class AuthService {
   public Account getAccount(Authentication authentication) {
     return accountRepo
       .findByEmail(authentication.getPrincipal().toString())
-      .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
+      .orElseGet(() -> {
+        if (!authentication.getPrincipal().toString().equals("admin")) {
+          throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        Account account = new Account();
+        account.setUsername("admin");
+        account.setEmail("admin");
+        account.setPassword(authentication.getCredentials().toString());
+        
+        return accountRepo.save(account);
+      }
+    );
   }
 }

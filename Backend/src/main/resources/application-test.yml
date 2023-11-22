@@ -4,7 +4,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-  #  web:
-    # resources:
-      # static-locations: file:/Frontend/
-
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  web:
+    resources:
+      # static-locations: file:/media/Data/Project/Intelli-Edu/Frontend, file:/media/Data/Project/Intelli-Edu/Frontend/homepage/build/, file:/media/Data/Project/Intelli-Edu/Frontend/mindmap/dist/
+      static-locations: file:/Frontend, file:/Frontend/homepage/build/, file:/Frontend/mindmap/dist/

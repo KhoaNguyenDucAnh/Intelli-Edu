@@ -13,7 +13,8 @@ import com.intelliedu.intelliedu.entity.Document;
 @Mapper(
 	componentModel = "spring",
 	unmappedTargetPolicy = ReportingPolicy.IGNORE,
-	nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
+	nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+  uses = PostMapper.class
 )
 public interface DocumentMapper extends ContentMapper<Document, DocumentDto> {
 

@@ -1,0 +1,520 @@
+openapi: 3.0.0
+info:
+  title: Intelli Edu API
+  description: A learning platform
+  version: 0.0.1
+  contact:
+    name: A
+tags: [
+  name: Account,
+  name: Document,
+  name: Mindmap,
+  name: Question,
+  name: Event,
+  name: Security
+]
+servers:
+  - url: https://intelli-edu.onrender.com/{Base path}
+    variables:
+      Base path:
+        default: api/v1
+  - url: http:/localhost:8080/{Base path}
+    variables:
+      Base path:
+        default: api/v1
+components:
+  schemas:
+    Account:
+      type: object
+      properties:
+        username:
+          type: string
+          example: a
+        email:
+          type: string
+          example: a@intelli.edu
+        point:
+          type: integer
+          example: 0
+    Page:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            oneOf:
+              - $ref: "#/components/schemas/Document"
+              - $ref: "#/components/schemas/Mindmap"
+              - $ref: "#/components/schemas/Question"
+        totalPages:
+          type: integer
+        totalElements:
+          type: integer
+        last:
+          type: boolean
+        size:
+          type: integer
+        number:
+          type: integer
+        first:
+          type: boolean
+        numberOfElements:
+          type: integer
+    Search:
+      type: object
+      properties:
+        own:
+          $ref: "#/components/schemas/Page"
+        other:
+          $ref: "#/components/schemas/Page"
+    Document:
+      type: object
+      properties:
+        content:
+          type: string
+    Mindmap:
+      type: object
+      properties:
+        content:
+          type: object
+    Question:
+      type: object
+      properties:
+        content:
+          type: object
+    Event:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        deadline:
+          type: string
+          example: 1/1/2023 06:50:00
+        description:
+          type: string
+        shared:
+          type: boolean
+    Account (Register):
+      type: object
+      properties:
+        email:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+        confirmPassword:
+          type: string
+    Account (Log In):
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+paths:
+  /account:
+    get:
+      tags: [
+        Account
+      ]
+      operationId: getAccountInfo
+      summary: Get account info
+      description: Get account info
+      responses:
+        '200':
+          description: Account
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+  /document:
+    get:
+      tags: [
+        Document
+      ]
+      operationId: findDocument
+      summary: Find document
+      description: Find document
+      parameters:
+        - name: search
+          in: query
+          description: Title of document's file
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: Number of items per page
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Document
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Search"
+  /document/{id}:
+    post:
+      tags: [
+        Document
+      ]
+      operationId: createDocument
+      summary: Create document
+      description: Create document
+      responses:
+        '200':
+          description: Document
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Document"
+    put:
+      tags: [
+        Document
+      ]
+      operationId: updateDocument
+      summary: Update document
+      description: Update document
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Document"
+      responses:
+        '200':
+          description: Document
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Document"
+    delete:
+      tags: [
+        Document
+      ]
+      operationId: deleteDocument
+      summary: Delete document
+      description: Delete document
+      responses:
+        '200':
+          description: No content
+    parameters:
+      - name: id
+        in: path
+        description: Id of document's file
+        required: true
+        schema:
+          type: string
+  /mindmap:
+    get:
+      tags: [
+        Mindmap
+      ]
+      operationId: findMindmap
+      summary: Find mindmap
+      description: Find mindmap
+      parameters:
+        - name: search
+          in: query
+          description: Title of mindmap's file
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: Number of items per page
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Mindmap
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Search"
+  /mindmap/{id}:
+    post:
+      tags: [
+        Mindmap
+      ]
+      operationId: createMindmap
+      summary: Create mindmap
+      description: Create mindmap
+      responses:
+        '200':
+          description: Mindmap
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Mindmap"
+    put:
+      tags: [
+        Mindmap
+      ]
+      operationId: updateMindmap
+      summary: Update mindmap
+      description: Update mindmap
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Mindmap"
+      responses:
+        '200':
+          description: Mindmap
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Mindmap"
+    delete:
+      tags: [
+        Mindmap
+      ]
+      operationId: deleteMindmap
+      summary: Delete mindmap
+      description: Delete mindmap
+      responses:
+        '200':
+          description: No content
+    parameters:
+      - name: id
+        in: path
+        description: Id of mindmap's file
+        required: true
+        schema:
+          type: string
+  /question:
+    get:
+      tags: [
+        Question
+      ]
+      operationId: findQuestion
+      summary: Find question
+      description: Find question
+      parameters:
+        - name: search
+          in: query
+          description: Title of question's file
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: Number of items per page
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Question
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Search"
+  /question/{id}:
+    post:
+      tags: [
+        Question
+      ]
+      operationId: createQuestion
+      summary: Create question
+      description: Create question
+      responses:
+        '200':
+          description: Question
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Question"
+    put:
+      tags: [
+        Question
+      ]
+      operationId: updateQuestion
+      summary: Update question
+      description: Update question
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Question"
+      responses:
+        '200':
+          description: Question
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Question"
+    delete:
+      tags: [
+        Question
+      ]
+      operationId: deleteQuestion
+      summary: Delete question
+      description: Delete question
+      responses:
+        '200':
+          description: No content
+    parameters:
+      - name: id
+        in: path
+        description: Id of question's file
+        required: true
+        schema:
+          type: string
+  /event:
+    get:
+      tags: [
+        Event
+      ]
+      operationId: findEvent
+      summary: Find event
+      description: Find event
+      responses:
+        '200':
+          description: Event
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Event"
+    post:
+      tags: [
+        Event
+      ]
+      operationId: createEvent
+      summary: Create event
+      description: Create event
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Event"
+      responses:
+        '200':
+          description: Event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+    put:
+      tags: [
+        Event
+      ]
+      operationId: updateEvent
+      summary: Update event
+      description: Update event
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Event"
+      responses:
+        '200':
+          description: Event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+  /event/{id}:
+    delete:
+      tags: [
+        Event
+      ]
+      operationId: deleteEvent
+      summary: Delete event
+      description: Delete event
+      responses:
+        '200':
+          description: No content
+    parameters:
+      - name: id
+        in: path
+        description: Id of event
+        required: true
+        schema:
+          type: string
+  /event/share/{id}:
+    post:
+      tags: [
+        Event
+      ]
+      operationId: shareEvent
+      summary: Share event
+      description: Share event
+      responses:
+        '200':
+          description: URL
+          content:
+            application/json:
+              schema:
+                type: string
+                description: Share URL
+    parameters:
+      - name: id
+        in: path
+        description: Id of event
+        required: true
+        schema:
+          type: string
+  /auth/register:
+    post:
+      tags: [
+        Security
+      ]
+      operationId: register
+      summary: Register new account
+      description: Register new account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Account (Register)"
+      responses:
+        '200':
+          description: No content
+  /auth/login:
+    post:
+      tags: [
+        Security
+      ]
+      operationId: login
+      summary: Log in
+      description: Log in
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Account (Log In)"
+      responses:
+        '200':
+          description: No content
+  /auth/logout:
+    post:
+      tags: [
+        Security
+      ]
+      operationId: logout
+      summary: Log out
+      description: Log out
+      responses:
+        '200':
+          description: No content

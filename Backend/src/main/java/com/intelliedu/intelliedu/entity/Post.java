@@ -1,6 +1,7 @@
 package com.intelliedu.intelliedu.entity;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -40,10 +41,12 @@ public class Post {
 
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private Account account;
-	
-	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	private List<Vote> vote;
 
+  @Builder.Default
 	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  private List<Comment> comment;
+	private List<Vote> vote = new ArrayList<>();
+
+  //@Builder.Default
+	//@OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  //private List<Comment> comment = new ArrayList<>();
 }

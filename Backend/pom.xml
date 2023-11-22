@@ -73,7 +73,7 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-config</artifactId>
-      <version>6.1.4</version>
+      <version>6.1.5</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct -->
@@ -87,7 +87,7 @@
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt-api</artifactId>
-      <version>0.12.2</version>
+      <version>0.12.3</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl -->
@@ -133,7 +133,13 @@
 			<artifactId>commons-codec</artifactId>
 			<version>1.16.0</version>
     </dependency>
-  
+
+    <!-- https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-core -->
+    <dependency>
+      <groupId>org.apache.tomcat.embed</groupId>
+      <artifactId>tomcat-embed-core</artifactId>
+      <version>10.1.16</version>
+    </dependency>
   </dependencies>
 
   <build>

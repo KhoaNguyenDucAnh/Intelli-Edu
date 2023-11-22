@@ -14,4 +14,9 @@ public class MindMapService extends ContentService<MindMap, MindMapDto> {
   protected MindMap createContent(String title) {
     return MindMap.builder().content(Map.of("title", title)).build();
   }
+
+  @Override
+  protected Class<MindMap> getGenericClass() {
+    return MindMap.class; 
+  }
 } 
