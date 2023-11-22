@@ -4,7 +4,7 @@ COPY Backend/pom.xml .
 COPY Backend/src ./src
 RUN mvn clean install package -q -Dspring.profiles.active=test
 
-FROM eclipse-temurin:17
+FROM eclipse-temurin:17.0.9_9-jre
 WORKDIR /Backend
 COPY --from=backend_builder /Backend/target/intelliedu-0.0.1-SNAPSHOT.jar intelliedu-0.0.1-SNAPSHOT.jar
 EXPOSE 8080
