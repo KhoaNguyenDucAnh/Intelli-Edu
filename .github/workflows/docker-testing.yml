@@ -6,17 +6,16 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java
+name: Docker (Testing)
 
 on:
   pull_request:
     branches: [ "testing" ]
-    paths: "Backend/**"
 
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - name: Checkout repository
@@ -30,7 +29,7 @@ jobs:
         cache: maven
     
     - name: Build with Maven
-      run: mvn clean install package -q -f Backend/pom.xml -Dspring.profiles.active=test
+      run: mvn clean install package -q -f Backend/pom.xml "-Dspring.profiles.active=test"
   
   dockerize:
     name: Dockerize
