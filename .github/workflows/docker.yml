@@ -11,7 +11,6 @@ name: Java
 on:
   pull_request:
     branches: [ "testing" ]
-    paths: "Backend/**"
 
 jobs:
   build:
