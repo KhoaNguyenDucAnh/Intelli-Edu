@@ -59,9 +59,9 @@ public class FileService {
 
   public FileDto findFile(String id, Authentication authentication) {
     FileDto fileDto = fileMapper.toFileDto(findFileHelper(id, authentication));
-    fileDto.setDocumentDto(documentService.findContent(id));
-    fileDto.setMindMapDto(mindMapService.findContent(id));
-    fileDto.setQuestionDto(questionService.findContent(id));
+    fileDto.setDocument(documentService.findContent(id));
+    fileDto.setMindMap(mindMapService.findContent(id));
+    fileDto.setQuestion(questionService.findContent(id));
     return fileDto;
   }
 
@@ -82,8 +82,8 @@ public class FileService {
     return fileMapper.toFileDto(fileRepo.save(file));
   }
 
-  public FileDto updateFile(String id, FileDto fileDto, Authentication authentication) {
-    return fileMapper.toFileDto(fileRepo.save(fileMapper.toFile(fileDto, findFileHelper(id, authentication))));
+  public FileDto updateFile(FileDto fileDto, Authentication authentication) {
+    return fileMapper.toFileDto(fileRepo.save(fileMapper.toFile(fileDto, findFileHelper(fileDto.getId(), authentication))));
   }
 
   @Transactional
