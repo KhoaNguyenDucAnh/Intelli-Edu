@@ -7,6 +7,7 @@ info:
     name: A
 tags: [
   name: Account,
+  name: File,
   name: Document,
   name: Mindmap,
   name: Question,
@@ -43,6 +44,7 @@ components:
           type: array
           items:
             oneOf:
+              - $ref: "#/components/schemas/File"
               - $ref: "#/components/schemas/Document"
               - $ref: "#/components/schemas/Mindmap"
               - $ref: "#/components/schemas/Question"
@@ -67,6 +69,25 @@ components:
           $ref: "#/components/schemas/Page"
         other:
           $ref: "#/components/schemas/Page"
+    File:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        subject:
+          type: string
+        createdAt:
+          type: string
+        lastOpened:
+          type: string
+        document:
+          $ref: "#/components/schemas/Document"
+        mindMap:
+          $ref: "#/components/schemas/Mindmap"
+        question:
+          $ref: "#/components/schemas/Question"
     Document:
       type: object
       properties:
@@ -77,6 +98,13 @@ components:
       properties:
         content:
           type: object
+          properties:
+            main:
+              type: object
+            other:
+              type: array
+              items:
+                type: object
     Question:
       type: object
       properties:
@@ -117,9 +145,8 @@ components:
 paths:
   /account:
     get:
-      tags: [
-        Account
-      ]
+      tags:
+        - Account
       operationId: getAccountInfo
       summary: Get account info
       description: Get account info
@@ -130,11 +157,102 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Account"
+  /file:
+    get:
+      tags:
+        - File
+      operationId: findFile
+      summary: Find file
+      description: Find file
+      parameters:
+        - name: search
+          in: query
+          description: Title of file
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: Number of items per page
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: File
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Page"
+    post:
+      tags:
+        - File
+      operationId: createFile
+      summary: Create file
+      description: Create file
+      responses:
+        '200':
+          description: File
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/File"
+  /file/{id}:
+    get:
+      tags:
+        - File
+      operationId: getFile
+      summary: Get file
+      description: Get file
+      responses:
+        '200':
+          description: File
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/File"
+    put:
+      tags:
+        - File
+      operationId: updateFile
+      summary: Update file
+      description: Update file
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/File"
+      responses:
+        '200':
+          description: File
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/File"
+    delete:
+      tags:
+        - File
+      operationId: deleteFile
+      summary: Delete file
+      description: Delete file
+      responses:
+        '200':
+          description: No content
+    parameters:
+      - name: id
+        in: path
+        description: Id of file
+        required: true
+        schema:
+          type: string
   /document:
     get:
-      tags: [
-        Document
-      ]
+      tags:
+        - Document
       operationId: findDocument
       summary: Find document
       description: Find document
@@ -164,9 +282,8 @@ paths:
                 $ref: "#/components/schemas/Search"
   /document/{id}:
     post:
-      tags: [
-        Document
-      ]
+      tags:
+        - Document
       operationId: createDocument
       summary: Create document
       description: Create document
@@ -178,9 +295,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/Document"
     put:
-      tags: [
-        Document
-      ]
+      tags:
+        - Document
       operationId: updateDocument
       summary: Update document
       description: Update document
@@ -197,9 +313,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/Document"
     delete:
-      tags: [
-        Document
-      ]
+      tags:
+        - Document
       operationId: deleteDocument
       summary: Delete document
       description: Delete document
@@ -215,9 +330,8 @@ paths:
           type: string
   /mindmap:
     get:
-      tags: [
-        Mindmap
-      ]
+      tags:
+        - Mindmap
       operationId: findMindmap
       summary: Find mindmap
       description: Find mindmap
@@ -247,9 +361,8 @@ paths:
                 $ref: "#/components/schemas/Search"
   /mindmap/{id}:
     post:
-      tags: [
-        Mindmap
-      ]
+      tags:
+        - Mindmap
       operationId: createMindmap
       summary: Create mindmap
       description: Create mindmap
@@ -261,9 +374,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/Mindmap"
     put:
-      tags: [
-        Mindmap
-      ]
+      tags:
+        - Mindmap
       operationId: updateMindmap
       summary: Update mindmap
       description: Update mindmap
@@ -280,9 +392,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/Mindmap"
     delete:
-      tags: [
-        Mindmap
-      ]
+      tags:
+        - Mindmap
       operationId: deleteMindmap
       summary: Delete mindmap
       description: Delete mindmap
@@ -298,9 +409,8 @@ paths:
           type: string
   /question:
     get:
-      tags: [
-        Question
-      ]
+      tags:
+        - Question
       operationId: findQuestion
       summary: Find question
       description: Find question
@@ -330,9 +440,8 @@ paths:
                 $ref: "#/components/schemas/Search"
   /question/{id}:
     post:
-      tags: [
-        Question
-      ]
+      tags:
+        - Question
       operationId: createQuestion
       summary: Create question
       description: Create question
@@ -344,9 +453,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/Question"
     put:
-      tags: [
-        Question
-      ]
+      tags:
+        - Question
       operationId: updateQuestion
       summary: Update question
       description: Update question
@@ -363,9 +471,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/Question"
     delete:
-      tags: [
-        Question
-      ]
+      tags:
+        - Question
       operationId: deleteQuestion
       summary: Delete question
       description: Delete question
@@ -381,9 +488,8 @@ paths:
           type: string
   /event:
     get:
-      tags: [
-        Event
-      ]
+      tags:
+        - Event
       operationId: findEvent
       summary: Find event
       description: Find event
@@ -397,9 +503,8 @@ paths:
                 items:
                   $ref: "#/components/schemas/Event"
     post:
-      tags: [
-        Event
-      ]
+      tags:
+        - Event
       operationId: createEvent
       summary: Create event
       description: Create event
@@ -416,9 +521,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/Event"
     put:
-      tags: [
-        Event
-      ]
+      tags:
+        - Event
       operationId: updateEvent
       summary: Update event
       description: Update event
@@ -436,9 +540,8 @@ paths:
                 $ref: "#/components/schemas/Event"
   /event/{id}:
     delete:
-      tags: [
-        Event
-      ]
+      tags:
+        - Event
       operationId: deleteEvent
       summary: Delete event
       description: Delete event
@@ -454,9 +557,8 @@ paths:
           type: string
   /event/share/{id}:
     post:
-      tags: [
-        Event
-      ]
+      tags:
+        - Event
       operationId: shareEvent
       summary: Share event
       description: Share event
@@ -477,9 +579,8 @@ paths:
           type: string
   /auth/register:
     post:
-      tags: [
-        Security
-      ]
+      tags:
+        - Security
       operationId: register
       summary: Register new account
       description: Register new account
@@ -493,9 +594,8 @@ paths:
           description: No content
   /auth/login:
     post:
-      tags: [
-        Security
-      ]
+      tags:
+        - Security
       operationId: login
       summary: Log in
       description: Log in
@@ -509,9 +609,8 @@ paths:
           description: No content
   /auth/logout:
     post:
-      tags: [
-        Security
-      ]
+      tags:
+        - Security
       operationId: logout
       summary: Log out
       description: Log out
