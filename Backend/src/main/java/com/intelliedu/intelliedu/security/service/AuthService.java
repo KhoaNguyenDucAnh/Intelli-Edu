@@ -61,7 +61,7 @@ public class AuthService {
       Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(accountLogInDto.getEmail(), accountLogInDto.getPassword()));
       SecurityContextHolder.getContext().setAuthentication(authentication);
 
-      log.info(String.format("Account %s | Login successful", accountLogInDto.getEmail()));
+      log.info(String.format("Account %s login success", accountLogInDto.getEmail()));
       
       Cookie cookie = new Cookie(
         SecurityConfig.AUTHORIZATION,
@@ -74,7 +74,7 @@ public class AuthService {
 
       response.addCookie(cookie);
     } catch (AuthenticationException e) {
-      log.error(String.format("Account %s | Login failed", accountLogInDto.getEmail()));
+      log.error(String.format("Account %s login failed", accountLogInDto.getEmail()));
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
   }
@@ -106,7 +106,7 @@ public class AuthService {
 
     accountRepo.save(account);
     
-    log.info(String.format("Account %s | Register", account.getEmail()));
+    log.info(String.format("Register account %s", account.getEmail()));
 
     return account;
   }
@@ -126,7 +126,7 @@ public class AuthService {
   private void email(Account account, SecurityAction securityAction) {
     EmailUtil.sendEmail("%s: %s", securityAction.getEmailContent(), generateSecurityToken(account, securityAction).getToken());
 
-    log.info(String.format("Account %s | %s", account.getEmail(), securityAction.getLog()));
+    log.info(String.format("%s for account %s", securityAction.getLog(), account.getEmail()));
   }
 
 
@@ -145,7 +145,7 @@ public class AuthService {
 
     accountRepo.save(account);
 
-    log.info(String.format("Account %s | Activate", account.getEmail()));
+    log.info(String.format("Activate account %s", account.getEmail()));
   }
 
   public Account getAccount(Authentication authentication) {
