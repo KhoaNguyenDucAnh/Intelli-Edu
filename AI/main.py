@@ -1,32 +1,15 @@
 import numpy as np
-import json 
+
 from sentence_transformers import SentenceTransformer,util
 from collections import deque
 
 model = SentenceTransformer('keepitreal/vietnamese-sbert')
 
 from claude_api import Client
-import os
-cookie='intercom-device-id-lupk8zyo=435acf1c-a907-4409-ae7b-593d8b45e4a5; __ssid=ae3af040adac10d2aec8d3d99438209; __stripe_mid=439d2fe6-7918-47a3-aece-aea314af663ae04ec2; activitySessionId=5f50df88-6356-4f92-a0bb-e9f7ae4eb16a; __cf_bm=JTPSITiXx2kIJODe63Wc5GU5V1ioqJ7.SArRK7jihQI-1699882511-0-AdRvfn4+F3OjaQOB4JGMKZmKy2m3r9m6c48tCul+COKF8daiyPfragC2wzisd+71zcD476o2/KQMUT7kji6Ceps=; cf_clearance=NpgAAP8bQAGceYC22UXrbLa_CVQTYhmvvUGO5o0B0zo-1699882513-0-1-ff3e925e.7e64c691.a83fcdbe-0.2.1699882513; __stripe_sid=c8038001-5c14-4a25-afd6-e6aa398673468faf9c; sessionKey=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'
+cookie='intercom-device-id-lupk8zyo=435acf1c-a907-4409-ae7b-593d8b45e4a5; __ssid=ae3af040adac10d2aec8d3d99438209; __stripe_mid=439d2fe6-7918-47a3-aece-aea314af663ae04ec2; sessionKey=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; intercom-session-lupk8zyo=ZzdCQVBCNXR1dXRta2lOUUVLOUQxNllpYkVmc0tEcTIvUWJQYXlWRU1IY2JNdnpPSGZNOUd2dVJoRTVTWEFkeC0tWXVTVXhlTXZXeEwvYzBoWVh0dVB2UT09--09ef62d400c2e3351b5a0e0aeb03792924e049b7; activitySessionId=76d934cd-1ac0-4013-967e-6a0cf29b58ea; __cf_bm=CSa54YByr2rz6ECrXDp_8cj5Lbz2dXYWgbQcUqz7y1w-1700591156-0-AYElRqtfPYVL9LNZz2+QUGI03SpGXUkSLmILET68j0v2RISdTsnabfeck+GWf/MBJEfg0HuHvfFRKjsucN960Zo=; cf_clearance=AHl0grYiPgRUZpICm7k99TAml2i_VAfz2IFsgEVfCv4-1700591157-0-1-4a351f37.411d4da8.1d3440d7-0.2.1700591157; __stripe_sid=a7543311-72c6-40e7-b570-401b985414a2c86883'
 claude_api=Client(cookie)
 
-def get_map():
-  file=''
-  global json1,json2
-  json2='user mindmap'
-  new_chat = claude_api.create_new_chat()
-  conversation_id = new_chat['uuid']
-  prompt='Convert the file to Vietnamese'
-  claude_api.send_message(prompt, conversation_id, attachment=file)
-  prompt='Create a comprehensive mind map in vietnamese for that essay, please provide a code box with Markdown language'
-  claude_api.send_message(prompt, conversation_id)
-  prompt='Thêm những nhánh về ví dụ và số liệu quan trọng nếu có'
-  claude_api.send_message(prompt, conversation_id)
-  prompt='convert mindmap to json with type : title -> root -> label -> children'
-  json1=claude_api.send_message(prompt, conversation_id)
-  claude_api.delete_conversation(conversation_id)
-  return
-
+conversation_id='43380088-8b3d-47bd-9be6-0d8219509a08'
 def main():
   nChain=np.zeros(2)
   chainHead=np.zeros((2,500))
@@ -193,13 +176,9 @@ def main():
   json2=json2['root']
 
   def compare(text):
-    new_chat = claude_api.create_new_chat()
-    conversation_id = new_chat['uuid']
     prompt=text + '\n'
-    print(prompt)
-    prompt+='Can you see if the second text is missing any information or numbers or wrong order compare to the first text in less than 3 sentences in Vietnamese'
+    prompt+='Can you see if the second text is missing any information or numbers or wrong order compare to the first text in no more than 7 sentences in Vietnamese'
     response = claude_api.send_message(prompt, conversation_id)
-    claude_api.delete_conversation(conversation_id)
     return response
   def to_tree(index,js,u):
     values[index][u]=js['label']
@@ -277,7 +256,6 @@ def main():
       user_text=flat[1][int(pos[1][int(Head_index)]):int(pos[1][int(End_index)])+1]
       text+=str(comp_text)+' '+str(user_text)+'\n'
     loca=0
-    print(Head_index,' ',End_index)
     while(End_index!=Head_index):
       user_chain=int(chainInd[1][int(End_index)])
       if(chainInd[1][int(End_index)]==chainInd[1][int(Head_index)]):
