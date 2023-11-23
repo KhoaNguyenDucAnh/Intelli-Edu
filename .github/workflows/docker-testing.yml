@@ -54,5 +54,5 @@ jobs:
           docker buildx build \
             --platform linux/amd64,windows/amd64 \
             -f test.Dockerfile \
-            -t ghcr.io/khoanguyenducanh/intelli-edu:test
+            -t ghcr.io/khoanguyenducanh/intelli-edu:test \
             --push .
