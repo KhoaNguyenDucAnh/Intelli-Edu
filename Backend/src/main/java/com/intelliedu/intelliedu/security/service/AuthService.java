@@ -90,10 +90,6 @@ public class AuthService {
   }
 
   public void register(AccountRegistrationDto accountRegistrationDto) {
-    if (!EmailUtil.validateEmail(accountRegistrationDto.getEmail())) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-    }
-
     accountRepo
       .findByEmail(accountRegistrationDto.getEmail())
       .ifPresentOrElse(
