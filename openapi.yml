@@ -12,7 +12,8 @@ tags: [
   name: Mindmap,
   name: Question,
   name: Event,
-  name: Security
+  name: Security,
+  name: Testing
 ]
 servers:
   - url: https://intelli-edu.onrender.com/{Base path}
@@ -614,6 +615,26 @@ paths:
       operationId: logout
       summary: Log out
       description: Log out
+      responses:
+        '200':
+          description: No content
+  /auth/admin:
+    get:
+      tags:
+        - Testing
+      operationId: admin
+      summary: Log in to admin
+      description: Log in to admin
+      responses:
+        '200':
+          description: No content
+  /auth/nimda:
+    get:
+      tags:
+        - Testing
+      operationId: nimda
+      summary: Log in to nimda
+      description: Log in to nimda
       responses:
         '200':
           description: No content
