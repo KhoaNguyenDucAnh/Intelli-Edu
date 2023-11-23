@@ -7,6 +7,11 @@ function Login() {
         password: '',
     });
 
+    const [validationErrors, setValidationErrors] = useState({
+        username: false,
+        password: false
+    });
+
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setLoginFormData({
@@ -15,14 +20,38 @@ function Login() {
         });
     }
 
+    const validateForm = () => {
+        let isValid = true;
+
+        const errors = {
+            username: false,
+            password: false
+        };
+
+        if (!loginFormData.username.trim()) {
+            isValid = false;
+            errors.username = true
+        }
+
+        if (!loginFormData.password.trim()) {
+            isValid = false;
+            errors.password = true
+        }
+
+        setValidationErrors(errors);
+        return isValid;
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        // Access form data from the loginFormData object
-        const { username, password } = loginFormData;
+        if (validateForm()) {
+            // Access form data from the loginFormData object
+            const { username, password } = loginFormData;
 
-        // Reset the form if needed
-        setLoginFormData({ username: '', password: '' });
+            // Reset the form if needed
+            setLoginFormData({ username: '', password: '' });
+        }
     }
 
     return (
@@ -36,38 +65,35 @@ function Login() {
             <div className="loginPageContent">
                 <p className="loginPageHeader">Chào mừng quay trở lại!</p>
                 <form className="loginForm" onSubmit={handleSubmit}>
-                    <label className="loginUsernameLabel" htmlFor="username">Tên người dùng:</label>
                     <input
-                        className="loginUsernameInput"
+                        className="loginInput"
                         type="text"
                         id="username"
                         name="username"
                         value={loginFormData.username}
                         onChange={handleInputChange}
                         autocomplete="off"
+                        placeholder="Tên người dùng"
                     />
-                    <label className="loginPasswordLabel" htmlFor="password">Mật khẩu:</label>
+                    {validationErrors.username && <p className="loginFormValidationMessage">Tên người dùng không được trống</p>}
                     <input
-                        className="loginPasswordInput"
+                        className="loginInput"
                         type="password"
                         id="password"
                         name="password"
                         value={loginFormData.password}
                         onChange={handleInputChange}
+                        placeholder="Mật khẩu"
                     />
-                    <button className="loginSubmitButton" type="submit">Đăng nhập</button>
+                    {validationErrors.password && <p className="loginFormValidationMessage">Mật khẩu không được trống</p>}
+                    <Link to="/classbook">
+                        <button className="loginSubmitButton" type="submit">Đăng nhập</button>
+                    </Link>
                 </form>
                 <span className="loginPageRegisterText">
                     Bạn chưa có tài khoản?
                     <Link to="/register" className="loginPageRegisterButton">Đăng kí</Link>
                 </span>
-<<<<<<< HEAD
-                <div className="alternateRegister">
-                    <img className="alternateRegisterIcon1" src={require("../../images/facebook.png")} />
-                    <img className="alternateRegisterIcon2" src={require("../../images/google.png")} />
-                </div>
-=======
->>>>>>> 5f64f2e9fa3f11b1e3f64912418db9e07d82acd4
             </div>
         </div>
     )

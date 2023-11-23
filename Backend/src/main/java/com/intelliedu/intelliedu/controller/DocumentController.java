@@ -53,4 +53,9 @@ public class DocumentController {
   public void deleteDocument(@PathVariable String id, Authentication authentication) {
     documentService.deleteContent(id, authentication);
   }
+
+  @PutMapping("/share/{id}")
+  public void shareDocument(@PathVariable String id, Authentication authentication) {
+    documentService.shareContent(id, authentication);
+  }
 }

@@ -1,16 +1,19 @@
 package com.intelliedu.intelliedu.entity;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.intelliedu.intelliedu.config.EventType;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,17 +35,26 @@ public class Event {
 
 	private String name;
 
-	private ZonedDateTime deadline;
+	private LocalDateTime deadline;
 	
-	private Boolean urgent;
+	private boolean urgent;
 
-	private Boolean important;
+	private boolean important;
 
 	@Enumerated(EnumType.STRING)	
 	private EventType eventType;
 
 	private String description;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-  private Schedule schedule;
+  @Builder.Default
+  private boolean shared = false;
+
+  @Builder.Default
+	@OneToMany(mappedBy = "event", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Schedule> schedule = new ArrayList<>();
+
+  public void addSchedule(Schedule schedule) {
+    this.schedule.add(schedule);
+    schedule.setEvent(this);
+  }
 }

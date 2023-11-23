@@ -7,16 +7,9 @@ function Header() {
                 <div className="leftHeader">
                     <p className="logo">IntelliEdu</p>
                     <div className="navigation">
-                        <div className="navItem">
+                        <div className="noArrow navItem">
                             <p className="navText">Tài liệu</p>
-<<<<<<< HEAD
-                            <span class="material-symbols-outlined downArrow">
-                                expand_more
-                            </span>
                         </div>
-=======
-                        </div> 
->>>>>>> fcc652d50c9757427ceccfcba651678750b72e1b
                         <div className="withArrow navItem">
                             <p className="navText">Công cụ hỗ trợ</p>
                             <span class="material-symbols-outlined downArrow">
@@ -31,9 +24,6 @@ function Header() {
                         </div>
                         <div className="noArrow navItem">
                             <p className="navText">Kế hoạch</p>
-                        </div>
-                        <div className="noArrow navItem">
-                            <p className="navText">Bảng xếp hạng</p>
                         </div>
                         <div className="noArrow navItem">
                             <p className="navText">Liên hệ</p>

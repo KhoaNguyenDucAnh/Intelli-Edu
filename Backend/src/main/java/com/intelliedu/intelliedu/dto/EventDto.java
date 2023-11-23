@@ -1,7 +1,8 @@
 package com.intelliedu.intelliedu.dto;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.intelliedu.intelliedu.config.EventType;
 
 import lombok.AllArgsConstructor;
@@ -22,13 +23,16 @@ public class EventDto {
 
 	private String name;
 
-	private ZonedDateTime deadline;
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "d/M/yyyy HH:mm:ss")
+	private LocalDateTime deadline;
 	
-	private Boolean urgent;
+	private boolean urgent;
 
-	private Boolean important;
+	private boolean important;
 
 	private EventType eventType;
 
 	private String description;
+
+  private boolean shared;
 }

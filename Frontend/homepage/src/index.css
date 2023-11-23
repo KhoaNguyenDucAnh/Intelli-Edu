@@ -1,5 +1,12 @@
 * {
   caret-color: transparent;
+  caret-color: transparent;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
 
 body {
@@ -42,6 +49,7 @@ input {
 .logo {
   font-family: 'Abril Fatface', cursive;
   font-size: 2.2vw;
+  color: black
 }
 
 .leftHeader {
@@ -55,6 +63,7 @@ input {
   padding-left: 1.3vw;
   margin-left: 1.3vw;
   border-left: 0.2vw solid #E0E0E0;
+  color: black
 }
 
 .navItem {
@@ -81,11 +90,12 @@ input {
   left: 0;
   padding-top: 2vw;
   display: none;
+  z-index: 100;
 }
 
 .toolList {
   background-color: white;
-  width: 12vw;
+  width: 13vw;
   height: 5.5vw;
   border-radius: 1vh;
   display: flex;
@@ -167,6 +177,7 @@ input {
   background-size: cover;
   background-repeat: no-repeat;
   display: flex;
+  background-color: white;
 }
 
 .searchContent {
@@ -176,8 +187,8 @@ input {
 }
 
 .slogan {
-  height: 17vw;
-  width: 37vw;
+  width: 39vw;
+  aspect-ratio: 1.5;
   padding-top: 8.36vw;
   background-size: cover;
   margin-bottom: 1.32vw;
@@ -185,8 +196,8 @@ input {
 
 .searchBarBackground {
   background-color: rgba(0, 0, 0, 0.2);
-  height: 3.08vw;
-  width: 100%;
+  height: 4vw;
+  width: 40vw;
   border-radius: 0.44vw;
   padding: 0.66vw 1vw;
   display: flex;
@@ -204,11 +215,18 @@ input {
   padding: 0 1vw 0 3vw;
   margin: 0;
   outline: none;
+  box-shadow: none;
+  border: none;
   font-size: 1.76vw;
   color: gray;
-  border-radius: 8px;
-  background: var(--light-untitled-white, #FFF);
-  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.12);
+  background-color: white;
+}
+
+.searchBar::placeholder {
+  color: #3c3230;
+  font-family: "Montserrat", sans-serif;
+  opacity: "60%";
+  font-size: medium;
 }
 
 .searchIcon {
@@ -235,8 +253,8 @@ input {
 
 .trophyText1 {
   position: absolute;
-  top: 4vw;
-  left: 21vw;
+  top: 4.4vw;
+  left: 19.6vw;
   font-size: 1.51vw;
   transform: rotate(-5deg);
   color: #5455D4;
@@ -246,8 +264,8 @@ input {
 .trophyText2 {
   position: absolute;
   font-size: 1.7vw;
-  top: 5.7vw;
-  left: 19.5vw;
+  top: 6.1vw;
+  left: 18.4vw;
   transform: rotate(-5deg);
   font-weight: 600;
   color: white;
@@ -300,6 +318,9 @@ input {
   background: url('./images/featurebackground.png');
   background-size: cover;
   background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .feature {
@@ -307,7 +328,7 @@ input {
   justify-content: space-between;
   align-items: center;
   width: 76vw;
-  padding: 0 12vw 6.6vw 12vw;
+  padding-bottom: 7vw;
 }
 
 .featureDescription {
@@ -386,17 +407,14 @@ input {
   font-size: 2.4vw;
   font-family: 'Quicksand', sans-serif;
 }
-<<<<<<< HEAD
 
-.comehereBackground {
-=======
-.comehereTextArrow{
+.comehereTextArrow {
   height: 1.6vw;
   width: 2.8vw;
   margin-left: 0.8vw;
 }
-.comehereBackground{
->>>>>>> fcc652d50c9757427ceccfcba651678750b72e1b
+
+.comehereBackground {
   position: absolute;
   background-color: black;
   bottom: 0;
@@ -666,37 +684,14 @@ input {
   margin-left: 20%;
 }
 
-.loginUsernameLabel {
+.loginInput {
   display: block;
-  font-size: 1.3vw;
-}
-
-.loginUsernameInput {
-  display: block;
-  width: calc(100% - 1.4vw);
-  border-radius: 100vh;
+  width: 100%;
+  border-radius: 2vh;
   aspect-ratio: 11;
   padding: 0 0.7vw;
   border: 0.3vh solid #656ED3;
-  margin-top: 1.5vh;
-  background-color: #EBEFFF;
-  font-size: 1.3vw;
-}
-
-.loginPasswordLabel {
-  margin-top: 2.5vh;
-  font-size: 1.3vw;
-  display: block;
-}
-
-.loginPasswordInput {
-  display: block;
-  width: calc(100% - 1.4vw);
-  border-radius: 100vh;
-  aspect-ratio: 11;
-  padding: 0 0.7vw;
-  border: 0.3vh solid #656ED3;
-  margin-top: 1.5vh;
+  margin-top: 5vh;
   background-color: #EBEFFF;
   font-size: 1.3vw;
 }
@@ -706,22 +701,18 @@ input {
   aspect-ratio: 11;
   border-radius: 100vh;
   border: none;
-  margin-top: 8vh;
+  margin-top: 6vh;
   background-color: #656ED3;
   color: white;
   font-size: 1.3vw;
 }
-<<<<<<< HEAD
 
-.loginSubmitButton:active {
-  background-color: #818aed;
-=======
-.loginSubmitButton:hover{
+.loginSubmitButton:hover {
   background-color: #5761c4;
 }
-.loginSubmitButton:active{
+
+.loginSubmitButton:active {
   background-color: #767fdf;
->>>>>>> 5f64f2e9fa3f11b1e3f64912418db9e07d82acd4
 }
 
 .loginPageRegisterText {
@@ -740,53 +731,14 @@ input {
 .loginPageRegisterButton:active {
   color: #0015ff;
 }
-<<<<<<< HEAD
 
-.alternateLogin {
-  display: flex;
-  justify-content: center;
-  margin-top: 3vh;
-}
-
-.alternateLoginIcon1 {
-  width: 2.5vw;
-  aspect-ratio: 1;
-  padding: 0.7vw;
-  border: 0.35vh solid #656ED3;
-  border-radius: 100vh;
-  cursor: pointer;
-}
-
-.alternateLoginIcon1:hover {
-  background-color: white;
-}
-
-.alternateLoginIcon1:active {
-  background-color: rgb(222, 222, 222);
-}
-
-.alternateLoginIcon2 {
-  width: 2.5vw;
-  aspect-ratio: 1;
-  padding: 0.7vw;
-  border: 0.35vh solid #656ED3;
-  border-radius: 100vh;
-  margin-left: 2vw;
-  cursor: pointer;
-}
-
-.alternateLoginIcon2:hover {
-  background-color: white;
-}
-
-.alternateLoginIcon2:active {
-  background-color: rgb(222, 222, 222);
+.loginFormValidationMessage {
+  font-size: 1.2vw;
+  margin: 0.4vw 0 0 0.2vw;
+  color: #d9212c;
 }
 
 .registerPage {
-=======
-.registerPage{
->>>>>>> 5f64f2e9fa3f11b1e3f64912418db9e07d82acd4
   overflow: hidden;
   background-color: #EBEFFF;
   height: 100vh;
@@ -819,7 +771,7 @@ input {
 }
 
 .registerPageContent {
-  width: 28.67vw;
+  width: 40vw;
   padding-right: 12.1vw;
   position: absolute;
   right: 0;
@@ -828,7 +780,7 @@ input {
 
 .registerPageHeader {
   margin: 0;
-  margin-top: 6vh;
+  margin: 6vh 0;
   font-weight: bold;
   font-size: 1.7vw;
   text-align: center;
@@ -847,8 +799,8 @@ input {
 .registerInput {
   display: block;
   display: block;
-  width: calc(100% - 1.4vw);
-  border-radius: 100vh;
+  width: 100%;
+  border-radius: 1.5vh;
   aspect-ratio: 11;
   padding: 0 0.7vw;
   border: 0.3vh solid #656ED3;
@@ -862,22 +814,18 @@ input {
   aspect-ratio: 11;
   border-radius: 100vh;
   border: none;
-  margin-top: 5vh;
+  margin-top: 3vh;
   background-color: #656ED3;
   color: white;
   font-size: 1.2vw;
 }
-<<<<<<< HEAD
 
-.registerSubmitButton:active {
-  background-color: #818aed;
-=======
-.registerSubmitButton:hover{
+.registerSubmitButton:hover {
   background-color: #5761c4;
 }
-.registerSubmitButton:active{
-  background-color: #767fdf;
->>>>>>> 5f64f2e9fa3f11b1e3f64912418db9e07d82acd4
+
+.registerSubmitButton:active {
+  background-color: #7780e1;
 }
 
 .registerPageLoginText {
@@ -896,48 +844,613 @@ input {
 
 .registerPageLoginButton:active {
   color: #0015ff;
-<<<<<<< HEAD
 }
 
-.alternateRegister {
+.registerFormValidationMessage {
+  font-size: 1vw;
+  margin: 0.4vw 0 0.7vw 0.2vw;
+  color: #d9212c;
+}
+
+.validationSpace {
+  height: 3vh;
+}
+
+
+
+.homePage {
+  text-decoration: none;
+  color: black;
+}
+
+
+.Frame20NewMindMap {
+  display: flex;
+  width: 100%;
+  height: 110px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  left: 0;
+  background-color: white;
+}
+
+.searchBarBackground1 {
+  height: 3.59375vw;
+  width: 40.56.25vw;
+  border-radius: 0.44vw;
+  padding: 0.66vw 1vw;
   display: flex;
   justify-content: center;
-  margin-top: 3vh;
+  align-items: center;
+  margin: 0;
+  position: relative;
+  border-radius: 8px;
+  background: var(--light-untitled-white, #FFF);
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.12);
 }
 
-.alternateRegisterIcon1 {
-  width: 2.5vw;
-  aspect-ratio: 1;
-  padding: 0.7vw;
-  border: 0.35vh solid #656ED3;
-  border-radius: 100vh;
+.searchBar1 {
+  width: 56.25vw;
+  height: 3.59375vw;
+  border-radius: 0.308vw;
+  caret-color: auto;
+  padding: 0 1vw 0 3vw;
+  outline: none;
+  border: none;
+  font-size: 1.5625vw;
+  cursor: text;
+}
+
+.SideBar {
+  border: solid red;
+  display: flex;
+  width: 402px;
+  height: 988px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  position: absolute;
+  margin-top: 37px;
+  left: 56px;
+}
+
+.Frame15 {
+  margin-top: 44px;
+  display: flex;
+  width: 100%;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.25vw;
+}
+
+.Frame40 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 19px;
+  border-radius: 100px;
+  border: 3px solid #4BC8E7;
+  width: 45px;
+  height: 100%;
   cursor: pointer;
 }
 
-.alternateRegisterIcon1:hover {
-  background-color: white;
+.Frame40Text {
+  color: #4BC8E7;
+  font-family: Montserrat;
+  font-size: 0.83333333333333333333333333333333vw;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%;
+  /* 16px */
+  letter-spacing: -0.64px;
 }
 
-.alternateRegisterIcon1:active {
-  background-color: rgb(222, 222, 222);
+.pagination {
+  margin-top: 44px;
+  display: flex;
+  width: 100%;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  marker: none;
+  user-select: none;
+
 }
 
-.alternateRegisterIcon2 {
-  width: 2.5vw;
-  aspect-ratio: 1;
-  padding: 0.7vw;
-  border: 0.35vh solid #656ED3;
-  border-radius: 100vh;
-  margin-left: 2vw;
+.page-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 19px;
+  border-radius: 100px;
+  border: 3px solid #4BC8E7;
+  width: 45px;
+  height: 100%;
+  cursor: pointer;
+  color: #4BC8E7;
+  font-family: Montserrat;
+  font-size: 0.83333333333333333333333333333333vw;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 100%;
+  letter-spacing: -0.64px;
+  height: 100%;
+}
+
+.page-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 100px;
+
+}
+
+.page-item.active {
+  color: #fff;
+  background: #4BC8E7;
+}
+
+.Pagenumber {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 19px;
+  border-radius: 100px;
+  border: 3px solid #4BC8E7;
+  width: 45px;
+  height: 100%;
   cursor: pointer;
 }
 
-.alternateRegisterIcon2:hover {
-  background-color: white;
+.PagenumberText {
+  color: #4BC8E7;
+  font-family: Montserrat;
+  font-size: 0.83333333333333333333333333333333vw;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%;
+  /* 16px */
+  letter-spacing: -0.64px;
 }
 
-.alternateRegisterIcon2:active {
-  background-color: rgb(222, 222, 222);
-=======
->>>>>>> 5f64f2e9fa3f11b1e3f64912418db9e07d82acd4
+.Frame2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 19px;
+  border-radius: 100px;
+  border: 3px solid #4BC8E7;
+  width: 45px;
+  height: 100%;
 }
+
+.More {
+  display: flex;
+  width: 0.83333333333333333333333333333333vw;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-self: stretch;
+  color: var(--primaty-grey-dark, #757575);
+  font-family: Montserrat;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140%;
+  /* 25.2px */
+  letter-spacing: 0.72px;
+
+  cursor: default;
+}
+
+.Frame35MindMap {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background: var(--primaty-grey-light, #F6F5F4);
+  width: 100vw;
+  height: 1294px;
+}
+
+.ContentsMindmap {
+  margin-top: 60px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  height: 980px;
+  gap: 6.927vw;
+}
+
+/* *********************************************************************** */
+.LeftSidebar {
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-self: stretch;
+  background: var(--primaty-grey-light, #fff);
+  width: 26%;
+  height: 100%;
+  border-radius: 3%;
+}
+
+.SidebarContent {
+  width: 96%;
+  padding: 10px;
+  gap: 5px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 173px;
+  border-radius: 16px;
+  background: #FFF;
+  cursor: pointer;
+}
+
+.mantine-Tabs-root {
+  width: 96%;
+  padding: 10px;
+  gap: 5px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 173px;
+  border-radius: 16px;
+  background: #FFF;
+  cursor: pointer;
+}
+
+.Content:hover {
+  background-color: #E0E0E0;
+  padding: 10px;
+}
+
+.mantine-Tabs-list {
+  display: flex;
+  width: 100%;
+  height: 200px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.ContentBox {
+  display: flex;
+  width: 100%;
+  height: 146px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+
+
+
+.ContentActive {
+  display: flex;
+  width: 19.53125vw;
+  height: 40px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 6px;
+  background: #E0E0E0;
+}
+
+.Content {
+  display: flex;
+  width: 100%;
+  height: 80px;
+  padding-left: 40px;
+  /* flex-direction: column; */
+  align-items: center;
+  animation: 2s;
+  gap: 10px;
+  border-radius: 6px;
+  background: #FFF;
+}
+
+.mantine-Tabs-tab {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 40px;
+  padding-left: 40px;
+  align-items: center;
+  animation: 2s;
+  gap: 10px;
+  border-radius: 6px;
+  background: #FFF;
+}
+
+.IconContent {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  padding: 4px;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 6px;
+  background: var(--Dark-4, #2C353D);
+}
+
+.ContentText {
+  display: flex;
+  width: 50%;
+  color: #000;
+  font-size: 1.4vw;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 18px;
+  /* 64.286% */
+}
+
+.FollowingNum {
+  margin-left: 60px;
+  display: flex;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  height: auto;
+  width: auto;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 5px;
+  background: var(--red-red-80, #FF6934);
+}
+
+/* methangtuanbeovaidaitintaodi
+
+/* *********************************************************************** */
+.Schedule {
+  margin-top: 10px;
+  width: 96%;
+  padding: 40px;
+  gap: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 190px;
+  border-radius: 16px;
+  background: #FFF;
+  cursor: pointer;
+}
+
+.ScheduleTitle {
+  width: 100%;
+  height: auto;
+  color: var(--primaty-black, #000);
+  font-family: Montserrat;
+  font-size: 2vw;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 18px;
+  /* 64.286% */
+  letter-spacing: -1.12px;
+}
+
+.ScheduleInformation {
+  margin-top: 1vw;
+  color: var(--primaty-grey-dark, #757575);
+  font-family: Montserrat;
+  font-size: 1.2vw;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140%;
+  /* 25.2px */
+  letter-spacing: -0.72px;
+}
+
+/* *********************************************************************** */
+.dropdown {
+  min-width: 15em;
+  position: relative;
+  margin: 2em;
+  width: 50%;
+}
+
+.select {
+  display: flex;
+  margin-top: 0px;
+  padding-right: 0px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 14px;
+  border: 1px solid var(--grey-grey-90, #E6E6E6);
+  background: var(--neutral-white, #FFF);
+  transition: background 0.3s;
+  justify-content: space-between;
+  padding: 1em;
+  cursor: default;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1;
+}
+
+.select:hover {
+  background: var(--primaty-cyan-light, #C3DCE3);
+  box-shadow: 4px 4px 20px 0px rgba(0, 0, 0, 0.25);
+}
+
+.select-clicked {
+  border: 2px;
+  box-shadow: 0 0 0.8em;
+}
+
+.caret {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid #484848;
+  transition: 0.5s;
+}
+
+.caret-rotate {
+  transform: rotate(180deg);
+}
+
+.menu {
+  list-style: none;
+  padding: 0.2em 0.5em;
+  border-radius: 8px;
+  background: var(--neutral-white, #FFF);
+  border: 1px;
+  box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: -0.2em;
+  left: 27%;
+  width: 100%;
+  transform: translateX(-50%);
+  margin: 70px;
+  opacity: 0;
+  display: none;
+  transition: 0.5s;
+  z-index: 1;
+}
+
+.menu li {
+  padding: 0.7em 0.5em;
+  margin: 0.3em 0;
+  border-radius: 0.5em;
+  cursor: pointer;
+
+}
+
+.menu li:hover {
+  background: var(--primaty-cyan-light, #C3DCE3);
+  box-shadow: 4px 4px 20px 0px rgba(0, 0, 0, 0.25);
+}
+
+.active {
+  background: var(--primaty-cyan-light, #C3DCE3);
+  box-shadow: 4px 4px 20px 0px rgba(0, 0, 0, 0.25);
+}
+
+.menu-item {
+  text-decoration: none;
+  caret-color: transparent;
+  color: #000;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1;
+}
+
+.select:hover+.menu {
+  display: block;
+  opacity: 1;
+}
+
+.menu:hover {
+  display: block;
+  opacity: 1;
+}
+
+.dropdown:hover .caret {
+  transform: rotate(180deg);
+}
+
+
+/* *********************************************************************** */
+.MindmapContent {
+  display: flex;
+  width: 56.09375vw;
+  height: 974px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 76px;
+}
+
+.mainContents {
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  padding-right: 0px;
+  width: 65.09375vw;
+  height: 274px;
+  border-radius: 14px;
+  background: #FFF;
+  box-shadow: 0px 22.89813px 45.79626px -11.44906px rgba(52, 41, 39, 0.08);
+  transition: transform .2s;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  /* Animation */
+}
+
+.mainContents:hover {
+  transform: scale(1.05);
+  /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+.MindmapBox {
+  display: flex;
+  height: 100%;
+  padding-right: 0px;
+  width: 65.09375vw;
+  height: 33%;
+  justify-content: flex-start;
+  gap: 3.3%;
+}
+
+.MindmapObject {
+  position: relative;
+
+  padding-top: 2px;
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  padding-right: 0px;
+  width: 30%;
+  height: 274px;
+  border-radius: 14px;
+  background: #FFF;
+  box-shadow: 0px 22.89813px 45.79626px -11.44906px rgba(52, 41, 39, 0.08);
+  transition: transform .2s;
+  cursor: pointer;
+  justify-content: center;
+  /* Animation */
+}
+
+.MindmapData {
+  position: relative;
+  size: inherit;
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  /* filter: blur(10px);
+  transition: 100ms filter linear; */
+  -webkit-filter: blur(1px) brightness(0.5);
+  -moz-filter: blur(1px) brightness(0.5);
+  -ms-filter: blur(1px) brightness(0.5);
+  -o-filter: blur(1px) brightness(0.5);
+  filter: blur(1px) brightness(0.5);
+  box-shadow: 0px 22.89813px 45.79626px -11.44906px rgba(52, 41, 39, 0.08);
+}
+
+.MindmapTitle {
+  position: absolute;
+  color: white;
+}
+
+.MindmapObject:hover {
+  transform: scale(1.2);
+  /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+
+/* *********************************************************************** */

@@ -25,155 +25,10 @@ def main():
   flat=[[None for i in range(100)],[None for i in range(100)]]
   count=deque([0])
   for i in range(500):
-     count.append(i+1)
-  json1={
-  "title": "Sự thành lập Liên hợp quốc",
-  "root": {
-    "label": "Sự thành lập LHQ",
-    "children": [
-      {
-        "label": "Sự thành lập",
-        "children": [
-          {
-            "label": "Kết thúc WWII"
-          },
-          {
-            "label": "Nguyện vọng hòa bình toàn cầu"  
-          },
-          {
-            "label": "Thỏa thuận tại Hội nghị Yalta"
-          },
-          {
-            "label": "Thông qua Hiến chương tại HNC Phrancisco"  
-          }
-        ]
-      },
-      {
-        "label": "Mục tiêu & Nguyên tắc",
-        "children": [
-          {
-            "label": "Mục tiêu",
-            "children": [
-              { "label": "Duy trì hòa bình" },
-              { "label": "Phát triển quan hệ hữu nghị" },
-              { "label": "Hợp tác quốc tế" }
-            ]
-          },
-          {
-            "label": "Nguyên tắc",
-            "children": [
-              { "label": "Bình đẳng chủ quyền" },
-              { "label": "Toàn vẹn lãnh thổ" }, 
-              { "label": "Không can thiệp nội bộ" },
-              { "label": "Giải quyết tranh chấp hòa bình" },
-              { "label": "Đồng thuận các cường quốc(Liên Xô, Mĩ, Anh, Pháp, Trung Quốc)" }
-            ]
-          }
-        ]
-      },  
-      {
-        "label": "Cơ cấu tổ chức",
-        "children": [
-          { "label": "Đại hội đồng" },
-          { "label": "Hội đồng Bảo an" },
-          { "label": "Hội đồng Kinh tế & Xã hội" }, 
-          { "label": "Hội đồng Quản trị" },
-          { "label": "Tòa án Quốc tế" },
-          { "label": "Ban Thư ký" }
-        ]
-      },
-      {
-        "label": "Trụ sở",
-        "children": [
-          { "label": "Thành phố New York" }
-        ]
-      },
-      {
-        "label": "Vai trò",
-        "children": [
-          { "label": "Diễn đàn hợp tác & đấu tranh cho hòa bình" },
-          { "label": "Giải quyết xung đột" },
-          { "label": "Thúc đẩy quan hệ quốc tế" }
-        ]
-      }
-    ]
-  } 
-}
+      count.append(i+1)
 
-  json2={
-  "title": "Sự thành lập Liên hợp quốc",
-  "root": {
-    "label": "Sự thành lập LHQ", 
-    "children": [
-      {
-        "label": "Sự thành lập",
-        "children": [
-          {
-            "label": "Kết thúc WW2"  
-          },
-          {
-            "label": "Nguyện vọng hòa bình toàn cầu"
-          }
-        ]
-      },
-      {
-        "label": "Mục tiêu & Nguyên tắc",
-        "children": [
-          {
-            "label": "Mục tiêu", 
-            "children": [
-              { "label": "Duy trì hòa bình thế giới" },
-              { "label": "Phát triển quan hệ hữu nghị" },
-              { "label": "Hợp tác quốc tế" }
-            ]
-          },
-          {
-            "label": "Nguyên tắc",
-            "children": [
-              { "label": "Bình đẳng chủ quyền" }, 
-              { "label": "Toàn vẹn lãnh thổ" },
-              { "label": "Không can thiệp" },
-              { "label": "Giải quyết tranh chấp hòa bình" },
-              { "label": "Đồng thuận các cường quốc (Thái Lan, Mĩ, Anh, Pháp, Trung Quốc" }
-            ]
-          }
-        ]
-      },
-      {
-        "label": "Cơ cấu tổ chức",
-        "children": [
-          { "label": "Đại hội đồng" },
-          { "label": "Hội đồng Bảo an" },
-          { "label": "Hội đồng Kinh tế & Xã hội" },
-          { "label": "Hội đồng Quản trị" },
-          { "label": "Tòa án Quốc tế" },
-          { "label": "Ban Thư ký" }
-        ]
-      },
-      {
-        "label": "Trụ sở",
-        "children": [
-          { "label": "Thành phố New York" }
-        ]
-      },
-      {
-        "label": "Vai trò",
-        "children": [
-          { 
-            "label": "Hòa bình" ,
-            "children":[
-              {"label":"diễn đàn hợp tác"},
-              {"label":"đấu tranh"}
-            ]
-          }
-        ]  
-      }
-    ]
-  }
-}
-  
-  json1=json1['root']
-  json2=json2['root']
+  json1 = to_mindmap(document)['root']
+  json2 = mindmap['root']
 
   def compare(text):
     prompt=text + '\n'
@@ -202,7 +57,7 @@ def main():
             nChild[index][u]+=nChild[index][v]
   def hld(index,u):
     if int(chainHead[index][int(nChain[index])])==0:
-        chainHead[index][int(nChain[index])]=u 
+        chainHead[index][int(nChain[index])]=u
     chainInd[index][u]=nChain[index]
     nBase[index]+=1
     pos[index][u]=nBase[index]
@@ -230,7 +85,7 @@ def main():
     hits = util.semantic_search(text, corpus_em, score_function=util.dot_score)
     position=hits[0][0]['corpus_id']
     return position
-  
+
   d1=to_tree(0,json1,1)
   count=deque([0])
   for i in range(500):
@@ -262,7 +117,7 @@ def main():
         user_text=flat[1][int(pos[1][int(Head_index)]):int(pos[1][int(End_index)])+1]+user_text
         break
       user_text=flat[1][int(pos[1][int(chainHead[1][int(user_chain)])]):int(pos[1][int(End_index)])+1]+user_text
-      End_index=int(parent[1][int(chainHead[1][user_chain])]) 
+      End_index=int(parent[1][int(chainHead[1][user_chain])])
       if(End_index==1):
         loca=-1
         break

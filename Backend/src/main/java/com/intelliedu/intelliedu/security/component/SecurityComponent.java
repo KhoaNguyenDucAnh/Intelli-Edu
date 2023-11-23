@@ -2,14 +2,18 @@ package com.intelliedu.intelliedu.security.component;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.stereotype.Component;
 
 import com.intelliedu.intelliedu.entity.Account;
@@ -25,6 +29,7 @@ public class SecurityComponent {
   private AccountRepo accountRepo;
 
   @Bean
+  @Profile({"dev", "prod"})
   UserDetailsService userDetailsService() {
     return new UserDetailsService() {
       @Override
@@ -54,6 +59,27 @@ public class SecurityComponent {
   }
 
   @Bean
+  @Profile("test")
+  UserDetailsService inMemoryUserDetailsManager() {
+    return new InMemoryUserDetailsManager(
+      User
+        .withUsername("admin")
+        .password("admin")
+        .passwordEncoder(passwordEncoder()::encode)
+        .build(),
+      User
+        .withUsername("nimda")
+        .password("nimda")
+        .passwordEncoder(passwordEncoder()::encode)
+        .build()
+    );
+  }
+
+  @Lazy
+  @Autowired
+  private UserDetailsService userDetailsService;
+
+  @Bean
   PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
@@ -67,7 +93,7 @@ public class SecurityComponent {
   DaoAuthenticationProvider authenticationProvider() {
     DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
-    authProvider.setUserDetailsService(userDetailsService());
+    authProvider.setUserDetailsService(userDetailsService);
     authProvider.setPasswordEncoder(passwordEncoder());
 
     return authProvider;

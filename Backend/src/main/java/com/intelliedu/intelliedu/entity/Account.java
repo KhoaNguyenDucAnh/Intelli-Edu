@@ -43,12 +43,13 @@ public class Account implements UserDetails {
 
   private String password;
 
-  private Boolean isEnabled;
+  @Builder.Default
+  private boolean isEnabled = false;
 
   @Enumerated(EnumType.STRING)
   private Role role;
 
-	private Integer point;
+	//private Integer point;
 
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private List<File> file;
@@ -56,8 +57,8 @@ public class Account implements UserDetails {
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private List<Vote> vote;
 
-	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	private List<Schedule> schedule;
+	//@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	//private List<Schedule> schedule;
 
   @Override
   public List<? extends GrantedAuthority> getAuthorities() {

@@ -1,6 +1,7 @@
 package com.intelliedu.intelliedu.security.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,18 +21,23 @@ public class AuthController {
   @Autowired
   private AuthService authService;
 
-  @PostMapping("/api/v1/auth/authenticate")
-  public void authenticateUser(@RequestBody @Valid AccountLogInDto accountLogInDto, HttpServletResponse response) {
-    authService.authenticateAccount(accountLogInDto, response);
+  @PostMapping("/api/v1/auth/login")
+  public void login(@RequestBody @Valid AccountLogInDto accountLogInDto, HttpServletResponse response) {
+    authService.login(accountLogInDto, response);
+  }
+
+  @GetMapping("/api/v1/auth/logout")
+  public void logout(HttpServletResponse response) {
+    authService.logout(response);
   }
 
   @PostMapping("/api/v1/auth/register")
-  public void registerAccount(@RequestBody @Valid AccountRegistrationDto accountRegistrationDto) {
-    authService.registerAccount(accountRegistrationDto);
+  public void register(@RequestBody @Valid AccountRegistrationDto accountRegistrationDto) {
+    authService.register(accountRegistrationDto);
   }
 
   @RequestMapping("/activate/{token}")
-  public void activateAccount(@PathVariable(value = "token") String token) {
+  public void activate(@PathVariable(value = "token") String token) {
     authService.activateAccount(token);
   }
 }

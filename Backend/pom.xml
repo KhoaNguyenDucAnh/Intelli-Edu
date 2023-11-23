@@ -133,7 +133,13 @@
 			<artifactId>commons-codec</artifactId>
 			<version>1.16.0</version>
     </dependency>
-  
+
+    <!-- https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-core -->
+    <dependency>
+      <groupId>org.apache.tomcat.embed</groupId>
+      <artifactId>tomcat-embed-core</artifactId>
+      <version>10.1.16</version>
+    </dependency>
   </dependencies>
 
   <build>

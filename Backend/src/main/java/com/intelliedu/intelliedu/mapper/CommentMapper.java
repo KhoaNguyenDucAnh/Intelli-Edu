@@ -20,12 +20,11 @@ import com.intelliedu.intelliedu.entity.Comment;
 	componentModel = "spring",
 	unmappedTargetPolicy = ReportingPolicy.IGNORE,
 	nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-	mappingInheritanceStrategy = MappingInheritanceStrategy.AUTO_INHERIT_FROM_CONFIG,
-	config = PostMapper.class
+	mappingInheritanceStrategy = MappingInheritanceStrategy.AUTO_INHERIT_FROM_CONFIG
 )
 public interface CommentMapper {
 
-	Comment toComment(CommentDto commentDto);	
+  Comment toComment(CommentDto commentDto);	
 
 	Comment toComment(CommentDto commentDto, @MappingTarget Comment comment);
 

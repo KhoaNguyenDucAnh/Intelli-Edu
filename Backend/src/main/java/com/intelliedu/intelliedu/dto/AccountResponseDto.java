@@ -15,5 +15,5 @@ public class AccountResponseDto {
 
   private String email;
 
-	private Integer point;
+	//private Integer point;
 }

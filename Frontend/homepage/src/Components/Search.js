@@ -4,7 +4,7 @@ function Search() {
     return(
         <div className="search">
             <div className="searchContent">
-                <img className='slogan' src={require('../images/AppSlogan.png')} alt=''/>
+                <img alt="" className='slogan' src={require('../images/AppSlogan.png')}/>
                 <div className='searchBarBackground'>
                     <span class="material-symbols-outlined searchIcon">
                         search
@@ -16,7 +16,7 @@ function Search() {
                 </div>
             </div>
             <div className="leaderboard">
-                <img className='trophy' src={require('../images/trophy.png')}/>
+                <img alt="" className='trophy' src={require('../images/trophy.png')}/>
                 <p className='trophyText1'>BXH</p>
                 <p className='trophyText2'>Tháng 7</p>
                 <LeaderboardItem username='MU' likes='10000' type='0'/>

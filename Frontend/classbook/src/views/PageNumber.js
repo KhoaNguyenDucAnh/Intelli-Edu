@@ -1,10 +1,14 @@
 import React from 'react'
+import ReactPaginate from 'react-paginate';
 class Pagenumber extends React.Component {
     render() {
+        const handlePageClick = () => {
+
+        }
         return (
             <>
 
-                <div className='Frame15'>
+                {/* <div className='Frame15'>
                     <div className='Frame40'>
                         <div className='Frame40Text'>←
                         </div>
@@ -25,7 +29,25 @@ class Pagenumber extends React.Component {
                     <div className='Pagenumber'><div className='Frame40Text'>→
                     </div>
                     </div>
-                </div>
+                </div> */}
+                <ReactPaginate
+                    breakLabel="..."
+                    nextLabel="→"
+                    onPageChange={handlePageClick}
+                    pageRangeDisplayed={3}
+                    pageCount={1231}
+                    previousLabel="←"
+                    pageClassName='page-item'
+                    pageLinkClassName='page-link'
+                    previousClassName='page-item'
+                    previousLinkClassName='jpage-link'
+                    nextClassName='page-item'
+                    nextLinkClassName='page-link'
+                    breakClassName='page-item'
+                    breakLinkClassName='page-link'
+                    containerClassName='pagination'
+                    activeClassName='active'
+                />
             </>
         );
     }

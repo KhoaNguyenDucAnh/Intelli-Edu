@@ -1,0 +1,59 @@
+body {
+  margin: 0;
+}
+
+.m-396ce5cb{
+  color: #b8b9bc !important;
+}
+
+.m-dc6a3c71{
+  color: #b8b9bc !important;
+}
+
+.m-2351eeb0, .m-f6645d97{
+  background-color: transparent !important;
+}
+
+[data-mantine-color-scheme=light] .m-396ce5cb:hover:not([data-static],[data-disabled]){
+  background-color: #2c2e33 !important;
+}
+
+[data-mantine-color-scheme=light] .m-dc6a3c71:hover:not([data-disabled]){
+  background-color: #2c2e33 !important;
+  color: #b8b9bc !important;
+}
+
+
+.m-396ce5cb:disabled, .m-396ce5cb[data-disabled]{
+  color: var(--mantine-color-dimmed) !important;
+}
+
+.m-396ce5cb[data-outside]{
+  color: var(--mantine-color-dimmed) !important;
+}
+
+.m-396ce5cb[data-weekend]{
+  color: var(--mantine-color-red-6) !important;
+}
+
+.mantine-TextInput-input{
+  /* margin-left: 15px; */
+  font-family: "Montserrat";
+  color: red;
+}
+
+.mantine-TextInput-wrapper:hover{
+  background-color: #f0f2fc;
+  border-radius: 5px;
+  transition: 0.5s ease;
+  font-family: "Montserrat";
+}
+
+.m-8fb7ebe7{
+  font-family: "Montserrat" !important;
+  padding-left: 10px !important;
+}
+
+.m-8fb7ebe7:disabled, .m-8fb7ebe7[data-disabled]{
+  color: black  !important;
+}

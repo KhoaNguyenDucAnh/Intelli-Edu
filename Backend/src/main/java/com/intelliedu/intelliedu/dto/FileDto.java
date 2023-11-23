@@ -28,9 +28,9 @@ public class FileDto {
 
 	private ZonedDateTime lastOpened;
 
-  private DocumentDto documentDto;
+  private DocumentDto document;
 
-  private MindMapDto mindMapDto;
+  private MindMapDto mindMap;
 
-  private QuestionDto questionDto;
+  private QuestionDto question;
 }
