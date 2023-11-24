@@ -33,6 +33,7 @@ input {
 
 .header {
   background-color: #F6F5F4;
+  width: 100vw;
   height: 4.84vw;
   display: flex;
   justify-content: center;
