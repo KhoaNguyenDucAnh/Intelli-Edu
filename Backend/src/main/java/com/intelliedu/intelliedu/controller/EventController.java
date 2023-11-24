@@ -1,6 +1,7 @@
 package com.intelliedu.intelliedu.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ public class EventController {
 	private EventService eventService;
 
 	@GetMapping("")
-	public List<EventDto> findEvent(Authentication authentication) {
+	public Map<String, List<Object>> findEvent(Authentication authentication) {
 		return eventService.findEvent(authentication);
 	}
 
