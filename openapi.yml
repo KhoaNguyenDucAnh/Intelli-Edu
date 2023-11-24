@@ -16,8 +16,10 @@ tags: [
   name: Testing
 ]
 servers:
-  - url: https://intelli-edu.onrender.com/{Base path}
+  - url: https://{Domain}/{Base path}
     variables:
+      Domain:
+        default: intelli.edu.vn
       Base path:
         default: api/v1
   - url: http:/localhost:8080/{Base path}
@@ -195,6 +197,16 @@ paths:
       operationId: createFile
       summary: Create file
       description: Create file
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                subject:
+                  type: string
       responses:
         '200':
           description: File
@@ -230,7 +242,7 @@ paths:
       responses:
         '200':
           description: File
-          content:
+          content:  
             application/json:
               schema:
                 $ref: "#/components/schemas/File"
@@ -243,13 +255,26 @@ paths:
       responses:
         '200':
           description: No content
+    post:
+      tags:
+        - File
+      operationId: checkMindMap
+      summary: Check Mindmap
+      description: Check Mindmap
+      responses:
+        '200':
+          description: String
+          content:
+            application/json:
+              schema:
+                type: string
     parameters:
       - name: id
         in: path
         description: Id of file
         required: true
         schema:
-          type: string
+          type: string      
   /document:
     get:
       tags:
@@ -322,6 +347,28 @@ paths:
       responses:
         '200':
           description: No content
+    parameters:
+      - name: id
+        in: path
+        description: Id of document's file
+        required: true
+        schema:
+          type: string
+  /document/share/{id}:
+    post:
+      tags:
+        - Document
+      operationId: shareDocument
+      summary: Share document
+      description: Share document
+      responses:
+        '200':
+          description: URL
+          content:
+            application/json:
+              schema:
+                type: string
+                description: Share URL
     parameters:
       - name: id
         in: path
@@ -408,6 +455,28 @@ paths:
         required: true
         schema:
           type: string
+  /mindmap/share/{id}:
+    post:
+      tags:
+        - Mindmap
+      operationId: shareMindmap
+      summary: Share mindmap
+      description: Share mindmap
+      responses:
+        '200':
+          description: URL
+          content:
+            application/json:
+              schema:
+                type: string
+                description: Share URL
+    parameters:
+      - name: id
+        in: path
+        description: Id of mindmap's file
+        required: true
+        schema:
+          type: string
   /question:
     get:
       tags:
@@ -480,6 +549,28 @@ paths:
       responses:
         '200':
           description: No content
+    parameters:
+      - name: id
+        in: path
+        description: Id of question's file
+        required: true
+        schema:
+          type: string
+  /question/share/{id}:
+    post:
+      tags:
+        - Question
+      operationId: shareQuestion
+      summary: Share question
+      description: Share question
+      responses:
+        '200':
+          description: URL
+          content:
+            application/json:
+              schema:
+                type: string
+                description: Share URL
     parameters:
       - name: id
         in: path
