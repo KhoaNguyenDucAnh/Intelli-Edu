@@ -3,8 +3,6 @@ info:
   title: Intelli Edu API
   description: A learning platform
   version: 0.0.1
-  contact:
-    name: A
 tags: [
   name: Account,
   name: File,
@@ -27,6 +25,13 @@ servers:
       Base path:
         default: api/v1
 components:
+  parameters:
+    ngrok:
+      name: ngrok-skip-browser-warning
+      in: header
+      description: Skip ngrok warning
+      schema:
+        default: 1
   schemas:
     Account:
       type: object
@@ -160,6 +165,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Account"
+    parameters:
+      - $ref: "#/components/parameters/ngrok"
   /file:
     get:
       tags:
@@ -214,6 +221,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/File"
+    parameters:
+      - $ref: "#/components/parameters/ngrok"
   /file/{id}:
     get:
       tags:
@@ -274,7 +283,8 @@ paths:
         description: Id of file
         required: true
         schema:
-          type: string      
+          type: string
+      - $ref: "#/components/parameters/ngrok"
   /document:
     get:
       tags:
@@ -306,6 +316,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Search"
+    parameters:
+      - $ref: "#/components/parameters/ngrok"
   /document/{id}:
     post:
       tags:
@@ -354,6 +366,7 @@ paths:
         required: true
         schema:
           type: string
+      - $ref: "#/components/parameters/ngrok"
   /document/share/{id}:
     post:
       tags:
@@ -376,6 +389,7 @@ paths:
         required: true
         schema:
           type: string
+      - $ref: "#/components/parameters/ngrok"
   /mindmap:
     get:
       tags:
@@ -407,6 +421,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Search"
+    parameters:
+      - $ref: "#/components/parameters/ngrok"
   /mindmap/{id}:
     post:
       tags:
@@ -455,6 +471,7 @@ paths:
         required: true
         schema:
           type: string
+      - $ref: "#/components/parameters/ngrok"
   /mindmap/share/{id}:
     post:
       tags:
@@ -477,6 +494,7 @@ paths:
         required: true
         schema:
           type: string
+      - $ref: "#/components/parameters/ngrok"
   /question:
     get:
       tags:
@@ -508,6 +526,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Search"
+    parameters:
+      - $ref: "#/components/parameters/ngrok"
   /question/{id}:
     post:
       tags:
@@ -556,6 +576,7 @@ paths:
         required: true
         schema:
           type: string
+      - $ref: "#/components/parameters/ngrok"
   /question/share/{id}:
     post:
       tags:
@@ -578,6 +599,7 @@ paths:
         required: true
         schema:
           type: string
+      - $ref: "#/components/parameters/ngrok"
   /event:
     get:
       tags:
@@ -630,6 +652,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Event"
+    parameters:
+      - $ref: "#/components/parameters/ngrok"
   /event/{id}:
     delete:
       tags:
@@ -647,6 +671,7 @@ paths:
         required: true
         schema:
           type: string
+      - $ref: "#/components/parameters/ngrok"
   /event/share/{id}:
     post:
       tags:
@@ -669,6 +694,7 @@ paths:
         required: true
         schema:
           type: string
+      - $ref: "#/components/parameters/ngrok"
   /auth/register:
     post:
       tags:
@@ -684,6 +710,8 @@ paths:
       responses:
         '200':
           description: No content
+    parameters:
+      - $ref: "#/components/parameters/ngrok"
   /auth/login:
     post:
       tags:
@@ -699,6 +727,8 @@ paths:
       responses:
         '200':
           description: No content
+    parameters:
+      - $ref: "#/components/parameters/ngrok"
   /auth/logout:
     post:
       tags:
@@ -709,6 +739,8 @@ paths:
       responses:
         '200':
           description: No content
+    parameters:
+      - $ref: "#/components/parameters/ngrok"
   /auth/admin:
     get:
       tags:
@@ -719,6 +751,8 @@ paths:
       responses:
         '200':
           description: No content
+    parameters:
+      - $ref: "#/components/parameters/ngrok"
   /auth/nimda:
     get:
       tags:
@@ -729,3 +763,5 @@ paths:
       responses:
         '200':
           description: No content
+    parameters:
+      - $ref: "#/components/parameters/ngrok"
