@@ -1,7 +1,14 @@
 import HeaderAfterLogin from "../../Components/HeaderAfterLogin"
 import { MantineProvider } from "@mantine/core";
+import { useState } from "react";
 
 function Biography(){
+    const [isSwitchOn, setSwitchOn] = useState(false);
+
+    const handleSwitchToggle = () => {
+        setSwitchOn(!isSwitchOn);
+    };
+
     return(
         <div className="biography">
             <MantineProvider>
@@ -81,6 +88,15 @@ function Biography(){
                                             <p className="bioPostButtonText">Chia sẻ</p>
                                         </div>
                                     </div>
+                                </div>
+                                <div className="bioPostSetting">
+                                    <div className="bioPostMode">
+                                        <p className="bioPostModeText">Chế độ bài viết:</p>
+                                        <input className="bioPostCheckBox" type="checkbox" checked={isSwitchOn} onChange={handleSwitchToggle} />
+                                        <p className="bioPostPublicText">Công cộng</p>
+                                        <p className="bioPostPrivateText">Riêng tư</p>
+                                    </div>
+                                    <p className="bioPostDelete">Xóa bài đăng</p>
                                 </div>
                             </div>
                             <div className="bioPost">
