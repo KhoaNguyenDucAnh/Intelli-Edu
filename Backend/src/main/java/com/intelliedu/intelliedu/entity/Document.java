@@ -17,7 +17,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@SQLDelete(sql = "UPDATE document SET deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE document SET deleted = true WHERE file_id=?")
 @Where(clause = "deleted=false")
 public class Document extends Content {
 
