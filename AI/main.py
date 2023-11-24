@@ -87,15 +87,22 @@ claude_api = Custom_Client(cookie)
 def to_mindmap(file: str):
     conversation_id = claude_api.create_new_chat()["uuid"]
     mindmap = claude_api.send_message(
-        """Convert the file to Vietnamese
-        Create a comprehensive mind map in vietnamese for that essay, please provide a code box with Markdown language
-        Thêm những nhánh về ví dụ và số liệu quan trọng nếu có
-        Convert mindmap to json with type : title -> root -> label -> children""",
+        "Create a comprehensive mind map in vietnamese for that essay in json with type: title -> root -> label -> children. Thêm những nhánh về ví dụ và số liệu quan trọng nếu có. Only answer with the mindmap.",
         conversation_id,
         attachment=file
     )
     claude_api.delete_conversation(conversation_id)
-    return json.loads(str(mindmap).split("```")[1][5:-1])
+    return json.loads(str(mindmap))
+
+def create_questions(file: str):
+    conversation_id = claude_api.create_new_chat()["uuid"]
+    mindmap = claude_api.send_message(
+        "Can you create 5 multiple choice questions with 4 options from this in json with type: questions->options. Only answer with the json.",
+        conversation_id,
+        attachment=file
+    )
+    claude_api.delete_conversation(conversation_id)
+    return json.loads(str(mindmap))
 
 def main(document, mindmap):
   nChain=np.zeros(2)
@@ -171,7 +178,7 @@ def main(document, mindmap):
     for i in range(n):
       flat[index][int(pos[index][i])]=values[index][i]
   def find(text,n):
-    corpus_em=model.encode(flat[1][1:n+1])
+    corpus_em=model.encode(flat[1][1:n])
     text=model.encode(text)
     hits = util.semantic_search(text, corpus_em, score_function=util.dot_score)
     position=hits[0][0]["corpus_id"]
