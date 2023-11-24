@@ -7,10 +7,12 @@ class AfterLoginAuth extends React.Component {
         if (this.props.isLoggedIn) {
             return (
                 <>
-                    <div className="noArrow navItem">
-                        <p className="navText">Nguyễn Ngọc Đạt</p>
-                        <Avatar variant="light" radius="" size="lg" color="rgba(2, 198, 242, 1)" src={require('../images/Dat.png')} />
-                    </div>
+                    <Link to="/biography" className='link'>
+                        <div className="noArrow navItem">
+                            <p className="navText">Nguyễn Ngọc Đạt</p>
+                            <Avatar variant="light" radius="" size="lg" color="rgba(2, 198, 242, 1)" src={require('../images/Dat.png')} />
+                        </div>
+                    </Link>
                 </>
             );
         }

@@ -1456,12 +1456,13 @@ input {
 
 /* *********************************************************************** */
 
-.biography{
+.biography {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.bioBlurBackground{
+
+.bioBlurBackground {
   background: linear-gradient(to bottom, #000000, rgb(255, 255, 255));
   width: 100vw;
   height: 20vw;
@@ -1470,7 +1471,8 @@ input {
   top: 3vw;
   z-index: -1;
 }
-.userBioBackground{
+
+.userBioBackground {
   width: 80vw;
   height: 30vw;
   background: url('./images/userBioBackground.png');
@@ -1478,19 +1480,22 @@ input {
   border-bottom-left-radius: 3vh;
   border-bottom-right-radius: 3vh;
 }
-.bioHead{
+
+.bioHead {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.bioHeadContent{
+
+.bioHeadContent {
   display: flex;
   width: 80vw;
   height: 10vw;
   justify-content: flex-start;
   position: relative;
 }
-.bioUserAvatar{
+
+.bioUserAvatar {
   border-radius: 100vw;
   background-color: white;
   width: 15vw;
@@ -1502,33 +1507,40 @@ input {
   justify-content: center;
   align-items: center;
 }
-.bioUserAvatarImg{
+
+.bioUserAvatarImg {
   width: 95%;
   aspect-ratio: 1;
   border-radius: 100vw;
 }
-.bioUsernameFriend{
+
+.bioUsernameFriend {
   margin-left: 20vw;
 }
-.bioUsername{
+
+.bioUsername {
   font-size: 3vw;
   font-weight: bold;
   margin: 0;
   margin-top: 3vh;
 }
-.bioUserFriendNum1{
+
+.bioUserFriendNum1 {
   font-size: 1.35vw;
   margin: 0;
 }
-.bioHeadSeparateLine{
+
+.bioHeadSeparateLine {
   width: 75vw;
   margin: 4vh 0 1vh 0;
 }
-.bioHeadNavItems{
+
+.bioHeadNavItems {
   display: flex;
   padding-bottom: 1vh;
 }
-.bioHeadNavItem{
+
+.bioHeadNavItem {
   margin: 0;
   padding: 2vh 2vw;
   cursor: pointer;
@@ -1536,114 +1548,135 @@ input {
   font-weight: 500;
   color: gray;
 }
-.bioHeadNavItem:hover{
+
+.bioHeadNavItem:hover {
   background-color: rgba(0, 0, 0, 0.08);
 }
-.bioMainBackground{
+
+.bioMainBackground {
   width: 100vw;
   background-color: #f3f3f3;
   display: flex;
   justify-content: center;
 }
-.bioMain{
+
+.bioMain {
   display: flex;
   justify-content: space-between;
   width: 75vw;
 }
-.bioMainLeft{
+
+.bioMainLeft {
   width: 28.5vw;
   height: fit-content;
 }
-.bioMainRight{
+
+.bioMainRight {
   width: 80vw;
 }
-.bioPicture{
+
+.bioPicture {
   background-color: white;
   box-sizing: border-box;
   padding: 1vw;
   margin-top: 4vh;
   border-radius: 2vh;
 }
-.bioPictureHeader{
+
+.bioPictureHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 0;
   margin-bottom: 2vh;
 }
-.bioPictureTitle{
+
+.bioPictureTitle {
   margin: 0;
   font-size: 1.4vw;
   font-weight: bold;
 }
-.allPictureButton{
+
+.allPictureButton {
   color: rgb(59, 59, 255);
   text-decoration: none;
 }
-.bioPictureRow{
+
+.bioPictureRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.6vw;
 }
-.bioPic{
+
+.bioPic {
   width: 8.5vw;
   aspect-ratio: 1;
   border-radius: 1.5vh;
 }
-.bioFriend1{
+
+.bioFriend1 {
   background-color: white;
   box-sizing: border-box;
   padding: 1vw;
   margin-top: 4vh;
   border-radius: 2vh;
 }
-.bioFriend1Header{
+
+.bioFriend1Header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 0;
 }
-.bioFriend1Title{
+
+.bioFriend1Title {
   margin: 0;
   font-size: 1.4vw;
   font-weight: bold;
 }
-.bioFriend1Row{
+
+.bioFriend1Row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.6vw;
 }
-.bioFri{
+
+.bioFri {
   width: 8.5vw;
   aspect-ratio: 1;
   border-radius: 1.5vh;
 }
-.allFriendButton{
+
+.allFriendButton {
   color: rgb(59, 59, 255);
   text-decoration: none;
 }
-.bioFriend1Num{
+
+.bioFriend1Num {
   margin: 0;
   margin-bottom: 2vh;
   font-size: 1.3vw;
   color: gray;
 }
-.bioRightTitle{
+
+.bioRightTitle {
   box-sizing: border-box;
   background-color: white;
   width: 100%;
   margin-top: 4vh;
-  padding:  1vw 1.5vw;
+  padding: 1vw 1.5vw;
   border-radius: 2vh;
 }
-.bioRightTitleText{
+
+.bioRightTitleText {
   margin: 0;
   font-size: 1.4vw;
   font-weight: bold;
 }
-.bioAddPost{
+
+.bioAddPost {
   background-color: white;
   border-radius: 2vh;
   display: flex;
@@ -1653,12 +1686,14 @@ input {
   padding: 1vw;
   margin-top: 4vh;
 }
-.bioAddPostUserAva{
+
+.bioAddPostUserAva {
   width: 3.5vw;
   aspect-ratio: 1;
   border-radius: 100vw;
 }
-.bioAddPostInput{
+
+.bioAddPostInput {
   width: 100%;
   height: 3.5vw;
   border-radius: 100vw;
@@ -1671,33 +1706,39 @@ input {
   justify-content: flex-start;
   cursor: pointer;
 }
-.bioAddPostInput:hover{
+
+.bioAddPostInput:hover {
   background-color: #e8e7e7;
 }
-.bioAddPostInputText{
+
+.bioAddPostInputText {
   font-size: 1.3vw;
   font-weight: 400;
   color: gray;
   font-weight: 400;
 }
-.bioPosts{
+
+.bioPosts {
   width: 100%;
   margin-bottom: 4vh;
 }
-.bioPost{
+
+.bioPost {
   width: 100%;
   background-color: white;
   margin-top: 4vh;
   border-radius: 2vh;
 }
-.bioPostHeader{
+
+.bioPostHeader {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1vw;
 }
-.bioAddPostIcon{
+
+.bioAddPostIcon {
   width: 3.5vw;
   aspect-ratio: 1;
   border-radius: 100vw;
@@ -1705,30 +1746,36 @@ input {
   box-sizing: border-box;
   padding: 0.2vw;
 }
-.bioAddPostIcon:hover{
+
+.bioAddPostIcon:hover {
   background-color: rgba(0, 0, 0, 0.12);
 }
-.bioPublisherInfo{
+
+.bioPublisherInfo {
   display: flex;
   align-items: center;
 }
-.bioPublisherAva{
+
+.bioPublisherAva {
   width: 3.5vw;
   aspect-ratio: 1;
   border-radius: 100vw;
   margin-right: 0.7vw;
 }
-.bioPublisherName{
+
+.bioPublisherName {
   margin: 0;
   font-size: 1.2vw;
   font-weight: 600;
 }
-.bioPublishDate{
+
+.bioPublishDate {
   margin: 0;
   font-size: 1vw;
   color: gray;
 }
-.bioThreeDotIcon{
+
+.bioThreeDotIcon {
   width: 1.5vw;
   aspect-ratio: 1;
   border-radius: 100vw;
@@ -1736,23 +1783,28 @@ input {
   padding: 0.5vw;
   cursor: pointer;
 }
-.bioThreeDotIcon:hover{
+
+.bioThreeDotIcon:hover {
   background-color: rgba(0, 0, 0, 0.12);
 }
-.bioPostText{
+
+.bioPostText {
   font-size: 1.2vw;
   padding-left: 1vw;
   margin-top: 0;
 }
-.bioPostImage{
+
+.bioPostImage {
   width: 100%;
 }
-.bioPostFooter{
+
+.bioPostFooter {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.bioPostFooterCount{
+
+.bioPostFooterCount {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1760,39 +1812,47 @@ input {
   border-bottom: 0.05vh solid gray;
   padding: 2vh 1vw;
 }
-.bioPostLikeCount{
+
+.bioPostLikeCount {
   display: flex;
   justify-content: center;
 }
-.bioPostLikeIcon{
+
+.bioPostLikeIcon {
   width: 2.5vw;
   aspect-ratio: 1;
 }
-.bioPostLikeNum{
+
+.bioPostLikeNum {
   font-size: 1.3vw;
   margin: 0;
 }
-.bioPostCommentCount{
+
+.bioPostCommentCount {
   display: flex;
   align-items: center;
 }
-.bioPostCommentIcon{
+
+.bioPostCommentIcon {
   width: 1.5vw;
   aspect-ratio: 1;
   margin-right: 0.5vw;
 }
-.bioPostCommentNum{
+
+.bioPostCommentNum {
   font-size: 1.3vw;
   margin: 0;
 }
-.bioPostFooterButton{
+
+.bioPostFooterButton {
   width: 80vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1vh 1vw;
 }
-.bioPostButton{
+
+.bioPostButton {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1801,15 +1861,24 @@ input {
   cursor: pointer;
   border-radius: 1vh;
 }
-.bioPostButton:hover{
+
+.bioPostButton:hover {
   background-color: rgba(0, 0, 0, 0.05);
 }
-.bioPostButtonIcon{
+
+.bioPostButtonIcon {
   width: 1.7vw;
   aspect-ratio: 1;
   margin-right: 0.5vw;
 }
-.bioPostButtonText{
+
+.bioPostButtonText {
   font-size: 1.3vw;
   margin: 0;
+}
+
+.link {
+  text-decoration: none;
+  appearance: none;
+  color: black;
 }
