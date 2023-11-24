@@ -15,7 +15,7 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Checkout repository
@@ -40,7 +40,7 @@ jobs:
   dockerize:
     name: Dockerize
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Checkout code
