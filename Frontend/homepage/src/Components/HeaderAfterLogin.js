@@ -18,7 +18,16 @@ function HeaderAfterLogin(props) {
                             <div className="toolListWrapper">
                                 <div className="toolList">
                                     <p className="toolListItem">Mô hình ngôn ngữ lớn</p>
-                                    <p className="toolListItem">Sơ đồ tư duy</p>
+                                    {props.isLoggedIn &&
+                                        <Link to='/classbook' className="link">
+                                            <p className="toolListItem">Sơ đồ tư duy</p>
+                                        </Link>
+                                    }
+                                    {props.isLoggedIn === false &&
+                                        <Link to='/search' className="link">
+                                            <p className="toolListItem">Sơ đồ tư duy</p>
+                                        </Link>
+                                    }
                                 </div>
                             </div>
                         </div>

@@ -54,7 +54,7 @@ public class QuestionController {
     questionService.deleteContent(id, authentication);
   }
 
-  @PutMapping("/share/{id}")
+  @PostMapping("/share/{id}")
   public void shareDocument(@PathVariable String id, Authentication authentication) {
     questionService.shareContent(id, authentication);
   }
