@@ -1,27 +1,103 @@
 import numpy as np
-import json
-from sentence_transformers import SentenceTransformer,util
+import json 
+from sentence_transformers import SentenceTransformer, util
 from collections import deque
+from curl_cffi import requests
+import re
+
+model = SentenceTransformer("keepitreal/vietnamese-sbert")
+#util = None
+
 from claude_api import Client
 
-model = SentenceTransformer('keepitreal/vietnamese-sbert')
+class Custom_Client(Client):
+  def upload_attachment(self, content):
+    return {
+      "file_name": "document",
+      "file_type": "text/plain",
+      "file_size": len(content.encode("utf-8")),
+      "extracted_content": content
+    }
+  # Send Message to Claude
+  def send_message(self, prompt, conversation_id, attachment=None,timeout=500):
+    url = "https://claude.ai/api/append_message"
 
+    # Upload attachment if provided
+    attachments = []
+    if attachment:
+      attachment_response = self.upload_attachment(attachment)
+      if attachment_response:
+        attachments = [attachment_response]
+      else:
+        return {"Error: Invalid file format. Please try again."}
 
-cookie='intercom-device-id-lupk8zyo=435acf1c-a907-4409-ae7b-593d8b45e4a5; __ssid=ae3af040adac10d2aec8d3d99438209; __stripe_mid=439d2fe6-7918-47a3-aece-aea314af663ae04ec2; sessionKey=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; intercom-session-lupk8zyo=ZzdCQVBCNXR1dXRta2lOUUVLOUQxNllpYkVmc0tEcTIvUWJQYXlWRU1IY2JNdnpPSGZNOUd2dVJoRTVTWEFkeC0tWXVTVXhlTXZXeEwvYzBoWVh0dVB2UT09--09ef62d400c2e3351b5a0e0aeb03792924e049b7; activitySessionId=76d934cd-1ac0-4013-967e-6a0cf29b58ea; __cf_bm=CSa54YByr2rz6ECrXDp_8cj5Lbz2dXYWgbQcUqz7y1w-1700591156-0-AYElRqtfPYVL9LNZz2+QUGI03SpGXUkSLmILET68j0v2RISdTsnabfeck+GWf/MBJEfg0HuHvfFRKjsucN960Zo=; cf_clearance=AHl0grYiPgRUZpICm7k99TAml2i_VAfz2IFsgEVfCv4-1700591157-0-1-4a351f37.411d4da8.1d3440d7-0.2.1700591157; __stripe_sid=a7543311-72c6-40e7-b570-401b985414a2c86883'
-claude_api=Client(cookie)
+    # Ensure attachments is an empty list when no attachment is provided
+    if not attachment:
+      attachments = []
 
-conversation_id='43380088-8b3d-47bd-9be6-0d8219509a08'
+    payload = json.dumps({
+      "completion": {
+        "prompt": f"{prompt}",
+        "timezone": "Asia/Kolkata",
+        "model": "claude-2.1"
+      },
+      "organization_uuid": f"{self.organization_id}",
+      "conversation_uuid": f"{conversation_id}",
+      "text": f"{prompt}",
+      "attachments": attachments
+    })
 
-def to_mindmap(file):
-    prompt="Create a comprehensive mind map in vietnamese for that essay in json with type: title -> root -> label -> children. Thêm những nhánh về ví dụ và số liệu quan trọng nếu có. Only answer with the mindmap."
-    mindmap = claude_api.send_message(prompt,conversation_id,attachment=file)
-    return json.loads(str(mindmap))
-def create_questions(file):
-    prompt="Can you create 5 multiple choice questions with 4 options from this in json with type: questions->options. Only answer with the json."
-    questions = claude_api.send_message(prompt,conversation_id,attachment=file)
-    return json.loads(str(questions))
+    headers = {
+      "User-Agent":
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/115.0",
+      "Accept": "text/event-stream, text/event-stream",
+      "Accept-Language": "en-US,en;q=0.5",
+      "Referer": "https://claude.ai/chats",
+      "Content-Type": "application/json",
+      "Origin": "https://claude.ai",
+      "DNT": "1",
+      "Connection": "keep-alive",
+      "Cookie": f"{self.cookie}",
+      "Sec-Fetch-Dest": "empty",
+      "Sec-Fetch-Mode": "cors",
+      "Sec-Fetch-Site": "same-origin",
+      "TE": "trailers"
+    }
 
-def main(document,mindmap):
+    response = requests.post( url, headers=headers, data=payload,impersonate="chrome110",timeout=500)
+    decoded_data = response.content.decode("utf-8")
+    decoded_data = re.sub("\n+", "\n", decoded_data).strip()
+    data_strings = decoded_data.split("\n")
+    completions = []
+    for data_string in data_strings:
+      json_str = data_string[6:].strip()
+      data = json.loads(json_str)
+      if "completion" in data:
+        completions.append(data["completion"])
+
+    answer = "".join(completions)
+
+    # Returns answer
+    return answer
+
+cookie="intercom-device-id-lupk8zyo=435acf1c-a907-4409-ae7b-593d8b45e4a5; __ssid=ae3af040adac10d2aec8d3d99438209; __stripe_mid=439d2fe6-7918-47a3-aece-aea314af663ae04ec2; activitySessionId=cac39620-4f7a-4a13-9f84-ec91c91cd857; __stripe_sid=1f25e942-288a-4a33-bd8f-ca519b529805a12a23; __cf_bm=JV9TmU0XaU.nA09Ge3txMNulrZ4KiXlq8Xq5_9a.DDQ-1700790319-0-AUL9cB9c63dECcuEapQqP19X9INOGPIP9bBI0Nu9Oez1QLt+3+Mn6iESvJdHXcZfrM74ABIWYY10TBkyQ9frTJc=; cf_clearance=bwKArpu44ulMLNDcfUFCw8OFDnB2dbxXrcGU0OpY4H0-1700790339-0-1-afc0c2e4.a6a158a9.f8c19d04-0.2.1700790339; sessionKey=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; intercom-session-lupk8zyo=S1RGL0VDakwzZ1J5T3BlNzBlMlJWZzB5L3AyRHVQcm1tdzhVelYvRE1sOXRQajJsRUV3TGVNdHlNZDdQOTRZMi0tSm1ITUx3NmpvZFc4K25RN1lIcmlwUT09--50fa01f0d64699246ef6775ab868d9650f0d2c5a"
+
+claude_api = Custom_Client(cookie)
+
+def to_mindmap(file: str):
+    conversation_id = claude_api.create_new_chat()["uuid"]
+    mindmap = claude_api.send_message(
+        """Convert the file to Vietnamese
+        Create a comprehensive mind map in vietnamese for that essay, please provide a code box with Markdown language
+        Thêm những nhánh về ví dụ và số liệu quan trọng nếu có
+        Convert mindmap to json with type : title -> root -> label -> children""",
+        conversation_id,
+        attachment=file
+    )
+    claude_api.delete_conversation(conversation_id)
+    return json.loads(str(mindmap).split("```")[1][5:-1])
+
+def main(document, mindmap):
   nChain=np.zeros(2)
   chainHead=np.zeros((2,500))
   chainEnd=np.zeros((2,500))
@@ -37,21 +113,25 @@ def main(document,mindmap):
   count=deque([0])
   for i in range(500):
       count.append(i+1)
-  json1 = to_mindmap(document)['root']
-  json2=open(mindmap,'r',encoding='utf8')
-  json2=json2.readlines()[0]
-  json2=json.loads(json2)['root']
+
+  json1 = to_mindmap(document)["root"]
+  json2 = json.loads(mindmap)["root"]
+
   def compare(text):
-    prompt=text + '\n'
-    prompt+='Can you see if the second text is missing any information or numbers or wrong order compare to the first text in no more than 7 sentences in Vietnamese'
+    new_chat = claude_api.create_new_chat()
+    conversation_id = new_chat["uuid"]
+    prompt=text + "\n"
+    print(prompt)
+    prompt+="Can you see if the second text is missing any information or numbers or wrong order compare to the first text in less than 3 sentences in Vietnamese"
     response = claude_api.send_message(prompt, conversation_id)
+    claude_api.delete_conversation(conversation_id)
     return response
   def to_tree(index,js,u):
-    values[index][u]=js['label']
+    values[index][u]=js["label"]
     count.popleft()
-    if 'children' not in js:
+    if "children" not in js:
         return 1
-    js=js['children']
+    js=js["children"]
     dem=0
     for i in range(len(js)):
         v=count[0]
@@ -91,11 +171,12 @@ def main(document,mindmap):
     for i in range(n):
       flat[index][int(pos[index][i])]=values[index][i]
   def find(text,n):
-    corpus_em=model.encode(flat[1][1:n])
+    corpus_em=model.encode(flat[1][1:n+1])
     text=model.encode(text)
     hits = util.semantic_search(text, corpus_em, score_function=util.dot_score)
-    position=hits[0][0]['corpus_id']
+    position=hits[0][0]["corpus_id"]
     return position
+
   d1=to_tree(0,json1,1)
   count=deque([0])
   for i in range(500):
@@ -107,7 +188,7 @@ def main(document,mindmap):
   hld(1,1)
   flatten(0,d1)
   flatten(1,d2)
-  text=''
+  text=""
   for i in range(int(nChain[0])):
     findHead=int(find(values[0][int(chainHead[0][i])],d2))+1
     findEnd=int(find(values[0][int(chainEnd[0][i])],d2))+1
@@ -119,8 +200,9 @@ def main(document,mindmap):
        Head_index,End_index=End_index,Head_index
     if(End_index==Head_index):
       user_text=flat[1][int(pos[1][int(Head_index)]):int(pos[1][int(End_index)])+1]
-      text+=str(comp_text)+' '+str(user_text)+'\n'
+      text+=str(comp_text)+" "+str(user_text)+"\n"
     loca=0
+    print(Head_index," ",End_index)
     while(End_index!=Head_index):
       user_chain=int(chainInd[1][int(End_index)])
       if(chainInd[1][int(End_index)]==chainInd[1][int(Head_index)]):
@@ -133,8 +215,9 @@ def main(document,mindmap):
         break
       user_chain=int(chainInd[1][int(End_index)])
     if(loca==-1):
-      print('sai vi tri dang le',flat[1][findHead],'va',flat[1][findEnd],'o cung 1 chuoi')
+      print("sai vi tri dang le",flat[1][findHead],"va",flat[1][findEnd],"o cung 1 chuoi")
       continue
-    text+=str(comp_text)+' '+str(user_text)+'\n'
+    text+=str(comp_text)+" "+str(user_text)+"\n"
   print(compare(text))
-main('AI/document.txt','AI/mindmap.txt')
+
+#main("Chiến tranh thế giới thứ hai (còn được nhắc đến với các tên gọi Đệ nhị thế chiến, Thế chiến II hay Đại chiến thế giới lần thứ hai) là một cuộc chiến tranh thế giới bắt đầu từ khoảng năm 1939 và chấm dứt vào năm 1945. Cuộc chiến có sự tham gia của đại đa số các quốc gia trên thế giới — bao gồm tất cả các cường quốc — tạo thành hai liên minh quân sự đối lập: Đồng Minh và Phe Trục. Trong diện mạo một cuộc chiến tranh toàn diện, Thế chiến II có sự tham gia trực tiếp của hơn 100 triệu nhân sự từ hơn 30 quốc gia. Các bên tham chiến chính đã dồn toàn bộ nguồn lực kinh tế, công nghiệp và khoa học cho nỗ lực tham chiến, làm mờ đi ranh giới giữa nguồn lực dân sự và quân sự. Chiến tranh thế giới thứ hai là cuộc xung đột đẫm máu nhất trong lịch sử nhân loại, gây nên cái chết của 70 đến 85 triệu người, với số lượng thường dân tử vong nhiều hơn quân nhân. Hàng chục triệu người đã phải bỏ mạng trong các vụ thảm sát, diệt chủng (trong đó có Holocaust), chết vì thiếu lương thực hay vì bệnh tật. Máy bay đóng vai trò quan trọng đối với tiến trình cuộc chiến, bao gồm ném bom chiến lược vào các trung tâm dân cư, và đối với sự phát triển vũ khí hạt nhân cũng như hai lần duy nhất sử dụng loại vũ khí này trong chiến tranh.", {"title": "Chiến tranh thế giới thứ hai", "root": {"label": "Chiến tranh thế giới thứ hai", "children": [{"label": "Thời gian", "children": [{"label": "Bắt đầu: 1939"}, {"label": "Kết thúc: 1945"}]}, {"label": "Các bên tham chiến", "children": [{"label": "Đồng Minh", "children": [{"label": "Anh"}, {"label": "Pháp"}, {"label": "Liên Xô"}, {"label": "Hoa Kỳ"}]}, {"label": "Phe Trục", "children": [{"label": "Đức"}, {"label": "Ý"}, {"label": "Nhật Bản"}]}]}, {"label": "Quy mô", "children": [{"label": "Hơn 100 triệu nhân sự tham chiến"}, {"label": "Hơn 30 quốc gia tham gia"}, {"label": "Đẫm máu nhất trong lịch sử"}]}, {"label": "Hậu quả", "children": [{"label": "70-85 triệu người chết"}, {"label": "Dân thường chết nhiều hơn quân nhân"}, {"label": "Diệt chủng, đói kém, dịch bệnh"}]}]}})

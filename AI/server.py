@@ -2,6 +2,7 @@ import socket
 import logging
 import threading
 import json
+import main
 
 logging.basicConfig(
     level = logging.INFO,
@@ -12,15 +13,13 @@ logging.basicConfig(
     ])
 
 def handle_client(connection):
-    request = connection.recv(1024)
+    request = connection.recv(1048576)
     if request:
-        request = json.loads(request)
-        print(request)
-        response = json.dumps(request, indent=4).encode("utf-8")
-        connection.send(response)
+        request = json.loads(request.decode("utf-8"))
+        connection.send(main.main(request["Document"], request["MindMap"]))
     connection.close()
 
-def main(host, port):
+def server(host, port):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
         server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         server.bind((host, port)) 
@@ -41,4 +40,4 @@ def main(host, port):
                 return
 
 if __name__ == "__main__":
-    main("localhost", 65432)
+    server("localhost", 65432)
