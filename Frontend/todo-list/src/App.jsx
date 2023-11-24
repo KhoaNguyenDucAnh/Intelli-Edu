@@ -15,7 +15,7 @@ import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 
 function App(){
-  let createAPI = "https://intelli-edu.onrender.com/api/v1/event"
+  let createAPI = "https://8a58-2401-d800-b39-c127-352c-8591-c06c-ec4.ngrok-free.app/api/v1/event"
   const [value, setValue] = useState(dayjs())
   const [name, setName] = useState("");
   const [date, setDate] = useState(new Date());
@@ -47,9 +47,13 @@ function App(){
     
   }
    function createEvent(data){
-    fetch(url, {
+    fetch(createAPI, {
       method: 'POST', 
       body: JSON.stringify(data),
+      headers: {
+        Accept: 'application/json',
+        "ngrok-skip-browser-warning": 1
+      }
     })
     .then(response => response.json())
     .then(data => console.log(data))

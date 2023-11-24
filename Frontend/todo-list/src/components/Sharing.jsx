@@ -1,4 +1,4 @@
-import {Button, Select, Text, Modal, Stack, Group, ActionIcon} from "@mantine/core"
+import {Button, Select, Text, Modal, Stack, Group, ActionIcon, ThemeIcon} from "@mantine/core"
 import {useState, useCallback, useEffect} from "react"
 import {modals} from "@mantine/modals"
 import { useDidUpdate, useForceUpdate, useDisclosure} from "@mantine/hooks"
@@ -44,19 +44,21 @@ const Sharing = ({docname, jobs}) => {
     return(
         <>
             <Button 
-                size = "xs" 
-                mr = {5} 
+                size = "sm" 
+                // mr = {5} 
                 ff = "Roboto"
                 onClick = {() => {
                     open()
                     handleShare()
                 }}
+                color = "#bddcff"
+                radius={100}
             >
-                <Group >
-                    <ActionIcon mr = {10}>
+                <Group w={105} justify="center">
+                    <ThemeIcon color = "transparent" >
                         {(privacy === "Restricted") ? <IconLock/> : <IconWorld/>}
-                    </ActionIcon>
-                    <Text>
+                    </ThemeIcon>
+                    <Text c = "black" ff="Montserrat" mt={2}>
                         Chia sẻ 
                     </Text>
                 </Group>
