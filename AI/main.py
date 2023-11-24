@@ -37,9 +37,10 @@ def main(document,mindmap):
   count=deque([0])
   for i in range(500):
       count.append(i+1)
-
   json1 = to_mindmap(document)['root']
   json2=open(mindmap,'r',encoding='utf8')
+  json2=json2.readlines()[0]
+  json2=json.loads(json2)['root']
   def compare(text):
     prompt=text + '\n'
     prompt+='Can you see if the second text is missing any information or numbers or wrong order compare to the first text in no more than 7 sentences in Vietnamese'
@@ -90,12 +91,11 @@ def main(document,mindmap):
     for i in range(n):
       flat[index][int(pos[index][i])]=values[index][i]
   def find(text,n):
-    corpus_em=model.encode(flat[1][1:n+1])
+    corpus_em=model.encode(flat[1][1:n])
     text=model.encode(text)
     hits = util.semantic_search(text, corpus_em, score_function=util.dot_score)
     position=hits[0][0]['corpus_id']
     return position
-
   d1=to_tree(0,json1,1)
   count=deque([0])
   for i in range(500):
