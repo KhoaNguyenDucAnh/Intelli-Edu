@@ -78,11 +78,11 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
   } 
   
   public CDto createContent(String id, Authentication authentication) {
-    File file = fileService.findFileHelper(id, authentication); 
-
-    if (contentRepo.existsById(file.getId())) {
+    if (contentRepo.existsById(id)) {
       throw new AlreadyExistsException(getGenericClass(), "id", id);
     }
+
+    File file = fileService.findFileHelper(id, authentication); 
 
     C content = createContent(file.getTitle());
     content.getKeyword().add(file.getTitle());
