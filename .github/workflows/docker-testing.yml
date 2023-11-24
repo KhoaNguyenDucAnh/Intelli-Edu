@@ -40,7 +40,7 @@ jobs:
   dockerize:
     name: Dockerize
     needs: build
-    runs-on: ubuntu-20.04
+    runs-on: windows-2019
 
     steps:
       - name: Checkout code
