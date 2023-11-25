@@ -10,5 +10,12 @@ spring:
         format_sql: true
   web:
     resources:
-      # static-locations: file:/media/Data/Project/Intelli-Edu/Frontend, file:/media/Data/Project/Intelli-Edu/Frontend/homepage/build/, file:/media/Data/Project/Intelli-Edu/Frontend/mindmap/dist/
-      static-locations: file:/Frontend, file:/Frontend/homepage/build/, file:/Frontend/mindmap/dist/
+      static-locations: file:/media/Data/Project/Intelli-Edu/Frontend,
+                        file:/media/Data/Project/Intelli-Edu/Frontend/homepage/build/,
+                        file:/media/Data/Project/Intelli-Edu/Frontend/mindmap/dist/,
+                        file:/media/Data/Project/Intelli-Edu/Frontend/todo-list/dist/,
+                        file:/Frontend,
+                        file:/Frontend/homepage/build/,
+                        file:/Frontend/mindmap/dist/,
+                        file:/Frontend/todo-list/dist/
+      # static-locations: file:/Frontend, file:/Frontend/homepage/build/, file:/Frontend/mindmap/dist/
