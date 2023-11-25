@@ -1,5 +1,6 @@
 package com.intelliedu.intelliedu.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -51,8 +52,9 @@ public class Account implements UserDetails {
 
 	//private Integer point;
 
+  @Builder.Default
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	private List<File> file;
+	private List<File> file = new ArrayList<>();
 
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private List<Vote> vote;

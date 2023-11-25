@@ -1,7 +1,6 @@
 package com.intelliedu.intelliedu.exception;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -16,33 +15,50 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.intelliedu.intelliedu.dto.ErrorDto;
-
 /**
  * ControllerAdvisor
  */
 @ControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
-  private Map<String, Object> createResponse(List<String> message, HttpStatus status) {
-    List<ErrorDto> errorDto = message.stream().map(m -> new ErrorDto(status.value(), status.getReasonPhrase(), m)).toList();
-    return Map.of(
-      "timestamp", LocalDateTime.now(),
-      "errors", errorDto
-    );
+  private ResponseEntity<Object> createResponse(RuntimeException e, HttpStatus status) {
+    return ResponseEntity
+      .status(status)
+      .body(
+        Map.of(
+          "timestamp", LocalDateTime.now(),
+          "status", status.value(),
+          "error", status.getReasonPhrase(),
+          "message", e.getMessage()
+        )
+      );
   }
 
-  private Map<String, Object> createResponse(String message, HttpStatus status) {
-    return createResponse(Arrays.asList(message), status);
+  private ResponseEntity<Object> createResponse(List<String> message, HttpStatus status) {
+    return ResponseEntity
+      .status(status)
+      .body(
+        Map.of(
+          "timestamp", LocalDateTime.now(),
+          "status", status.value(),
+          "error", status.getReasonPhrase(),
+          "message", message
+        )
+      );
+  }
+
+  @ExceptionHandler(AlreadyExistsException.class)
+  public ResponseEntity<Object> handleAlreadyExistsException(AlreadyExistsException e) {
+    return createResponse(e, HttpStatus.CONFLICT);
   }
 
   @ExceptionHandler(NotFoundException.class)
-  public ResponseEntity<Object> handleNotFoundException(NotFoundException ex, WebRequest request) {
-    return ResponseEntity.badRequest().body(createResponse(ex.getMessage(), HttpStatus.NOT_FOUND));
+  public ResponseEntity<Object> handleNotFoundException(NotFoundException e) {
+    return createResponse(e, HttpStatus.NOT_FOUND);
   }
 
   @Override
-  protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-    return ResponseEntity.badRequest().body(createResponse(ex.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList(), HttpStatus.valueOf(status.value())));
+  protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException e, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+    return createResponse(e.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList(), HttpStatus.valueOf(status.value()));
   }
 }

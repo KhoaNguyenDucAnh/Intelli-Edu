@@ -1,6 +1,7 @@
 package com.intelliedu.intelliedu.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,7 @@ public class EventService {
 	@Autowired
 	private AuthService authService;
 
-	public List<EventDto> findEvent(Authentication authentication) {
+	public Map<String, List<Object>> findEvent(Authentication authentication) {
 		return eventMapper.toEventDto(scheduleRepo.findByAccount(authService.getAccount(authentication)).stream().map(s -> s.getEvent()).toList());
 	}
 

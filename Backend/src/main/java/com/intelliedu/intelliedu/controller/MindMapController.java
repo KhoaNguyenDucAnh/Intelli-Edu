@@ -48,7 +48,7 @@ public class MindMapController {
     mindMapService.deleteContent(id, authentication);
   }
 
-  @PutMapping("/share/{id}")
+  @PostMapping("/share/{id}")
   public void shareDocument(@PathVariable String id, Authentication authentication) {
     mindMapService.shareContent(id, authentication);
   }

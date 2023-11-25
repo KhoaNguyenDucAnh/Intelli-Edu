@@ -7,6 +7,7 @@ import org.hibernate.annotations.Where;
 
 import com.intelliedu.intelliedu.util.HashMapConverter;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
@@ -21,10 +22,11 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@SQLDelete(sql = "UPDATE mind_map SET deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE mind_map SET deleted = true WHERE file_id=?")
 @Where(clause = "deleted=false")
 public class MindMap extends Content {
 
+  @Column(columnDefinition = "TEXT")
   @Convert(converter = HashMapConverter.class)
   private Map<String, Object> content;
 }
