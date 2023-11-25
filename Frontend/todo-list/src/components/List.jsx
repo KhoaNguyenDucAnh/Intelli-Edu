@@ -71,8 +71,46 @@ const List = ({value, jobs, setJobs}) => {
     useDidUpdate(() => {
         // console.log(jobs)
     }, [jobs]);
+    function deleteEvent(id){
+        const APIurl = `http://localhost:8080/api/v1/event/${id}`
+        console.log("delete:", id)
+        fetch(APIurl, {
+          method: 'DELETE', 
+          headers: {
+            "Content-Type": 'application/json',
+            "ngrok-skip-browser-warning": 1
+          }
+        })
+    }
+
+    function createEvent(job){
+        const APIurl = "http://localhost:8080/api/v1/event"
+        console.log(JSON.stringify(job))
+        fetch(APIurl, {
+          method: 'POST', 
+          body: JSON.stringify(job),
+          headers: {
+            "Content-Type": 'application/json',
+            "ngrok-skip-browser-warning": 1
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("POST data:", data)
+            console.log("Jobs:", jobs)
+            let len = [...jobs.get(data.date.replace(/\//g, '-'))].length
+            jobs.get(data.date.replace(/\//g, '-'))[len-1].id = data.id
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+    
     function deleteItem(key, i) {
         copy = structuredClone(jobs)
+        const id = copy.get(key)[i].id
+        console.log("objs", copy.get(key), "obj", copy.get(key)[i])
+        deleteEvent(id)
         copy.get(key).splice(i, 1);
         if(copy.get(key).length === 0)
           copy.delete(key)
@@ -97,6 +135,15 @@ const List = ({value, jobs, setJobs}) => {
             description: data
           })
         }
+        let jobinfo = {
+            id: null,
+            name: name,
+            date: dayjs(time).format("DD/MM/YYYY"),
+            time: dayjs(time).format("HH:mm"),
+            description: data,
+            shared: false
+          }
+        createEvent(jobinfo)
         setData()
         setName()
         setTime()
@@ -149,9 +196,6 @@ const List = ({value, jobs, setJobs}) => {
                     onClick={() => {
                         deleteItem(currentdate, index)
                         addJob(time)
-                        // if(dayjs(time).isBefore(dayjs(jsDate+" "+currentJob.time)) && dayjs(time).isSame(dayjs(jsDate+" "+currentJob.time), "day"))
-                        //     deleteItem(currentdate, index+1)
-                        // else deleteItem(currentdate, index)
                         close()
                     }}
                     mt="md"

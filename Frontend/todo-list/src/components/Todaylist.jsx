@@ -8,8 +8,20 @@ const Todaylist = ({date, jobs, setJobs}) => {
   const days = ["CHỦ NHẬT", "THỨ HAI", "THỨ BA", "THỨ TƯ", "THỨ NĂM", "THỨ SÁU", "THỨ BẢY"]
   const Bulletcolor = ["#3b82f6", "#ec4899", "#fbbf24", "#9ADE7B"]
 
+  function deleteEvent(id){
+    const APIurl = `http://localhost:8080/api/v1/event/${id}`
+    fetch(APIurl, {
+      method: 'DELETE', 
+      headers: {
+        "Content-Type": 'application/json',
+        "ngrok-skip-browser-warning": 1
+      }
+    })
+  }
   function deleteItem(key, i) {
     const copy = structuredClone(jobs)
+    const id = copy.get(key)[i].id
+    deleteEvent(id)
     copy.get(key).splice(i, 1);
     if(copy.get(key).length === 0)
       copy.delete(key)
