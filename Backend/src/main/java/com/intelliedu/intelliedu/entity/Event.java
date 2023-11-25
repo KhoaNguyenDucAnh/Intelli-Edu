@@ -1,6 +1,7 @@
 package com.intelliedu.intelliedu.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +36,9 @@ public class Event {
 
 	private String name;
 
-	private LocalDateTime deadline;
+	private LocalDate date;
+
+	private LocalTime time;
 	
 	private boolean urgent;
 
