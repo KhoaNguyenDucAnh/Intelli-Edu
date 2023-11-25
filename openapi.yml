@@ -25,13 +25,6 @@ servers:
       Base path:
         default: api/v1
 components:
-  parameters:
-    ngrok:
-      name: ngrok-skip-browser-warning
-      in: header
-      description: Skip ngrok warning
-      schema:
-        default: 1
   schemas:
     Account:
       type: object
@@ -221,22 +214,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/File"
-    parameters:
-      - $ref: "#/components/parameters/ngrok"
-  /file/{id}:
-    get:
-      tags:
-        - File
-      operationId: getFile
-      summary: Get file
-      description: Get file
-      responses:
-        '200':
-          description: File
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/File"
     put:
       tags:
         - File
@@ -252,6 +229,22 @@ paths:
         '200':
           description: File
           content:  
+            application/json:
+              schema:
+                $ref: "#/components/schemas/File"
+    parameters:
+      - $ref: "#/components/parameters/ngrok"
+  /file/{id}:
+    get:
+      tags:
+        - File
+      operationId: getFile
+      summary: Get file
+      description: Get file
+      responses:
+        '200':
+          description: File
+          content:
             application/json:
               schema:
                 $ref: "#/components/schemas/File"
