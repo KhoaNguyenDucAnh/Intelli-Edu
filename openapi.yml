@@ -3,8 +3,6 @@ info:
   title: Intelli Edu API
   description: A learning platform
   version: 0.0.1
-  contact:
-    name: A
 tags: [
   name: Account,
   name: File,
@@ -16,8 +14,10 @@ tags: [
   name: Testing
 ]
 servers:
-  - url: https://intelli-edu.onrender.com/{Base path}
+  - url: https://{Domain}/{Base path}
     variables:
+      Domain:
+        default: intelli.edu.vn
       Base path:
         default: api/v1
   - url: http:/localhost:8080/{Base path}
@@ -158,6 +158,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Account"
+    parameters:
+      - $ref: "#/components/parameters/ngrok"
   /file:
     get:
       tags:
@@ -195,20 +197,16 @@ paths:
       operationId: createFile
       summary: Create file
       description: Create file
-      responses:
-        '200':
-          description: File
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/File"
-  /file/{id}:
-    get:
-      tags:
-        - File
-      operationId: getFile
-      summary: Get file
-      description: Get file
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                subject:
+                  type: string
       responses:
         '200':
           description: File
@@ -230,6 +228,22 @@ paths:
       responses:
         '200':
           description: File
+          content:  
+            application/json:
+              schema:
+                $ref: "#/components/schemas/File"
+    parameters:
+      - $ref: "#/components/parameters/ngrok"
+  /file/{id}:
+    get:
+      tags:
+        - File
+      operationId: getFile
+      summary: Get file
+      description: Get file
+      responses:
+        '200':
+          description: File
           content:
             application/json:
               schema:
@@ -243,6 +257,19 @@ paths:
       responses:
         '200':
           description: No content
+    post:
+      tags:
+        - File
+      operationId: checkMindMap
+      summary: Check Mindmap
+      description: Check Mindmap
+      responses:
+        '200':
+          description: String
+          content:
+            application/json:
+              schema:
+                type: string
     parameters:
       - name: id
         in: path
@@ -250,6 +277,7 @@ paths:
         required: true
         schema:
           type: string
+      - $ref: "#/components/parameters/ngrok"
   /document:
     get:
       tags:
@@ -281,6 +309,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Search"
+    parameters:
+      - $ref: "#/components/parameters/ngrok"
   /document/{id}:
     post:
       tags:
@@ -329,6 +359,30 @@ paths:
         required: true
         schema:
           type: string
+      - $ref: "#/components/parameters/ngrok"
+  /document/share/{id}:
+    post:
+      tags:
+        - Document
+      operationId: shareDocument
+      summary: Share document
+      description: Share document
+      responses:
+        '200':
+          description: URL
+          content:
+            application/json:
+              schema:
+                type: string
+                description: Share URL
+    parameters:
+      - name: id
+        in: path
+        description: Id of document's file
+        required: true
+        schema:
+          type: string
+      - $ref: "#/components/parameters/ngrok"
   /mindmap:
     get:
       tags:
@@ -360,6 +414,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Search"
+    parameters:
+      - $ref: "#/components/parameters/ngrok"
   /mindmap/{id}:
     post:
       tags:
@@ -408,6 +464,30 @@ paths:
         required: true
         schema:
           type: string
+      - $ref: "#/components/parameters/ngrok"
+  /mindmap/share/{id}:
+    post:
+      tags:
+        - Mindmap
+      operationId: shareMindmap
+      summary: Share mindmap
+      description: Share mindmap
+      responses:
+        '200':
+          description: URL
+          content:
+            application/json:
+              schema:
+                type: string
+                description: Share URL
+    parameters:
+      - name: id
+        in: path
+        description: Id of mindmap's file
+        required: true
+        schema:
+          type: string
+      - $ref: "#/components/parameters/ngrok"
   /question:
     get:
       tags:
@@ -439,6 +519,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Search"
+    parameters:
+      - $ref: "#/components/parameters/ngrok"
   /question/{id}:
     post:
       tags:
@@ -487,6 +569,30 @@ paths:
         required: true
         schema:
           type: string
+      - $ref: "#/components/parameters/ngrok"
+  /question/share/{id}:
+    post:
+      tags:
+        - Question
+      operationId: shareQuestion
+      summary: Share question
+      description: Share question
+      responses:
+        '200':
+          description: URL
+          content:
+            application/json:
+              schema:
+                type: string
+                description: Share URL
+    parameters:
+      - name: id
+        in: path
+        description: Id of question's file
+        required: true
+        schema:
+          type: string
+      - $ref: "#/components/parameters/ngrok"
   /event:
     get:
       tags:
@@ -539,6 +645,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Event"
+    parameters:
+      - $ref: "#/components/parameters/ngrok"
   /event/{id}:
     delete:
       tags:
@@ -556,6 +664,7 @@ paths:
         required: true
         schema:
           type: string
+      - $ref: "#/components/parameters/ngrok"
   /event/share/{id}:
     post:
       tags:
@@ -578,6 +687,7 @@ paths:
         required: true
         schema:
           type: string
+      - $ref: "#/components/parameters/ngrok"
   /auth/register:
     post:
       tags:
@@ -593,6 +703,8 @@ paths:
       responses:
         '200':
           description: No content
+    parameters:
+      - $ref: "#/components/parameters/ngrok"
   /auth/login:
     post:
       tags:
@@ -608,6 +720,8 @@ paths:
       responses:
         '200':
           description: No content
+    parameters:
+      - $ref: "#/components/parameters/ngrok"
   /auth/logout:
     post:
       tags:
@@ -618,6 +732,8 @@ paths:
       responses:
         '200':
           description: No content
+    parameters:
+      - $ref: "#/components/parameters/ngrok"
   /auth/admin:
     get:
       tags:
@@ -628,6 +744,8 @@ paths:
       responses:
         '200':
           description: No content
+    parameters:
+      - $ref: "#/components/parameters/ngrok"
   /auth/nimda:
     get:
       tags:
@@ -638,3 +756,5 @@ paths:
       responses:
         '200':
           description: No content
+    parameters:
+      - $ref: "#/components/parameters/ngrok"

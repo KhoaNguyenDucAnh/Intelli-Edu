@@ -15,4 +15,9 @@ public class MainController {
   public String mindmap() {
     return "forward:/mindmap/dist/index.html";
   }
+
+  @GetMapping("/todo")
+  public String event() {
+    return "forward:/todo-list/dist/index.html";
+  }
 }

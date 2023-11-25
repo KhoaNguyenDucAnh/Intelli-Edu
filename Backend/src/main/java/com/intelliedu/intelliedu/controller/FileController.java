@@ -56,4 +56,9 @@ public class FileController {
   public void deleteFile(@PathVariable String id, Authentication authentication) {
     fileService.deleteFile(id, authentication);
   }
+
+  @PostMapping("/{id}")
+  public String checkMindmap(@PathVariable String id, Authentication authentication) {
+    return fileService.checkMindMap(id, authentication);
+  }
 }

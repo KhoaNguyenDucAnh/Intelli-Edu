@@ -18,7 +18,9 @@ function Header() {
                             <div className="toolListWrapper">
                                 <div className="toolList">
                                     <p className="toolListItem">Mô hình ngôn ngữ lớn</p>
-                                    <p className="toolListItem">Sơ đồ tư duy</p>
+                                    <Link to='/search' className="link">
+                                        <p className="toolListItem">Sơ đồ tư duy</p>
+                                    </Link>
                                 </div>
                             </div>
                         </div>

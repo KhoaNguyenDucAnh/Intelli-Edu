@@ -1,6 +1,7 @@
 package com.intelliedu.intelliedu.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.intelliedu.intelliedu.config.EventType;
@@ -23,8 +24,11 @@ public class EventDto {
 
 	private String name;
 
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "d/M/yyyy HH:mm:ss")
-	private LocalDateTime deadline;
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "d/M/yyyy")
+	private LocalDate date;
+
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+	private LocalTime time;
 	
 	private boolean urgent;
 
