@@ -59,12 +59,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR }}
 
-      - name: Build Docker image
+      - name: Build and push Docker image
         run: |
-          docker buildx create --use
-
-          docker buildx build \
-            --platform linux/amd64,windows/amd64 \
-            -f test.Dockerfile \
-            -t ghcr.io/khoanguyenducanh/intelli-edu:test \
-            --push .
+          docker build -f test.Dockerfile -t ghcr.io/khoanguyenducanh/intelli-edu:test --push .
