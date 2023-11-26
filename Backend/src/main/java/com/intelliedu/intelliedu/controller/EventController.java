@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.intelliedu.intelliedu.dto.EventDto;
 import com.intelliedu.intelliedu.service.EventService;
 
+import jakarta.validation.Valid;
+
 /**
  * EventController
  */
@@ -33,12 +35,12 @@ public class EventController {
 	}
 
 	@PostMapping("")
-	public EventDto createEvent(@RequestBody EventDto eventDto, Authentication authentication) {
+	public EventDto createEvent(@RequestBody @Valid EventDto eventDto, Authentication authentication) {
 		return eventService.createEvent(eventDto, authentication);
 	}
 
 	@PutMapping("/{id}")
-	public EventDto updateEvent(@PathVariable String id, @RequestBody EventDto eventDto, Authentication authentication) {
+	public EventDto updateEvent(@PathVariable String id, @RequestBody @Valid EventDto eventDto, Authentication authentication) {
 		return eventService.updateEvent(id, eventDto, authentication);
 	}
 

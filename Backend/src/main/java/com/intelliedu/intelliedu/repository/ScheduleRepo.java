@@ -12,7 +12,7 @@ import com.intelliedu.intelliedu.entity.Schedule;
 /**
  * ScheduleRepo
  */
-public interface ScheduleRepo extends JpaRepository<Schedule, Long> {
+public interface ScheduleRepo extends JpaRepository<Schedule, String> {
 
   List<Schedule> findByAccount(Account account);
 

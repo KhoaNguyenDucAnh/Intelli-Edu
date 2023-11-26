@@ -82,8 +82,8 @@ public class FileService {
     return fileMapper.toFileDto(fileRepo.save(file));
   }
 
-  public FileDto updateFile(FileDto fileDto, Authentication authentication) {
-    return fileMapper.toFileDto(fileRepo.save(fileMapper.toFile(fileDto, findFileHelper(fileDto.getId(), authentication))));
+  public FileDto updateFile(String id, FileDto fileDto, Authentication authentication) {
+    return fileMapper.toFileDto(fileRepo.save(fileMapper.toFile(fileDto, findFileHelper(id, authentication))));
   }
 
   @Transactional

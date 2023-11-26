@@ -46,7 +46,7 @@ public class FileController {
 
   @PutMapping("/{id}")
   public FileDto updateFile(@PathVariable String id, @RequestBody @Valid FileDto fileDto, Authentication authentication) {
-    return fileService.updateFile(fileDto, authentication);
+    return fileService.updateFile(id, fileDto, authentication);
   }
 
   @DeleteMapping("/{id}")
