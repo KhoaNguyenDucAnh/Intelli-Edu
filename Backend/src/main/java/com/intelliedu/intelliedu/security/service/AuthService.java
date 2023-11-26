@@ -74,8 +74,7 @@ public class AuthService {
 
       response.addCookie(cookie);
     } catch (AuthenticationException e) {
-      log.error(String.format("Account %s login failed", accountLogInDto.getEmail()));
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, String.format("Account %s login failed", accountLogInDto.getEmail()), e);
     }
   }
 
@@ -87,6 +86,20 @@ public class AuthService {
     cookie.setSecure(false);
     
     response.addCookie(cookie);
+  }
+
+  public void registerWithoutEmailVerification(AccountRegistrationDto accountRegistrationDto, HttpServletResponse response) {
+    accountRepo
+      .findByEmail(accountRegistrationDto.getEmail())
+      .ifPresentOrElse(
+        account -> {throw new ResponseStatusException(HttpStatus.CONFLICT, "Email has already been taken");},
+        () -> {
+          Account account = generateAccount(accountRegistrationDto, Role.ROLE_USER);
+          account.setEnabled(true);
+          accountRepo.save(account);
+          login(new AccountLogInDto(accountRegistrationDto.getEmail(), accountRegistrationDto.getPassword()), response);
+        }
+    );
   }
 
   public void register(AccountRegistrationDto accountRegistrationDto) {
