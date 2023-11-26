@@ -8,12 +8,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
-import com.intelliedu.intelliedu.config.Subject;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -42,9 +38,6 @@ public class File {
   private String id;
 
   private String title;
-
-  @Enumerated(EnumType.STRING)
-  private Subject subject;
 
   @CreationTimestamp
 	private ZonedDateTime createdAt;

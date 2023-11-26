@@ -4,7 +4,6 @@ import java.time.ZonedDateTime;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.intelliedu.intelliedu.config.Subject;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -26,8 +25,6 @@ public class FileDto {
 
   @NotEmpty(message = "Title must not be empty")
   private String title;
-
-  private Subject subject;
 
   private ZonedDateTime createdAt;
 
