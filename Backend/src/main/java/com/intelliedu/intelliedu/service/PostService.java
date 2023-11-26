@@ -30,7 +30,7 @@ public class PostService {
 	@Autowired
 	private AuthService authService;
 
-	public Long vote(Long id, VoteStatus voteStatus, Authentication authentication) {
+	public Long vote(String id, VoteStatus voteStatus, Authentication authentication) {
 		Post post = postRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		Account account = authService.getAccount(authentication);
 		

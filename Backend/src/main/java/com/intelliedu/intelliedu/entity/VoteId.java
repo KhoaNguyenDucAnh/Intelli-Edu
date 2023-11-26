@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class VoteId implements Serializable {
 
-	private Long postId;
+	private String postId;
 
-	private Long accountId;
+	private String accountId;
 }

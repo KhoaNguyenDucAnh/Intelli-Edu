@@ -3,6 +3,7 @@ package com.intelliedu.intelliedu.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -33,8 +35,9 @@ public class Account implements UserDetails {
   private static final long serialVersionUID = 1L;
 
   @Id
-  @GeneratedValue
-  private Long id;
+  @GenericGenerator(name = "UUID", strategy = "com.intelliedu.intelliedu.util.IdGenerator")
+  @GeneratedValue(generator = "UUID", strategy = GenerationType.SEQUENCE)
+  private String id;
 
   @Column(unique = true)
   private String email;

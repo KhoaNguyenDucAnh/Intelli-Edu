@@ -47,16 +47,16 @@ public class EventService {
     return eventMapper.toEventDto(eventRepo.save(event));
 	}
 
-	public EventDto updateEvent(EventDto eventDto, Authentication authentication) {
+	public EventDto updateEvent(String id, EventDto eventDto, Authentication authentication) {
     Event event = eventRepo
-			.findByIdAndScheduleAccount(eventDto.getId(), authService.getAccount(authentication))
+			.findByIdAndScheduleAccount(id, authService.getAccount(authentication))
 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
     return eventMapper.toEventDto(eventRepo.save(eventMapper.toEvent(eventDto, event)));
   }
 
 	@Transactional
-	public void deleteEvent(Long id, Authentication authentication) {
+	public void deleteEvent(String id, Authentication authentication) {
     Schedule schedule = scheduleRepo
       .findByAccountAndEvent(
         authService.getAccount(authentication),
@@ -71,7 +71,7 @@ public class EventService {
     }
   }
 
-  public void shareEvent(Long id, Authentication authentication) {
+  public void shareEvent(String id, Authentication authentication) {
     Event event = eventRepo
 			.findByIdAndScheduleAccount(id, authService.getAccount(authentication))
 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -79,7 +79,7 @@ public class EventService {
     eventRepo.save(event);
   }
 
-  public EventDto addSharedEvent(Long id, Authentication authentication) {
+  public EventDto addSharedEvent(String id, Authentication authentication) {
     Account account = authService.getAccount(authentication);
     Event event = eventRepo.findByIdAndSharedIsTrueAndScheduleAccountIsNot(id, account).orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN));
     event.addSchedule(Schedule.builder().account(account).event(event).build());

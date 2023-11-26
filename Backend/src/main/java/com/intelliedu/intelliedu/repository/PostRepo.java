@@ -7,7 +7,6 @@ import com.intelliedu.intelliedu.entity.Post;
 /**
  * PostRepo
  */
-public interface PostRepo extends JpaRepository<Post, Long> {
+public interface PostRepo extends JpaRepository<Post, String> {
 
-  
 }

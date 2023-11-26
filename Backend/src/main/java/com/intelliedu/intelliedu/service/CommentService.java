@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -21,7 +20,7 @@ import com.intelliedu.intelliedu.repository.PostRepo;
 import com.intelliedu.intelliedu.security.service.AuthService;
 
 /** CommentServiceImpl */
-@Service
+//@Service
 public class CommentService {
 
   @Autowired
@@ -36,7 +35,7 @@ public class CommentService {
   @Autowired
   private AuthService authService;
 
-	public Map<String, Page<CommentDto>> findComment(Long postId, Authentication authentication, Pageable pageable) {
+	public Map<String, Page<CommentDto>> findComment(String postId, Authentication authentication, Pageable pageable) {
 		if (authentication == null) {
       return Map.of("other", commentMapper.toCommentDto(commentRepo.findByPostId(postId, pageable)));
     } else {
@@ -49,7 +48,7 @@ public class CommentService {
 
 	}
 	
-  public CommentDto createComment(Long postId, CommentDto commentDto, Authentication authentication) {
+  public CommentDto createComment(String postId, CommentDto commentDto, Authentication authentication) {
     Post post = postRepo.findById(postId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
     Comment comment = commentMapper.toComment(commentDto);
@@ -59,16 +58,16 @@ public class CommentService {
     return commentMapper.toCommentDto(commentRepo.save(comment));
   }
 
-  public CommentDto updateComment(CommentDto commentDto, Authentication authentication) {
+  public CommentDto updateComment(String id, CommentDto commentDto, Authentication authentication) {
     Comment comment = commentRepo
-      .findByIdAndAccount(commentDto.getId(), authService.getAccount(authentication))
+      .findByIdAndAccount(id, authService.getAccount(authentication))
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
     return commentMapper.toCommentDto(commentRepo.save(commentMapper.toComment(commentDto, comment)));
   }
 
   @Transactional
-  public void deleteComment(Long id, Authentication authentication) {
+  public void deleteComment(String id, Authentication authentication) {
     commentRepo.deleteByIdAndAccount(id, authService.getAccount(authentication));
   }
 }

@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PostDto {
 
-  private Long id;
+  private String id;
 
 	private ZonedDateTime createdAt;
 

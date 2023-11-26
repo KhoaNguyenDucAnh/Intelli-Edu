@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 public class SecurityToken {
 
   @Id
-	private Long id;
+	private String id;
 
   private String token;
 

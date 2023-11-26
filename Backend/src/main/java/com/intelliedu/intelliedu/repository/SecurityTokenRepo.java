@@ -9,7 +9,7 @@ import com.intelliedu.intelliedu.entity.SecurityToken;
 /**
  * ActivationTokenRepo
  */
-public interface SecurityTokenRepo extends JpaRepository<SecurityToken, Long> {
+public interface SecurityTokenRepo extends JpaRepository<SecurityToken, String> {
 	
 	Optional<SecurityToken> findByToken(String token);
 }

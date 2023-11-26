@@ -1,7 +1,6 @@
 package com.intelliedu.intelliedu.dto;
 
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,11 +12,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AccountLogInDto {
 
-  @NotNull
-  @NotEmpty
+  @NotEmpty(message = "Email must not be empty")
   private String email;
 
-  @NotNull
-  @NotEmpty
+  @NotEmpty(message = "Password must not be empty")
   private String password;
 }
