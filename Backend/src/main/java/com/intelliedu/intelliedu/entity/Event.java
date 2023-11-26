@@ -4,8 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.hibernate.annotations.GenericGenerator;
+import java.util.UUID;
 
 import com.intelliedu.intelliedu.config.EventType;
 
@@ -34,9 +33,8 @@ import lombok.NoArgsConstructor;
 public class Event {
 
 	@Id
-  @GenericGenerator(name = "UUID", strategy = "com.intelliedu.intelliedu.util.IdGenerator")
-  @GeneratedValue(generator = "UUID", strategy = GenerationType.SEQUENCE)
-  private String id;
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
 	private String name;
 

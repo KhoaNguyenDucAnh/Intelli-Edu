@@ -1,6 +1,7 @@
 package com.intelliedu.intelliedu.entity;
 
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
 import com.intelliedu.intelliedu.config.SecurityAction;
 
@@ -28,7 +29,7 @@ import lombok.NoArgsConstructor;
 public class SecurityToken {
 
   @Id
-	private String id;
+	private UUID id;
 
   private String token;
 

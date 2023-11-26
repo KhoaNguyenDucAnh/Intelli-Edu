@@ -2,6 +2,7 @@ package com.intelliedu.intelliedu.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,7 +48,7 @@ public class EventService {
     return eventMapper.toEventDto(eventRepo.save(event));
 	}
 
-	public EventDto updateEvent(String id, EventDto eventDto, Authentication authentication) {
+	public EventDto updateEvent(UUID id, EventDto eventDto, Authentication authentication) {
     Event event = eventRepo
 			.findByIdAndScheduleAccount(id, authService.getAccount(authentication))
 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -56,7 +57,7 @@ public class EventService {
   }
 
 	@Transactional
-	public void deleteEvent(String id, Authentication authentication) {
+	public void deleteEvent(UUID id, Authentication authentication) {
     Schedule schedule = scheduleRepo
       .findByAccountAndEvent(
         authService.getAccount(authentication),
@@ -71,7 +72,7 @@ public class EventService {
     }
   }
 
-  public void shareEvent(String id, Authentication authentication) {
+  public void shareEvent(UUID id, Authentication authentication) {
     Event event = eventRepo
 			.findByIdAndScheduleAccount(id, authService.getAccount(authentication))
 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -79,7 +80,7 @@ public class EventService {
     eventRepo.save(event);
   }
 
-  public EventDto addSharedEvent(String id, Authentication authentication) {
+  public EventDto addSharedEvent(UUID id, Authentication authentication) {
     Account account = authService.getAccount(authentication);
     Event event = eventRepo.findByIdAndSharedIsTrueAndScheduleAccountIsNot(id, account).orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN));
     event.addSchedule(Schedule.builder().account(account).event(event).build());

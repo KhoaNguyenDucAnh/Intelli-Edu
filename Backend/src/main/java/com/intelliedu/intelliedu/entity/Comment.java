@@ -1,9 +1,8 @@
 package com.intelliedu.intelliedu.entity;
 
-import org.hibernate.annotations.GenericGenerator;
+import java.util.UUID;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,13 +18,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
+//@Entity
 public class Comment {
 
-  @Id 
-  @GenericGenerator(name = "UUID", strategy = "com.intelliedu.intelliedu.util.IdGenerator")
-  @GeneratedValue(generator = "UUID", strategy = GenerationType.SEQUENCE) 
-  private String id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID) 
+  private UUID id;
 
   private String content;
   

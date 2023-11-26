@@ -1,6 +1,7 @@
 package com.intelliedu.intelliedu.controller;
 
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,22 +35,22 @@ public class MindMapController {
   }
 
   @PostMapping("/{id}")
-  public MindMapDto createMindMap(@PathVariable String id, Authentication authentication) {
+  public MindMapDto createMindMap(@PathVariable UUID id, Authentication authentication) {
     return mindMapService.createContent(id, authentication);
   }
 
   @PutMapping("/{id}")
-  public MindMapDto updateMindMap(@PathVariable String id, @RequestBody @Valid MindMapDto mindMapDto, Authentication authentication) {
+  public MindMapDto updateMindMap(@PathVariable UUID id, @RequestBody @Valid MindMapDto mindMapDto, Authentication authentication) {
     return mindMapService.updateContent(id, mindMapDto, authentication);
   }
 
   @DeleteMapping("/{id}")
-  public void deleteMindMap(@PathVariable String id, Authentication authentication) {
+  public void deleteMindMap(@PathVariable UUID id, Authentication authentication) {
     mindMapService.deleteContent(id, authentication);
   }
 
   @PostMapping("/share/{id}")
-  public void shareDocument(@PathVariable String id, Authentication authentication) {
+  public void shareDocument(@PathVariable UUID id, Authentication authentication) {
     mindMapService.shareContent(id, authentication);
   }
 }

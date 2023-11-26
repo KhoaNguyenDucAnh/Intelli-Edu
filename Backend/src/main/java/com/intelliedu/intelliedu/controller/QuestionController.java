@@ -1,6 +1,7 @@
 package com.intelliedu.intelliedu.controller;
 
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,22 +38,22 @@ public class QuestionController {
   }
 
   @PostMapping("/{id}")
-  public QuestionDto createQuestion(@PathVariable String id, Authentication authentication) {
+  public QuestionDto createQuestion(@PathVariable UUID id, Authentication authentication) {
     return questionService.createContent(id, authentication);
   }
 
   @PutMapping("/{id}")
-  public QuestionDto updateQuestion(@PathVariable String id, @RequestBody @Valid QuestionDto questionDto, Authentication authentication) {
+  public QuestionDto updateQuestion(@PathVariable UUID id, @RequestBody @Valid QuestionDto questionDto, Authentication authentication) {
     return questionService.updateContent(id, questionDto, authentication);
   }
 
   @DeleteMapping("/{id}")
-  public void deleteQuestion(@PathVariable String id, Authentication authentication) {
+  public void deleteQuestion(@PathVariable UUID id, Authentication authentication) {
     questionService.deleteContent(id, authentication);
   }
 
   @PostMapping("/share/{id}")
-  public void shareDocument(@PathVariable String id, Authentication authentication) {
+  public void shareDocument(@PathVariable UUID id, Authentication authentication) {
     questionService.shareContent(id, authentication);
   }
 }

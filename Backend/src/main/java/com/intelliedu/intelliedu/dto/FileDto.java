@@ -1,6 +1,7 @@
 package com.intelliedu.intelliedu.dto;
 
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -21,7 +22,7 @@ import lombok.NoArgsConstructor;
 @JsonInclude(Include.NON_NULL)
 public class FileDto {
 
-  private String id;
+  private UUID id;
 
   @NotEmpty(message = "Title must not be empty")
   private String title;

@@ -1,5 +1,7 @@
 package com.intelliedu.intelliedu.service;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,7 +59,7 @@ public class FileService {
     return fileMapper.toFileDto(fileRepo.findByTitleAndAccount(title, authService.getAccount(authentication), pageable));
   }
 
-  public FileDto findFile(String id, Authentication authentication) {
+  public FileDto findFile(UUID id, Authentication authentication) {
     FileDto fileDto = fileMapper.toFileDto(findFileHelper(id, authentication));
     fileDto.setDocument(documentService.findContent(id));
     fileDto.setMindMap(mindMapService.findContent(id));
@@ -65,7 +67,7 @@ public class FileService {
     return fileDto;
   }
 
-  public File findFileHelper(String id, Authentication authentication) {
+  public File findFileHelper(UUID id, Authentication authentication) {
     return fileRepo.findByIdAndAccount(id, authService.getAccount(authentication)).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
   }
     
@@ -82,14 +84,14 @@ public class FileService {
     return fileMapper.toFileDto(fileRepo.save(file));
   }
 
-  public FileDto updateFile(String id, FileDto fileDto, Authentication authentication) {
+  public FileDto updateFile(UUID id, FileDto fileDto, Authentication authentication) {
     return fileMapper.toFileDto(fileRepo.save(fileMapper.toFile(fileDto, findFileHelper(id, authentication))));
   }
 
   @Transactional
-  public void deleteFile(String id, Authentication authentication) {
+  public void deleteFile(UUID id, Authentication authentication) {
     if (!fileRepo.existsByIdAndAccount(id, authService.getAccount(authentication))) {
-      throw new NotFoundException(File.class, id);
+      throw new NotFoundException(File.class, id.toString());
     }
 
     fileRepo.deleteById(id);
@@ -98,7 +100,7 @@ public class FileService {
     questionService.deleteContent(id);
   }
 
-  public FileDto addSharedContent(String id, Authentication authentication) {
+  public FileDto addSharedContent(UUID id, Authentication authentication) {
     if (!(documentService.isShared(id) || mindMapService.isShared(id) || questionService.isShared(id))) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN);
     }
@@ -112,7 +114,7 @@ public class FileService {
     return fileMapper.toFileDto(file);
   }
 
-  public String checkMindMap(String id, Authentication authentication) {
+  public String checkMindMap(UUID id, Authentication authentication) {
     Account account = authService.getAccount(authentication);
 
     Document document = documentService.findContent(id, account);

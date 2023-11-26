@@ -2,6 +2,7 @@ package com.intelliedu.intelliedu.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -40,22 +41,22 @@ public class EventController {
 	}
 
 	@PutMapping("/{id}")
-	public EventDto updateEvent(@PathVariable String id, @RequestBody @Valid EventDto eventDto, Authentication authentication) {
+	public EventDto updateEvent(@PathVariable UUID id, @RequestBody @Valid EventDto eventDto, Authentication authentication) {
 		return eventService.updateEvent(id, eventDto, authentication);
 	}
 
 	@DeleteMapping("/{id}")
-	public void deleteEvent(@PathVariable String id, Authentication authentication) {
+	public void deleteEvent(@PathVariable UUID id, Authentication authentication) {
 		eventService.deleteEvent(id, authentication);
 	}
 
   @PostMapping("/share/{id}")
-  public void shareEvent(@PathVariable String id, Authentication authentication) {
+  public void shareEvent(@PathVariable UUID id, Authentication authentication) {
 		eventService.shareEvent(id, authentication);
 	}
 
   @PostMapping("/add/{id}")
-  public EventDto addSharedEvent(@PathVariable String id, Authentication authentication) {
+  public EventDto addSharedEvent(@PathVariable UUID id, Authentication authentication) {
 		return eventService.addSharedEvent(id, authentication);
 	}
 }

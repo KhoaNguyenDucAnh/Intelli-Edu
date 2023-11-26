@@ -3,9 +3,9 @@ package com.intelliedu.intelliedu.entity;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.CascadeType;
@@ -32,9 +32,8 @@ import lombok.NoArgsConstructor;
 public class Post {
 
   @Id
-  @GenericGenerator(name = "UUID", strategy = "com.intelliedu.intelliedu.util.IdGenerator")
-  @GeneratedValue(generator = "UUID", strategy = GenerationType.SEQUENCE) 
-  private String id;
+  @GeneratedValue(strategy = GenerationType.UUID) 
+  private UUID id;
 
   @CreationTimestamp
 	private ZonedDateTime createdAt;

@@ -1,6 +1,7 @@
 package com.intelliedu.intelliedu.entity;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class VoteId implements Serializable {
 
-	private String postId;
+	private UUID postId;
 
-	private String accountId;
+	private UUID accountId;
 }

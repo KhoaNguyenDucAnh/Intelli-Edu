@@ -1,6 +1,7 @@
 package com.intelliedu.intelliedu.service;
 
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,7 +36,7 @@ public class CommentService {
   @Autowired
   private AuthService authService;
 
-	public Map<String, Page<CommentDto>> findComment(String postId, Authentication authentication, Pageable pageable) {
+	public Map<String, Page<CommentDto>> findComment(UUID postId, Authentication authentication, Pageable pageable) {
 		if (authentication == null) {
       return Map.of("other", commentMapper.toCommentDto(commentRepo.findByPostId(postId, pageable)));
     } else {
@@ -48,7 +49,7 @@ public class CommentService {
 
 	}
 	
-  public CommentDto createComment(String postId, CommentDto commentDto, Authentication authentication) {
+  public CommentDto createComment(UUID postId, CommentDto commentDto, Authentication authentication) {
     Post post = postRepo.findById(postId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
     Comment comment = commentMapper.toComment(commentDto);
@@ -58,7 +59,7 @@ public class CommentService {
     return commentMapper.toCommentDto(commentRepo.save(comment));
   }
 
-  public CommentDto updateComment(String id, CommentDto commentDto, Authentication authentication) {
+  public CommentDto updateComment(UUID id, CommentDto commentDto, Authentication authentication) {
     Comment comment = commentRepo
       .findByIdAndAccount(id, authService.getAccount(authentication))
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -67,7 +68,7 @@ public class CommentService {
   }
 
   @Transactional
-  public void deleteComment(String id, Authentication authentication) {
+  public void deleteComment(UUID id, Authentication authentication) {
     commentRepo.deleteByIdAndAccount(id, authService.getAccount(authentication));
   }
 }

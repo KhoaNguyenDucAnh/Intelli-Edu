@@ -1,6 +1,6 @@
 package com.intelliedu.intelliedu.entity;
 
-import org.hibernate.annotations.GenericGenerator;
+import java.util.UUID;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -24,10 +24,9 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Schedule {
 
-  @Id 
-  @GenericGenerator(name = "UUID", strategy = "com.intelliedu.intelliedu.util.IdGenerator")
-  @GeneratedValue(generator = "UUID", strategy = GenerationType.SEQUENCE)
-  private String id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private Event event;

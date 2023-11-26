@@ -2,6 +2,7 @@ package com.intelliedu.intelliedu.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -24,7 +25,7 @@ import lombok.NoArgsConstructor;
 @JsonInclude(Include.NON_NULL)
 public class EventDto {
 
-	private String id;
+	private UUID id;
 
   @NotEmpty(message = "Name must not be empty")
 	private String name;

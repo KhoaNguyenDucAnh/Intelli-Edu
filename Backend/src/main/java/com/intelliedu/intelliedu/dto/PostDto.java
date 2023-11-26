@@ -1,6 +1,7 @@
 package com.intelliedu.intelliedu.dto;
 
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PostDto {
 
-  private String id;
+  private UUID id;
 
 	private ZonedDateTime createdAt;
 

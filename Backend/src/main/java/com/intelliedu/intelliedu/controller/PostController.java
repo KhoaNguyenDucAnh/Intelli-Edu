@@ -1,5 +1,7 @@
 package com.intelliedu.intelliedu.controller;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,12 +23,12 @@ public class PostController {
 	private PostService postService;
 
 	@PutMapping("/upvote/{id}")
-	public Long upvote(@PathVariable String id, Authentication authentication) {
+	public Long upvote(@PathVariable UUID id, Authentication authentication) {
 		return postService.vote(id, VoteStatus.UPVOTE, authentication);
 	}
 
 	@PutMapping("/downvote/{id}")
-	public Long downvote(@PathVariable String id, Authentication authentication) {
+	public Long downvote(@PathVariable UUID id, Authentication authentication) {
 		return postService.vote(id, VoteStatus.DOWNVOTE, authentication);
 	}
 }

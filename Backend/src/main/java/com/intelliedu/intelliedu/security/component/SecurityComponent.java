@@ -29,7 +29,7 @@ public class SecurityComponent {
   private AccountRepo accountRepo;
 
   @Bean
-  @Profile({"dev", "prod"})
+  @Profile({"dev", "test", "prod"})
   UserDetailsService userDetailsService() {
     return new UserDetailsService() {
       @Override
@@ -58,8 +58,8 @@ public class SecurityComponent {
     }; 
   }
 
-  @Bean
-  @Profile("test")
+  //@Bean
+  //@Profile("test")
   UserDetailsService inMemoryUserDetailsManager() {
     return new InMemoryUserDetailsManager(
       User

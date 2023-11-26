@@ -1,9 +1,9 @@
 package com.intelliedu.intelliedu.entity;
 
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
@@ -33,9 +33,8 @@ import lombok.NoArgsConstructor;
 public class File {
 
   @Id
-  @GenericGenerator(name = "UUID", strategy = "com.intelliedu.intelliedu.util.IdGenerator")
-  @GeneratedValue(generator = "UUID", strategy = GenerationType.SEQUENCE)
-  private String id;
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
   private String title;
 

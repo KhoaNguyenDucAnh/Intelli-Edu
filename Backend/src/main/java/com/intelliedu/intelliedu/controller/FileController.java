@@ -1,5 +1,7 @@
 package com.intelliedu.intelliedu.controller;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +37,7 @@ public class FileController {
   }
 
   @GetMapping("/{id}")
-  public FileDto findFile(@PathVariable String id, Authentication authentication) {
+  public FileDto findFile(@PathVariable UUID id, Authentication authentication) {
     return fileService.findFile(id, authentication);
   }
 
@@ -45,17 +47,17 @@ public class FileController {
   }
 
   @PutMapping("/{id}")
-  public FileDto updateFile(@PathVariable String id, @RequestBody @Valid FileDto fileDto, Authentication authentication) {
+  public FileDto updateFile(@PathVariable UUID id, @RequestBody @Valid FileDto fileDto, Authentication authentication) {
     return fileService.updateFile(id, fileDto, authentication);
   }
 
   @DeleteMapping("/{id}")
-  public void deleteFile(@PathVariable String id, Authentication authentication) {
+  public void deleteFile(@PathVariable UUID id, Authentication authentication) {
     fileService.deleteFile(id, authentication);
   }
 
   @PostMapping("/{id}")
-  public String checkMindmap(@PathVariable String id, Authentication authentication) {
+  public String checkMindmap(@PathVariable UUID id, Authentication authentication) {
     return fileService.checkMindMap(id, authentication);
   }
 }

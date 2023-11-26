@@ -2,8 +2,8 @@ package com.intelliedu.intelliedu.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,14 +35,12 @@ public class Account implements UserDetails {
   private static final long serialVersionUID = 1L;
 
   @Id
-  @GenericGenerator(name = "UUID", strategy = "com.intelliedu.intelliedu.util.IdGenerator")
-  @GeneratedValue(generator = "UUID", strategy = GenerationType.SEQUENCE)
-  private String id;
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
   @Column(unique = true)
   private String email;
 
-  @Column(unique = true)
   private String username;
 
   private String password;

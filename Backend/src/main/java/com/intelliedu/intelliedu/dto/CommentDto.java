@@ -1,5 +1,7 @@
 package com.intelliedu.intelliedu.dto;
 
+import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CommentDto {
  
-  private String id;
+  private UUID id;
 
 	private String content;
 }
