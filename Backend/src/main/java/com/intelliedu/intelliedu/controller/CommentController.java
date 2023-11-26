@@ -28,22 +28,22 @@ public class CommentController {
   private CommentService commentService;
 
 	@GetMapping("/{postId}")
-	public Map<String, Page<CommentDto>> findComment(@PathVariable Long postId, Authentication authentication, Pageable pageable) {
+	public Map<String, Page<CommentDto>> findComment(@PathVariable String postId, Authentication authentication, Pageable pageable) {
 		return commentService.findComment(postId, authentication, pageable);
 	}
 
   @PostMapping("/{postId}")
-  public CommentDto createComment(@PathVariable Long postId, @RequestBody CommentDto commentDto, Authentication authentication) {
+  public CommentDto createComment(@PathVariable String postId, @RequestBody CommentDto commentDto, Authentication authentication) {
     return commentService.createComment(postId, commentDto, authentication);
   }
 
-  @PutMapping("")
-  public CommentDto updateComment(@RequestBody CommentDto commentDto, Authentication authentication) {
-    return commentService.updateComment(commentDto, authentication);
+  @PutMapping("/{id}")
+  public CommentDto updateComment(@PathVariable String id, @RequestBody CommentDto commentDto, Authentication authentication) {
+    return commentService.updateComment(id, commentDto, authentication);
   }
 
   @DeleteMapping("/{id}")
-  public void deleteComment(@PathVariable Long id, Authentication authentication) {
+  public void deleteComment(@PathVariable String id, Authentication authentication) {
     commentService.deleteComment(id, authentication);
   }
 }
