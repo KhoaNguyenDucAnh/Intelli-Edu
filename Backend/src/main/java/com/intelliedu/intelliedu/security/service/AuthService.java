@@ -60,7 +60,6 @@ public class AuthService {
     try {
       Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(accountLogInDto.getEmail(), accountLogInDto.getPassword()));
       SecurityContextHolder.getContext().setAuthentication(authentication);
-
       log.info(String.format("Account %s login success", accountLogInDto.getEmail()));
       
       Cookie cookie = new Cookie(
@@ -96,7 +95,10 @@ public class AuthService {
         () -> {
           Account account = generateAccount(accountRegistrationDto, Role.ROLE_USER);
           account.setEnabled(true);
+
           accountRepo.save(account);
+          log.info(String.format("Creat new account %s", account.getEmail()));
+
           login(new AccountLogInDto(accountRegistrationDto.getEmail(), accountRegistrationDto.getPassword()), response);
         }
     );
@@ -113,15 +115,12 @@ public class AuthService {
 
   private Account generateAccount(AccountRegistrationDto accountRegistrationDto, Role role) {
     Account account = accountMapper.toAccount(accountRegistrationDto);
+    
     account.setPassword(passwordEncoder.encode(accountRegistrationDto.getPassword()));
     account.setRole(role);
     account.setEnabled(false);
 
-    accountRepo.save(account);
-    
-    log.info(String.format("Register account %s", account.getEmail()));
-
-    return account;
+    return accountRepo.save(account);
   }
 
   private SecurityToken generateSecurityToken(Account account, SecurityAction securityAction) {
