@@ -51,9 +51,4 @@ public class DocumentController {
   public void deleteDocument(@PathVariable UUID id, Authentication authentication) {
     documentService.deleteContent(id, authentication);
   }
-
-  @PostMapping("/share/{id}")
-  public void shareDocument(@PathVariable UUID id, Authentication authentication) {
-    documentService.shareContent(id, authentication);
-  }
 }
