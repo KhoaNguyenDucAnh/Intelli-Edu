@@ -11,7 +11,6 @@ tags: [
   name: Question,
   name: Event,
   name: Security,
-  name: Testing
 ]
 servers:
   - url: https://{Domain}/{Base path}
@@ -118,9 +117,12 @@ components:
           type: integer
         name:
           type: string
-        deadline:
+        date:
           type: string
-          example: 1/1/2023 06:50:00
+          example: 1/1/2023
+        time:
+          type: string
+          example: 06:50
         description:
           type: string
         shared:
@@ -158,8 +160,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Account"
-    parameters:
-      - $ref: "#/components/parameters/ngrok"
   /file:
     get:
       tags:
@@ -205,8 +205,20 @@ paths:
               properties:
                 title:
                   type: string
-                subject:
-                  type: string
+      responses:
+        '200':
+          description: File
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/File"
+  /file/{id}:
+    get:
+      tags:
+        - File
+      operationId: getFile
+      summary: Get file
+      description: Get file
       responses:
         '200':
           description: File
@@ -224,23 +236,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/File"
-      responses:
-        '200':
-          description: File
-          content:  
-            application/json:
-              schema:
-                $ref: "#/components/schemas/File"
-    parameters:
-      - $ref: "#/components/parameters/ngrok"
-  /file/{id}:
-    get:
-      tags:
-        - File
-      operationId: getFile
-      summary: Get file
-      description: Get file
+              type: object
+              properties:
+                title:
+                  type: string
       responses:
         '200':
           description: File
@@ -277,7 +276,6 @@ paths:
         required: true
         schema:
           type: string
-      - $ref: "#/components/parameters/ngrok"
   /document:
     get:
       tags:
@@ -309,8 +307,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Search"
-    parameters:
-      - $ref: "#/components/parameters/ngrok"
   /document/{id}:
     post:
       tags:
@@ -359,7 +355,6 @@ paths:
         required: true
         schema:
           type: string
-      - $ref: "#/components/parameters/ngrok"
   /document/share/{id}:
     post:
       tags:
@@ -382,7 +377,6 @@ paths:
         required: true
         schema:
           type: string
-      - $ref: "#/components/parameters/ngrok"
   /mindmap:
     get:
       tags:
@@ -414,8 +408,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Search"
-    parameters:
-      - $ref: "#/components/parameters/ngrok"
   /mindmap/{id}:
     post:
       tags:
@@ -464,7 +456,6 @@ paths:
         required: true
         schema:
           type: string
-      - $ref: "#/components/parameters/ngrok"
   /mindmap/share/{id}:
     post:
       tags:
@@ -487,7 +478,6 @@ paths:
         required: true
         schema:
           type: string
-      - $ref: "#/components/parameters/ngrok"
   /question:
     get:
       tags:
@@ -519,8 +509,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Search"
-    parameters:
-      - $ref: "#/components/parameters/ngrok"
   /question/{id}:
     post:
       tags:
@@ -569,7 +557,6 @@ paths:
         required: true
         schema:
           type: string
-      - $ref: "#/components/parameters/ngrok"
   /question/share/{id}:
     post:
       tags:
@@ -592,7 +579,6 @@ paths:
         required: true
         schema:
           type: string
-      - $ref: "#/components/parameters/ngrok"
   /event:
     get:
       tags:
@@ -606,9 +592,24 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Event"
+                type: object
+                properties:
+                  1/1/2023:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          name:
+                            type: string
+                          time:
+                            type: string
+                            example: 06:50
+                          description:
+                            type: string
+                          shared:
+                            type: boolean
     post:
       tags:
         - Event
@@ -627,6 +628,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Event"
+  /event/{id}:
     put:
       tags:
         - Event
@@ -645,9 +647,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Event"
-    parameters:
-      - $ref: "#/components/parameters/ngrok"
-  /event/{id}:
     delete:
       tags:
         - Event
@@ -664,7 +663,6 @@ paths:
         required: true
         schema:
           type: string
-      - $ref: "#/components/parameters/ngrok"
   /event/share/{id}:
     post:
       tags:
@@ -679,7 +677,7 @@ paths:
             application/json:
               schema:
                 type: string
-                description: Share URL
+                example: Share URL
     parameters:
       - name: id
         in: path
@@ -687,7 +685,6 @@ paths:
         required: true
         schema:
           type: string
-      - $ref: "#/components/parameters/ngrok"
   /auth/register:
     post:
       tags:
@@ -703,8 +700,6 @@ paths:
       responses:
         '200':
           description: No content
-    parameters:
-      - $ref: "#/components/parameters/ngrok"
   /auth/login:
     post:
       tags:
@@ -720,10 +715,8 @@ paths:
       responses:
         '200':
           description: No content
-    parameters:
-      - $ref: "#/components/parameters/ngrok"
   /auth/logout:
-    post:
+    get:
       tags:
         - Security
       operationId: logout
@@ -732,29 +725,3 @@ paths:
       responses:
         '200':
           description: No content
-    parameters:
-      - $ref: "#/components/parameters/ngrok"
-  /auth/admin:
-    get:
-      tags:
-        - Testing
-      operationId: admin
-      summary: Log in to admin
-      description: Log in to admin
-      responses:
-        '200':
-          description: No content
-    parameters:
-      - $ref: "#/components/parameters/ngrok"
-  /auth/nimda:
-    get:
-      tags:
-        - Testing
-      operationId: nimda
-      summary: Log in to nimda
-      description: Log in to nimda
-      responses:
-        '200':
-          description: No content
-    parameters:
-      - $ref: "#/components/parameters/ngrok"
