@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.intelliedu.intelliedu.config.EventType;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,14 +27,14 @@ public class EventDto {
 
 	private UUID id;
 
-  @NotEmpty(message = "Name must not be empty")
+  @NotNull(message = "Name must not be empty")
 	private String name;
 
-  @NotEmpty(message = "Date must not be empty")
+  @NotNull(message = "Date must not be empty")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "d/M/yyyy")
 	private LocalDate date;
 
-  @NotEmpty(message = "Time must not be empty")
+  @NotNull(message = "Time must not be empty")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
 	private LocalTime time;
 	
