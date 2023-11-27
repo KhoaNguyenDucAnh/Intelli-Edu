@@ -48,7 +48,8 @@ public abstract class EventMapper {
           "id", e.getId().toString(),
           "name", e.getName(),
           "time", timeFormatter.format(e.getTime()),
-          "description", e.getDescription()
+          "description", e.getDescription(),
+          "shared", e.isShared()
         )
       )
     );
