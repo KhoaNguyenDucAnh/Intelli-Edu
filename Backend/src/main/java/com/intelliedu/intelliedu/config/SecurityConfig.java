@@ -18,6 +18,7 @@ public class SecurityConfig {
     "/", "/homepage/.*", "/static/.*", "/manifest.json", "/logo192.png",
     "/login",
     "/register",
+    "/assets/.*",
     "/error",
     "/activate/.*", "/api/v1/auth/.*",
   };
