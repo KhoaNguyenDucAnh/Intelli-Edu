@@ -9,6 +9,8 @@
 name: Docker (Testing)
 
 on:
+  push:
+    branches: [ "testing" ]
   pull_request:
     branches: [ "testing" ]
 
