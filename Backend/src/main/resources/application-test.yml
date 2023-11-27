@@ -20,4 +20,5 @@ spring:
                         file:/Frontend/homepage/build/,
                         file:/Frontend/mindmap/dist/,
                         file:/Frontend/todo-list/dist/
-      # static-locations: file:/Frontend, file:/Frontend/homepage/build/, file:/Frontend/mindmap/dist/
+---
+domain: localhost:8080
