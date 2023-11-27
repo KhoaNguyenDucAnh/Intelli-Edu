@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import com.intelliedu.intelliedu.dto.EventDto;
 import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.entity.Event;
 import com.intelliedu.intelliedu.entity.Schedule;
+import com.intelliedu.intelliedu.exception.AlreadyExistsException;
 import com.intelliedu.intelliedu.mapper.EventMapper;
 import com.intelliedu.intelliedu.repository.EventRepo;
 import com.intelliedu.intelliedu.repository.ScheduleRepo;
@@ -37,6 +39,9 @@ public class EventService {
 
 	@Autowired
 	private AuthService authService;
+
+  @Value("${domain}")
+  private String domain;
 
 	public Map<String, List<Object>> findEvent(Authentication authentication) {
 		return eventMapper.toEventDto(scheduleRepo.findByAccount(authService.getAccount(authentication)).stream().map(s -> s.getEvent()).toList());
@@ -65,6 +70,7 @@ public class EventService {
           .findById(id)
           .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)))
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    
     if (schedule.isOwned()) {
 		  eventRepo.deleteByIdAndScheduleAccount(id, authService.getAccount(authentication));
 	  } else {
@@ -72,18 +78,25 @@ public class EventService {
     }
   }
 
-  public void shareEvent(UUID id, Authentication authentication) {
+  public String shareEvent(UUID id, Authentication authentication) {
     Event event = eventRepo
 			.findByIdAndScheduleAccount(id, authService.getAccount(authentication))
 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     event.setShared(true);
     eventRepo.save(event);
+    return "http://" + domain + "/share/event/" + event.getId();
   }
 
   public EventDto addSharedEvent(UUID id, Authentication authentication) {
     Account account = authService.getAccount(authentication);
-    Event event = eventRepo.findByIdAndSharedIsTrueAndScheduleAccountIsNot(id, account).orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN));
+
+    if (eventRepo.existsByIdAndScheduleAccount(id, account)) {
+      throw new AlreadyExistsException(Event.class, "id", id.toString());
+    }
+
+    Event event = eventRepo.findByIdAndSharedIsTrue(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     event.addSchedule(Schedule.builder().account(account).event(event).build());
+    
     return eventMapper.toEventDto(eventRepo.save(event));
   }
 }

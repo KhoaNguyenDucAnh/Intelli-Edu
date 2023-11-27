@@ -51,8 +51,8 @@ public class EventController {
 	}
 
   @PostMapping("/share/{id}")
-  public void shareEvent(@PathVariable UUID id, Authentication authentication) {
-		eventService.shareEvent(id, authentication);
+  public String shareEvent(@PathVariable UUID id, Authentication authentication) {
+		return eventService.shareEvent(id, authentication);
 	}
 
   @PostMapping("/add/{id}")

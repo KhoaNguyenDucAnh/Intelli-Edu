@@ -19,6 +19,10 @@ public interface EventRepo extends JpaRepository<Event, UUID> {
 
 	Optional<Event> findByIdAndScheduleAccount(UUID id, Account account);
 
+  Optional<Event> findByIdAndSharedIsTrue(UUID id);
+
+  boolean existsByIdAndScheduleAccount(UUID id, Account account);
+
   Optional<Event> findByIdAndSharedIsTrueAndScheduleAccountIsNot(UUID id, Account account);
 
 	void deleteByIdAndScheduleAccount(UUID id, Account account);
