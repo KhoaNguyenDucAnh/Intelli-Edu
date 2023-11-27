@@ -20,6 +20,8 @@ public interface FileRepo extends JpaRepository<File, UUID> {
   Page<File> findByTitleAndAccount(String title, Account account, Pageable pageable);
 
   Boolean existsByTitleAndAccount(String title, Account account);
+  
+  Boolean existsByTitleAndIdIsNotAndAccount(String title, UUID id, Account account);
 
   Boolean existsByIdAndAccount(UUID id, Account account);
 

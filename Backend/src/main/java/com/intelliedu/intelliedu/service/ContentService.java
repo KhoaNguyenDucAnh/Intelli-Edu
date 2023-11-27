@@ -56,14 +56,20 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
     return contentMapper.toDto(contentRepo.findById(id).orElse(null));
   }
 
-  protected C findContent(UUID id, Account account) {
+  protected C findContentHelper(UUID id) {
     return contentRepo
-      .findByIdAndAccount(id, account)
-      .orElseThrow(() -> new NotFoundException(getGenericClass(), id.toString()));
+      .findById(id)
+      .orElseThrow(() -> new NotFoundException(getGenericClass(), id));
   }
 
-  protected C findContent(UUID id, Authentication authentication) {
-    return findContent(id, authService.getAccount(authentication));
+  protected C findContentHelper(UUID id, Account account) {
+    return contentRepo
+      .findByIdAndAccount(id, account)
+      .orElseThrow(() -> new NotFoundException(getGenericClass(), id));
+  }
+
+  protected C findContentHelper(UUID id, Authentication authentication) {
+    return findContentHelper(id, authService.getAccount(authentication));
   }
 
   public boolean isShared(UUID id) {
@@ -80,26 +86,29 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
   
   public CDto createContent(UUID id, Authentication authentication) {
     if (contentRepo.existsById(id)) {
-      throw new AlreadyExistsException(getGenericClass(), "id", id.toString());
+      throw new AlreadyExistsException(getGenericClass(), id);
     }
 
-    File file = fileService.findFileHelper(id, authentication); 
+    Account account = authService.getAccount(authentication);
+
+    File file = fileService.findFileHelper(id, account); 
 
     C content = createContent(file.getTitle());
     content.getKeyword().add(file.getTitle());
     content.setFile(file);
+    content.setPost(Post.builder().account(account).build());
 
     return saveContent(content);
   }
 
   public CDto updateContent(UUID id, CDto contentDto, Authentication authentication) {
-    return saveContent(contentMapper.toEntity(contentDto, findContent(id, authentication)));
+    return saveContent(contentMapper.toEntity(contentDto, findContentHelper(id, authentication)));
   }
 
   @Transactional
   public void deleteContent(UUID id, Authentication authentication) {
     if (!contentRepo.existsByIdAndAccount(id, authService.getAccount(authentication))) {
-      throw new NotFoundException(getGenericClass(), id.toString());
+      throw new NotFoundException(getGenericClass(), id);
     }
     deleteContent(id);
   }
@@ -109,16 +118,15 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
     contentRepo.deleteById(id);
   }
 
-  public void shareContent(UUID id, Authentication authentication) {
-    Account account = authService.getAccount(authentication);
-    
-    C content = findContent(id, account);
+  public void shareContent(UUID id) {
+    C content = findContentHelper(id);
     content.setShared(true);
+    contentRepo.save(content);
+  }
 
-    if (content.getPost() != null) {
-      content.setPost(Post.builder().account(account).build());
-    }
-    
+  public void unshareContent(UUID id) {
+    C content = findContentHelper(id);
+    content.setShared(true);
     contentRepo.save(content);
   }
 }
