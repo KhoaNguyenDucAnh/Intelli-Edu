@@ -68,7 +68,11 @@ public class FileService {
   }
 
   public File findFileHelper(UUID id, Authentication authentication) {
-    return fileRepo.findByIdAndAccount(id, authService.getAccount(authentication)).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    return findFileHelper(id, authService.getAccount(authentication));
+  }
+
+  public File findFileHelper(UUID id, Account account) {
+    return fileRepo.findByIdAndAccount(id, account).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
   }
     
   public FileDto createFile(FileDto fileDto, Authentication authentication) {
@@ -85,6 +89,12 @@ public class FileService {
   }
 
   public FileDto updateFile(UUID id, FileDto fileDto, Authentication authentication) {
+    Account account = authService.getAccount(authentication);
+
+    if (fileRepo.existsByTitleAndAccount(fileDto.getTitle(), account)) {
+      throw new AlreadyExistsException(File.class, "title", fileDto.getTitle());
+    }
+
     return fileMapper.toFileDto(fileRepo.save(fileMapper.toFile(fileDto, findFileHelper(id, authentication))));
   }
 
