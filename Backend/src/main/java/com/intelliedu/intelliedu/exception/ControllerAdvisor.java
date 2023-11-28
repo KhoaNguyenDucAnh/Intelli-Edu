@@ -21,20 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
-  private ResponseEntity<Object> createResponse(RuntimeException e, HttpStatus status) {
-    return ResponseEntity
-      .status(status)
-      .body(
-        Map.of(
-          "timestamp", LocalDateTime.now(),
-          "status", status.value(),
-          "error", status.getReasonPhrase(),
-          "message", e.getMessage()
-        )
-      );
-  }
-
-  private ResponseEntity<Object> createResponse(List<String> message, HttpStatus status) {
+  private ResponseEntity<Object> createResponseHelper(Object message, HttpStatus status) {
     return ResponseEntity
       .status(status)
       .body(
@@ -45,6 +32,14 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
           "message", message
         )
       );
+  } 
+  
+  private ResponseEntity<Object> createResponse(RuntimeException e, HttpStatus status) {
+    return createResponseHelper(e.getMessage(), status);
+  }
+
+  private ResponseEntity<Object> createResponse(List<String> message, HttpStatus status) {
+    return createResponseHelper(message.size() == 1 ? message.get(0) : message, status);
   }
 
   @ExceptionHandler(AlreadyExistsException.class)

@@ -31,9 +31,14 @@ public class AuthController {
     authService.logout(response);
   }
 
-  @PostMapping("/api/v1/auth/register")
+  //@PostMapping("/api/v1/auth/register")
   public void register(@RequestBody @Valid AccountRegistrationDto accountRegistrationDto) {
     authService.register(accountRegistrationDto);
+  }
+
+  @PostMapping("/api/v1/auth/register")
+  public void registerWithoutEmailVerification(@RequestBody @Valid AccountRegistrationDto accountRegistrationDto, HttpServletResponse response) {
+    authService.registerWithoutEmailVerification(accountRegistrationDto, response);
   }
 
   @RequestMapping("/activate/{token}")

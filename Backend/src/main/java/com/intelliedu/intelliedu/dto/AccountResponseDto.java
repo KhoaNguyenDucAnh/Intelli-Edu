@@ -14,6 +14,4 @@ public class AccountResponseDto {
   private String username;
 
   private String email;
-
-	//private Integer point;
 }

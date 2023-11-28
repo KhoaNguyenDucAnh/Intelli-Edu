@@ -2,6 +2,7 @@ package com.intelliedu.intelliedu.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.ElementCollection;
@@ -28,7 +29,7 @@ import lombok.experimental.SuperBuilder;
 public class Content {
 
   @Id
-  private String id;
+  private UUID id;
 
   @Builder.Default
   @ElementCollection

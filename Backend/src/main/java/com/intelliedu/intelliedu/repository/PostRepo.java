@@ -1,5 +1,7 @@
 package com.intelliedu.intelliedu.repository;
 
+import java.util.UUID;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.intelliedu.intelliedu.entity.Post;
@@ -7,7 +9,6 @@ import com.intelliedu.intelliedu.entity.Post;
 /**
  * PostRepo
  */
-public interface PostRepo extends JpaRepository<Post, Long> {
+public interface PostRepo extends JpaRepository<Post, UUID> {
 
-  
 }

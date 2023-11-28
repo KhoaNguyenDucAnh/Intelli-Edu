@@ -1,5 +1,7 @@
 package com.intelliedu.intelliedu.service;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -30,7 +32,7 @@ public class PostService {
 	@Autowired
 	private AuthService authService;
 
-	public Long vote(Long id, VoteStatus voteStatus, Authentication authentication) {
+	public Long vote(UUID id, VoteStatus voteStatus, Authentication authentication) {
 		Post post = postRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		Account account = authService.getAccount(authentication);
 		
