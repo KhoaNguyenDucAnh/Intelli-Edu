@@ -82,7 +82,7 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
  
   private CDto saveContent(C content) {
     return contentMapper.toDto(contentRepo.save(content));
-  } 
+  }
   
   public CDto createContent(UUID id, Authentication authentication) {
     if (contentRepo.existsById(id)) {

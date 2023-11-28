@@ -28,7 +28,7 @@ public class AIService {
 	private Integer port;
 
   private ObjectMapper objectMapper = new ObjectMapper();
-  
+
   public String request(Document document, MindMap mindMap) {
     return request(
       toMessage(
