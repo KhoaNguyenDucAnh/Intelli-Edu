@@ -23,4 +23,7 @@ public class Document extends Content {
 
   @Column(columnDefinition = "TEXT")
   private String content;
+
+  @Column(columnDefinition = "TEXT")
+  private String preContent;
 }

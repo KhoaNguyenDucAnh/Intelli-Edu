@@ -1,23 +1,31 @@
 package com.intelliedu.intelliedu.service;
 
+import java.io.IOException;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.intelliedu.intelliedu.dto.FileDto;
 import com.intelliedu.intelliedu.entity.Account;
+import com.intelliedu.intelliedu.entity.Document;
 import com.intelliedu.intelliedu.entity.File;
+import com.intelliedu.intelliedu.entity.MindMap;
 import com.intelliedu.intelliedu.exception.AlreadyExistsException;
 import com.intelliedu.intelliedu.exception.NotFoundException;
 import com.intelliedu.intelliedu.mapper.FileMapper;
 import com.intelliedu.intelliedu.repository.FileRepo;
+import com.intelliedu.intelliedu.repository.MindMapRepo;
 import com.intelliedu.intelliedu.security.service.AuthService;
 
 import jakarta.persistence.EntityManager;
@@ -35,6 +43,9 @@ public class FileService {
 
   @Autowired
   private FileRepo fileRepo;
+
+  @Autowired
+  private MindMapRepo mindMapRepo;
 
   @PersistenceContext
   private EntityManager entityManager;
@@ -138,16 +149,31 @@ public class FileService {
   }
 
   public String checkMindMap(UUID id, Authentication authentication) {
-    if (fileRepo.existsByIdAndAccount(id, authService.getAccount(authentication))) {
+    if (!fileRepo.existsByIdAndAccount(id, authService.getAccount(authentication))) {
       throw new NotFoundException(File.class, id);
     }
-    return aiService.request(documentService.findContentHelper(id), mindMapService.findContentHelper(id));
+
+    Document document = documentService.findContentHelper(id);
+    MindMap mindMap = mindMapService.findContentHelper(id);
+
+    if (document.getPreContent().equals(document.getContent()) && mindMap.getPreContent().equals(mindMap.getPreContent())) {
+      return mindMap.getFeedback();
+    } else {
+      String feedback = aiService.request(documentService.findContentHelper(id), mindMapService.findContentHelper(id));
+
+      document.setPreContent(document.getPreContent());
+      mindMap.setPreContent(mindMap.getContent());
+      mindMap.setFeedback(feedback);
+      mindMapRepo.save(mindMap);
+
+      return feedback;
+    }
   }
 
-  public String createQuestion(UUID id, Authentication authentication) {
+  /*public CompletableFuture<String> createQuestion(UUID id, Authentication authentication) {
     if (fileRepo.existsByIdAndAccount(id, authService.getAccount(authentication))) {
       throw new NotFoundException(File.class, id);
     }
     return aiService.request(documentService.findContentHelper(id));
-  }
+  }*/
 }

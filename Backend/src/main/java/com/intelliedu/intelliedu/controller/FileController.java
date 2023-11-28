@@ -1,6 +1,7 @@
 package com.intelliedu.intelliedu.controller;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -56,7 +57,7 @@ public class FileController {
     fileService.deleteFile(id, authentication);
   }
 
-  @PostMapping("/{id}")
+  @GetMapping("/check-mindmap/{id}")
   public String checkMindmap(@PathVariable UUID id, Authentication authentication) {
     return fileService.checkMindMap(id, authentication);
   }
