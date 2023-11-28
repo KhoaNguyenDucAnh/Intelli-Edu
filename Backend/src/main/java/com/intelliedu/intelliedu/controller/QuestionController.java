@@ -21,6 +21,7 @@ import com.intelliedu.intelliedu.dto.QuestionDto;
 import com.intelliedu.intelliedu.service.QuestionService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 
 /**
  * QuestionController
@@ -50,5 +51,10 @@ public class QuestionController {
   @DeleteMapping("/{id}")
   public void deleteQuestion(@PathVariable UUID id, Authentication authentication) {
     questionService.deleteContent(id, authentication);
+  }
+
+  @GetMapping("/{id}/{questionId}")
+  public Boolean checkQuestion(@PathVariable UUID id, @PathVariable Integer questionId, @RequestBody @NotEmpty String answer, Authentication authentication) {
+    return questionService.checkQuestion(id, questionId, answer, authentication);
   }
 }

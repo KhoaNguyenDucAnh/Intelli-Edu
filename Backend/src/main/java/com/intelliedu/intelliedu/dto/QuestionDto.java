@@ -18,5 +18,5 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = false)
 public class QuestionDto extends ContentDto {
 
-  private Map<String, String> content;
+  private Map<Integer, QuestionDtoDetail> content;
 }
