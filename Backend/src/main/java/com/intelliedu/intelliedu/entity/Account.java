@@ -57,11 +57,8 @@ public class Account implements UserDetails {
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private List<File> file = new ArrayList<>();
 
-	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Vote> vote;
-
-	//@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	//private List<Schedule> schedule;
 
   @Override
   public List<? extends GrantedAuthority> getAuthorities() {

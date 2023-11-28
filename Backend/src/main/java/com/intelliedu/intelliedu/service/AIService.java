@@ -30,19 +30,27 @@ public class AIService {
   private ObjectMapper objectMapper = new ObjectMapper();
   
   public String request(Document document, MindMap mindMap) {
-    try {
-      return request(
-        objectMapper.writeValueAsString(
-          Map.of(
-            Document.class.getSimpleName(), document.getContent(),
-            MindMap.class.getSimpleName(), objectMapper.writeValueAsString(mindMap.getContent())
-          )
+    return request(
+      toMessage(
+        Map.of(
+          "Document", document.getContent(),
+          "MindMap", toMessage(mindMap.getContent())
         )
-      );
-    } catch (JsonProcessingException ex) {
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+      )
+    );
  	}
+
+  public String request(Document document) {
+    return request(toMessage(Map.of("Document", document.getContent())));
+  }
+
+  private String toMessage(Map<String, Object> message) {
+    try {
+      return objectMapper.writeValueAsString(message);
+    } catch (JsonProcessingException e) {
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error processing data");
+    }
+  }
 	
   private String request(String message) {
 		try {
