@@ -55,4 +55,4 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -f AI/.Dockerfile -t ghcr.io/khoanguyenducanh/AI:test --push .
+          docker build -f AI/.Dockerfile -t ghcr.io/khoanguyenducanh/python:test --push .
