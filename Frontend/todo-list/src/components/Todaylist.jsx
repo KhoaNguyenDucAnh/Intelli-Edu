@@ -1,5 +1,6 @@
 import React from 'react'
 import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { ScrollArea, List, Group, Text, ActionIcon, MantineProvider, CloseButton, Button} from '@mantine/core'
 import { IconPointFilled  } from '@tabler/icons-react'
 import '@mantine/core/styles.css';
@@ -7,7 +8,7 @@ import '@mantine/core/styles.css';
 const Todaylist = ({date, jobs, setJobs}) => {
   const days = ["CHỦ NHẬT", "THỨ HAI", "THỨ BA", "THỨ TƯ", "THỨ NĂM", "THỨ SÁU", "THỨ BẢY"]
   const Bulletcolor = ["#3b82f6", "#ec4899", "#fbbf24", "#9ADE7B"]
-
+  dayjs.extend(customParseFormat)
   function deleteEvent(id){
     const APIurl = `http://localhost:8080/api/v1/event/${id}`
     fetch(APIurl, {
@@ -18,15 +19,27 @@ const Todaylist = ({date, jobs, setJobs}) => {
       }
     })
   }
+
+  function sort(map){
+    const sortedMap = new Map([...map.entries()].sort((a, b) => {
+      return dayjs(a[0], "DD-MM-YYYY").diff(dayjs(b[0], "DD-MM-YYYY"))
+    }));
+        [...sortedMap.entries()].map(([_, value]) => {
+          value.sort((a, b) => a.time.localeCompare(b.time))
+        })
+    setJobs(sortedMap)
+  }
   function deleteItem(key, i) {
-    const copy = structuredClone(jobs)
+    let copy = structuredClone(jobs)
     const id = copy.get(key)[i].id
     deleteEvent(id)
     copy.get(key).splice(i, 1);
     if(copy.get(key).length === 0)
       copy.delete(key)
-    setJobs(copy);
+    jobs = copy
+    sort(jobs)
   }
+  
   return (
     <MantineProvider>
       <ScrollArea 

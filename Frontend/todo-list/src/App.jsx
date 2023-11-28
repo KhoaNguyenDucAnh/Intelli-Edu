@@ -2,9 +2,9 @@ import './App.css'
 import Todaylist from './components/Todaylist';
 import MyCalendar from './components/Calendar'
 import List from './components/List'
-import Sharing from './components/Sharing'
 import React from 'react'
 import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { IconSun, IconMoon, IconChevronLeft,  IconChevronRight, IconPlus} from '@tabler/icons-react';
 import { Text, Group, Stack, Button, Modal, Textarea, MantineProvider, TextInput, useMantineColorScheme, useComputedColorScheme, ActionIcon} from '@mantine/core';
 import { useState, useEffect } from 'react';
@@ -26,15 +26,15 @@ function App(){
   const [opened, { open, close }] = useDisclosure(false);
   const {setColorScheme} = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme('light');
-
+  dayjs.extend(customParseFormat)
   function convert(data){
     console.log("GET Data:", data)
     Object.entries(data).map(element => {
-      // console.log(element)
-      jobs.set(element[0].replace(/\//g, '-'), element[1])
+      let key = dayjs(element[0], "D/M/YYYY").format("DD-MM-YYYY")
+      console.log(key)
+      jobs.set(key, element[1])
     })
     sort(jobs)
-    console.log("Jobs:", jobs)
   }
   function getData(){
     fetch(APIurl, {
@@ -54,10 +54,12 @@ function App(){
     getData()
   }, [])
   function sort(map){
-    const sortedMap = new Map([...map.entries()].sort((a, b) => a[0].localeCompare(b[0])));
-    [...sortedMap.entries()].map(([_, value]) => {
-      value.sort((a, b) => a.time.localeCompare(b.time))
-    })
+    const sortedMap = new Map([...map.entries()].sort((a, b) => {
+      return dayjs(a[0], "DD-MM-YYYY").diff(dayjs(b[0], "DD-MM-YYYY"))
+    }));
+        [...sortedMap.entries()].map(([_, value]) => {
+          value.sort((a, b) => a.time.localeCompare(b.time))
+        })
     setJobs(sortedMap)
   }
   const toggleScheme = () => {
@@ -257,10 +259,11 @@ function App(){
                 style = {{
                   width: 200
                 }}
+                mr = {100}
               />
-              <Sharing docname = {name} jobs = {jobs}/>
+              <Text/>
             </Group>
-            <List value = {dayjs(value)} jobs = {jobs} setJobs = {setJobs}/>
+            <List value = {dayjs(value)} jobs = {jobs} setJobs = {setJobs} docname = {name}/>
           </Stack>
         </Group>  
      </MantineProvider>
