@@ -13,9 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.intelliedu.intelliedu.dto.FileDto;
 import com.intelliedu.intelliedu.entity.Account;
-import com.intelliedu.intelliedu.entity.Document;
 import com.intelliedu.intelliedu.entity.File;
-import com.intelliedu.intelliedu.entity.MindMap;
 import com.intelliedu.intelliedu.exception.AlreadyExistsException;
 import com.intelliedu.intelliedu.exception.NotFoundException;
 import com.intelliedu.intelliedu.mapper.FileMapper;
@@ -143,10 +141,13 @@ public class FileService {
     if (fileRepo.existsByIdAndAccount(id, authService.getAccount(authentication))) {
       throw new NotFoundException(File.class, id);
     }
+    return aiService.request(documentService.findContentHelper(id), mindMapService.findContentHelper(id));
+  }
 
-    Document document = documentService.findContentHelper(id);
-    MindMap mindMap = mindMapService.findContentHelper(id);
-
-    return aiService.request(document, mindMap);
+  public String createQuestion(UUID id, Authentication authentication) {
+    if (fileRepo.existsByIdAndAccount(id, authService.getAccount(authentication))) {
+      throw new NotFoundException(File.class, id);
+    }
+    return aiService.request(documentService.findContentHelper(id));
   }
 }
