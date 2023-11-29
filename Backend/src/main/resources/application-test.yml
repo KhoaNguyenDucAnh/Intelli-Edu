@@ -1,4 +1,6 @@
 spring:
+  main:
+    lazy-initialization: true
   datasource:
     url: jdbc:postgresql://ep-rough-mountain-85292401.ap-southeast-1.aws.neon.tech/Intelli%20Edu?user=robinkhoa06&password=Dq5loepZr8PW
   jpa:
@@ -10,5 +12,13 @@ spring:
         format_sql: true
   web:
     resources:
-      # static-locations: file:/media/Data/Project/Intelli-Edu/Frontend, file:/media/Data/Project/Intelli-Edu/Frontend/homepage/build/, file:/media/Data/Project/Intelli-Edu/Frontend/mindmap/dist/
-      static-locations: file:/Frontend, file:/Frontend/homepage/build/, file:/Frontend/mindmap/dist/
+      static-locations: file:/media/Data/Project/Intelli-Edu/Frontend,
+                        file:/media/Data/Project/Intelli-Edu/Frontend/homepage/build/,
+                        file:/media/Data/Project/Intelli-Edu/Frontend/mindmap/dist/,
+                        file:/media/Data/Project/Intelli-Edu/Frontend/todo-list/dist/,
+                        file:/Frontend,
+                        file:/Frontend/homepage/build/,
+                        file:/Frontend/mindmap/dist/,
+                        file:/Frontend/todo-list/dist/
+---
+domain: localhost:8080

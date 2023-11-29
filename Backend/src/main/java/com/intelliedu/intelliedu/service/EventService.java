@@ -1,18 +1,21 @@
 package com.intelliedu.intelliedu.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.intelliedu.intelliedu.dto.EventDto;
 import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.entity.Event;
 import com.intelliedu.intelliedu.entity.Schedule;
+import com.intelliedu.intelliedu.exception.AlreadyExistsException;
+import com.intelliedu.intelliedu.exception.NotFoundException;
 import com.intelliedu.intelliedu.mapper.EventMapper;
 import com.intelliedu.intelliedu.repository.EventRepo;
 import com.intelliedu.intelliedu.repository.ScheduleRepo;
@@ -36,7 +39,10 @@ public class EventService {
 	@Autowired
 	private AuthService authService;
 
-	public List<EventDto> findEvent(Authentication authentication) {
+  @Value("${domain}")
+  private String domain;
+
+	public Map<String, List<Object>> findEvent(Authentication authentication) {
 		return eventMapper.toEventDto(scheduleRepo.findByAccount(authService.getAccount(authentication)).stream().map(s -> s.getEvent()).toList());
 	}
 
@@ -46,23 +52,24 @@ public class EventService {
     return eventMapper.toEventDto(eventRepo.save(event));
 	}
 
-	public EventDto updateEvent(EventDto eventDto, Authentication authentication) {
+	public EventDto updateEvent(UUID id, EventDto eventDto, Authentication authentication) {
     Event event = eventRepo
-			.findByIdAndScheduleAccount(eventDto.getId(), authService.getAccount(authentication))
-			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+			.findByIdAndScheduleAccount(id, authService.getAccount(authentication))
+			.orElseThrow(() -> new NotFoundException(Event.class, id));
 
     return eventMapper.toEventDto(eventRepo.save(eventMapper.toEvent(eventDto, event)));
   }
 
 	@Transactional
-	public void deleteEvent(Long id, Authentication authentication) {
+	public void deleteEvent(UUID id, Authentication authentication) {
     Schedule schedule = scheduleRepo
       .findByAccountAndEvent(
         authService.getAccount(authentication),
         eventRepo
           .findById(id)
-          .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)))
-      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+          .orElseThrow(() -> new NotFoundException(Event.class, id)))
+      .orElseThrow(() -> new NotFoundException(Schedule.class, id));
+    
     if (schedule.isOwned()) {
 		  eventRepo.deleteByIdAndScheduleAccount(id, authService.getAccount(authentication));
 	  } else {
@@ -70,18 +77,25 @@ public class EventService {
     }
   }
 
-  public void shareEvent(Long id, Authentication authentication) {
+  public String shareEvent(UUID id, Authentication authentication) {
     Event event = eventRepo
 			.findByIdAndScheduleAccount(id, authService.getAccount(authentication))
-			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+			.orElseThrow(() -> new NotFoundException(Event.class, id));
     event.setShared(true);
     eventRepo.save(event);
+    return "http://" + domain + "/share/event/" + id.toString();
   }
 
-  public EventDto addSharedEvent(Long id, Authentication authentication) {
+  public EventDto addSharedEvent(UUID id, Authentication authentication) {
     Account account = authService.getAccount(authentication);
-    Event event = eventRepo.findByIdAndSharedIsTrueAndScheduleAccountIsNot(id, account).orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN));
+
+    if (eventRepo.existsByIdAndScheduleAccount(id, account)) {
+      throw new AlreadyExistsException(Event.class, id);
+    }
+
+    Event event = eventRepo.findByIdAndSharedIsTrue(id).orElseThrow(() -> new NotFoundException(Event.class, id));
     event.addSchedule(Schedule.builder().account(account).event(event).build());
+    
     return eventMapper.toEventDto(eventRepo.save(event));
   }
 }

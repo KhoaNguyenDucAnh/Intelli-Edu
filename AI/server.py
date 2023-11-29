@@ -16,7 +16,10 @@ def handle_client(connection):
     request = connection.recv(1048576)
     if request:
         request = json.loads(request.decode("utf-8"))
-        connection.send(main.main(request["Document"], request["MindMap"]))
+        response = main.main(request["Document"], request["MindMap"])
+        logging.info(response)
+        connection.send(response.encode("utf-8"))
+        logging.info("Complete")
     connection.close()
 
 def server(host, port):
@@ -29,7 +32,7 @@ def server(host, port):
         while True:
             try:
                 connection, address = server.accept()
-                logging.info(f"Accepted connection from {address}")
+                logging.info("Accepted connection")
                 threading.Thread(target=handle_client, args=(connection,)).start()
             except OSError as e:
                 logging.error(e)

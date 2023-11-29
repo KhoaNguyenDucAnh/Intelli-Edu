@@ -22,11 +22,18 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@SQLDelete(sql = "UPDATE mind_map SET deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE mind_map SET deleted = true WHERE file_id=?")
 @Where(clause = "deleted=false")
 public class MindMap extends Content {
 
   @Column(columnDefinition = "TEXT")
   @Convert(converter = HashMapConverter.class)
   private Map<String, Object> content;
+
+  @Column(columnDefinition = "TEXT")
+  @Convert(converter = HashMapConverter.class)
+  private Map<String, Object> preContent;
+
+  @Column(columnDefinition = "TEXT")
+  private String feedback;
 }

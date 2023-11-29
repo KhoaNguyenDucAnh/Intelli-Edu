@@ -1,14 +1,15 @@
-import { Modal , ScrollArea, Table, Text, MantineProvider, Box, TextInput, Button, Textarea} from "@mantine/core"
-import { useDidUpdate, useDisclosure, useForceUpdate } from '@mantine/hooks';
-import { useState } from 'react';
+import "../App.css"
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';  
+import Sharing from './Sharing'
 import dayjs from "dayjs"
-import "../App.css"
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { DateTimePicker } from "@mantine/dates";
-import { modals } from '@mantine/modals';
+import { Modal , ScrollArea, Table, Text, MantineProvider, Box, TextInput, Button, Textarea, Group, Stack} from "@mantine/core"
+import { useDidUpdate, useDisclosure, useForceUpdate } from '@mantine/hooks';
+import { useState } from 'react';
 
-const List = ({value, jobs, setJobs}) => {
+const List = ({value, jobs, setJobs, docname}) => {
     const days = ["THỨ HAI", "THỨ BA", "THỨ TƯ", "THỨ NĂM", "THỨ SÁU", "THỨ BẢY", "CHỦ NHẬT"]
     let maxx = Math.max(13, 1+Math.max(...[...jobs.values()].map(arr => arr.length)));
     const [time, setTime] = useState();
@@ -19,15 +20,17 @@ const List = ({value, jobs, setJobs}) => {
     const [currentdate, setCurrentdate] = useState();
     const [index, setIndex] = useState();
     const forceUpdate = useForceUpdate();
-
+    dayjs.extend(customParseFormat)
     let copy = structuredClone(jobs);
     function sort(map){
-        const sortedMap = new Map([...map.entries()].sort((a, b) => a[0].localeCompare(b[0])));
-        [...sortedMap.entries()].map(([_, value]) => {
-          value.sort((a, b) => a.time.localeCompare(b.time))
-        })
+        const sortedMap = new Map([...map.entries()].sort((a, b) => {
+          return dayjs(a[0], "DD-MM-YYYY").diff(dayjs(b[0], "DD-MM-YYYY"))
+        }));
+            [...sortedMap.entries()].map(([_, value]) => {
+              value.sort((a, b) => a.time.localeCompare(b.time))
+            })
         setJobs(sortedMap)
-      }
+    }
     const numberofday = {
         0: 31,
         1: 28,
@@ -71,13 +74,49 @@ const List = ({value, jobs, setJobs}) => {
     useDidUpdate(() => {
         // console.log(jobs)
     }, [jobs]);
+    function deleteEvent(id){
+        const APIurl = `http://localhost:8080/api/v1/event/${id}`
+        fetch(APIurl, {
+          method: 'DELETE', 
+          headers: {
+            "Content-Type": 'application/json',
+            "ngrok-skip-browser-warning": 1
+          }
+        })
+    }
+
+    function createEvent(job){
+        const APIurl = "http://localhost:8080/api/v1/event"
+        fetch(APIurl, {
+          method: 'POST', 
+          body: JSON.stringify(job),
+          headers: {
+            "Content-Type": 'application/json',
+            "ngrok-skip-browser-warning": 1
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("POST data:", data)
+            console.log("Jobs:", jobs)
+            let len = [...jobs.get(data.date.replace(/\//g, '-'))].length
+            jobs.get(data.date.replace(/\//g, '-'))[len-1].id = data.id
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+    
     function deleteItem(key, i) {
         copy = structuredClone(jobs)
+        const id = copy.get(key)[i].id
+        deleteEvent(id)
         copy.get(key).splice(i, 1);
         if(copy.get(key).length === 0)
           copy.delete(key)
-        setJobs(copy);
-      }
+        jobs = copy
+        sort(jobs)
+    }
     
     function addJob(){
         const dateTime = dayjs(time).format("DD-MM-YYYY")
@@ -97,70 +136,21 @@ const List = ({value, jobs, setJobs}) => {
             description: data
           })
         }
+        let jobinfo = {
+            id: null,
+            name: name,
+            date: dayjs(time).format("DD/MM/YYYY"),
+            time: dayjs(time).format("HH:mm"),
+            description: data,
+            shared: false
+          }
+        createEvent(jobinfo)
         setData()
         setName()
         setTime()
         sort(copy)
         jobs = copy
         // console.log(jobs)
-    }
-
-    useDidUpdate(() => {
-        changeModal(currentdate, index)
-    }, [name, data, time]);
-
-    const changeModal = (currentdate, index) =>{
-        if(name && data && time)
-            open()
-        let currentJob = null
-        let jsDate = null
-        if(currentdate && index){
-            currentJob = jobs.get(currentdate)[index]
-            jsDate = currentdate.split("-").reverse().join("-")
-        }
-        let content = (
-            <>
-                <TextInput
-                    // disabled
-                    label = "Tên công việc"
-                    value = {name} 
-                    onChange = {e => {
-                        setName(e.target.value)
-                    }}
-                    size = "xs"
-                />
-                <DateTimePicker
-                    // disabled
-                    label = "Thời gian"
-                    value = {time}
-                    onChange={setTime}
-                    minDate={new Date()}
-                />
-                <Textarea
-                    // disabled
-                    label = "Mô tả"
-                    value = {data}
-                    onChange={e => {
-                        setData(e.target.value)
-                    }}
-                />
-                <Button 
-                    ml = {"80%"}
-                    onClick={() => {
-                        deleteItem(currentdate, index)
-                        addJob(time)
-                        // if(dayjs(time).isBefore(dayjs(jsDate+" "+currentJob.time)) && dayjs(time).isSame(dayjs(jsDate+" "+currentJob.time), "day"))
-                        //     deleteItem(currentdate, index+1)
-                        // else deleteItem(currentdate, index)
-                        close()
-                    }}
-                    mt="md"
-                >
-                  Lưu
-                </Button>
-            </>
-        )
-        setContent(content)
     }
     const rows = [...Array(maxx)].map((_, i) => (
         <Table.Tr>
@@ -169,17 +159,25 @@ const List = ({value, jobs, setJobs}) => {
                     <Text>
                         {(() => {
                         let year = value.year()
+                        let month = value.month()
                         if((year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0))
                             numberofday[1] = 29
                         let date = value.date()+j-(6+value.day())%7
-                        if(date <= 0)
-                            date = date + numberofday[(value.month()+11)%12]
-                        else if(date > numberofday[value.month()]) 
-                            date = date - numberofday[value.month()]
+                        if(date <= 0){
+                            date = date + numberofday[(month+11)%12]
+                            month--
+                        }
+                        else if(date > numberofday[month]){
+                            date = date - numberofday[month]
+                            month++
+                        }
                         if(date < 10)
                             date = '0'+date
-                        date =  date+'-'+(value.month()+1)+'-'+value.year()
-                        if(jobs.has(date) && jobs.get(date).length > i){                           
+                        if(month+1 < 10)
+                            date = date+'-'+'0'+(month+1)+'-'+value.year()
+                        else date =  date+'-'+(month+1)+'-'+value.year()
+                        if(jobs.has(date) && jobs.get(date).length > i){    
+                                                   
                             return  <Box
                                         w={100}  
                                         onClick = {() => {
@@ -190,7 +188,7 @@ const List = ({value, jobs, setJobs}) => {
                                             setName(currentJob.name)
                                             setData(currentJob.description)
                                             setTime(new Date(jsDate+" "+currentJob.time))
-                                            changeModal(date, i)
+                                            open()
                                         }}
                                     >
                                         <Text>
@@ -203,6 +201,7 @@ const List = ({value, jobs, setJobs}) => {
                                         w={50}  
                                         h={43}  
                                     >
+                                        
                                     </Box>
                         })()}
                     </Text>
@@ -237,7 +236,71 @@ const List = ({value, jobs, setJobs}) => {
                 opened = {opened}
                 onClose = {close}
             >
-                {content}
+                <TextInput
+                    // disabled
+                    label = "Tên công việc"
+                    value = {name} 
+                    onChange = {e => {
+                        setName(e.target.value)
+                    }}
+                    size = "xs"
+                />
+                <DateTimePicker
+                    // disabled
+                    label = "Thời gian"
+                    value = {time}
+                    onChange={setTime}
+                    minDate={new Date()}
+                />
+                <Textarea
+                    // disabled
+                    label = "Mô tả"
+                    value = {data}
+                    onChange={e => {
+                        setData(e.target.value)
+                    }}
+                />
+                <Group 
+                    justify="space-between" 
+                    w={"100%"}
+                    mt = {"md"}
+                >
+                    <Sharing docname={docname} jobs = {jobs} date = {currentdate} index = {index}/>
+                    <Button.Group 
+                    >
+                        <Button 
+                            size = {"xs"} 
+                            ff = "Roboto"
+                            onClick = {() => {
+                                console.log("Delete", currentdate, index)
+                                deleteItem(currentdate, index)
+                                close()
+                            }}
+                            color = "#bddcff"
+                            radius={100}
+                        >
+                            <Text c = "black" ff="Montserrat" mt={2} fz="xs">
+                                Xóa 
+                            </Text>
+                        </Button>
+                        <Button 
+                            size = {"xs"}   
+                            ff = "Roboto"
+                            onClick={() => {
+                                console.log("Delete update", currentdate, index)
+                                deleteItem(currentdate, index)
+                                addJob(time)
+                                close()
+                            }}
+                            color = "#bddcff"
+                            radius={100}
+                        >
+                            <Text c = "black" ff="Montserrat" mt={2} fz="xs">
+                                Lưu
+                            </Text>
+                            </Button>
+                    </Button.Group>
+                </Group>
             </Modal>
         </MantineProvider>
     )

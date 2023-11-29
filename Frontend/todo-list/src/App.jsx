@@ -2,12 +2,12 @@ import './App.css'
 import Todaylist from './components/Todaylist';
 import MyCalendar from './components/Calendar'
 import List from './components/List'
-import Sharing from './components/Sharing'
 import React from 'react'
 import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { IconSun, IconMoon, IconChevronLeft,  IconChevronRight, IconPlus} from '@tabler/icons-react';
 import { Text, Group, Stack, Button, Modal, Textarea, MantineProvider, TextInput, useMantineColorScheme, useComputedColorScheme, ActionIcon} from '@mantine/core';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { DateTimePicker } from '@mantine/dates';
 // import cx from 'clsx';
@@ -15,7 +15,7 @@ import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 
 function App(){
-  let createAPI = "https://intelli-edu.onrender.com/api/v1/event"
+  const APIurl = "http://localhost:8080/api/v1/event"
   const [value, setValue] = useState(dayjs())
   const [name, setName] = useState("");
   const [date, setDate] = useState(new Date());
@@ -26,11 +26,40 @@ function App(){
   const [opened, { open, close }] = useDisclosure(false);
   const {setColorScheme} = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme('light');
-  function sort(map){
-    const sortedMap = new Map([...map.entries()].sort((a, b) => a[0].localeCompare(b[0])));
-    [...sortedMap.entries()].map(([_, value]) => {
-      value.sort((a, b) => a.time.localeCompare(b.time))
+  dayjs.extend(customParseFormat)
+  function convert(data){
+    console.log("GET Data:", data)
+    Object.entries(data).map(element => {
+      let key = dayjs(element[0], "D/M/YYYY").format("DD-MM-YYYY")
+      console.log(key)
+      jobs.set(key, element[1])
     })
+    sort(jobs)
+  }
+  function getData(){
+    fetch(APIurl, {
+      method: 'GET', 
+      headers: {
+        "Content-Type": 'application/json',
+        "ngrok-skip-browser-warning": 1
+      }
+    })
+    .then(response => response.json())
+    .then(data => {convert(data)})
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  }
+  useEffect(() => {
+    getData()
+  }, [])
+  function sort(map){
+    const sortedMap = new Map([...map.entries()].sort((a, b) => {
+      return dayjs(a[0], "DD-MM-YYYY").diff(dayjs(b[0], "DD-MM-YYYY"))
+    }));
+        [...sortedMap.entries()].map(([_, value]) => {
+          value.sort((a, b) => a.time.localeCompare(b.time))
+        })
     setJobs(sortedMap)
   }
   const toggleScheme = () => {
@@ -46,13 +75,23 @@ function App(){
     
     
   }
-   function createEvent(data){
-    fetch(url, {
+   function createEvent(job){
+    console.log(JSON.stringify(job))
+    fetch(APIurl, {
       method: 'POST', 
-      body: JSON.stringify(data),
+      body: JSON.stringify(job),
+      headers: {
+        "Content-Type": 'application/json',
+        "ngrok-skip-browser-warning": 1
+      }
     })
     .then(response => response.json())
-    .then(data => console.log(data))
+    .then(data => {
+      console.log("POST data:", data)
+      console.log("Jobs:", jobs)
+      let len = [...jobs.get(data.date.replace(/\//g, '-'))].length
+      jobs.get(data.date.replace(/\//g, '-'))[len-1].id = data.id
+    })
     .catch((error) => {
       console.error('Error:', error);
     });
@@ -78,18 +117,21 @@ function App(){
         id : null
       })
     }
-    let data = {
+    let jobinfo = {
+      id: null,
       name: title,
-      deadline: dateTime + " " + jobTime,
+      date: dayjs(time).format("DD/MM/YYYY"),
+      time: dayjs(time).format("HH:mm"),
       description: data,
       shared: false
     }
-    // createEvent(data)
+    createEvent(jobinfo)
     setData('')
     setTitle('')
     setTime()
     sort(jobs)
     close();
+    console.log(jobs)
   }
   return (
     <MantineProvider theme={{ colorScheme: 'dark'}}>
@@ -217,10 +259,11 @@ function App(){
                 style = {{
                   width: 200
                 }}
+                mr = {100}
               />
-              <Sharing docname = {name} jobs = {jobs}/>
+              <Text/>
             </Group>
-            <List value = {dayjs(value)} jobs = {jobs} setJobs = {setJobs}/>
+            <List value = {dayjs(value)} jobs = {jobs} setJobs = {setJobs} docname = {name}/>
           </Stack>
         </Group>  
      </MantineProvider>

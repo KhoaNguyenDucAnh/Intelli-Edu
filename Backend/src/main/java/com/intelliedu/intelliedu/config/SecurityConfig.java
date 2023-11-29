@@ -18,12 +18,15 @@ public class SecurityConfig {
     "/", "/homepage/.*", "/static/.*", "/manifest.json", "/logo192.png",
     "/login",
     "/register",
+    "/assets/.*",
     "/error",
     "/activate/.*", "/api/v1/auth/.*",
+    //"/.*"
   };
   private static final String[] PERMITALLWITHAUTH = new String[] {
     "/search",
-    "/api/v1/(comment|document|mindmap|question)(\\?[^/\\s]*)?"
+    "/api/v1/(comment|document|mindmap|question)(\\?[^/\\s]*)?",
+    "/api/v1/file/check-mindmap/.*"
   };
   public static final String PERMITALL_REGEX = "^(" + String.join("|", PERMITALL) + ")$";
   public static final String PERMITALLWITHAUTH_REGEX = "^(" + String.join("|", PERMITALLWITHAUTH) + ")$";

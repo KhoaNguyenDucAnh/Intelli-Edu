@@ -9,12 +9,13 @@
 name: Docker (Testing)
 
 on:
+  push:
+    branches: [ "testing" ]
   pull_request:
     branches: [ "testing" ]
 
 jobs:
-  build:
-    name: Build
+  Java:
     runs-on: ubuntu-latest
 
     steps:
@@ -31,27 +32,6 @@ jobs:
       - name: Build with Maven
         run: mvn clean install package -q -f Backend/pom.xml -Dspring.profiles.active=test
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: intelli-edu
-          path: Backend/target/intelliedu-0.0.1-SNAPSHOT.jar
-  
-  dockerize:
-    name: Dockerize
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Download artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: intelli-edu
-          path: Backend/target/intelliedu-0.0.1-SNAPSHOT.jar
-
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
         with:
@@ -59,12 +39,23 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR }}
 
-      - name: Build Docker image
+      - name: Build and push Docker image
         run: |
-          docker buildx create --use
+          docker build -f Backend/test.Dockerfile -t ghcr.io/khoanguyenducanh/intelli-edu:test --push .
+  Python:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR }}
 
-          docker buildx build \
-            --platform linux/amd64,windows/amd64 \
-            -f test.Dockerfile \
-            -t ghcr.io/khoanguyenducanh/intelli-edu:test \
-            --push .
+      - name: Build and push Docker image
+        run: |
+          docker build -f AI/.Dockerfile -t ghcr.io/khoanguyenducanh/python:test --push .
