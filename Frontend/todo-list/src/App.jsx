@@ -10,9 +10,11 @@ import { Text, Group, Stack, Button, Modal, Textarea, MantineProvider, TextInput
 import { useState, useEffect } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { DateTimePicker } from '@mantine/dates';
+import { Notifications } from '@mantine/notifications';
 // import cx from 'clsx';
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
+import '@mantine/notifications/styles.css';
 
 function App(){
   const APIurl = "http://localhost:8080/api/v1/event"
@@ -135,6 +137,7 @@ function App(){
   }
   return (
     <MantineProvider theme={{ colorScheme: 'dark'}}>
+        <Notifications />
         <Group spacing = {0} justify="space-between">
           <Stack 
             id = "todaylist"
