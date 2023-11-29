@@ -15,7 +15,6 @@ import org.springframework.web.server.ResponseStatusException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.intelliedu.intelliedu.dto.QuestionDto;
 import com.intelliedu.intelliedu.dto.QuestionDtoDetail;
 import com.intelliedu.intelliedu.entity.Document;
 import com.intelliedu.intelliedu.entity.MindMap;
@@ -34,6 +33,14 @@ public class AIService {
   private ObjectMapper objectMapper = new ObjectMapper();
 
   public String checkMindMap(Document document, MindMap mindMap) {
+    System.out.println(toMessage(
+        Map.of(
+          "Request", "Check Mindmap",
+          "Document", document.getContent(),
+          "MindMap", toMessage(mindMap.getContent())
+        )
+      )
+);
     return request(
       toMessage(
         Map.of(
