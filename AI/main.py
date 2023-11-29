@@ -99,17 +99,18 @@ def to_mindmap(file: str):
     claude_api.delete_conversation(conversation_id)
     return json.loads(str(mindmap))
 
-
-def create_questions(file: str):
-    conversation_id = claude_api.create_new_chat()["uuid"]
+def create_questions(file):
+    conversation_id = claude_api.create_new_chat()['uuid']
     mindmap = claude_api.send_message(
-        "Can you create 5 multiple choice questions with 4 options from this in json with type: questions->options. Only answer with the json.",
+        """
+        Create a list of 5 questions in Vietnamese for that essay. For each question, include 1 correct answer and 3 incorrect answers. Convert each question to json with the following structure: {"question": question goes here, "answer": [correct answer, incorrect answer 1, incorrect answer 2, incorrect answer 3]}. For Yes No question, fill in the remaining 2 options with null value
+        Only answer with the json
+        """,
         conversation_id,
-        attachment=file,
+        attachment=file
     )
     claude_api.delete_conversation(conversation_id)
-    return json.loads(str(mindmap))
-
+    return json.loads(str(mindmap).split("```")[1][5:-1])
 
 def main(document, mindmap):
     nChain = np.zeros(2)

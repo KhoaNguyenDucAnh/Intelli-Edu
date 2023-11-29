@@ -19,18 +19,7 @@ def handle_client(connection):
         if request["Request"] == "Check Mindmap":
             response = main.main(request["Document"], request["MindMap"])
         elif request["Request"] == "Generate Question":
-            response = str([
-                    {
-			            "question": "a",
-			            "answer": [
-				            "a",
-				            "b",
-				            "c",
-				            "d"
-			            ]
-		            }
-	            ]
-            )
+            response = str(main.create_questions(request["Document"]))
         else:
             response = "Error"
         logging.info(response)
