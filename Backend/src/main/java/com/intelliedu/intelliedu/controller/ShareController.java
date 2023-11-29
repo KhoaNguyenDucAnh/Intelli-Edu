@@ -24,6 +24,6 @@ public class ShareController {
   @GetMapping("/event/{id}")
   public String addSharedEvent(@PathVariable UUID id, Authentication authentication) {
     eventService.addSharedEvent(id, authentication);
-    return "forward:/todo-list/dist/index.html";
+    return "redirect:/todo";
   }
 }

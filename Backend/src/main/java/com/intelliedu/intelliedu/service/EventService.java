@@ -86,16 +86,22 @@ public class EventService {
     return "http://" + domain + "/share/event/" + id.toString();
   }
 
-  public EventDto addSharedEvent(UUID id, Authentication authentication) {
+  public void addSharedEvent(UUID id, Authentication authentication) {
     Account account = authService.getAccount(authentication);
 
     if (eventRepo.existsByIdAndScheduleAccount(id, account)) {
-      throw new AlreadyExistsException(Event.class, id);
+      return;
+      // throw new AlreadyExistsException(Event.class, id);
     }
 
-    Event event = eventRepo.findByIdAndSharedIsTrue(id).orElseThrow(() -> new NotFoundException(Event.class, id));
+    Event event = eventRepo.findByIdAndSharedIsTrue(id).orElse(null);
+
+    if (event == null) {
+      return;
+    }
+
     event.addSchedule(Schedule.builder().account(account).event(event).build());
     
-    return eventMapper.toEventDto(eventRepo.save(event));
+    eventRepo.save(event);
   }
 }
