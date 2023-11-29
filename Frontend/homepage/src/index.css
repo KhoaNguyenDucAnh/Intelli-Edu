@@ -753,6 +753,12 @@ input {
   color: #d9212c;
 }
 
+.loginErrorMessage{
+  font-size: 1.2vw;
+  margin: 0.4vw 0 0 0.2vw;
+  color: #d9212c;
+}
+
 .registerPage {
   overflow: hidden;
   background-color: #EBEFFF;
@@ -795,7 +801,7 @@ input {
 
 .registerPageHeader {
   margin: 0;
-  margin: 6vh 0;
+  margin: 10vh 0 6vh 0;
   font-weight: bold;
   font-size: 1.7vw;
   text-align: center;

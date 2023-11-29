@@ -4,19 +4,17 @@ import { Link } from "react-router-dom";
 function Register() {
 
     const [registerFormData, setRegisterFormData] = useState({
-        fullname: '',
         username: '',
         email: '',
         password: '',
-        confirmpassword: ''
+        confirmPassword: ''
     });
 
     const [validationErrors, setValidationErrors] = useState({
-        fullname: false,
         username: false,
         email: false,
         password: false,
-        confirmpassword: false,
+        confirmPassword: false,
         wrongconfirm: false
     });
 
@@ -32,18 +30,12 @@ function Register() {
         let isValid = true;
 
         const errors = {
-            fullname: false,
             username: false,
             email: false,
             password: false,
-            confirmpassword: false,
+            confirmPassword: false,
             wrongconfirm: false
         };
-
-        if (!registerFormData.fullname.trim()) {
-            isValid = false;
-            errors.fullname = true
-        }
 
         if (!registerFormData.username.trim()) {
             isValid = false;
@@ -60,12 +52,12 @@ function Register() {
             errors.password = true
         }
 
-        if (!registerFormData.confirmpassword.trim()) {
+        if (!registerFormData.confirmPassword.trim()) {
             isValid = false;
-            errors.confirmpassword = true
+            errors.confirmPassword = true
         }
 
-        if (registerFormData.password !== registerFormData.confirmpassword && registerFormData.confirmpassword.trim()) {
+        if (registerFormData.password !== registerFormData.confirmPassword && registerFormData.confirmPassword.trim()) {
             isValid = false
             errors.wrongconfirm = true
         }
@@ -79,9 +71,33 @@ function Register() {
 
         if (validateForm()) {
             // Access form data from the registerFormData object
-            const { fullname, username, email, password, confirmpassword } = registerFormData;
+            const { username, email, password, confirmPassword } = registerFormData;
+
+            // Fetch function to send data to the backend
+            fetch('http://localhost:8080/api/v1/auth/register', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, username, password, confirmPassword }),
+              })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('successful');
+                        return response.json();
+                    } else {
+                        throw new Error(`HTTP Error: ${response.status}`);
+                    }
+                })
+                .then((data) => {
+                  console.log('Register response:', data);
+                })
+                .catch((error) => {
+                  console.error('Register error:', error);
+                });
+
             // Reset the form if needed
-            setRegisterFormData({ fullname: '', username: '', email: '', password: '', confirmpassword: '' });
+            setRegisterFormData({ username: '', email: '', password: '', confirmPassword: '' });
         }
     }
     return (
@@ -94,18 +110,6 @@ function Register() {
             <div className="registerPageContent">
                 <p className="registerPageHeader">Đăng kí tài khoản</p>
                 <form className="registerForm" onSubmit={handleSubmit}>
-                    <input
-                        className="registerInput"
-                        type="text"
-                        id="fullname"
-                        name="fullname"
-                        value={registerFormData.fullname}
-                        onChange={handleInputChange}
-                        autocomplete="off"
-                        placeholder="Họ tên"
-                    />
-                    {!validationErrors.fullname && <div className="validationSpace" />}
-                    {validationErrors.fullname && <p className="registerFormValidationMessage">Họ tên không được trống</p>}
                     <input
                         className="registerInput"
                         type="text"
@@ -143,18 +147,18 @@ function Register() {
                     <input
                         className="registerInput"
                         type="password"
-                        id="confirmpassword"
-                        name="confirmpassword"
-                        value={registerFormData.confirmpassword}
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        value={registerFormData.confirmPassword}
                         onChange={handleInputChange}
                         placeholder="Xác nhận mật khẩu"
                     />
-                    {!(validationErrors.confirmpassword || validationErrors.wrongconfirm) && <div className="validationSpace" />}
-                    {validationErrors.confirmpassword && <p className="registerFormValidationMessage">Mật khẩu không được trống</p>}
+                    {!(validationErrors.confirmPassword || validationErrors.wrongconfirm) && <div className="validationSpace" />}
+                    {validationErrors.confirmPassword && <p className="registerFormValidationMessage">Mật khẩu không được trống</p>}
                     {validationErrors.wrongconfirm && <p className="registerFormValidationMessage">Mật khẩu xác nhận không đúng</p>}
-                    <Link to="/classbook">
-                        <button className="registerSubmitButton" type="submit">Đăng kí</button>
-                    </Link>
+                    {/* <Link to="/classbook"> */}
+                    <button className="registerSubmitButton" type="submit">Đăng kí</button>
+                    {/* </Link> */}
                 </form>
                 <span className="registerPageLoginText">
                     Bạn đã có tài khoản?

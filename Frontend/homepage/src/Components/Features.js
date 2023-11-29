@@ -28,18 +28,6 @@ function Features() {
                     <Comeherebutton />
                 </div>
             </div>
-            <div className='feature'>
-                <div className='featureContent'>
-                    <div className='featureContentHeader'>
-                        <div className='line'/>
-                        <p className='featureContentHeaderText'>GIẢI TRÍ SAU NHỮNG GIỜ HỌC</p>
-                    </div>
-                    <img alt="" className='featureName' src={require('../images/featurename3.png')}/>
-                    <p className='featureContentText'>Vừa học vừa chơi với một trò chơi giáo dục dựa trên Mario sẽ mang đến cho bạn trải nghiệm phiêu lưu đầy hấp dẫn</p>
-                    <Comeherebutton />
-                </div>
-                <img alt="" className='featurePicture' src={require('../images/feaaturepicture3.png')}/>
-            </div>
         </div>
     )
 }
