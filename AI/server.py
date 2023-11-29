@@ -16,7 +16,23 @@ def handle_client(connection):
     request = connection.recv(1048576)
     if request:
         request = json.loads(request.decode("utf-8"))
-        response = main.main(request["Document"], request["MindMap"])
+        if request["Request"] == "Check Mindmap":
+            response = main.main(request["Document"], request["MindMap"])
+        elif request["Request"] == "Generate Question":
+            response = str([
+                    {
+			            "question": "a",
+			            "answer": [
+				            "a",
+				            "b",
+				            "c",
+				            "d"
+			            ]
+		            }
+	            ]
+            )
+        else:
+            response = "Error"
         logging.info(response)
         connection.send(response.encode("utf-8"))
         logging.info("Complete")
