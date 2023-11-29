@@ -51,8 +51,6 @@ public class Account implements UserDetails {
   @Enumerated(EnumType.STRING)
   private Role role;
 
-	//private Integer point;
-
   @Builder.Default
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private List<File> file = new ArrayList<>();
