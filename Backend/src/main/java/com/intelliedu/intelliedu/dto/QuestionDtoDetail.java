@@ -2,8 +2,7 @@ package com.intelliedu.intelliedu.dto;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.intelliedu.intelliedu.entity.QuestionDetail;
+import java.util.UUID;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -19,6 +18,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class QuestionDtoDetail {
+
+  private UUID id;
 
   @NotEmpty
   private String question;

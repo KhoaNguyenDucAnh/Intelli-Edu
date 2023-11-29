@@ -1,29 +1,27 @@
 package com.intelliedu.intelliedu.service;
 
-import java.io.IOException;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.intelliedu.intelliedu.dto.FileDto;
+import com.intelliedu.intelliedu.dto.QuestionDto;
 import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.entity.Document;
 import com.intelliedu.intelliedu.entity.File;
 import com.intelliedu.intelliedu.entity.MindMap;
+import com.intelliedu.intelliedu.entity.Question;
 import com.intelliedu.intelliedu.exception.AlreadyExistsException;
 import com.intelliedu.intelliedu.exception.NotFoundException;
 import com.intelliedu.intelliedu.mapper.FileMapper;
+import com.intelliedu.intelliedu.mapper.QuestionMapper;
 import com.intelliedu.intelliedu.repository.FileRepo;
 import com.intelliedu.intelliedu.repository.MindMapRepo;
 import com.intelliedu.intelliedu.security.service.AuthService;
@@ -40,6 +38,9 @@ public class FileService {
 
   @Autowired
   private FileMapper fileMapper;
+
+  @Autowired
+  private QuestionMapper questionMapper;
 
   @Autowired
   private FileRepo fileRepo;
@@ -156,10 +157,10 @@ public class FileService {
     Document document = documentService.findContentHelper(id);
     MindMap mindMap = mindMapService.findContentHelper(id);
 
-    if (document.getPreContent().equals(document.getContent()) && mindMap.getPreContent().equals(mindMap.getPreContent())) {
+    if (document.getPreContent() != null && document.getPreContent().equals(document.getContent()) && mindMap.getPreContent() != null && mindMap.getPreContent().equals(mindMap.getPreContent())) {
       return mindMap.getFeedback();
     } else {
-      String feedback = aiService.request(documentService.findContentHelper(id), mindMapService.findContentHelper(id));
+      String feedback = aiService.checkMindMap(documentService.findContentHelper(id), mindMapService.findContentHelper(id));
 
       document.setPreContent(document.getPreContent());
       mindMap.setPreContent(mindMap.getContent());
@@ -170,10 +171,13 @@ public class FileService {
     }
   }
 
-  /*public CompletableFuture<String> createQuestion(UUID id, Authentication authentication) {
-    if (fileRepo.existsByIdAndAccount(id, authService.getAccount(authentication))) {
+  public QuestionDto generateQuestion(UUID id, Authentication authentication) {
+    if (!fileRepo.existsByIdAndAccount(id, authService.getAccount(authentication))) {
       throw new NotFoundException(File.class, id);
     }
-    return aiService.request(documentService.findContentHelper(id));
-  }*/
+    Question question = questionService.findContentHelper(id);
+    System.out.println(aiService.generateQuestion(documentService.findContentHelper(id)));
+    question.setContent(questionMapper.toQuestionDetail(aiService.generateQuestion(documentService.findContentHelper(id))));
+    return questionService.saveContent(question);
+  }
 }

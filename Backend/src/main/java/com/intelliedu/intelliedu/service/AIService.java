@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.intelliedu.intelliedu.dto.QuestionDto;
+import com.intelliedu.intelliedu.dto.QuestionDtoDetail;
 import com.intelliedu.intelliedu.entity.Document;
 import com.intelliedu.intelliedu.entity.MindMap;
 
@@ -29,10 +33,11 @@ public class AIService {
 
   private ObjectMapper objectMapper = new ObjectMapper();
 
-  public String request(Document document, MindMap mindMap) {
+  public String checkMindMap(Document document, MindMap mindMap) {
     return request(
       toMessage(
         Map.of(
+          "Request", "Check Mindmap",
           "Document", document.getContent(),
           "MindMap", toMessage(mindMap.getContent())
         )
@@ -40,8 +45,21 @@ public class AIService {
     );
  	}
 
-  public String request(Document document) {
-    return request(toMessage(Map.of("Document", document.getContent())));
+  public List<QuestionDtoDetail> generateQuestion(Document document) {
+    try {
+      return objectMapper.readValue(
+        request(toMessage(
+          Map.of(
+            "Request", "Generate Question", 
+            "Document", document.getContent()
+          )
+        )).replace("'", "\""),
+        new TypeReference<List<QuestionDtoDetail>>(){}
+      );
+    } catch (JsonProcessingException e) {
+      e.printStackTrace();
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   private String toMessage(Map<String, Object> message) {

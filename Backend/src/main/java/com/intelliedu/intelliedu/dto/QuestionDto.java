@@ -1,6 +1,6 @@
 package com.intelliedu.intelliedu.dto;
 
-import java.util.Map;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,5 +18,5 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = false)
 public class QuestionDto extends ContentDto {
 
-  private Map<Integer, QuestionDtoDetail> content;
+  private List<QuestionDtoDetail> content;
 }

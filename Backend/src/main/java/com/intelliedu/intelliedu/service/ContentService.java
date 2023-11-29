@@ -80,7 +80,7 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
 
   protected abstract C createContent(String title);
  
-  private CDto saveContent(C content) {
+  protected CDto saveContent(C content) {
     return contentMapper.toDto(contentRepo.save(content));
   }
   

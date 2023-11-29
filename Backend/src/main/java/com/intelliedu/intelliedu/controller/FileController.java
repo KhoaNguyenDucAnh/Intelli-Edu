@@ -1,7 +1,6 @@
 package com.intelliedu.intelliedu.controller;
 
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.intelliedu.intelliedu.dto.FileDto;
+import com.intelliedu.intelliedu.dto.QuestionDto;
 import com.intelliedu.intelliedu.service.FileService;
 
 import jakarta.validation.Valid;
@@ -60,5 +60,10 @@ public class FileController {
   @GetMapping("/check-mindmap/{id}")
   public String checkMindmap(@PathVariable UUID id, Authentication authentication) {
     return fileService.checkMindMap(id, authentication);
+  }
+
+  @GetMapping("/generate-question/{id}")
+  public QuestionDto generateQuestion(@PathVariable UUID id, Authentication authentication) {
+    return fileService.generateQuestion(id, authentication);
   }
 }
