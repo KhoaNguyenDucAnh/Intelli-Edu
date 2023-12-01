@@ -16,16 +16,16 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+//@Builder
 public class QuestionDtoDetail {
 
   private UUID id;
 
   @NotEmpty
-  private String question;
+  private String questionDetail;
 
   @Builder.Default
-  private List<String> answer = new ArrayList<>();
+  private List<String> answers = new ArrayList<>();
 
   //public void setAnswer(QuestionDetail questionDetail) {
     /*answer.add(questionDetail.getCorrectAnswer());

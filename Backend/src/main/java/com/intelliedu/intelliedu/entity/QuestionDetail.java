@@ -5,9 +5,11 @@ import java.util.UUID;
 import com.intelliedu.intelliedu.dto.QuestionDtoDetail;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+//@Builder
 @Entity
 public class QuestionDetail {
 
@@ -27,7 +29,7 @@ public class QuestionDetail {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  private String question;
+  private String questionDetail;
 
   private String correctAnswer;
 
@@ -37,10 +39,13 @@ public class QuestionDetail {
 
   private String incorrectAnswer3;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  private Question question;
+
   public void setAnswer(QuestionDtoDetail questionDtoDetail) {
-    correctAnswer = questionDtoDetail.getAnswer().get(0);
-    incorrectAnswer1 = questionDtoDetail.getAnswer().get(1);
-    incorrectAnswer2 = questionDtoDetail.getAnswer().get(2);
-    incorrectAnswer3 = questionDtoDetail.getAnswer().get(3);
+    correctAnswer = questionDtoDetail.getAnswers().get(0);
+    incorrectAnswer1 = questionDtoDetail.getAnswers().get(1);
+    incorrectAnswer2 = questionDtoDetail.getAnswers().get(2);
+    incorrectAnswer3 = questionDtoDetail.getAnswers().get(3);
   }
 }
