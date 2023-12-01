@@ -8,7 +8,6 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -44,7 +43,7 @@ public class File {
 	@UpdateTimestamp
 	private ZonedDateTime lastOpened;
 
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  @ManyToOne(fetch = FetchType.LAZY)
   private Account account;
 
   @Builder.Default
