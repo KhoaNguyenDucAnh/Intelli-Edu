@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,7 +23,6 @@ public class QuestionDtoDetail {
   @NotEmpty
   private String questionDetail;
 
-  @Builder.Default
   private List<String> answers = new ArrayList<>();
 
   //public void setAnswer(QuestionDetail questionDetail) {
