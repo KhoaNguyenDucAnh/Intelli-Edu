@@ -7,5 +7,4 @@ import com.intelliedu.intelliedu.entity.Question;
  */
 public interface QuestionRepo extends ContentRepo<Question> {
 
-  
 }

@@ -1,11 +1,11 @@
 package com.intelliedu.intelliedu.controller;
 
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.intelliedu.intelliedu.dto.DocumentDto;
@@ -28,7 +27,6 @@ import jakarta.validation.Valid;
  */
 @RestController
 @RequestMapping("/api/v1/document")
-@ResponseStatus(code = HttpStatus.OK)
 public class DocumentController {
 
 	@Autowired
@@ -40,22 +38,17 @@ public class DocumentController {
   }
 
   @PostMapping("/{id}")
-  public DocumentDto createDocument(@PathVariable String id, Authentication authentication) {
+  public DocumentDto createDocument(@PathVariable UUID id, Authentication authentication) {
     return documentService.createContent(id, authentication);
   }
 
   @PutMapping("/{id}")
-  public DocumentDto updateDocument(@PathVariable String id, @RequestBody @Valid DocumentDto documentDto, Authentication authentication) {
+  public DocumentDto updateDocument(@PathVariable UUID id, @RequestBody @Valid DocumentDto documentDto, Authentication authentication) {
     return documentService.updateContent(id, documentDto, authentication);
   }
 
   @DeleteMapping("/{id}")
-  public void deleteDocument(@PathVariable String id, Authentication authentication) {
+  public void deleteDocument(@PathVariable UUID id, Authentication authentication) {
     documentService.deleteContent(id, authentication);
-  }
-
-  @PostMapping("/share/{id}")
-  public void shareDocument(@PathVariable String id, Authentication authentication) {
-    documentService.shareContent(id, authentication);
   }
 }

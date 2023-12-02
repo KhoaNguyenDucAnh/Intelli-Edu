@@ -1,9 +1,10 @@
 package com.intelliedu.intelliedu.controller;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +14,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.intelliedu.intelliedu.dto.FileDto;
+import com.intelliedu.intelliedu.dto.QuestionDto;
 import com.intelliedu.intelliedu.service.FileService;
 
 import jakarta.validation.Valid;
@@ -26,7 +27,6 @@ import jakarta.validation.Valid;
  */
 @RestController
 @RequestMapping("/api/v1/file")
-@ResponseStatus(code = HttpStatus.OK)
 public class FileController {
 
   @Autowired
@@ -38,7 +38,7 @@ public class FileController {
   }
 
   @GetMapping("/{id}")
-  public FileDto findFile(@PathVariable String id, Authentication authentication) {
+  public FileDto findFile(@PathVariable UUID id, Authentication authentication) {
     return fileService.findFile(id, authentication);
   }
 
@@ -47,18 +47,23 @@ public class FileController {
     return fileService.createFile(fileDto, authentication);
   }
 
-  @PutMapping("")
-  public FileDto updateFile(@RequestBody @Valid FileDto fileDto, Authentication authentication) {
-    return fileService.updateFile(fileDto, authentication);
+  @PutMapping("/{id}")
+  public FileDto updateFile(@PathVariable UUID id, @RequestBody @Valid FileDto fileDto, Authentication authentication) {
+    return fileService.updateFile(id, fileDto, authentication);
   }
 
   @DeleteMapping("/{id}")
-  public void deleteFile(@PathVariable String id, Authentication authentication) {
+  public void deleteFile(@PathVariable UUID id, Authentication authentication) {
     fileService.deleteFile(id, authentication);
   }
 
-  @PostMapping("/{id}")
-  public String checkMindmap(@PathVariable String id, Authentication authentication) {
+  @GetMapping("/check-mindmap/{id}")
+  public String checkMindmap(@PathVariable UUID id, Authentication authentication) {
     return fileService.checkMindMap(id, authentication);
+  }
+
+  @GetMapping("/generate-question/{id}")
+  public QuestionDto generateQuestion(@PathVariable UUID id, Authentication authentication) {
+    return fileService.generateQuestion(id, authentication);
   }
 }

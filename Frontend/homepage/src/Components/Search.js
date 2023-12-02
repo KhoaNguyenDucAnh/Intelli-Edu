@@ -18,7 +18,7 @@ function Search() {
             <div className="leaderboard">
                 <img alt="" className='trophy' src={require('../images/trophy.png')}/>
                 <p className='trophyText1'>BXH</p>
-                <p className='trophyText2'>Tháng 7</p>
+                <p className='trophyText2'>Tháng 11</p>
                 <LeaderboardItem username='MU' likes='10000' type='0'/>
                 <LeaderboardItem username='MC' likes='8000' type='1'/>
                 <LeaderboardItem username='AIA' likes='1' type='2'/>

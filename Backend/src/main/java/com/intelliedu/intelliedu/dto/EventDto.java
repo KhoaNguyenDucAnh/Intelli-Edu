@@ -2,10 +2,14 @@ package com.intelliedu.intelliedu.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.intelliedu.intelliedu.config.EventType;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,15 +22,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonInclude(Include.NON_NULL)
 public class EventDto {
 
-	private Long id;
+	private UUID id;
 
+  @NotNull(message = "Name must not be empty")
 	private String name;
 
+  @NotNull(message = "Date must not be empty")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "d/M/yyyy")
 	private LocalDate date;
 
+  @NotNull(message = "Time must not be empty")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
 	private LocalTime time;
 	

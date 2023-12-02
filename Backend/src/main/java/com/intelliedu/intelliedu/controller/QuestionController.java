@@ -1,11 +1,11 @@
 package com.intelliedu.intelliedu.controller;
 
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,20 +15,20 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.intelliedu.intelliedu.dto.QuestionDto;
+import com.intelliedu.intelliedu.dto.QuestionDtoDetail;
 import com.intelliedu.intelliedu.service.QuestionService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 
 /**
  * QuestionController
  */
 @RestController
 @RequestMapping("/api/v1/question")
-@ResponseStatus(code = HttpStatus.OK)
 public class QuestionController {
 
   @Autowired
@@ -40,22 +40,32 @@ public class QuestionController {
   }
 
   @PostMapping("/{id}")
-  public QuestionDto createQuestion(@PathVariable String id, Authentication authentication) {
+  public QuestionDto createQuestion(@PathVariable UUID id, Authentication authentication) {
     return questionService.createContent(id, authentication);
   }
 
   @PutMapping("/{id}")
-  public QuestionDto updateQuestion(@PathVariable String id, @RequestBody @Valid QuestionDto questionDto, Authentication authentication) {
+  public QuestionDto updateQuestion(@PathVariable UUID id, @RequestBody @Valid QuestionDto questionDto, Authentication authentication) {
     return questionService.updateContent(id, questionDto, authentication);
   }
 
   @DeleteMapping("/{id}")
-  public void deleteQuestion(@PathVariable String id, Authentication authentication) {
+  public void deleteQuestion(@PathVariable UUID id, Authentication authentication) {
     questionService.deleteContent(id, authentication);
   }
 
-  @PostMapping("/share/{id}")
-  public void shareDocument(@PathVariable String id, Authentication authentication) {
-    questionService.shareContent(id, authentication);
+  @GetMapping("/{id}/{questionId}")
+  public Boolean checkQuestion(@PathVariable UUID id, @PathVariable UUID questionId, @RequestBody @NotEmpty String answer, Authentication authentication) {
+    return questionService.checkQuestion(id, questionId, answer, authentication);
+  }
+
+  @PostMapping("/q/{id}")
+  public QuestionDto createQuestionDetail(@PathVariable UUID id, @RequestBody @Valid QuestionDtoDetail questionDtoDetail, Authentication authentication) {
+    return questionService.createQuestionDetail(id, questionDtoDetail, authentication);
+  }
+
+  @PutMapping("/q/{id}/{questionId}")
+  public QuestionDto updateQuestionDetail(@PathVariable UUID id, @PathVariable UUID questionId, @RequestBody @Valid QuestionDtoDetail questionDtoDetail, Authentication authentication) {
+    return questionService.updateQuestionDetail(id, questionId, questionDtoDetail, authentication);
   }
 }

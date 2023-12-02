@@ -1,9 +1,11 @@
 package com.intelliedu.intelliedu.entity;
 
+import java.util.UUID;
+
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
@@ -16,12 +18,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
+//@Entity
 public class Comment {
 
-  @Id 
-  @GeneratedValue 
-  private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID) 
+  private UUID id;
 
   private String content;
   

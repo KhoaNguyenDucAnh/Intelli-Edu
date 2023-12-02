@@ -1,14 +1,18 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
+    const navigate = useNavigate();
+
+    const [wrongLoginInfo, setWrongLoginInfo] = useState(false)
+
     const [loginFormData, setLoginFormData] = useState({
-        username: '',
+        email: '', 
         password: '',
     });
 
     const [validationErrors, setValidationErrors] = useState({
-        username: false,
+        email: false,
         password: false
     });
 
@@ -24,13 +28,13 @@ function Login() {
         let isValid = true;
 
         const errors = {
-            username: false,
+            email: false,
             password: false
         };
 
-        if (!loginFormData.username.trim()) {
+        if (!loginFormData.email.trim()) {
             isValid = false;
-            errors.username = true
+            errors.email = true
         }
 
         if (!loginFormData.password.trim()) {
@@ -47,10 +51,31 @@ function Login() {
 
         if (validateForm()) {
             // Access form data from the loginFormData object
-            const { username, password } = loginFormData;
+            const { email, password } = loginFormData;
+
+            // Fetch function to send data to the backend
+            fetch('http://localhost:8080/api/v1/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        navigate("/classbook");
+                        setWrongLoginInfo(false);
+                        return response.json();
+                    } else {
+                        setWrongLoginInfo(true);
+                    }
+                })
+                .catch(error => {
+                    console.error('Login error:', error);
+                });
 
             // Reset the form if needed
-            setLoginFormData({ username: '', password: '' });
+            setLoginFormData({ email: '', password: '' });
         }
     }
 
@@ -68,14 +93,14 @@ function Login() {
                     <input
                         className="loginInput"
                         type="text"
-                        id="username"
-                        name="username"
-                        value={loginFormData.username}
+                        id="email"
+                        name="email"
+                        value={loginFormData.email}
                         onChange={handleInputChange}
                         autocomplete="off"
-                        placeholder="Tên người dùng"
+                        placeholder="Email"
                     />
-                    {validationErrors.username && <p className="loginFormValidationMessage">Tên người dùng không được trống</p>}
+                    {validationErrors.email && <p className="loginFormValidationMessage">Email không được trống</p>}
                     <input
                         className="loginInput"
                         type="password"
@@ -86,9 +111,8 @@ function Login() {
                         placeholder="Mật khẩu"
                     />
                     {validationErrors.password && <p className="loginFormValidationMessage">Mật khẩu không được trống</p>}
-                    <Link to="/classbook">
-                        <button className="loginSubmitButton" type="submit">Đăng nhập</button>
-                    </Link>
+                    {wrongLoginInfo && <p className="loginErrorMessage">Thông tin đăng nhập không chính xác.</p>}
+                    <button className="loginSubmitButton" type="submit">Đăng nhập</button>
                 </form>
                 <span className="loginPageRegisterText">
                     Bạn chưa có tài khoản?

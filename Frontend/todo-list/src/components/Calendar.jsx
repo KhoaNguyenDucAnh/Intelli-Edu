@@ -18,6 +18,12 @@ const MyCalendar = ({value, setValue, date, setDate}) => {
         onDateChange={setDate}
         minDate={new Date()}
         c = "white"
+        styles = {{
+          day:{
+            color: "#b8b9bc"
+          }
+          
+        }}
       />
   )
 }

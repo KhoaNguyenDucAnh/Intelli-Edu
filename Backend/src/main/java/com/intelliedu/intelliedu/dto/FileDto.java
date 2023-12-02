@@ -1,13 +1,16 @@
 package com.intelliedu.intelliedu.dto;
 
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
-import com.intelliedu.intelliedu.config.Subject;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 /**
  * FileDto
@@ -15,14 +18,14 @@ import lombok.experimental.SuperBuilder;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
+@Builder
+@JsonInclude(Include.NON_NULL)
 public class FileDto {
 
-  private String id;
+  private UUID id;
 
+  @NotEmpty(message = "Title must not be empty")
   private String title;
-
-  private Subject subject;
 
   private ZonedDateTime createdAt;
 

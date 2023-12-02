@@ -16,4 +16,6 @@ import lombok.experimental.SuperBuilder;
 public class MindMapDto extends ContentDto {
 
   private Map<String, Object> content;
+
+  private String feedback;
 }

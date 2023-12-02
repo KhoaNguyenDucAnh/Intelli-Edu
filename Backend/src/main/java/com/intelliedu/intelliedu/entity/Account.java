@@ -2,6 +2,7 @@ package com.intelliedu.intelliedu.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,6 +17,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -33,13 +35,12 @@ public class Account implements UserDetails {
   private static final long serialVersionUID = 1L;
 
   @Id
-  @GeneratedValue
-  private Long id;
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
   @Column(unique = true)
   private String email;
 
-  @Column(unique = true)
   private String username;
 
   private String password;
@@ -50,17 +51,12 @@ public class Account implements UserDetails {
   @Enumerated(EnumType.STRING)
   private Role role;
 
-	//private Integer point;
-
   @Builder.Default
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private List<File> file = new ArrayList<>();
 
-	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Vote> vote;
-
-	//@OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	//private List<Schedule> schedule;
 
   @Override
   public List<? extends GrantedAuthority> getAuthorities() {

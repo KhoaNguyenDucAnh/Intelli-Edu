@@ -29,4 +29,11 @@ public class MindMap extends Content {
   @Column(columnDefinition = "TEXT")
   @Convert(converter = HashMapConverter.class)
   private Map<String, Object> content;
+
+  @Column(columnDefinition = "TEXT")
+  @Convert(converter = HashMapConverter.class)
+  private Map<String, Object> preContent;
+
+  @Column(columnDefinition = "TEXT")
+  private String feedback;
 }
