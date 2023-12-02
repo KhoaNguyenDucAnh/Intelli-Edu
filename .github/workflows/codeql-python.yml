@@ -18,6 +18,7 @@ on:
     paths: "AI/**"
   schedule:
     - cron: "0 0 * * 0"
+  workflow_dispatch:
 
 jobs:
   analyze:

@@ -38,7 +38,7 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
   private FileService fileService;
 
   @Autowired
-  private AuthService authService;
+  protected AuthService authService;
 
   public Map<String, Page<CDto>> findContent(String query, Authentication authentication, Pageable pageable) {
     if (authentication == null) {

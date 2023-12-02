@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.intelliedu.intelliedu.dto.QuestionDto;
 import com.intelliedu.intelliedu.dto.QuestionDtoDetail;
-import com.intelliedu.intelliedu.entity.Question;
 import com.intelliedu.intelliedu.service.QuestionService;
 
 import jakarta.validation.Valid;
@@ -60,13 +59,13 @@ public class QuestionController {
     return questionService.checkQuestion(id, questionId, answer, authentication);
   }
 
-  /*@PostMapping("/q/{id}")
-  public QuestionDto createQuestion2(@PathVariable UUID id, @RequestBody @Valid QuestionDtoDetail questionDtoDetail, Authentication authentication) {
-    return questionService.createQuestion(id, questionDtoDetail, authentication);
+  @PostMapping("/q/{id}")
+  public QuestionDto createQuestionDetail(@PathVariable UUID id, @RequestBody @Valid QuestionDtoDetail questionDtoDetail, Authentication authentication) {
+    return questionService.createQuestionDetail(id, questionDtoDetail, authentication);
   }
 
   @PutMapping("/q/{id}/{questionId}")
-  public QuestionDto updateQuestion2(@PathVariable UUID id, @PathVariable UUID questionId, @RequestBody @Valid QuestionDtoDetail questionDtoDetail, Authentication authentication) {
-    return questionService.updateQuestion(id, questionId, questionDtoDetail, authentication);
-  }*/
+  public QuestionDto updateQuestionDetail(@PathVariable UUID id, @PathVariable UUID questionId, @RequestBody @Valid QuestionDtoDetail questionDtoDetail, Authentication authentication) {
+    return questionService.updateQuestionDetail(id, questionId, questionDtoDetail, authentication);
+  }
 }

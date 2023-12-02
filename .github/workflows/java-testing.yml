@@ -6,13 +6,13 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Docker (Testing)
+name: Java (Testing)
 
 on:
-  push:
-    branches: [ "testing" ]
   pull_request:
-    branches: [ "testing" ]
+    branches: "testing"
+    paths: "Backend/**"
+  workflow_dispatch:
 
 jobs:
   Java:
@@ -42,20 +42,3 @@ jobs:
       - name: Build and push Docker image
         run: |
           docker build -f Backend/test.Dockerfile -t ghcr.io/khoanguyenducanh/intelli-edu:test --push .
-  Python:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GHCR }}
-
-      - name: Build and push Docker image
-        run: |
-          docker build -f AI/.Dockerfile -t ghcr.io/khoanguyenducanh/python:test --push .
