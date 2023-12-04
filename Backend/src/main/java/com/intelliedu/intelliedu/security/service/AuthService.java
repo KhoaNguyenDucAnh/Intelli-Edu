@@ -26,20 +26,17 @@ import com.intelliedu.intelliedu.entity.SecurityToken;
 import com.intelliedu.intelliedu.mapper.AccountMapper;
 import com.intelliedu.intelliedu.repository.AccountRepo;
 import com.intelliedu.intelliedu.repository.SecurityTokenRepo;
+import com.intelliedu.intelliedu.security.util.CookieUtil;
 import com.intelliedu.intelliedu.security.util.JWTUtil;
 import com.intelliedu.intelliedu.util.EmailUtil;
 import com.intelliedu.intelliedu.util.HashUtil;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
 public class AuthService {
-
-  @Autowired
-  private JWTUtil jwtUtil;
 
   @Autowired
   private PasswordEncoder passwordEncoder;
@@ -59,32 +56,23 @@ public class AuthService {
   public void login(AccountLogInDto accountLogInDto, HttpServletResponse response) {
     try {
       Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(accountLogInDto.getEmail(), accountLogInDto.getPassword()));
-      SecurityContextHolder.getContext().setAuthentication(authentication);
-      log.info(String.format("Account %s login success", accountLogInDto.getEmail()));
       
-      Cookie cookie = new Cookie(
-        SecurityConfig.AUTHORIZATION,
-        URLEncoder.encode(SecurityConfig.BEARER_PREFIX + jwtUtil.generateJwtToken(authentication),StandardCharsets.UTF_8)
+      SecurityContextHolder.getContext().setAuthentication(authentication); 
+      
+      response.addCookie(CookieUtil.generateCookie(
+        SecurityConfig.AUTHORIZATION, 
+        URLEncoder.encode(SecurityConfig.BEARER_PREFIX + JWTUtil.generateJwtToken(authentication),StandardCharsets.UTF_8),
+        (int) SecurityConfig.TOKEN_EXPIRATION_TIME)
       );
-      cookie.setMaxAge((int) SecurityConfig.TOKEN_EXPIRATION_TIME);
-      cookie.setPath("/");
-      cookie.setHttpOnly(false);
-      cookie.setSecure(false);
 
-      response.addCookie(cookie);
+      log.info(String.format("Account %s login success", accountLogInDto.getEmail()));
     } catch (AuthenticationException e) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, String.format("Account %s login failed", accountLogInDto.getEmail()), e);
     }
   }
 
   public void logout(HttpServletResponse response) {
-    Cookie cookie = new Cookie(SecurityConfig.AUTHORIZATION, null);
-    cookie.setMaxAge(-1);
-    cookie.setPath("/");
-    cookie.setHttpOnly(false);
-    cookie.setSecure(false);
-    
-    response.addCookie(cookie);
+    response.addCookie(CookieUtil.generateCookie(SecurityConfig.AUTHORIZATION, null, -1));
   }
 
   public void registerWithoutEmailVerification(AccountRegistrationDto accountRegistrationDto, HttpServletResponse response) {
@@ -95,8 +83,8 @@ public class AuthService {
         () -> {
           Account account = generateAccount(accountRegistrationDto, Role.ROLE_USER);
           account.setEnabled(true);
-
           accountRepo.save(account);
+          
           log.info(String.format("Creat new account %s", account.getEmail()));
 
           login(new AccountLogInDto(accountRegistrationDto.getEmail(), accountRegistrationDto.getPassword()), response);
