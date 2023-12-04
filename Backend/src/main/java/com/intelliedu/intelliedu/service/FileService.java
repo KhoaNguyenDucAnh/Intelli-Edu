@@ -176,7 +176,6 @@ public class FileService {
       throw new NotFoundException(File.class, id);
     }
     Question question = questionService.findContentHelper(id);
-    System.out.println(aiService.generateQuestion(documentService.findContentHelper(id)));
     question.setContent(questionMapper.toQuestionDetail(aiService.generateQuestion(documentService.findContentHelper(id))));
     return questionService.saveContent(question);
   }
