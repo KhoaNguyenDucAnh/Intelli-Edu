@@ -39,6 +39,11 @@ public class QuestionController {
     return questionService.findContent(query, authentication, pageable);
   }
 
+  @GetMapping("/{id}")
+  public QuestionDto findQuestion(@PathVariable UUID id, Authentication authentication) {
+    return questionService.findContent(id, authentication);
+  }
+
   @PostMapping("/{id}")
   public QuestionDto createQuestion(@PathVariable UUID id, Authentication authentication) {
     return questionService.createContent(id, authentication);
