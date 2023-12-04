@@ -1,8 +1,7 @@
 package com.intelliedu.intelliedu.entity;
 
+import java.util.List;
 import java.util.UUID;
-
-import com.intelliedu.intelliedu.dto.QuestionDtoDetail;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -28,7 +27,7 @@ public class QuestionDetail {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  private String questionDetail;
+  private String question;
 
   private String correctAnswer;
 
@@ -39,12 +38,12 @@ public class QuestionDetail {
   private String incorrectAnswer3;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  private Question question;
+  private Question parent;
 
-  public void setAnswer(QuestionDtoDetail questionDtoDetail) {
-    correctAnswer = questionDtoDetail.getAnswers().get(0);
-    incorrectAnswer1 = questionDtoDetail.getAnswers().get(1);
-    incorrectAnswer2 = questionDtoDetail.getAnswers().get(2);
-    incorrectAnswer3 = questionDtoDetail.getAnswers().get(3);
+  public void setAnswers(List<String> answer) {
+    correctAnswer = answer.get(0);
+    incorrectAnswer1 = answer.get(1);
+    incorrectAnswer2 = answer.get(2);
+    incorrectAnswer3 = answer.get(3);
   }
 }

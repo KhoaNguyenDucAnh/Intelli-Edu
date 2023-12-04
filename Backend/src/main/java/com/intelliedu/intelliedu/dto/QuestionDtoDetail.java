@@ -21,7 +21,7 @@ public class QuestionDtoDetail {
   private UUID id;
 
   @NotEmpty
-  private String questionDetail;
+  private String question;
 
   private List<String> answers = new ArrayList<>();
 

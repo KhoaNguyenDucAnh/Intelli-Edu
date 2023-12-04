@@ -31,6 +31,11 @@ import lombok.experimental.SuperBuilder;
 public class Question extends Content {
 
   @Builder.Default
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private List<QuestionDetail> content = new ArrayList<>();
+
+  public void setContent(List<QuestionDetail> questionDetail) {
+    this.content = questionDetail;
+    questionDetail.forEach(question -> question.setParent(this));
+  }
 }

@@ -39,7 +39,7 @@ public class QuestionService extends ContentService<Question, QuestionDto> {
 
   private QuestionDetail findQuestionDetail(UUID id, UUID questionId, Authentication authentication) {
     return questionDetailRepo
-      .findByIdAndQuestionIdAndQuestionAccount(id, questionId, authService.getAccount(authentication))
+      .findByIdAndParentIdAndParentAccount(id, questionId, authService.getAccount(authentication))
       .orElseThrow(() -> new NotFoundException(QuestionDetail.class, questionId));
   }
 
