@@ -32,10 +32,12 @@ import com.intelliedu.intelliedu.util.EmailUtil;
 import com.intelliedu.intelliedu.util.HashUtil;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
-@Service
 @Slf4j
+@Service
+@Transactional
 public class AuthService {
 
   @Autowired
@@ -45,13 +47,13 @@ public class AuthService {
   private AuthenticationManager authenticationManager;
 
   @Autowired
+  private AccountMapper accountMapper;
+
+  @Autowired
   private AccountRepo accountRepo;
 
   @Autowired
   private SecurityTokenRepo securityTokenRepo;
-
-  @Autowired
-  private AccountMapper accountMapper;
 
   public void login(AccountLogInDto accountLogInDto, HttpServletResponse response) {
     try {
@@ -103,11 +105,9 @@ public class AuthService {
 
   private Account generateAccount(AccountRegistrationDto accountRegistrationDto, Role role) {
     Account account = accountMapper.toAccount(accountRegistrationDto);
-    
     account.setPassword(passwordEncoder.encode(accountRegistrationDto.getPassword()));
     account.setRole(role);
     account.setEnabled(false);
-
     return accountRepo.save(account);
   }
 
@@ -115,11 +115,9 @@ public class AuthService {
     SecurityToken securityToken = securityTokenRepo
       .findById(account.getId())
       .orElse(SecurityToken.builder().account(account).build());
-
     securityToken.setSecurityAction(securityAction);
     securityToken.setToken(HashUtil.HMACSHA256(account.getEmail()));
     securityToken.setExpireDateTime(ZonedDateTime.now().plus(Duration.ofMillis(SecurityConfig.ACTIVATION_EXPIRATION_TIME)));
-
     return securityTokenRepo.save(securityToken);
   }
 
