@@ -3,6 +3,7 @@ package com.intelliedu.intelliedu.entity;
 import java.util.List;
 import java.util.UUID;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -31,19 +32,9 @@ public class QuestionDetail {
 
   private String correctAnswer;
 
-  private String incorrectAnswer1;
-  
-  private String incorrectAnswer2;
-
-  private String incorrectAnswer3;
+  @ElementCollection
+  private List<String> incorrectAnswer;
 
   @ManyToOne(fetch = FetchType.LAZY)
   private Question parent;
-
-  public void setAnswers(List<String> answer) {
-    correctAnswer = answer.get(0);
-    incorrectAnswer1 = answer.get(1);
-    incorrectAnswer2 = answer.get(2);
-    incorrectAnswer3 = answer.get(3);
-  }
 }

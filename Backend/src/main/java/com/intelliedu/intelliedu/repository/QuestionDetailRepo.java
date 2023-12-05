@@ -13,5 +13,7 @@ import com.intelliedu.intelliedu.entity.QuestionDetail;
  */
 public interface QuestionDetailRepo extends JpaRepository<QuestionDetail, UUID> {
 
-  Optional<QuestionDetail> findByIdAndParentIdAndParentAccount(UUID id, UUID questionId, Account account);
+  Optional<QuestionDetail> findByIdAndParentAccount(UUID questionId, Account account);
+
+  void deleteByIdAndParentAccount(UUID questionId, Account account);
 }

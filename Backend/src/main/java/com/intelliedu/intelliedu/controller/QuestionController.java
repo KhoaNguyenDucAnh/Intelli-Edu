@@ -40,8 +40,8 @@ public class QuestionController {
   }
 
   @GetMapping("/{id}")
-  public QuestionDto findQuestion(@PathVariable UUID id, Authentication authentication) {
-    return questionService.findContent(id, authentication);
+  public QuestionDto findQuestion(@PathVariable UUID id, @RequestParam(name = "shuffle", defaultValue = "false") Boolean shuffle, Authentication authentication) {
+    return questionService.findContent(id, shuffle, authentication);
   }
 
   @PostMapping("/{id}")
@@ -59,18 +59,23 @@ public class QuestionController {
     questionService.deleteContent(id, authentication);
   }
 
-  @PostMapping("/{id}/{questionId}")
-  public Boolean checkQuestion(@PathVariable UUID id, @PathVariable UUID questionId, @RequestBody @NotEmpty String answer, Authentication authentication) {
-    return questionService.checkQuestion(id, questionId, answer, authentication);
-  }
-
   @PostMapping("/q/{id}")
   public QuestionDto createQuestionDetail(@PathVariable UUID id, @RequestBody @Valid QuestionDtoDetail questionDtoDetail, Authentication authentication) {
     return questionService.createQuestionDetail(id, questionDtoDetail, authentication);
   }
 
-  @PutMapping("/q/{id}/{questionId}")
-  public QuestionDto updateQuestionDetail(@PathVariable UUID id, @PathVariable UUID questionId, @RequestBody @Valid QuestionDtoDetail questionDtoDetail, Authentication authentication) {
-    return questionService.updateQuestionDetail(id, questionId, questionDtoDetail, authentication);
+  @PutMapping("/q/{questionId}")
+  public QuestionDto updateQuestionDetail(@PathVariable UUID questionId, @RequestBody @Valid QuestionDtoDetail questionDtoDetail, Authentication authentication) {
+    return questionService.updateQuestionDetail(questionId, questionDtoDetail, authentication);
+  }
+
+  @DeleteMapping("/q/{questionId}")
+  public void deleteQuestionDetail(@PathVariable UUID questionId, Authentication authentication) {
+    questionService.deleteQuestionDetail(questionId, authentication);
+  }
+
+  @PostMapping("/q/check/{questionId}")
+  public Boolean checkQuestion(@PathVariable UUID questionId, @RequestBody @NotEmpty String answer, Authentication authentication) {
+    return questionService.checkQuestion(questionId, answer, authentication);
   }
 }
