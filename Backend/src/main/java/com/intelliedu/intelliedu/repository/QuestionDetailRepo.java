@@ -16,4 +16,6 @@ public interface QuestionDetailRepo extends JpaRepository<QuestionDetail, UUID> 
   Optional<QuestionDetail> findByIdAndParentAccount(UUID questionId, Account account);
 
   void deleteByIdAndParentAccount(UUID questionId, Account account);
+
+  void deleteAllByParentIdAndParentAccount(UUID id, Account account);
 }

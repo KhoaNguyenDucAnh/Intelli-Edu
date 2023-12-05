@@ -74,6 +74,11 @@ public class QuestionController {
     questionService.deleteQuestionDetail(questionId, authentication);
   }
 
+  @DeleteMapping("/q/all/{id}")
+  public void deleteAllQuestionDetail(@PathVariable UUID id, Authentication authentication) {
+    questionService.deleteAllQuestionDetail(id, authentication);
+  }
+
   @PostMapping("/q/check/{questionId}")
   public Boolean checkQuestion(@PathVariable UUID questionId, @RequestBody @NotEmpty String answer, Authentication authentication) {
     return questionService.checkQuestion(questionId, answer, authentication);

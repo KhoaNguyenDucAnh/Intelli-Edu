@@ -15,6 +15,8 @@ import com.intelliedu.intelliedu.exception.NotFoundException;
 import com.intelliedu.intelliedu.mapper.QuestionMapper;
 import com.intelliedu.intelliedu.repository.QuestionDetailRepo;
 
+import jakarta.transaction.Transactional;
+
 /**
  * QuestionService
  */
@@ -59,8 +61,14 @@ public class QuestionService extends ContentService<Question, QuestionDto> {
     return questionMapper.toDto(questionDetail.getParent());
   }
 
+  @Transactional
   public void deleteQuestionDetail(UUID questionId, Authentication authentication) {
     questionDetailRepo.deleteByIdAndParentAccount(questionId, authService.getAccount(authentication));
+  }
+
+  @Transactional
+  public void deleteAllQuestionDetail(UUID id, Authentication authentication) {
+    questionDetailRepo.deleteAllByParentIdAndParentAccount(id, authService.getAccount(authentication));
   }
 
   public boolean checkQuestion(UUID questionId, String answer, Authentication authentication) {
