@@ -3,9 +3,6 @@ package com.intelliedu.intelliedu.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -26,8 +23,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@SQLDelete(sql = "UPDATE question SET deleted = true WHERE file_id=?")
-@Where(clause = "deleted=false")
+//@SQLDelete(sql = "UPDATE question SET deleted = true WHERE file_id=?")
+//@Where(clause = "deleted=false")
 public class Question extends Content {
 
   @Builder.Default
