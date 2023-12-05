@@ -35,4 +35,9 @@ public class Question extends Content {
     this.content = questionDetail;
     questionDetail.forEach(question -> question.setParent(this));
   }
+
+  public void addContent(QuestionDetail questionDetail) {
+    this.content.add(questionDetail);
+    questionDetail.setParent(this);
+  }
 }

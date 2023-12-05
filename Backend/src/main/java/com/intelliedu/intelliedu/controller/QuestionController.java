@@ -49,10 +49,10 @@ public class QuestionController {
     return questionService.createContent(id, authentication);
   }
 
-  @PutMapping("/{id}")
+  /*@PutMapping("/{id}")
   public QuestionDto updateQuestion(@PathVariable UUID id, @RequestBody @Valid QuestionDto questionDto, Authentication authentication) {
     return questionService.updateContent(id, questionDto, authentication);
-  }
+  }*/
 
   @DeleteMapping("/{id}")
   public void deleteQuestion(@PathVariable UUID id, Authentication authentication) {

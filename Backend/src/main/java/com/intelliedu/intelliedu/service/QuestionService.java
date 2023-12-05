@@ -49,7 +49,7 @@ public class QuestionService extends ContentService<Question, QuestionDto> {
 
   public QuestionDto createQuestionDetail(UUID id, QuestionDtoDetail questionDtoDetail, Authentication authentication) {
     Question question = findContentHelper(id, authentication);
-    question.getContent().add(questionMapper.toQuestionDetail(questionDtoDetail));
+    question.addContent(questionMapper.toQuestionDetail(questionDtoDetail));
     return saveContent(question);
   }
 
