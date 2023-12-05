@@ -23,12 +23,12 @@ public class PostController {
 	private PostService postService;
 
 	@PutMapping("/upvote/{id}")
-	public Long upvote(@PathVariable UUID id, Authentication authentication) {
+	public Integer upvote(@PathVariable UUID id, Authentication authentication) {
 		return postService.vote(id, VoteStatus.UPVOTE, authentication);
 	}
 
 	@PutMapping("/downvote/{id}")
-	public Long downvote(@PathVariable UUID id, Authentication authentication) {
+	public Integer downvote(@PathVariable UUID id, Authentication authentication) {
 		return postService.vote(id, VoteStatus.DOWNVOTE, authentication);
 	}
 }
