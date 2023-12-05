@@ -106,8 +106,11 @@ def to_mindmap(file: str):
     for i in range(5,len(mindmap)+1):
         if(mindmap[i-5:i]=='Start'):
             begin=i
-        if(mindmap[i-3:i]=='End'):
-            end=i-3
+            break
+    for i in range(len(mindmap)-3,-1,-1):
+        if(mindmap[i:i+3]=='End'):
+            end=i
+            break
     mindmap=mindmap[begin:end]
     claude_api.delete_conversation(conversation_id)
     return mindmap
@@ -116,7 +119,7 @@ def create_questions(file):
     conversation_id = claude_api.create_new_chat()['uuid']
     questions=claude_api.send_message(
         """
-        Human:We want to create a list of 5 questions in Vietnamese for this text. All 5 questions should belong in a single json. For each question, include 1 correct answer and 3 incorrect answers with the following structure: {question: question goes here, answer: [correct answer, incorrect answer 1, incorrect answer 2, incorrect answer 3]}
+        Human:We want to create 5 multiple choices questions in Vietnamese for this text. All 5 questions should belong in a single json. For each question, include 1 correct answer and 3 incorrect answers with the following structure: {question: question goes here, answer: [correct answer, incorrect answer 1, incorrect answer 2, incorrect answer 3]}.
         
         Say 'Start' before the json and 'End' after the json in your answer. No lines between the json elements. No lines between Start and json. No lines between the json and End.  
 
@@ -130,10 +133,13 @@ def create_questions(file):
     for i in range(5,len(questions)+1):
         if(questions[i-5:i]=='Start'):
             begin=i
-        if(questions[i-3:i]=='End'):
-            end=i-3
+            break
+    for i in range(len(questions)-3,-1,-1):
+        if(questions[i:i+3]=='End'):
+            end=i
+            break
     questions=questions[begin:end]
-    return questions
+    return '['+questions+']'
 
 def main(document, mindmap):
     nChain = np.zeros(2)
