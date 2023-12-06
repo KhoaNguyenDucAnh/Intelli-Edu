@@ -31,4 +31,4 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -f AI/slim.Dockerfile -t ghcr.io/khoanguyenducanh/slim-python:test --push .
+          docker build -f AI/python.Dockerfile -t ghcr.io/khoanguyenducanh/slim-python:test --push .
