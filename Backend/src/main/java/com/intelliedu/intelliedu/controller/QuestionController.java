@@ -49,10 +49,10 @@ public class QuestionController {
     return questionService.createContent(id, authentication);
   }
 
-  @PutMapping("/{id}")
+  /*@PutMapping("/{id}")
   public QuestionDto updateQuestion(@PathVariable UUID id, @RequestBody @Valid QuestionDto questionDto, Authentication authentication) {
     return questionService.updateContent(id, questionDto, authentication);
-  }
+  }*/
 
   @DeleteMapping("/{id}")
   public void deleteQuestion(@PathVariable UUID id, Authentication authentication) {
@@ -72,6 +72,11 @@ public class QuestionController {
   @DeleteMapping("/q/{questionId}")
   public void deleteQuestionDetail(@PathVariable UUID questionId, Authentication authentication) {
     questionService.deleteQuestionDetail(questionId, authentication);
+  }
+
+  @DeleteMapping("/q/all/{id}")
+  public void deleteAllQuestionDetail(@PathVariable UUID id, Authentication authentication) {
+    questionService.deleteAllQuestionDetail(id, authentication);
   }
 
   @PostMapping("/q/check/{questionId}")

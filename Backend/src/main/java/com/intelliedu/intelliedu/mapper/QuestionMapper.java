@@ -68,7 +68,7 @@ public abstract class QuestionMapper implements ContentMapper<Question, Question
 
   @BeforeMapping
   public void convertAnswer(QuestionDetail questionDetail, @MappingTarget QuestionDtoDetail questionDtoDetail) {
-    questionDtoDetail.setAnswer(questionDetail.getCorrectAnswer(), questionDetail.getIncorrectAnswer());
+    questionDtoDetail.setAnswers(questionDetail.getCorrectAnswer(), questionDetail.getIncorrectAnswer());
   }
 
   public abstract QuestionDetail toQuestionDetail(QuestionDtoDetail questionDtoDetail);

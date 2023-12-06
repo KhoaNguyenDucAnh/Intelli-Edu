@@ -17,12 +17,12 @@ import com.intelliedu.intelliedu.entity.Content;
 public interface ContentMapper<C extends Content, CDto extends ContentDto> {
  
   @Mapping(target = "shared", ignore = true)
+  @Mapping(target = "post", ignore = true)
   C toEntity(CDto cDto);
 
   @InheritConfiguration
 	C toEntity(CDto cDto, @MappingTarget C c);
 
-  @Mapping(source = "post", target = "postDto")
   CDto toDto(C c);
 
   List<CDto> toDto(List<C> c);

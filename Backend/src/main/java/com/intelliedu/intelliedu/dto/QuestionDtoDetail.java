@@ -25,7 +25,7 @@ public class QuestionDtoDetail {
 
   private List<String> answers = new ArrayList<>();
 
-  public void setAnswer(String correctAnswer, List<String> incorrectAnswer) {
+  public void setAnswers(String correctAnswer, List<String> incorrectAnswer) {
     this.answers = incorrectAnswer;
     this.answers.add(0,correctAnswer);
     /*answer.add(questionDetail.getCorrectAnswer());
