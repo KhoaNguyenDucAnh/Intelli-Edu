@@ -31,6 +31,10 @@ input {
   overflow-x: hidden;
 }
 
+.home{
+  background-color: white;
+}
+
 .header {
   background-color: #F6F5F4;
   width: 100vw;
@@ -487,7 +491,6 @@ input {
 .footer {
   position: relative;
   padding-bottom: 3.08vw;
-  background-color: white;
 }
 
 .footerHeader {
