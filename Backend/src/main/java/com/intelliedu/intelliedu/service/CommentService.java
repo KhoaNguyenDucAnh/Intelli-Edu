@@ -6,15 +6,14 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.intelliedu.intelliedu.dto.CommentDto;
 import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.entity.Comment;
 import com.intelliedu.intelliedu.entity.Post;
+import com.intelliedu.intelliedu.exception.NotFoundException;
 import com.intelliedu.intelliedu.mapper.CommentMapper;
 import com.intelliedu.intelliedu.repository.CommentRepo;
 import com.intelliedu.intelliedu.repository.PostRepo;
@@ -46,23 +45,19 @@ public class CommentService {
         "own", commentMapper.toCommentDto(commentRepo.findByPostIdAndAccount(postId, account, pageable))
       );
     }
-
 	}
 	
   public CommentDto createComment(UUID postId, CommentDto commentDto, Authentication authentication) {
-    Post post = postRepo.findById(postId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
     Comment comment = commentMapper.toComment(commentDto);
-    comment.setPost(post);
+    comment.setPost(postRepo.findById(postId).orElseThrow(() -> new NotFoundException(Post.class, postId)));
     comment.setAccount(authService.getAccount(authentication));
-
     return commentMapper.toCommentDto(commentRepo.save(comment));
   }
 
   public CommentDto updateComment(UUID id, CommentDto commentDto, Authentication authentication) {
     Comment comment = commentRepo
       .findByIdAndAccount(id, authService.getAccount(authentication))
-      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+      .orElseThrow(() -> new NotFoundException(Comment.class, id));
 
     return commentMapper.toCommentDto(commentRepo.save(commentMapper.toComment(commentDto, comment)));
   }
