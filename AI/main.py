@@ -4,11 +4,9 @@ from sentence_transformers import SentenceTransformer, util
 from collections import deque
 from curl_cffi import requests
 import re
-
-model = None #SentenceTransformer("keepitreal/vietnamese-sbert")
-
 from claude_api import Client
 
+model = SentenceTransformer("keepitreal/vietnamese-sbert")
 
 class Custom_Client(Client):
     def upload_attachment(self, content):
@@ -119,7 +117,7 @@ def create_questions(file):
     conversation_id = claude_api.create_new_chat()['uuid']
     questions=claude_api.send_message(
         """
-        Human:We want to create 5 multiple choices questions in Vietnamese for this text. Each questions should be in json format and is seperated from each other by commas. For each question, include 1 correct answer and 3 incorrect answers with the following structure: {question: question goes here, answer: [correct answer, incorrect answer 1, incorrect answer 2, incorrect answer 3]}.
+        Human:We want to create 5 multiple choices questions in Vietnamese for this text. Each questions should be in json format and is seperated from each other by commas. For each question, include 1 correct answer and 3 incorrect answers with the following structure: {"question": question goes here, "answers": [correct answer, incorrect answer 1, incorrect answer 2, incorrect answer 3]}.
         
         Say 'Start' before the json and 'End' after the json in your answer. No lines between the json elements. No lines between Start and json. No lines between the json and End.  
 
@@ -128,12 +126,18 @@ def create_questions(file):
         conversation_id,
         attachment=file
     )
-    claude_api.delete_conversation(conversation_id)
+    #claude_api.delete_conversation(conversation_id)
+    print(1)
+    print(questions)
+    print(2)
     questions=str(questions)
     # print(questions)
     # print()
     begin=5
     end=-3
+    print(3)
+    print(questions)
+    print(4)
     for i in range(5,len(questions)+1):
         if(questions[i-5:i]=='Start'):
             begin=i
@@ -145,7 +149,7 @@ def create_questions(file):
     # print(begin,end)
     # print()
     questions=questions[begin:end]
-    return questions
+    return "[" + questions + "]"
 
 def main(document, mindmap):
     nChain = np.zeros(2)
@@ -275,4 +279,4 @@ def main(document, mindmap):
         text += str(comp_text) + " " + str(user_text) + "\n"
     return str(compare(text))
 
-print(create_questions("Chiến tranh thế giới thứ hai (còn được nhắc đến với các tên gọi Đệ nhị thế chiến, Thế chiến II hay Đại chiến thế giới lần thứ hai) là một cuộc chiến tranh thế giới bắt đầu từ khoảng năm 1939 và chấm dứt vào năm 1945. Cuộc chiến có sự tham gia của đại đa số các quốc gia trên thế giới — bao gồm tất cả các cường quốc — tạo thành hai liên minh quân sự đối lập: Đồng Minh và Phe Trục. Trong diện mạo một cuộc chiến tranh toàn diện, Thế chiến II có sự tham gia trực tiếp của hơn 100 triệu nhân sự từ hơn 30 quốc gia. Các bên tham chiến chính đã dồn toàn bộ nguồn lực kinh tế, công nghiệp và khoa học cho nỗ lực tham chiến, làm mờ đi ranh giới giữa nguồn lực dân sự và quân sự. Chiến tranh thế giới thứ hai là cuộc xung đột đẫm máu nhất trong lịch sử nhân loại, gây nên cái chết của 70 đến 85 triệu người, với số lượng thường dân tử vong nhiều hơn quân nhân. Hàng chục triệu người đã phải bỏ mạng trong các vụ thảm sát, diệt chủng (trong đó có Holocaust), chết vì thiếu lương thực hay vì bệnh tật. Máy bay đóng vai trò quan trọng đối với tiến trình cuộc chiến, bao gồm ném bom chiến lược vào các trung tâm dân cư, và đối với sự phát triển vũ khí hạt nhân cũng như hai lần duy nhất sử dụng loại vũ khí này trong chiến tranh."))
+#print(create_questions("Chiến tranh thế giới thứ hai (còn được nhắc đến với các tên gọi Đệ nhị thế chiến, Thế chiến II hay Đại chiến thế giới lần thứ hai) là một cuộc chiến tranh thế giới bắt đầu từ khoảng năm 1939 và chấm dứt vào năm 1945. Cuộc chiến có sự tham gia của đại đa số các quốc gia trên thế giới — bao gồm tất cả các cường quốc — tạo thành hai liên minh quân sự đối lập: Đồng Minh và Phe Trục. Trong diện mạo một cuộc chiến tranh toàn diện, Thế chiến II có sự tham gia trực tiếp của hơn 100 triệu nhân sự từ hơn 30 quốc gia. Các bên tham chiến chính đã dồn toàn bộ nguồn lực kinh tế, công nghiệp và khoa học cho nỗ lực tham chiến, làm mờ đi ranh giới giữa nguồn lực dân sự và quân sự. Chiến tranh thế giới thứ hai là cuộc xung đột đẫm máu nhất trong lịch sử nhân loại, gây nên cái chết của 70 đến 85 triệu người, với số lượng thường dân tử vong nhiều hơn quân nhân. Hàng chục triệu người đã phải bỏ mạng trong các vụ thảm sát, diệt chủng (trong đó có Holocaust), chết vì thiếu lương thực hay vì bệnh tật. Máy bay đóng vai trò quan trọng đối với tiến trình cuộc chiến, bao gồm ném bom chiến lược vào các trung tâm dân cư, và đối với sự phát triển vũ khí hạt nhân cũng như hai lần duy nhất sử dụng loại vũ khí này trong chiến tranh."))

@@ -2,7 +2,7 @@ import socket
 import logging
 import threading
 import json
-# import main
+import main
 
 logging.basicConfig(
     level = logging.INFO,
@@ -18,11 +18,11 @@ def handle_client(connection):
         request = json.loads(request.decode("utf-8"))
         if request["Request"] == "Check Mindmap":
             response = ""
-            # response = main.main(request["Document"], request["MindMap"])
+            response = main.main(request["Document"], request["MindMap"])
         elif request["Request"] == "Generate Question":
             response = str([
                 {"question":"Chiến tranh thế giới thứ hai bắt đầu vào năm nào?","answers":["1939","1938","1940","1941"]},{"question":"Trong thế chiến thứ hai có bao nhiêu nước tham gia? ","answers":["Hơn 30 nước","25 nước","20 nước","15 nước"]},{"question":"Thế chiến thứ hai kết thúc vào năm nào?","answers":["1945","1946","1944","1943"]},{"question":"Trong thế chiến thứ hai, các bên tham chiến chính có dồn hết nguồn lực cho chiến tranh không?","answers":["Có","Không","Không biết","Không đúng"]},{"question":"Trong thế chiến thứ hai, số lượng thường dân tử vong có nhiều hơn quân nhân không?","answers":["Có","Không","Không biết","Không đúng"]}            ])
-            # response = str(main.create_questions(request["Document"]))
+            response = str(main.create_questions(request["Document"]))
         else:
             response = "Error"
         logging.info(response)

@@ -94,6 +94,7 @@ public abstract class QuestionMapper implements ContentMapper<Question, Question
   public abstract QuestionDtoDetail toQuestionDtoDetail(QuestionDetail questionDetail);
 
   public List<QuestionDetail> toQuestionDetail(List<QuestionDtoDetail> questionDtoDetail) {
+    System.out.println(questionDtoDetail);
     return questionDtoDetail.stream().map(question -> toQuestionDetail(question)).collect(Collectors.toList());
   }
 
