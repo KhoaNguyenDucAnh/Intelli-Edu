@@ -487,6 +487,7 @@ input {
 .footer {
   position: relative;
   padding-bottom: 3.08vw;
+  background-color: white;
 }
 
 .footerHeader {
