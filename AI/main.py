@@ -100,22 +100,24 @@ def to_mindmap(file: str):
         conversation_id,
         attachment=file,
     )
-    mindmap=str(mindmap)
-    for i in range(5,len(mindmap)+1):
-        if(mindmap[i-5:i]=='Start'):
-            begin=i
-            break
-    for i in range(len(mindmap)-3,-1,-1):
-        if(mindmap[i:i+3]=='End'):
-            end=i
-            break
-    mindmap=mindmap[begin:end]
     claude_api.delete_conversation(conversation_id)
+    mindmap = str(mindmap)
+    begin = 5
+    end = -3
+    for i in range(5, len(mindmap) + 1):
+        if mindmap[i - 5:i] == "Start":
+            begin = i
+            break
+    for i in range(len(mindmap) - 3, -1, -1):
+        if mindmap[i:i + 3] == "End":
+            end = i
+            break
+    mindmap = mindmap[begin:end]
     return mindmap
 
 def create_questions(file):
     conversation_id = claude_api.create_new_chat()['uuid']
-    questions=claude_api.send_message(
+    questions = claude_api.send_message(
         """
         Human:We want to create 5 multiple choices questions in Vietnamese for this text. Each questions should be in json format and is seperated from each other by commas. For each question, include 1 correct answer and 3 incorrect answers with the following structure: {"question": question goes here, "answers": [correct answer, incorrect answer 1, incorrect answer 2, incorrect answer 3]}.
         
@@ -126,29 +128,19 @@ def create_questions(file):
         conversation_id,
         attachment=file
     )
-    #claude_api.delete_conversation(conversation_id)
-    print(1)
-    print(questions)
-    print(2)
-    questions=str(questions)
-    # print(questions)
-    # print()
-    begin=5
-    end=-3
-    print(3)
-    print(questions)
-    print(4)
-    for i in range(5,len(questions)+1):
-        if(questions[i-5:i]=='Start'):
-            begin=i
+    claude_api.delete_conversation(conversation_id)
+    questions = str(questions)
+    begin = 5
+    end = -3
+    for i in range(5, len(questions) + 1):
+        if questions[i - 5:i] == "Start":
+            begin = i
             break
-    for i in range(len(questions)-3,-1,-1):
-        if(questions[i:i+3]=='End'):
-            end=i
+    for i in range(len(questions) - 3, -1, -1):
+        if questions[i:i + 3] == "End":
+            end = i
             break
-    # print(begin,end)
-    # print()
-    questions=questions[begin:end]
+    questions = questions[begin:end]
     return "[" + questions + "]"
 
 def main(document, mindmap):
