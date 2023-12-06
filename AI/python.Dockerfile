@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.11
+FROM ghcr.io/khoanguyenducanh/python:library
 
 # Copy the AI directory contents
 COPY AI .
