@@ -39,10 +39,10 @@ public class Content {
   private boolean shared = false;
 
   @MapsId
-  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  @OneToOne(fetch = FetchType.LAZY)
   private File file;
 
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  @ManyToOne(fetch = FetchType.LAZY)
   private Account account;
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)

@@ -121,11 +121,10 @@ public class FileService {
     if (!fileRepo.existsByIdAndAccount(id, authService.getAccount(authentication))) {
       throw new NotFoundException(File.class, id);
     }
-
-    fileRepo.deleteById(id);
     documentService.deleteContent(id);
     mindMapService.deleteContent(id);
     questionService.deleteContent(id);
+    fileRepo.deleteById(id);
   }
 
   public String shareContent(UUID id, boolean documentShare, boolean mindMapShare, boolean questionShare, Authentication authentication) {
