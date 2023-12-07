@@ -21,14 +21,16 @@ public class QuestionDtoDetail {
   private UUID id;
 
   @NotEmpty
-  private String questionDetail;
+  private String question;
 
   private List<String> answers = new ArrayList<>();
 
-  //public void setAnswer(QuestionDetail questionDetail) {
+  public void setAnswers(String correctAnswer, List<String> incorrectAnswer) {
+    this.answers = incorrectAnswer;
+    this.answers.add(0,correctAnswer);
     /*answer.add(questionDetail.getCorrectAnswer());
     answer.add(questionDetail.getIncorrectAnswer1());
     answer.add(questionDetail.getIncorrectAnswer2());
     answer.add(questionDetail.getIncorrectAnswer3());*/
-  //}
+  }
 }

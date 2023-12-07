@@ -37,6 +37,11 @@ public class DocumentController {
     return documentService.findContent(query, authentication, pageable);
   }
 
+  @GetMapping("/{id}")
+  public DocumentDto findDocument(@PathVariable UUID id, Authentication authentication) {
+    return documentService.findContent(id, authentication);
+  }
+
   @PostMapping("/{id}")
   public DocumentDto createDocument(@PathVariable UUID id, Authentication authentication) {
     return documentService.createContent(id, authentication);

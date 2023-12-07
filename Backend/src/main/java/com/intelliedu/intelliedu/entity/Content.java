@@ -39,17 +39,17 @@ public class Content {
   private boolean shared = false;
 
   @MapsId
-  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  @OneToOne(fetch = FetchType.LAZY)
   private File file;
 
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  @ManyToOne(fetch = FetchType.LAZY)
   private Account account;
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private Post post;
 
-  @Builder.Default
-  private boolean deleted = false;
+  //@Builder.Default
+  //private boolean deleted = false;
 
   public void setFile(File file) {
     this.file = file;

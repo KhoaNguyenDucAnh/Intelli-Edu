@@ -121,11 +121,10 @@ public class FileService {
     if (!fileRepo.existsByIdAndAccount(id, authService.getAccount(authentication))) {
       throw new NotFoundException(File.class, id);
     }
-
-    fileRepo.deleteById(id);
     documentService.deleteContent(id);
     mindMapService.deleteContent(id);
     questionService.deleteContent(id);
+    fileRepo.deleteById(id);
   }
 
   public String shareContent(UUID id, boolean documentShare, boolean mindMapShare, boolean questionShare, Authentication authentication) {
@@ -176,8 +175,7 @@ public class FileService {
       throw new NotFoundException(File.class, id);
     }
     Question question = questionService.findContentHelper(id);
-    System.out.println(aiService.generateQuestion(documentService.findContentHelper(id)));
-    question.setContent(questionMapper.toQuestionDetail(aiService.generateQuestion(documentService.findContentHelper(id))));
+    question.addContent(questionMapper.toQuestionDetail(aiService.generateQuestion(documentService.findContentHelper(id))));
     return questionService.saveContent(question);
   }
 }

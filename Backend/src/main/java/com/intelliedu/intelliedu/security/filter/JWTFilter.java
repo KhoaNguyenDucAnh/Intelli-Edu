@@ -24,9 +24,6 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JWTFilter extends OncePerRequestFilter {
 
 	@Autowired 
-	private JWTUtil jwtUtil;
-
-	@Autowired 
 	private UserDetailsService userDetailsService;
 
   @Override
@@ -36,19 +33,17 @@ public class JWTFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-    String jwt = jwtUtil.parseJwt(request);
-
-    if (jwt != null && jwtUtil.validateJwtToken(jwt)) {
+    String jwt = JWTUtil.parseJwt(request);
+    if (jwt != null && JWTUtil.validateJwtToken(jwt)) {
       try {
         SecurityContextHolder.getContext().setAuthentication(
-          new CustomAuthenticationToken(userDetailsService.loadUserByUsername(jwtUtil.getUserNameFromJwtToken(jwt)),
+          new CustomAuthenticationToken(userDetailsService.loadUserByUsername(JWTUtil.getUserNameFromJwtToken(jwt)),
           new WebAuthenticationDetailsSource().buildDetails(request))
 				);
       } catch (UsernameNotFoundException e) {
 
 			}
     }
-
     filterChain.doFilter(request, response);
   }
 }

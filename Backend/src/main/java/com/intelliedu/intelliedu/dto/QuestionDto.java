@@ -1,5 +1,6 @@
 package com.intelliedu.intelliedu.dto;
 
+import java.util.Collections;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -19,4 +20,8 @@ import lombok.experimental.SuperBuilder;
 public class QuestionDto extends ContentDto {
 
   private List<QuestionDtoDetail> content;
+
+  public void shuffle() {
+    this.content.forEach(question -> Collections.shuffle(question.getAnswers()));
+  }
 }

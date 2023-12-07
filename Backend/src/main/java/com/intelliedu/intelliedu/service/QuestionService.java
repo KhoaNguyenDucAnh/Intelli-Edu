@@ -15,6 +15,8 @@ import com.intelliedu.intelliedu.exception.NotFoundException;
 import com.intelliedu.intelliedu.mapper.QuestionMapper;
 import com.intelliedu.intelliedu.repository.QuestionDetailRepo;
 
+import jakarta.transaction.Transactional;
+
 /**
  * QuestionService
  */
@@ -37,25 +39,39 @@ public class QuestionService extends ContentService<Question, QuestionDto> {
     return Question.class; 
   }
 
-  private QuestionDetail findQuestionDetail(UUID id, UUID questionId, Authentication authentication) {
+  public QuestionDto findContent(UUID id, Boolean shuffle, Authentication authentication) {
+    return questionMapper.toDto(findContentHelper(id, authentication), shuffle);
+  }
+
+  private QuestionDetail findQuestionDetail(UUID questionId, Authentication authentication) {
     return questionDetailRepo
-      .findByIdAndQuestionIdAndQuestionAccount(id, questionId, authService.getAccount(authentication))
+      .findByIdAndParentAccount(questionId, authService.getAccount(authentication))
       .orElseThrow(() -> new NotFoundException(QuestionDetail.class, questionId));
   }
 
   public QuestionDto createQuestionDetail(UUID id, QuestionDtoDetail questionDtoDetail, Authentication authentication) {
     Question question = findContentHelper(id, authentication);
-    question.getContent().add(questionMapper.toQuestionDetail(questionDtoDetail));
+    question.addContent(questionMapper.toQuestionDetail(questionDtoDetail));
     return saveContent(question);
   }
 
-  public QuestionDto updateQuestionDetail(UUID id, UUID questionId, QuestionDtoDetail questionDtoDetail, Authentication authentication) {
-    QuestionDetail questionDetail = findQuestionDetail(id, questionId, authentication);
+  public QuestionDto updateQuestionDetail(UUID questionId, QuestionDtoDetail questionDtoDetail, Authentication authentication) {
+    QuestionDetail questionDetail = findQuestionDetail(questionId, authentication);
     questionDetailRepo.save(questionMapper.toQuestionDetail(questionDtoDetail, questionDetail));
-    return findContent(id);
+    return questionMapper.toDto(questionDetail.getParent());
   }
 
-  public boolean checkQuestion(UUID id, UUID questionId, String answer, Authentication authentication) {
-    return findQuestionDetail(id, questionId, authentication).getCorrectAnswer().equals(answer);
+  @Transactional
+  public void deleteQuestionDetail(UUID questionId, Authentication authentication) {
+    questionDetailRepo.deleteByIdAndParentAccount(questionId, authService.getAccount(authentication));
+  }
+
+  @Transactional
+  public void deleteAllQuestionDetail(UUID id, Authentication authentication) {
+    questionDetailRepo.deleteAllByParentIdAndParentAccount(id, authService.getAccount(authentication));
+  }
+
+  public boolean checkQuestion(UUID questionId, String answer, Authentication authentication) {
+    return findQuestionDetail(questionId, authentication).getCorrectAnswer().equals(answer);
   }
 }

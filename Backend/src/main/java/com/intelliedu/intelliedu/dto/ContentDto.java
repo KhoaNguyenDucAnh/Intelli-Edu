@@ -16,5 +16,5 @@ public class ContentDto {
 
   private boolean shared;
   
-  private PostDto postDto;
+  private PostDto post;
 }

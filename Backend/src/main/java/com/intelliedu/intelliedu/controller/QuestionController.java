@@ -39,24 +39,24 @@ public class QuestionController {
     return questionService.findContent(query, authentication, pageable);
   }
 
+  @GetMapping("/{id}")
+  public QuestionDto findQuestion(@PathVariable UUID id, @RequestParam(name = "shuffle", defaultValue = "false") Boolean shuffle, Authentication authentication) {
+    return questionService.findContent(id, shuffle, authentication);
+  }
+
   @PostMapping("/{id}")
   public QuestionDto createQuestion(@PathVariable UUID id, Authentication authentication) {
     return questionService.createContent(id, authentication);
   }
 
-  @PutMapping("/{id}")
+  /*@PutMapping("/{id}")
   public QuestionDto updateQuestion(@PathVariable UUID id, @RequestBody @Valid QuestionDto questionDto, Authentication authentication) {
     return questionService.updateContent(id, questionDto, authentication);
-  }
+  }*/
 
   @DeleteMapping("/{id}")
   public void deleteQuestion(@PathVariable UUID id, Authentication authentication) {
     questionService.deleteContent(id, authentication);
-  }
-
-  @GetMapping("/{id}/{questionId}")
-  public Boolean checkQuestion(@PathVariable UUID id, @PathVariable UUID questionId, @RequestBody @NotEmpty String answer, Authentication authentication) {
-    return questionService.checkQuestion(id, questionId, answer, authentication);
   }
 
   @PostMapping("/q/{id}")
@@ -64,8 +64,23 @@ public class QuestionController {
     return questionService.createQuestionDetail(id, questionDtoDetail, authentication);
   }
 
-  @PutMapping("/q/{id}/{questionId}")
-  public QuestionDto updateQuestionDetail(@PathVariable UUID id, @PathVariable UUID questionId, @RequestBody @Valid QuestionDtoDetail questionDtoDetail, Authentication authentication) {
-    return questionService.updateQuestionDetail(id, questionId, questionDtoDetail, authentication);
+  @PutMapping("/q/{questionId}")
+  public QuestionDto updateQuestionDetail(@PathVariable UUID questionId, @RequestBody @Valid QuestionDtoDetail questionDtoDetail, Authentication authentication) {
+    return questionService.updateQuestionDetail(questionId, questionDtoDetail, authentication);
+  }
+
+  @DeleteMapping("/q/{questionId}")
+  public void deleteQuestionDetail(@PathVariable UUID questionId, Authentication authentication) {
+    questionService.deleteQuestionDetail(questionId, authentication);
+  }
+
+  @DeleteMapping("/q/all/{id}")
+  public void deleteAllQuestionDetail(@PathVariable UUID id, Authentication authentication) {
+    questionService.deleteAllQuestionDetail(id, authentication);
+  }
+
+  @PostMapping("/q/check/{questionId}")
+  public Boolean checkQuestion(@PathVariable UUID questionId, @RequestBody @NotEmpty String answer, Authentication authentication) {
+    return questionService.checkQuestion(questionId, answer, authentication);
   }
 }

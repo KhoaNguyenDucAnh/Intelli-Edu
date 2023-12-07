@@ -31,6 +31,10 @@ input {
   overflow-x: hidden;
 }
 
+.home{
+  background-color: white;
+}
+
 .header {
   background-color: #F6F5F4;
   width: 100vw;
@@ -89,6 +93,7 @@ input {
   font-size: 1vw;
   margin: 0;
   font-family: 'Montserrat', sans-serif;
+  color: black;
 }
 .authNavText{
   font-size: 1vw;
@@ -391,6 +396,7 @@ input {
   font-size: 1.458vw;
   font-family: 'Montserrat', sans-serif;
   font-weight: 900;
+  color: black;
 }
 
 .featureName {
@@ -482,6 +488,7 @@ input {
   font-weight: 900;
   text-indent: 3.5vw;
   font-size: 1.5vw;
+  color: black;
 }
 
 .footer {
@@ -567,12 +574,14 @@ input {
   font-size: 1.5625vw;
   margin: 0;
   margin-bottom: 0.44vw;
+  color: black;
 }
 
 .footerStatText {
   font-family: 'Lato', sans-serif;
   font-size: 1.2vw;
   margin: 0;
+  color: black;
 }
 
 .footerComment {
@@ -603,6 +612,7 @@ input {
   margin-bottom: 0.88vw;
   font-family: 'Lato', sans-serif;
   font-size: 1.25vw;
+  color: black;
 }
 
 .commentUser {
@@ -621,12 +631,14 @@ input {
   font-weight: bold;
   font-family: 'Lato', sans-serif;
   font-size: 1.25vw;
+  color: black;
 }
 
 .commentUserJob {
   margin: 0;
   font-family: 'Lato', sans-serif;
   font-size: 1vw;
+  color: black;
 }
 
 .commentAccessory {

@@ -56,6 +56,10 @@ public abstract class ContentService<C extends Content, CDto extends ContentDto>
     return contentMapper.toDto(contentRepo.findById(id).orElse(null));
   }
 
+  public CDto findContent(UUID id, Authentication authentication) {
+    return contentMapper.toDto(findContentHelper(id, authentication));
+  }
+
   protected C findContentHelper(UUID id) {
     return contentRepo
       .findById(id)

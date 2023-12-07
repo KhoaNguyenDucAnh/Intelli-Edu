@@ -4,11 +4,9 @@ from sentence_transformers import SentenceTransformer, util
 from collections import deque
 from curl_cffi import requests
 import re
-
-model = SentenceTransformer("keepitreal/vietnamese-sbert")
-
 from claude_api import Client
 
+model = SentenceTransformer("keepitreal/vietnamese-sbert")
 
 class Custom_Client(Client):
     def upload_attachment(self, content):
@@ -92,25 +90,58 @@ claude_api = Custom_Client(cookie)
 def to_mindmap(file: str):
     conversation_id = claude_api.create_new_chat()["uuid"]
     mindmap = claude_api.send_message(
-        "Create a comprehensive mind map in vietnamese for that essay in json with type: title -> root -> label -> children. Thêm những nhánh về ví dụ và số liệu quan trọng nếu có. Only answer with the mindmap.",
+        """
+        Human: We want a comprehensive mind map in vietnamese for this essay in json with type: title -> root -> label -> children. Thêm những nhánh về ví dụ và số liệu quan trọng nếu có.
+        
+        Say 'Start' before the json and 'End' after the json in your answer. No lines between the json elements. No lines between Start and json. No lines between the json and End.
+        
+        Assistant:
+        """,
         conversation_id,
         attachment=file,
     )
     claude_api.delete_conversation(conversation_id)
-    return json.loads(str(mindmap))
+    mindmap = str(mindmap)
+    begin = 5
+    end = -3
+    for i in range(5, len(mindmap) + 1):
+        if mindmap[i - 5:i] == "Start":
+            begin = i
+            break
+    for i in range(len(mindmap) - 3, -1, -1):
+        if mindmap[i:i + 3] == "End":
+            end = i
+            break
+    mindmap = mindmap[begin:end]
+    return mindmap
 
 def create_questions(file):
     conversation_id = claude_api.create_new_chat()['uuid']
-    mindmap = claude_api.send_message(
+    questions = claude_api.send_message(
         """
-        Create a list of 5 questions in Vietnamese for that essay. For each question, include 1 correct answer and 3 incorrect answers. Convert each question to json with the following structure: {"question": question goes here, "answer": [correct answer, incorrect answer 1, incorrect answer 2, incorrect answer 3]}. For Yes No question, fill in the remaining 2 options with null value
-        Only answer with the json
+        Human:We want to create 5 multiple choices questions in Vietnamese for this text. Each questions should be in json format and is seperated from each other by commas. For each question, include 1 correct answer and 3 incorrect answers with the following structure: {"question": question goes here, "answers": [correct answer, incorrect answer 1, incorrect answer 2, incorrect answer 3]}.
+        
+        Say 'Start' before the json and 'End' after the json in your answer. No lines between the json elements. No lines between Start and json. No lines between the json and End.  
+
+        Assistant:
         """,
         conversation_id,
         attachment=file
     )
     claude_api.delete_conversation(conversation_id)
-    return json.loads(str(mindmap).split("```")[1][5:-1])
+    questions = str(questions)
+    begin = 5
+    end = -3
+    for i in range(5, len(questions) + 1):
+        if questions[i - 5:i] == "Start":
+            begin = i
+            break
+    for i in range(len(questions) - 3, -1, -1):
+        if questions[i:i + 3] == "End":
+            end = i
+            break
+    questions = questions[begin:end]
+    return "[" + questions + "]"
 
 def main(document, mindmap):
     nChain = np.zeros(2)
@@ -130,7 +161,7 @@ def main(document, mindmap):
         count.append(i + 1)
 
     json1 = to_mindmap(document)["root"]
-    json2 = json.loads(mindmap)["root"]
+    json2 = mindmap["root"] # json.loads(mindmap)["root"]
 
     def compare(text):
         new_chat = claude_api.create_new_chat()
@@ -240,4 +271,4 @@ def main(document, mindmap):
         text += str(comp_text) + " " + str(user_text) + "\n"
     return str(compare(text))
 
-# print(main("Chiến tranh thế giới thứ hai (còn được nhắc đến với các tên gọi Đệ nhị thế chiến, Thế chiến II hay Đại chiến thế giới lần thứ hai) là một cuộc chiến tranh thế giới bắt đầu từ khoảng năm 1939 và chấm dứt vào năm 1945. Cuộc chiến có sự tham gia của đại đa số các quốc gia trên thế giới — bao gồm tất cả các cường quốc — tạo thành hai liên minh quân sự đối lập: Đồng Minh và Phe Trục. Trong diện mạo một cuộc chiến tranh toàn diện, Thế chiến II có sự tham gia trực tiếp của hơn 100 triệu nhân sự từ hơn 30 quốc gia. Các bên tham chiến chính đã dồn toàn bộ nguồn lực kinh tế, công nghiệp và khoa học cho nỗ lực tham chiến, làm mờ đi ranh giới giữa nguồn lực dân sự và quân sự. Chiến tranh thế giới thứ hai là cuộc xung đột đẫm máu nhất trong lịch sử nhân loại, gây nên cái chết của 70 đến 85 triệu người, với số lượng thường dân tử vong nhiều hơn quân nhân. Hàng chục triệu người đã phải bỏ mạng trong các vụ thảm sát, diệt chủng (trong đó có Holocaust), chết vì thiếu lương thực hay vì bệnh tật. Máy bay đóng vai trò quan trọng đối với tiến trình cuộc chiến, bao gồm ném bom chiến lược vào các trung tâm dân cư, và đối với sự phát triển vũ khí hạt nhân cũng như hai lần duy nhất sử dụng loại vũ khí này trong chiến tranh.", {"title": "Chiến tranh thế giới thứ hai", "root": {"label": "Chiến tranh thế giới thứ hai", "children": [{"label": "Thời gian", "children": [{"label": "Bắt đầu: 1939"}, {"label": "Kết thúc: 1945"}]}, {"label": "Các bên tham chiến", "children": [{"label": "Đồng Minh", "children": [{"label": "Anh"}, {"label": "Pháp"}, {"label": "Liên Xô"}, {"label": "Hoa Kỳ"}]}, {"label": "Phe Trục", "children": [{"label": "Đức"}, {"label": "Ý"}, {"label": "Nhật Bản"}]}]}, {"label": "Quy mô", "children": [{"label": "Hơn 100 triệu nhân sự tham chiến"}, {"label": "Hơn 30 quốc gia tham gia"}, {"label": "Đẫm máu nhất trong lịch sử"}]}, {"label": "Hậu quả", "children": [{"label": "70-85 triệu người chết"}, {"label": "Dân thường chết nhiều hơn quân nhân"}, {"label": "Diệt chủng, đói kém, dịch bệnh"}]}]}}))
+#print(create_questions("Chiến tranh thế giới thứ hai (còn được nhắc đến với các tên gọi Đệ nhị thế chiến, Thế chiến II hay Đại chiến thế giới lần thứ hai) là một cuộc chiến tranh thế giới bắt đầu từ khoảng năm 1939 và chấm dứt vào năm 1945. Cuộc chiến có sự tham gia của đại đa số các quốc gia trên thế giới — bao gồm tất cả các cường quốc — tạo thành hai liên minh quân sự đối lập: Đồng Minh và Phe Trục. Trong diện mạo một cuộc chiến tranh toàn diện, Thế chiến II có sự tham gia trực tiếp của hơn 100 triệu nhân sự từ hơn 30 quốc gia. Các bên tham chiến chính đã dồn toàn bộ nguồn lực kinh tế, công nghiệp và khoa học cho nỗ lực tham chiến, làm mờ đi ranh giới giữa nguồn lực dân sự và quân sự. Chiến tranh thế giới thứ hai là cuộc xung đột đẫm máu nhất trong lịch sử nhân loại, gây nên cái chết của 70 đến 85 triệu người, với số lượng thường dân tử vong nhiều hơn quân nhân. Hàng chục triệu người đã phải bỏ mạng trong các vụ thảm sát, diệt chủng (trong đó có Holocaust), chết vì thiếu lương thực hay vì bệnh tật. Máy bay đóng vai trò quan trọng đối với tiến trình cuộc chiến, bao gồm ném bom chiến lược vào các trung tâm dân cư, và đối với sự phát triển vũ khí hạt nhân cũng như hai lần duy nhất sử dụng loại vũ khí này trong chiến tranh."))

@@ -26,5 +26,14 @@ public class CookieUtil {
 				.getValue(),
 				StandardCharsets.UTF_8
 		);
-	} 	
+	}
+
+  public static Cookie generateCookie(String key, String value, int age) {
+    Cookie cookie = new Cookie(key, value);
+    cookie.setMaxAge(age);
+    cookie.setPath("/");
+    cookie.setHttpOnly(true);
+    cookie.setSecure(true);
+    return cookie;
+  }
 }

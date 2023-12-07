@@ -34,6 +34,11 @@ public class MindMapController {
     return mindMapService.findContent(query, authentication, pageable);
   }
 
+  @GetMapping("/{id}")
+  public MindMapDto findMindMap(@PathVariable UUID id, Authentication authentication) {
+    return mindMapService.findContent(id, authentication);
+  }
+
   @PostMapping("/{id}")
   public MindMapDto createMindMap(@PathVariable UUID id, Authentication authentication) {
     return mindMapService.createContent(id, authentication);

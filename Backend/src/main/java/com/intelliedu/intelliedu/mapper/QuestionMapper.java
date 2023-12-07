@@ -1,6 +1,5 @@
 package com.intelliedu.intelliedu.mapper;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,14 +53,22 @@ public abstract class QuestionMapper implements ContentMapper<Question, Question
     return questionDtoBuilder.build();
   }*/
 
+  public QuestionDto toDto(Question question, Boolean shuffle) {
+    QuestionDto questionDto = toDto(question);
+    if (shuffle) questionDto.shuffle();
+    return questionDto;
+  }
+
   @BeforeMapping
   public void convertAnswer(QuestionDtoDetail questionDtoDetail, @MappingTarget QuestionDetail questionDetail) {
-    questionDtoDetail.setAnswers(Arrays.asList(questionDetail.getCorrectAnswer(), questionDetail.getIncorrectAnswer1(), questionDetail.getIncorrectAnswer2(), questionDetail.getIncorrectAnswer3()));
+    List<String> answer = questionDtoDetail.getAnswers();
+    questionDetail.setCorrectAnswer(answer.get(0));
+    questionDetail.setIncorrectAnswer(answer.subList(1, answer.size()));
   }
 
   @BeforeMapping
   public void convertAnswer(QuestionDetail questionDetail, @MappingTarget QuestionDtoDetail questionDtoDetail) {
-    questionDtoDetail.setAnswers(Arrays.asList(questionDetail.getCorrectAnswer(), questionDetail.getIncorrectAnswer1(), questionDetail.getIncorrectAnswer2(), questionDetail.getIncorrectAnswer3()));
+    questionDtoDetail.setAnswers(questionDetail.getCorrectAnswer(), questionDetail.getIncorrectAnswer());
   }
 
   public abstract QuestionDetail toQuestionDetail(QuestionDtoDetail questionDtoDetail);
@@ -87,6 +94,7 @@ public abstract class QuestionMapper implements ContentMapper<Question, Question
   public abstract QuestionDtoDetail toQuestionDtoDetail(QuestionDetail questionDetail);
 
   public List<QuestionDetail> toQuestionDetail(List<QuestionDtoDetail> questionDtoDetail) {
+    System.out.println(questionDtoDetail);
     return questionDtoDetail.stream().map(question -> toQuestionDetail(question)).collect(Collectors.toList());
   }
 
