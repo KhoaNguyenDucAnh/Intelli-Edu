@@ -14,7 +14,6 @@ import com.intelliedu.intelliedu.dto.EventDto;
 import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.entity.Event;
 import com.intelliedu.intelliedu.entity.Schedule;
-import com.intelliedu.intelliedu.exception.AlreadyExistsException;
 import com.intelliedu.intelliedu.exception.NotFoundException;
 import com.intelliedu.intelliedu.mapper.EventMapper;
 import com.intelliedu.intelliedu.repository.EventRepo;
