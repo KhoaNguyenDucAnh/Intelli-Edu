@@ -93,7 +93,7 @@ def to_mindmap(file: str):
     conversation_id = claude_api.create_new_chat()["uuid"]
     mindmap = claude_api.send_message(
         """
-        Human: We want a comprehensive mind map in vietnamese for this essay in json with type: title -> root -> label -> children. Thêm những nhánh về ví dụ và số liệu quan trọng nếu có.
+        Human: We want a comprehensive mind map in vietnamese for this essay in json with type: title -> root -> label -> children. Give additional details and statistics if needed.
         
         Say 'Start' before the json and 'End' after the json in your answer. No lines between the json elements. No lines between Start and json. No lines between the json and End.
         
@@ -103,17 +103,19 @@ def to_mindmap(file: str):
         attachment=file,
     )
     mindmap=str(mindmap)
+    begin=5
+    end=-3
     for i in range(5,len(mindmap)+1):
         if(mindmap[i-5:i]=='Start'):
             begin=i
             break
     for i in range(len(mindmap)-3,-1,-1):
-        if(mindmap[i:i+3]=='End'):
+        if(mindmap[i:i+3]=='End'):  
             end=i
             break
     mindmap=mindmap[begin:end]
     claude_api.delete_conversation(conversation_id)
-    return mindmap
+    return json.loads(mindmap)
 
 def create_questions(file):
     conversation_id = claude_api.create_new_chat()['uuid']
@@ -275,4 +277,4 @@ def main(document, mindmap):
         text += str(comp_text) + " " + str(user_text) + "\n"
     return str(compare(text))
 
-print(create_questions("Chiến tranh thế giới thứ hai (còn được nhắc đến với các tên gọi Đệ nhị thế chiến, Thế chiến II hay Đại chiến thế giới lần thứ hai) là một cuộc chiến tranh thế giới bắt đầu từ khoảng năm 1939 và chấm dứt vào năm 1945. Cuộc chiến có sự tham gia của đại đa số các quốc gia trên thế giới — bao gồm tất cả các cường quốc — tạo thành hai liên minh quân sự đối lập: Đồng Minh và Phe Trục. Trong diện mạo một cuộc chiến tranh toàn diện, Thế chiến II có sự tham gia trực tiếp của hơn 100 triệu nhân sự từ hơn 30 quốc gia. Các bên tham chiến chính đã dồn toàn bộ nguồn lực kinh tế, công nghiệp và khoa học cho nỗ lực tham chiến, làm mờ đi ranh giới giữa nguồn lực dân sự và quân sự. Chiến tranh thế giới thứ hai là cuộc xung đột đẫm máu nhất trong lịch sử nhân loại, gây nên cái chết của 70 đến 85 triệu người, với số lượng thường dân tử vong nhiều hơn quân nhân. Hàng chục triệu người đã phải bỏ mạng trong các vụ thảm sát, diệt chủng (trong đó có Holocaust), chết vì thiếu lương thực hay vì bệnh tật. Máy bay đóng vai trò quan trọng đối với tiến trình cuộc chiến, bao gồm ném bom chiến lược vào các trung tâm dân cư, và đối với sự phát triển vũ khí hạt nhân cũng như hai lần duy nhất sử dụng loại vũ khí này trong chiến tranh."))
+print(to_mindmap("Chiến tranh thế giới thứ hai (còn được nhắc đến với các tên gọi Đệ nhị thế chiến, Thế chiến II hay Đại chiến thế giới lần thứ hai) là một cuộc chiến tranh thế giới bắt đầu từ khoảng năm 1939 và chấm dứt vào năm 1945. Cuộc chiến có sự tham gia của đại đa số các quốc gia trên thế giới — bao gồm tất cả các cường quốc — tạo thành hai liên minh quân sự đối lập: Đồng Minh và Phe Trục. Trong diện mạo một cuộc chiến tranh toàn diện, Thế chiến II có sự tham gia trực tiếp của hơn 100 triệu nhân sự từ hơn 30 quốc gia. Các bên tham chiến chính đã dồn toàn bộ nguồn lực kinh tế, công nghiệp và khoa học cho nỗ lực tham chiến, làm mờ đi ranh giới giữa nguồn lực dân sự và quân sự. Chiến tranh thế giới thứ hai là cuộc xung đột đẫm máu nhất trong lịch sử nhân loại, gây nên cái chết của 70 đến 85 triệu người, với số lượng thường dân tử vong nhiều hơn quân nhân. Hàng chục triệu người đã phải bỏ mạng trong các vụ thảm sát, diệt chủng (trong đó có Holocaust), chết vì thiếu lương thực hay vì bệnh tật. Máy bay đóng vai trò quan trọng đối với tiến trình cuộc chiến, bao gồm ném bom chiến lược vào các trung tâm dân cư, và đối với sự phát triển vũ khí hạt nhân cũng như hai lần duy nhất sử dụng loại vũ khí này trong chiến tranh."))
