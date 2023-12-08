@@ -83,7 +83,7 @@ class Custom_Client(Client):
         return answer
 
 
-cookie = "intercom-device-id-lupk8zyo=435acf1c-a907-4409-ae7b-593d8b45e4a5; __ssid=ae3af040adac10d2aec8d3d99438209; __stripe_mid=439d2fe6-7918-47a3-aece-aea314af663ae04ec2; activitySessionId=cac39620-4f7a-4a13-9f84-ec91c91cd857; __stripe_sid=1f25e942-288a-4a33-bd8f-ca519b529805a12a23; __cf_bm=JV9TmU0XaU.nA09Ge3txMNulrZ4KiXlq8Xq5_9a.DDQ-1700790319-0-AUL9cB9c63dECcuEapQqP19X9INOGPIP9bBI0Nu9Oez1QLt+3+Mn6iESvJdHXcZfrM74ABIWYY10TBkyQ9frTJc=; cf_clearance=bwKArpu44ulMLNDcfUFCw8OFDnB2dbxXrcGU0OpY4H0-1700790339-0-1-afc0c2e4.a6a158a9.f8c19d04-0.2.1700790339; sessionKey=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; intercom-session-lupk8zyo=S1RGL0VDakwzZ1J5T3BlNzBlMlJWZzB5L3AyRHVQcm1tdzhVelYvRE1sOXRQajJsRUV3TGVNdHlNZDdQOTRZMi0tSm1ITUx3NmpvZFc4K25RN1lIcmlwUT09--50fa01f0d64699246ef6775ab868d9650f0d2c5a"
+cookie = "__stripe_mid=4c6e5540-a660-4d32-a6f2-62b9fcded373da5ad7; intercom-device-id-lupk8zyo=b7543c5c-5b57-4019-b325-3287684b15e7; __ssid=a2165455b3b64be1cd688fb4502b2fe; activitySessionId=4d23e059-7ad5-472d-983a-22ab70c7310d; __cf_bm=pKPBScjF.NBk6lkh5tiS2mnriD9P4hgkIbIyYPeddaI-1702017695-0-AYmbVx8TtMGCaqzmePIE924FDvW8UssZOyKkkmFsHbFDkg4LXd7OF+qOVd8yQUilfILT4Hljro9SuaE09pPdcT8=; __stripe_sid=73066245-b1cf-4cf6-be2c-18dca98184803b8f43; cf_clearance=r31TKrqxdBGEizu.6simkILsMQ6xk5XMPk8fsaCbr3I-1702018029-0-1-deb7680b.a30a0948.89b637eb-0.2.1702018029; sessionKey=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"
 
 claude_api = Custom_Client(cookie)
 
@@ -91,17 +91,31 @@ def to_mindmap(file: str):
     conversation_id = claude_api.create_new_chat()["uuid"]
     mindmap = claude_api.send_message(
         """
-        Human: We want a comprehensive mind map in vietnamese for this essay in json with type: title -> root -> label -> children. Thêm những nhánh về ví dụ và số liệu quan trọng nếu có.
-        
-        Say 'Start' before the json and 'End' after the json in your answer. No lines between the json elements. No lines between Start and json. No lines between the json and End.
-        
+        Human: We want a comprehensive mind map in vietnamese for this text in a valid json structure by this type:
+
+        {"title":title,
+            "root":
+            {
+                    "label":label,
+                    "children":[
+                        {"label":label,
+                        "children":[]}
+                    ]
+            }
+        }
+
+        The keys of the json should strictly follow the given structure. Give additional details and statistics if needed.
+
+        Say 'Start' before the json and 'End' after the json in your answer. No lines between the json elements. No lines between Start and json. No lines between the json and End. Check the validity of the json in the numbers of {, }, [, ] and the position of commas.
+
         Assistant:
         """,
         conversation_id,
         attachment=file,
     )
-    claude_api.delete_conversation(conversation_id)
+    # claude_api.delete_conversation(conversation_id)
     mindmap = str(mindmap)
+    print(mindmap)
     begin = 5
     end = -3
     for i in range(5, len(mindmap) + 1):
@@ -113,7 +127,7 @@ def to_mindmap(file: str):
             end = i
             break
     mindmap = mindmap[begin:end]
-    return mindmap
+    return json.loads(mindmap)
 
 def create_questions(file):
     conversation_id = claude_api.create_new_chat()['uuid']
@@ -160,15 +174,28 @@ def main(document, mindmap):
     for i in range(500):
         count.append(i + 1)
 
+    print(1)
     json1 = to_mindmap(document)["root"]
-    json2 = mindmap["root"] # json.loads(mindmap)["root"]
-
+    print(json1)
+    print(2)
+    json2 = json.loads(mindmap)["root"]
+    print(json2)
+    print(3)
     def compare(text):
         new_chat = claude_api.create_new_chat()
         conversation_id = new_chat["uuid"]
         prompt = text + "\n"
         # print(prompt)
-        prompt += "Can you see if the second text is missing any information or numbers or wrong order compare to the first text in less than 3 sentences in Vietnamese"
+        prompt += """
+        Human: The two texts is formatted in the strcuture:
+
+            [TEXT 1] [TEXT 2]
+            [TEXT 1] [TEXT 2]
+
+        Can you see if the second text is missing any information or numbers or wrong order compare to the first text in less than 7 sentences in Vietnamese.If the second text misses too much information compare to the first then say 'Qua it thong tin'
+
+        Assistant:
+        """
         response = claude_api.send_message(prompt, conversation_id)
         claude_api.delete_conversation(conversation_id)
         return response
@@ -176,7 +203,7 @@ def main(document, mindmap):
     def to_tree(index, js, u):
         values[index][u] = js["label"]
         count.popleft()
-        if "children" not in js:
+        if ("children" not in js) or (js["children"]==[]):
             return 1
         js = js["children"]
         dem = 0
@@ -269,6 +296,6 @@ def main(document, mindmap):
             # print("sai vi tri dang le", flat[1][findHead], "va", flat[1][findEnd], "o cung 1 chuoi",)
             continue
         text += str(comp_text) + " " + str(user_text) + "\n"
+    print(text)
     return str(compare(text))
-
-#print(create_questions("Chiến tranh thế giới thứ hai (còn được nhắc đến với các tên gọi Đệ nhị thế chiến, Thế chiến II hay Đại chiến thế giới lần thứ hai) là một cuộc chiến tranh thế giới bắt đầu từ khoảng năm 1939 và chấm dứt vào năm 1945. Cuộc chiến có sự tham gia của đại đa số các quốc gia trên thế giới — bao gồm tất cả các cường quốc — tạo thành hai liên minh quân sự đối lập: Đồng Minh và Phe Trục. Trong diện mạo một cuộc chiến tranh toàn diện, Thế chiến II có sự tham gia trực tiếp của hơn 100 triệu nhân sự từ hơn 30 quốc gia. Các bên tham chiến chính đã dồn toàn bộ nguồn lực kinh tế, công nghiệp và khoa học cho nỗ lực tham chiến, làm mờ đi ranh giới giữa nguồn lực dân sự và quân sự. Chiến tranh thế giới thứ hai là cuộc xung đột đẫm máu nhất trong lịch sử nhân loại, gây nên cái chết của 70 đến 85 triệu người, với số lượng thường dân tử vong nhiều hơn quân nhân. Hàng chục triệu người đã phải bỏ mạng trong các vụ thảm sát, diệt chủng (trong đó có Holocaust), chết vì thiếu lương thực hay vì bệnh tật. Máy bay đóng vai trò quan trọng đối với tiến trình cuộc chiến, bao gồm ném bom chiến lược vào các trung tâm dân cư, và đối với sự phát triển vũ khí hạt nhân cũng như hai lần duy nhất sử dụng loại vũ khí này trong chiến tranh."))
+# print(main("Chiến tranh thế giới thứ hai (còn được nhắc đến với các tên gọi Đệ nhị thế chiến, Thế chiến II hay Đại chiến thế giới lần thứ hai) là một cuộc chiến tranh thế giới bắt đầu từ khoảng năm 1939 và chấm dứt vào năm 1945. Cuộc chiến có sự tham gia của đại đa số các quốc gia trên thế giới — bao gồm tất cả các cường quốc — tạo thành hai liên minh quân sự đối lập: Đồng Minh và Phe Trục. Trong diện mạo một cuộc chiến tranh toàn diện, Thế chiến II có sự tham gia trực tiếp của hơn 100 triệu nhân sự từ hơn 30 quốc gia. Các bên tham chiến chính đã dồn toàn bộ nguồn lực kinh tế, công nghiệp và khoa học cho nỗ lực tham chiến, làm mờ đi ranh giới giữa nguồn lực dân sự và quân sự. Chiến tranh thế giới thứ hai là cuộc xung đột đẫm máu nhất trong lịch sử nhân loại, gây nên cái chết của 70 đến 85 triệu người, với số lượng thường dân tử vong nhiều hơn quân nhân. Hàng chục triệu người đã phải bỏ mạng trong các vụ thảm sát, diệt chủng (trong đó có Holocaust), chết vì thiếu lương thực hay vì bệnh tật. Máy bay đóng vai trò quan trọng đối với tiến trình cuộc chiến, bao gồm ném bom chiến lược vào các trung tâm dân cư, và đối với sự phát triển vũ khí hạt nhân cũng như hai lần duy nhất sử dụng loại vũ khí này trong chiến tranh.",{"title": "Chiến tranh thế giới thứ hai", "root": {"label": "Chiến tranh thế giới thứ hai","children": [{"label": "Thời gian","children": [ {"label": "Bắt đầu: Khoảng năm 1939"}, {"label": "Kết thúc: Năm 1945"} ] }, { "label": "Tên gọi khác", "children": [ {"label": "Đệ nhị thế chiến"}, {"label": "Thế chiến II"}, {"label": "Đại chiến thế giới lần thứ hai"} ] }, { "label": "Các bên tham chiến", "children": [ {"label": "Đồng Minh"}, {"label": "Phe Trục"} ] }, { "label": "Quy mô tham chiến", "children": [ {"label": "Hơn 100 triệu nhân sự"}, {"label": "Hơn 30 quốc gia"} ] }, { "label": "Sử dụng nguồn lực", "children": [ {"label": "Kinh tế"}, {"label": "Công nghiệp"}, {"label": "Khoa học"} ] }, { "label": "Quy mô thiệt hại", "children": [ {"label": "70-85 triệu người"}, {"label": "Dân thường > quân nhân"} ] }, { "label": "Nguyên nhân tử vong", "children": [ {"label": "Chiến đấu"}, {"label": "Thảm sát/Diệt chủng", "children": [{"label": "Holocaust"}]}, {"label": "Đói"}, {"label": "Bệnh dịch"} ] }, { "label": "Vai trò máy bay", "children": [ {"label": "Ném bom chiến lược", "children": [{"label": "Trung tâm dân cư"}]}, {"label": "Phát triển vũ khí hạt nhân"} ] }, { "label": "Vũ khí hạt nhân", "children": [ {"label": "Đầu tiên sử dụng trong chiến tranh"} ] } ] }}))
