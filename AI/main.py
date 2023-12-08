@@ -93,14 +93,16 @@ def to_mindmap(file: str):
         """
         Human: We want a comprehensive mind map in vietnamese for this text in a valid json structure by this type:
 
-        {"title":title,
-            "root":
-            {
-                    "label":label,
-                    "children":[
-                        {"label":label,
-                        "children":[]}
-                    ]
+        {
+            "title":title,
+            "root": {
+                "label":label,
+                "children": [
+                    {
+                        "label":label,
+                        "children":[]
+                    }
+                ]
             }
         }
 
@@ -113,7 +115,7 @@ def to_mindmap(file: str):
         conversation_id,
         attachment=file,
     )
-    # claude_api.delete_conversation(conversation_id)
+    claude_api.delete_conversation(conversation_id)
     mindmap = str(mindmap)
     print(mindmap)
     begin = 5
@@ -144,6 +146,7 @@ def create_questions(file):
     )
     claude_api.delete_conversation(conversation_id)
     questions = str(questions)
+    print(questions)
     begin = 5
     end = -3
     for i in range(5, len(questions) + 1):
@@ -174,13 +177,9 @@ def main(document, mindmap):
     for i in range(500):
         count.append(i + 1)
 
-    print(1)
     json1 = to_mindmap(document)["root"]
-    print(json1)
-    print(2)
     json2 = json.loads(mindmap)["root"]
-    print(json2)
-    print(3)
+
     def compare(text):
         new_chat = claude_api.create_new_chat()
         conversation_id = new_chat["uuid"]
