@@ -1,6 +1,7 @@
 package com.intelliedu.intelliedu.dto;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,9 +29,9 @@ public class QuestionDtoDetail {
   public void setAnswers(String correctAnswer, List<String> incorrectAnswer) {
     this.answers = incorrectAnswer;
     this.answers.add(0,correctAnswer);
-    /*answer.add(questionDetail.getCorrectAnswer());
-    answer.add(questionDetail.getIncorrectAnswer1());
-    answer.add(questionDetail.getIncorrectAnswer2());
-    answer.add(questionDetail.getIncorrectAnswer3());*/
+  }
+
+  public void shuffle() {
+    Collections.shuffle(this.answers);
   }
 }

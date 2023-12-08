@@ -23,21 +23,18 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 @Entity
-//@SQLDelete(sql = "UPDATE question SET deleted = true WHERE file_id=?")
-//@Where(clause = "deleted=false")
 public class Question extends Content {
 
   @Builder.Default
   @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private List<QuestionDetail> content = new ArrayList<>();
 
-  public void setContent(List<QuestionDetail> questionDetail) {
-    this.content = questionDetail;
-    questionDetail.forEach(question -> question.setParent(this));
-  }
-
   public void addContent(QuestionDetail questionDetail) {
     this.content.add(questionDetail);
     questionDetail.setParent(this);
+  }
+
+  public void addContent(List<QuestionDetail> questionDetail) {
+    questionDetail.forEach(question -> addContent(question));
   }
 }

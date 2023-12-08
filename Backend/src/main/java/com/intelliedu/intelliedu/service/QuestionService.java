@@ -49,10 +49,12 @@ public class QuestionService extends ContentService<Question, QuestionDto> {
       .orElseThrow(() -> new NotFoundException(QuestionDetail.class, questionId));
   }
 
-  public QuestionDto createQuestionDetail(UUID id, QuestionDtoDetail questionDtoDetail, Authentication authentication) {
+  public QuestionDtoDetail createQuestionDetail(UUID id, Boolean shuffle, QuestionDtoDetail questionDtoDetail, Authentication authentication) {
     Question question = findContentHelper(id, authentication);
-    question.addContent(questionMapper.toQuestionDetail(questionDtoDetail));
-    return saveContent(question);
+    QuestionDetail questionDetail = questionMapper.toQuestionDetail(questionDtoDetail);
+    question.addContent(questionDetail);
+    saveContent(question);
+    return questionMapper.toQuestionDtoDetail(questionDetail, shuffle);
   }
 
   public QuestionDto updateQuestionDetail(UUID questionId, QuestionDtoDetail questionDtoDetail, Authentication authentication) {

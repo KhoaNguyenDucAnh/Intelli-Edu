@@ -1,5 +1,6 @@
 package com.intelliedu.intelliedu.controller;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.intelliedu.intelliedu.dto.FileDto;
-import com.intelliedu.intelliedu.dto.QuestionDto;
+import com.intelliedu.intelliedu.dto.QuestionDtoDetail;
 import com.intelliedu.intelliedu.service.FileService;
 
 import jakarta.validation.Valid;
@@ -63,7 +64,7 @@ public class FileController {
   }
 
   @GetMapping("/generate-question/{id}")
-  public QuestionDto generateQuestion(@PathVariable UUID id, Authentication authentication) {
+  public List<QuestionDtoDetail> generateQuestion(@PathVariable UUID id, Authentication authentication) {
     return fileService.generateQuestion(id, authentication);
   }
 }
