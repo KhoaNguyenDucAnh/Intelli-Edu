@@ -1,5 +1,6 @@
 package com.intelliedu.intelliedu.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -44,6 +45,10 @@ public class EventService {
 	public Map<String, List<Object>> findEvent(Authentication authentication) {
 		return eventMapper.toEventDto(scheduleRepo.findByAccount(authService.getAccount(authentication)).stream().map(s -> s.getEvent()).toList());
 	}
+
+  public List<Map<String, String>> findEvent(UUID accountId) {
+    return eventMapper.toEventDtoHelper(eventRepo.findByDateAndScheduleAccount(LocalDate.now(), authService.getAccount(accountId)));
+  }
 
 	public EventDto createEvent(EventDto eventDto, Authentication authentication) {
     Event event = eventMapper.toEvent(eventDto);

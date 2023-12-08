@@ -1,5 +1,6 @@
 package com.intelliedu.intelliedu.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -16,6 +17,8 @@ import com.intelliedu.intelliedu.entity.Event;
 public interface EventRepo extends JpaRepository<Event, UUID> {
 
 	List<Event> findByScheduleAccount(Pageable pageable, Account account);
+
+  List<Event> findByDateAndScheduleAccount(LocalDate date, Account account);
 
 	Optional<Event> findByIdAndScheduleAccount(UUID id, Account account);
 
