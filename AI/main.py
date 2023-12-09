@@ -83,7 +83,7 @@ class Custom_Client(Client):
         return answer
 
 
-cookie = "__stripe_mid=4c6e5540-a660-4d32-a6f2-62b9fcded373da5ad7; intercom-device-id-lupk8zyo=b7543c5c-5b57-4019-b325-3287684b15e7; __ssid=a2165455b3b64be1cd688fb4502b2fe; activitySessionId=4d23e059-7ad5-472d-983a-22ab70c7310d; __cf_bm=pKPBScjF.NBk6lkh5tiS2mnriD9P4hgkIbIyYPeddaI-1702017695-0-AYmbVx8TtMGCaqzmePIE924FDvW8UssZOyKkkmFsHbFDkg4LXd7OF+qOVd8yQUilfILT4Hljro9SuaE09pPdcT8=; __stripe_sid=73066245-b1cf-4cf6-be2c-18dca98184803b8f43; cf_clearance=r31TKrqxdBGEizu.6simkILsMQ6xk5XMPk8fsaCbr3I-1702018029-0-1-deb7680b.a30a0948.89b637eb-0.2.1702018029; sessionKey=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"
+cookie = "__ssid=ae3af040adac10d2aec8d3d99438209; __stripe_mid=439d2fe6-7918-47a3-aece-aea314af663ae04ec2; activitySessionId=2a6d3a78-1cef-4593-b1fa-1e7a550b838d; __cf_bm=BTOQOwKzGVeFvzlYusPwDLYvzsapVg3eM8MXPQhNsj0-1702097559-0-AbiEaSzGh5Z+y1zN3PNxcWq34opIFNlRvPx9Tp5J6WictMPo1L0mgytlIy8F5TYqtq0NxysVp8mLvYVk12DKstI=; cf_clearance=J5SqPqX3F3h4yATZXfyqC_tdd4fXEdBPxzbhMp0f40Q-1702097560-0-1-af0c7280.8eb62f98.f80d2d60-0.2.1702097560; __stripe_sid=71259778-4788-4ef0-b18b-4bbc37a1bc3cee5c0f; sessionKey=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"
 
 claude_api = Custom_Client(cookie)
 
@@ -115,7 +115,7 @@ def to_mindmap(file: str):
         conversation_id,
         attachment=file,
     )
-    claude_api.delete_conversation(conversation_id)
+    # claude_api.delete_conversation(conversation_id)
     mindmap = str(mindmap)
     begin = 5
     end = -3
@@ -143,7 +143,7 @@ def create_questions(file):
         conversation_id,
         attachment=file
     )
-    claude_api.delete_conversation(conversation_id)
+    # claude_api.delete_conversation(conversation_id)
     questions = str(questions)
     begin = 5
     end = -3
@@ -163,20 +163,25 @@ def main(document, mindmap):
     chainHead = np.zeros((2, 500))
     chainEnd = np.zeros((2, 500))
     chainInd = np.zeros((2, 500))
-    values = [[None for i in range(100)], [None for i in range(500)]]
-    adj = [[[] for i in range(500)], [[] for i in range(500)]]
+    values = [[None for _ in range(100)], [None for _ in range(500)]]
+    adj = [[[] for _ in range(500)], [[] for _ in range(500)]]
     nBase = np.zeros(2)
     pos = np.zeros((2, 500))
     parent = np.zeros((2, 500))
     nChild = np.zeros((2, 500))
     rev = np.zeros((2, 500))
-    flat = [[None for i in range(100)], [None for i in range(100)]]
+    flat = [[None for _ in range(100)], [None for _ in range(100)]]
     count = deque([0])
     for i in range(500):
         count.append(i + 1)
 
     json1 = to_mindmap(document)["root"]
-    json2 = (mindmap)["root"]
+
+    print(mindmap)
+
+    json2 = json.loads(mindmap)["root"]
+
+    print(json2)
 
     def compare(text):
         new_chat = claude_api.create_new_chat()
@@ -300,4 +305,4 @@ def main(document, mindmap):
             continue
         text += str(comp_text) + " " + str(user_text) + "\n"
     return str(compare(text))
-print(main('Chiến tranh thế giới thứ hai (còn được nhắc đến với các tên gọi Đệ nhị thế chiến, Thế chiến II hay Đại chiến thế giới lần thứ hai) là một cuộc chiến tranh thế giới bắt đầu từ khoảng năm 1939 và chấm dứt vào năm 1945. Cuộc chiến có sự tham gia của đại đa số các quốc gia trên thế giới — bao gồm tất cả các cường quốc — tạo thành hai liên minh quân sự đối lập: Đồng Minh và Phe Trục. Trong diện mạo một cuộc chiến tranh toàn diện, Thế chiến II có sự tham gia trực tiếp của hơn 100 triệu nhân sự từ hơn 30 quốc gia. Các bên tham chiến chính đã dồn toàn bộ nguồn lực kinh tế, công nghiệp và khoa học cho nỗ lực tham chiến, làm mờ đi ranh giới giữa nguồn lực dân sự và quân sự. Chiến tranh thế giới thứ hai là cuộc xung đột đẫm máu nhất trong lịch sử nhân loại, gây nên cái chết của 70 đến 85 triệu người, với số lượng thường dân tử vong nhiều hơn quân nhân. Hàng chục triệu người đã phải bỏ mạng trong các vụ thảm sát, diệt chủng (trong đó có Holocaust), chết vì thiếu lương thực hay vì bệnh tật. Máy bay đóng vai trò quan trọng đối với tiến trình cuộc chiến, bao gồm ném bom chiến lược vào các trung tâm dân cư, và đối với sự phát triển vũ khí hạt nhân cũng như hai lần duy nhất sử dụng loại vũ khí này trong chiến tranh.',{"title": "Chiến tranh thế giới thứ hai", "root": {"label": "Chiến tranh thế giới thứ hai","children": [{"label": "Thời gian","children": [ {"label": "Bắt đầu: Khoảng năm 1939"}, {"label": "Kết thúc: Năm 1945"} ] }, { "label": "Tên gọi khác", "children": [ {"label": "Đệ nhị thế chiến"}, {"label": "Thế chiến II"}, {"label": "Đại chiến thế giới lần thứ hai"} ] }, { "label": "Các bên tham chiến", "children": [ {"label": "Đồng Minh"}, {"label": "Phe Trục"} ] }, { "label": "Quy mô tham chiến", "children": [ {"label": "Hơn 100 triệu nhân sự"}, {"label": "Hơn 30 quốc gia"} ] }, { "label": "Sử dụng nguồn lực", "children": [ {"label": "Kinh tế"}, {"label": "Công nghiệp"}, {"label": "Khoa học"} ] }, { "label": "Quy mô thiệt hại", "children": [ {"label": "70-85 triệu người"}, {"label": "Dân thường > quân nhân"} ] }, { "label": "Nguyên nhân tử vong", "children": [ {"label": "Chiến đấu"}, {"label": "Thảm sát/Diệt chủng", "children": [{"label": "Holocaust"}]}, {"label": "Đói"}, {"label": "Bệnh dịch"} ] }, { "label": "Vai trò máy bay", "children": [ {"label": "Ném bom chiến lược", "children": [{"label": "Trung tâm dân cư"}]}, {"label": "Phát triển vũ khí hạt nhân"} ] }, { "label": "Vũ khí hạt nhân", "children": [ {"label": "Đầu tiên sử dụng trong chiến tranh"} ] } ] }}))
+# print(main('Chiến tranh thế giới thứ hai (còn được nhắc đến với các tên gọi Đệ nhị thế chiến, Thế chiến II hay Đại chiến thế giới lần thứ hai) là một cuộc chiến tranh thế giới bắt đầu từ khoảng năm 1939 và chấm dứt vào năm 1945. Cuộc chiến có sự tham gia của đại đa số các quốc gia trên thế giới — bao gồm tất cả các cường quốc — tạo thành hai liên minh quân sự đối lập: Đồng Minh và Phe Trục. Trong diện mạo một cuộc chiến tranh toàn diện, Thế chiến II có sự tham gia trực tiếp của hơn 100 triệu nhân sự từ hơn 30 quốc gia. Các bên tham chiến chính đã dồn toàn bộ nguồn lực kinh tế, công nghiệp và khoa học cho nỗ lực tham chiến, làm mờ đi ranh giới giữa nguồn lực dân sự và quân sự. Chiến tranh thế giới thứ hai là cuộc xung đột đẫm máu nhất trong lịch sử nhân loại, gây nên cái chết của 70 đến 85 triệu người, với số lượng thường dân tử vong nhiều hơn quân nhân. Hàng chục triệu người đã phải bỏ mạng trong các vụ thảm sát, diệt chủng (trong đó có Holocaust), chết vì thiếu lương thực hay vì bệnh tật. Máy bay đóng vai trò quan trọng đối với tiến trình cuộc chiến, bao gồm ném bom chiến lược vào các trung tâm dân cư, và đối với sự phát triển vũ khí hạt nhân cũng như hai lần duy nhất sử dụng loại vũ khí này trong chiến tranh.',{"title": "Chiến tranh thế giới thứ hai", "root": {"label": "Chiến tranh thế giới thứ hai","children": [{"label": "Thời gian","children": [ {"label": "Bắt đầu: Khoảng năm 1939"}, {"label": "Kết thúc: Năm 1945"} ] }, { "label": "Tên gọi khác", "children": [ {"label": "Đệ nhị thế chiến"}, {"label": "Thế chiến II"}, {"label": "Đại chiến thế giới lần thứ hai"} ] }, { "label": "Các bên tham chiến", "children": [ {"label": "Đồng Minh"}, {"label": "Phe Trục"} ] }, { "label": "Quy mô tham chiến", "children": [ {"label": "Hơn 100 triệu nhân sự"}, {"label": "Hơn 30 quốc gia"} ] }, { "label": "Sử dụng nguồn lực", "children": [ {"label": "Kinh tế"}, {"label": "Công nghiệp"}, {"label": "Khoa học"} ] }, { "label": "Quy mô thiệt hại", "children": [ {"label": "70-85 triệu người"}, {"label": "Dân thường > quân nhân"} ] }, { "label": "Nguyên nhân tử vong", "children": [ {"label": "Chiến đấu"}, {"label": "Thảm sát/Diệt chủng", "children": [{"label": "Holocaust"}]}, {"label": "Đói"}, {"label": "Bệnh dịch"} ] }, { "label": "Vai trò máy bay", "children": [ {"label": "Ném bom chiến lược", "children": [{"label": "Trung tâm dân cư"}]}, {"label": "Phát triển vũ khí hạt nhân"} ] }, { "label": "Vũ khí hạt nhân", "children": [ {"label": "Đầu tiên sử dụng trong chiến tranh"} ] } ] }}))
