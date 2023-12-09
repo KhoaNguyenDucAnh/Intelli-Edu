@@ -83,7 +83,7 @@ class Custom_Client(Client):
         return answer
 
 
-cookie = "__ssid=ae3af040adac10d2aec8d3d99438209; __stripe_mid=439d2fe6-7918-47a3-aece-aea314af663ae04ec2; activitySessionId=2a6d3a78-1cef-4593-b1fa-1e7a550b838d; __cf_bm=BTOQOwKzGVeFvzlYusPwDLYvzsapVg3eM8MXPQhNsj0-1702097559-0-AbiEaSzGh5Z+y1zN3PNxcWq34opIFNlRvPx9Tp5J6WictMPo1L0mgytlIy8F5TYqtq0NxysVp8mLvYVk12DKstI=; cf_clearance=J5SqPqX3F3h4yATZXfyqC_tdd4fXEdBPxzbhMp0f40Q-1702097560-0-1-af0c7280.8eb62f98.f80d2d60-0.2.1702097560; __stripe_sid=71259778-4788-4ef0-b18b-4bbc37a1bc3cee5c0f; sessionKey=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"
+cookie = "__ssid=ae3af040adac10d2aec8d3d99438209; __stripe_mid=439d2fe6-7918-47a3-aece-aea314af663ae04ec2; activitySessionId=2a6d3a78-1cef-4593-b1fa-1e7a550b838d; sessionKey=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; cf_clearance=gP6BJEYOrKnUoMWMW3U1eJ66mwczitBCSKcSUFrtsQY-1702130552-0-1-af0c7280.1274d7ef.f80d2d60-0.2.1702130552; __stripe_sid=daec514e-c086-40a8-9ca2-2453eef97e75fd90f4; __cf_bm=xcx8xsKQqUjwbdwhazJpnN.6QmCNzLG3nkmef26.b08-1702130571-1-Aa/3lQtTnVIplnNKkf64Vx+Uu2kduWq01Kxz7TCcyLJoSCiorcoHt/qOmRzIpELc1qzJ3ciNF/GnRX23aJfOh44="
 
 claude_api = Custom_Client(cookie)
 
@@ -119,6 +119,9 @@ def to_mindmap(file: str):
     mindmap = str(mindmap)
     begin = 5
     end = -3
+    # print('here is mindmap')
+    # print(mindmap)
+    # print()
     for i in range(5, len(mindmap) + 1):
         if mindmap[i - 5:i] == "Start":
             begin = i
@@ -177,11 +180,11 @@ def main(document, mindmap):
 
     json1 = to_mindmap(document)["root"]
 
-    print(mindmap)
+    #print(json1)
 
     json2 = json.loads(mindmap)["root"]
 
-    print(json2)
+    #print(json2)
 
     def compare(text):
         new_chat = claude_api.create_new_chat()
@@ -301,8 +304,23 @@ def main(document, mindmap):
                 break
             user_chain = int(chainInd[1][int(End_index)])
         if loca == -1:
-            print("sai vị trí đáng lẽ", flat[1][findHead], "và", flat[1][findEnd], "phải ở cùng 1 chuỗi",)
+            #print("sai vị trí đáng lẽ", flat[1][findHead], "và", flat[1][findEnd], "phải ở cùng 1 chuỗi",)
             continue
         text += str(comp_text) + " " + str(user_text) + "\n"
     return str(compare(text))
-# print(main('Chiến tranh thế giới thứ hai (còn được nhắc đến với các tên gọi Đệ nhị thế chiến, Thế chiến II hay Đại chiến thế giới lần thứ hai) là một cuộc chiến tranh thế giới bắt đầu từ khoảng năm 1939 và chấm dứt vào năm 1945. Cuộc chiến có sự tham gia của đại đa số các quốc gia trên thế giới — bao gồm tất cả các cường quốc — tạo thành hai liên minh quân sự đối lập: Đồng Minh và Phe Trục. Trong diện mạo một cuộc chiến tranh toàn diện, Thế chiến II có sự tham gia trực tiếp của hơn 100 triệu nhân sự từ hơn 30 quốc gia. Các bên tham chiến chính đã dồn toàn bộ nguồn lực kinh tế, công nghiệp và khoa học cho nỗ lực tham chiến, làm mờ đi ranh giới giữa nguồn lực dân sự và quân sự. Chiến tranh thế giới thứ hai là cuộc xung đột đẫm máu nhất trong lịch sử nhân loại, gây nên cái chết của 70 đến 85 triệu người, với số lượng thường dân tử vong nhiều hơn quân nhân. Hàng chục triệu người đã phải bỏ mạng trong các vụ thảm sát, diệt chủng (trong đó có Holocaust), chết vì thiếu lương thực hay vì bệnh tật. Máy bay đóng vai trò quan trọng đối với tiến trình cuộc chiến, bao gồm ném bom chiến lược vào các trung tâm dân cư, và đối với sự phát triển vũ khí hạt nhân cũng như hai lần duy nhất sử dụng loại vũ khí này trong chiến tranh.',{"title": "Chiến tranh thế giới thứ hai", "root": {"label": "Chiến tranh thế giới thứ hai","children": [{"label": "Thời gian","children": [ {"label": "Bắt đầu: Khoảng năm 1939"}, {"label": "Kết thúc: Năm 1945"} ] }, { "label": "Tên gọi khác", "children": [ {"label": "Đệ nhị thế chiến"}, {"label": "Thế chiến II"}, {"label": "Đại chiến thế giới lần thứ hai"} ] }, { "label": "Các bên tham chiến", "children": [ {"label": "Đồng Minh"}, {"label": "Phe Trục"} ] }, { "label": "Quy mô tham chiến", "children": [ {"label": "Hơn 100 triệu nhân sự"}, {"label": "Hơn 30 quốc gia"} ] }, { "label": "Sử dụng nguồn lực", "children": [ {"label": "Kinh tế"}, {"label": "Công nghiệp"}, {"label": "Khoa học"} ] }, { "label": "Quy mô thiệt hại", "children": [ {"label": "70-85 triệu người"}, {"label": "Dân thường > quân nhân"} ] }, { "label": "Nguyên nhân tử vong", "children": [ {"label": "Chiến đấu"}, {"label": "Thảm sát/Diệt chủng", "children": [{"label": "Holocaust"}]}, {"label": "Đói"}, {"label": "Bệnh dịch"} ] }, { "label": "Vai trò máy bay", "children": [ {"label": "Ném bom chiến lược", "children": [{"label": "Trung tâm dân cư"}]}, {"label": "Phát triển vũ khí hạt nhân"} ] }, { "label": "Vũ khí hạt nhân", "children": [ {"label": "Đầu tiên sử dụng trong chiến tranh"} ] } ] }}))
+# print(main("""## Dựa vào nguồn gốc
+# Dựa vào nguồn gốc, polime được chia thành hai loại chính: Polime có nguồn gốc tự nhiên và polime tổng hợp. 
+# - Polime có nguồn gốc từ thiên nhiên như cao su, xenlulozơ… 
+# - Polime tổng hợp do con người tổng hợp nên như polietilen, nhựa phenol-fomanđehit. 
+# - Ngoài ra, polime nhân tạo (hay được gọi là bán tổng hợp) được lấy từ polime thiên nhiên và chế hóa thành polime mới như xenlulozơ trinitrat, tơ visco ...
+
+# ## Dựa vào cách tổng hợp
+# Dựa vào cách tổng hợp, polime được chia thành hai loại chính như sau: 
+# - Polime trùng hợp được tổng hợp bằng phản ứng trùng hợp: (–CH2–CH2–)n và (–CH2–CHCl–)n. 
+# - Polime trùng ngưng được tổng hợp bằng phản ứng trùng ngưng: (–HN–[CH2]6–NH–CO–[CH2]4–CO–)n
+
+# ## Dựa vào cấu trúc:
+# Bên cạnh đó, polime còn được phân loại dựa vào đặc điểm cấu trúc. 
+# - Polime có mạch không phân nhánh, ví dụ như: PVC, PE, PS, cao su, xenlulozơ, tinh bột...
+# - Polime có mạch nhánh, ví dụ như amilopectin, glicogen.
+# - Polime có cấu trúc mạng không gian, ví dụ như rezit, cao su lưu hóa.""",{"root":{"index":0,"x":241,"y":378,"width":200,"color":"Red","label":"lmao. ","subject":"lmao","body":"","file":'null',"children":[{"index":1,"x":494,"y":229,"width":200,"color":"Red","label":"bruh. ","subject":"bruh","body":"","file":'null',"children":[]},{"index":2,"x":487,"y":503,"width":200,"color":"Red","label":"huhu. hehe","subject":"huhu","body":"hehe","file":'null',"children":[]}]}}))
