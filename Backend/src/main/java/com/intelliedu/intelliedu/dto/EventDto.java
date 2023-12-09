@@ -31,11 +31,11 @@ public class EventDto {
   @NotEmpty(message = "Name must not be empty")
 	private String name;
 
-  @NotEmpty(message = "Date must not be empty")
+  @NotNull(message = "Date must not be empty")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "d/M/yyyy")
 	private LocalDate date;
 
-  @NotEmpty(message = "Time must not be empty")
+  @NotNull(message = "Time must not be empty")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
 	private LocalTime time;
 	
