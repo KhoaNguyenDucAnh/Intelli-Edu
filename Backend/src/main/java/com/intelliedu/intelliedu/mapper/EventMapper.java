@@ -59,7 +59,9 @@ public abstract class EventMapper {
           "name", e.getName(),
           "time", timeFormatter.format(e.getTime()),
           "description", e.getDescription(),
-          "shared", e.isShared()
+          "shared", e.isShared(),
+          "urgent", e.isUrgent(),
+          "important", e.isImportant()
         )
       )
     );
