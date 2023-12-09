@@ -35,7 +35,7 @@ public class EventController {
 		return eventService.findEvent(authentication);
 	}
 
-  @GetMapping("/{accountId}")
+  @GetMapping("/notification/{accountId}")
   public List<Map<String, String>> findEvent(@PathVariable UUID accountId) {
     return eventService.findEvent(accountId);
   }
