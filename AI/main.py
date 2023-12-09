@@ -117,7 +117,6 @@ def to_mindmap(file: str):
     )
     claude_api.delete_conversation(conversation_id)
     mindmap = str(mindmap)
-    print(mindmap)
     begin = 5
     end = -3
     for i in range(5, len(mindmap) + 1):
@@ -146,7 +145,6 @@ def create_questions(file):
     )
     claude_api.delete_conversation(conversation_id)
     questions = str(questions)
-    print(questions)
     begin = 5
     end = -3
     for i in range(5, len(questions) + 1):
@@ -178,20 +176,23 @@ def main(document, mindmap):
         count.append(i + 1)
 
     json1 = to_mindmap(document)["root"]
-    json2 = json.loads(mindmap)["root"]
+    json2 = (mindmap)["root"]
 
     def compare(text):
         new_chat = claude_api.create_new_chat()
         conversation_id = new_chat["uuid"]
         prompt = text + "\n"
-        # print(prompt)
         prompt += """
-        Human: The two texts is formatted in the strcuture:
 
-            [TEXT 1] [TEXT 2]
-            [TEXT 1] [TEXT 2]
+        Human: A list of texts written in pair has the following structure:
 
-        Can you see if the second text is missing any information or numbers or wrong order compare to the first text in less than 7 sentences in Vietnamese.If the second text misses too much information compare to the first then say 'Qua it thong tin'
+            [TEXT 1] [TEXT 2],
+            [TEXT 1] [TEXT 2],
+            ....
+
+        Take the text 1 in each pair of texts as the standard and correct text. We want a compairison between text 2 and text 1 for each pair of texts. Refer to text 2 as the user's mindmap and text 1 as the document's information. 
+        If there is not enough information from text 2, please say 'không đủ thông tin để đưa ra nhận xét'.
+        Everything should be written in Vietnamese.
 
         Assistant:
         """
@@ -259,6 +260,8 @@ def main(document, mindmap):
     for i in range(500):
         count.append(i + 1)
     d2 = to_tree(1, json2, 1)
+    if(d2==1):
+        return 'Mindmap quá nhỏ để có thể so sánh'
     dfs(0, 1)
     dfs(1, 1)
     hld(0, 1)
@@ -278,6 +281,7 @@ def main(document, mindmap):
         if End_index == Head_index:
             user_text = flat[1][int(pos[1][int(Head_index)]) : int(pos[1][int(End_index)]) + 1]
             text += str(comp_text) + " " + str(user_text) + "\n"
+            continue
         loca = 0
         # print(Head_index, " ", End_index)
         while End_index != Head_index:
@@ -292,9 +296,8 @@ def main(document, mindmap):
                 break
             user_chain = int(chainInd[1][int(End_index)])
         if loca == -1:
-            # print("sai vi tri dang le", flat[1][findHead], "va", flat[1][findEnd], "o cung 1 chuoi",)
+            print("sai vị trí đáng lẽ", flat[1][findHead], "và", flat[1][findEnd], "phải ở cùng 1 chuỗi",)
             continue
         text += str(comp_text) + " " + str(user_text) + "\n"
-    print(text)
     return str(compare(text))
-# print(main("Chiến tranh thế giới thứ hai (còn được nhắc đến với các tên gọi Đệ nhị thế chiến, Thế chiến II hay Đại chiến thế giới lần thứ hai) là một cuộc chiến tranh thế giới bắt đầu từ khoảng năm 1939 và chấm dứt vào năm 1945. Cuộc chiến có sự tham gia của đại đa số các quốc gia trên thế giới — bao gồm tất cả các cường quốc — tạo thành hai liên minh quân sự đối lập: Đồng Minh và Phe Trục. Trong diện mạo một cuộc chiến tranh toàn diện, Thế chiến II có sự tham gia trực tiếp của hơn 100 triệu nhân sự từ hơn 30 quốc gia. Các bên tham chiến chính đã dồn toàn bộ nguồn lực kinh tế, công nghiệp và khoa học cho nỗ lực tham chiến, làm mờ đi ranh giới giữa nguồn lực dân sự và quân sự. Chiến tranh thế giới thứ hai là cuộc xung đột đẫm máu nhất trong lịch sử nhân loại, gây nên cái chết của 70 đến 85 triệu người, với số lượng thường dân tử vong nhiều hơn quân nhân. Hàng chục triệu người đã phải bỏ mạng trong các vụ thảm sát, diệt chủng (trong đó có Holocaust), chết vì thiếu lương thực hay vì bệnh tật. Máy bay đóng vai trò quan trọng đối với tiến trình cuộc chiến, bao gồm ném bom chiến lược vào các trung tâm dân cư, và đối với sự phát triển vũ khí hạt nhân cũng như hai lần duy nhất sử dụng loại vũ khí này trong chiến tranh.",{"title": "Chiến tranh thế giới thứ hai", "root": {"label": "Chiến tranh thế giới thứ hai","children": [{"label": "Thời gian","children": [ {"label": "Bắt đầu: Khoảng năm 1939"}, {"label": "Kết thúc: Năm 1945"} ] }, { "label": "Tên gọi khác", "children": [ {"label": "Đệ nhị thế chiến"}, {"label": "Thế chiến II"}, {"label": "Đại chiến thế giới lần thứ hai"} ] }, { "label": "Các bên tham chiến", "children": [ {"label": "Đồng Minh"}, {"label": "Phe Trục"} ] }, { "label": "Quy mô tham chiến", "children": [ {"label": "Hơn 100 triệu nhân sự"}, {"label": "Hơn 30 quốc gia"} ] }, { "label": "Sử dụng nguồn lực", "children": [ {"label": "Kinh tế"}, {"label": "Công nghiệp"}, {"label": "Khoa học"} ] }, { "label": "Quy mô thiệt hại", "children": [ {"label": "70-85 triệu người"}, {"label": "Dân thường > quân nhân"} ] }, { "label": "Nguyên nhân tử vong", "children": [ {"label": "Chiến đấu"}, {"label": "Thảm sát/Diệt chủng", "children": [{"label": "Holocaust"}]}, {"label": "Đói"}, {"label": "Bệnh dịch"} ] }, { "label": "Vai trò máy bay", "children": [ {"label": "Ném bom chiến lược", "children": [{"label": "Trung tâm dân cư"}]}, {"label": "Phát triển vũ khí hạt nhân"} ] }, { "label": "Vũ khí hạt nhân", "children": [ {"label": "Đầu tiên sử dụng trong chiến tranh"} ] } ] }}))
+print(main('Chiến tranh thế giới thứ hai (còn được nhắc đến với các tên gọi Đệ nhị thế chiến, Thế chiến II hay Đại chiến thế giới lần thứ hai) là một cuộc chiến tranh thế giới bắt đầu từ khoảng năm 1939 và chấm dứt vào năm 1945. Cuộc chiến có sự tham gia của đại đa số các quốc gia trên thế giới — bao gồm tất cả các cường quốc — tạo thành hai liên minh quân sự đối lập: Đồng Minh và Phe Trục. Trong diện mạo một cuộc chiến tranh toàn diện, Thế chiến II có sự tham gia trực tiếp của hơn 100 triệu nhân sự từ hơn 30 quốc gia. Các bên tham chiến chính đã dồn toàn bộ nguồn lực kinh tế, công nghiệp và khoa học cho nỗ lực tham chiến, làm mờ đi ranh giới giữa nguồn lực dân sự và quân sự. Chiến tranh thế giới thứ hai là cuộc xung đột đẫm máu nhất trong lịch sử nhân loại, gây nên cái chết của 70 đến 85 triệu người, với số lượng thường dân tử vong nhiều hơn quân nhân. Hàng chục triệu người đã phải bỏ mạng trong các vụ thảm sát, diệt chủng (trong đó có Holocaust), chết vì thiếu lương thực hay vì bệnh tật. Máy bay đóng vai trò quan trọng đối với tiến trình cuộc chiến, bao gồm ném bom chiến lược vào các trung tâm dân cư, và đối với sự phát triển vũ khí hạt nhân cũng như hai lần duy nhất sử dụng loại vũ khí này trong chiến tranh.',{"title": "Chiến tranh thế giới thứ hai", "root": {"label": "Chiến tranh thế giới thứ hai","children": [{"label": "Thời gian","children": [ {"label": "Bắt đầu: Khoảng năm 1939"}, {"label": "Kết thúc: Năm 1945"} ] }, { "label": "Tên gọi khác", "children": [ {"label": "Đệ nhị thế chiến"}, {"label": "Thế chiến II"}, {"label": "Đại chiến thế giới lần thứ hai"} ] }, { "label": "Các bên tham chiến", "children": [ {"label": "Đồng Minh"}, {"label": "Phe Trục"} ] }, { "label": "Quy mô tham chiến", "children": [ {"label": "Hơn 100 triệu nhân sự"}, {"label": "Hơn 30 quốc gia"} ] }, { "label": "Sử dụng nguồn lực", "children": [ {"label": "Kinh tế"}, {"label": "Công nghiệp"}, {"label": "Khoa học"} ] }, { "label": "Quy mô thiệt hại", "children": [ {"label": "70-85 triệu người"}, {"label": "Dân thường > quân nhân"} ] }, { "label": "Nguyên nhân tử vong", "children": [ {"label": "Chiến đấu"}, {"label": "Thảm sát/Diệt chủng", "children": [{"label": "Holocaust"}]}, {"label": "Đói"}, {"label": "Bệnh dịch"} ] }, { "label": "Vai trò máy bay", "children": [ {"label": "Ném bom chiến lược", "children": [{"label": "Trung tâm dân cư"}]}, {"label": "Phát triển vũ khí hạt nhân"} ] }, { "label": "Vũ khí hạt nhân", "children": [ {"label": "Đầu tiên sử dụng trong chiến tranh"} ] } ] }}))
