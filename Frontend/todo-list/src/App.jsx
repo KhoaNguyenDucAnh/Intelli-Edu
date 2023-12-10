@@ -1,22 +1,22 @@
 import './App.css'
+import classes from './Demo.module.css';
 import Todaylist from './components/Todaylist';
 import MyCalendar from './components/Calendar'
 import List from './components/List'
 import React from 'react'
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat'
-import { IconSun, IconMoon, IconChevronLeft,  IconChevronRight, IconPlus} from '@tabler/icons-react';
-import { Text, Group, Stack, Button, Modal, Textarea, MantineProvider, TextInput, useMantineColorScheme, useComputedColorScheme, ActionIcon} from '@mantine/core';
+import { IconSun, IconMoon, IconChevronLeft,  IconChevronRight, IconPlus, IconPhoto, IconListDetails, IconClockExclamation} from '@tabler/icons-react';
+import { Tabs, rem, Text, Group, Stack, Button, Modal, Textarea, MantineProvider, TextInput, useMantineColorScheme, useComputedColorScheme, ActionIcon, Slider, Switch, Fieldset, NativeSelect} from '@mantine/core';
 import { useState, useEffect } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { DateTimePicker } from '@mantine/dates';
-import { Notifications } from '@mantine/notifications';
-// import cx from 'clsx';
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import '@mantine/notifications/styles.css';
 
 function App(){
+  const iconStyle = { width: rem(20), height: rem(20) };
   const APIurl = "http://localhost:8080/api/v1/event"
   const [value, setValue] = useState(dayjs())
   const [name, setName] = useState("");
@@ -25,9 +25,12 @@ function App(){
   const [title, setTitle] = useState('');
   const [time, setTime] = useState();
   const [jobs, setJobs] = useState(new Map());
+  const [important, setImportant] = useState(false)
+  const [urgent, setUrgent] = useState(false)
   const [opened, { open, close }] = useDisclosure(false);
   const {setColorScheme} = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme('light');
+  const priorityTask = []
   dayjs.extend(customParseFormat)
   function convert(data){
     console.log("GET Data:", data)
@@ -91,8 +94,10 @@ function App(){
     .then(data => {
       console.log("POST data:", data)
       console.log("Jobs:", jobs)
-      let len = [...jobs.get(data.date.replace(/\//g, '-'))].length
-      jobs.get(data.date.replace(/\//g, '-'))[len-1].id = data.id
+      let dataDate = dayjs(data.date, "D/M/YYYY").format("DD-MM-YYYY")
+      console.log(jobs.get(dataDate))
+      let len = [...jobs.get(dataDate)].length
+      jobs.get(dataDate)[len-1].id = data.id
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -102,22 +107,21 @@ function App(){
   function addJob(){
     const dateTime = dayjs(time).format("DD-MM-YYYY")
     const jobTime = dayjs(time).format("HH:mm")
+    let jobstatus = {
+      name: title,
+      time: jobTime,
+      description: data,
+      id : null,
+      urgent: urgent,
+      important: important,
+      // priority: (urgent && important)? 1 : (important)? 2 : (urgent)? 3 : 4
+    }
     if(jobs.has(dateTime)){
-      jobs.get(dateTime).push({
-        name: title,
-        time: jobTime,
-        description: data,
-        id: null
-      })
+      jobs.get(dateTime).push(jobstatus)
     }
     else{
       jobs.set(dateTime, [])
-      jobs.get(dateTime).push({
-        name: title,
-        time: jobTime,
-        description: data,
-        id : null
-      })
+      jobs.get(dateTime).push(jobstatus)
     }
     let jobinfo = {
       id: null,
@@ -125,104 +129,133 @@ function App(){
       date: dayjs(time).format("DD/MM/YYYY"),
       time: dayjs(time).format("HH:mm"),
       description: data,
-      shared: false
+      shared: false,
+      urgent: urgent,
+      important: important
     }
+    console.log("Job Info:", jobinfo)
     createEvent(jobinfo)
     setData('')
     setTitle('')
     setTime()
+    setImportant(false)
+    setUrgent(false)
     sort(jobs)
     close();
     console.log(jobs)
   }
   return (
     <MantineProvider theme={{ colorScheme: 'dark'}}>
-        <Notifications />
         <Group spacing = {0} justify="space-between">
           <Stack 
             id = "todaylist"
             align='center' 
             justify='space-between'
-            h = "100vh"
-            w = {330}
+            h = {"100%"}
+            w = {"25%"}
             bg = "#18181b"
           >
-            <Group justify="flex-end" w = "100%">  
-              {/* <ActionIcon 
-                onClick={toggleScheme} 
-                size= {40}
-                mt = {10}
-                ml = {10}
-              >
-                {computedColorScheme === "light" ? <IconMoon size={18}/> : <IconSun size={18}/>}
-              </ActionIcon> */}
-              <Button 
-                radius={10}
-                onClick = {() => {
-                  setTime(new Date(value))
-                  open()
-                }}
-                size = "xs"
-                mr = {15}
-                mt = {10}
-                ff = "Roboto"
-                color = "#74747c"
-              >
-                <IconPlus/> 
-              </Button>
-            </Group>
+            <Stack h="100%">
+              <Group justify="flex-end" w = "100%" h="50%">  
+                {/* <ActionIcon 
+                  onClick={toggleScheme} 
+                  size= {40}
+                  mt = {10}
+                  ml = {10}
+                >
+                  {computedColorScheme === "light" ? <IconMoon size={18}/> : <IconSun size={18}/>}
+                </ActionIcon> */}
+                <Button 
+                  radius={10}
+                  onClick = {() => {
+                    setTime(new Date(value))
+                    open()
+                  }}
+                  size = "xs"
+                  mr = {15}
+                  mt = {10}
+                  ff = "Roboto"
+                  color = "#74747c"
+                >
+                  <IconPlus/> 
+                </Button>
+              </Group>
+              <MyCalendar value = {value} setValue = {setValue} date={date} setDate={setDate}/>
+            </Stack>
             <Modal 
               opened={opened} 
               onClose={close} 
-              title='Add your deadline' 
+              title='Thêm công việc vào lịch trình' 
               centered
               size = {500}    
             >
-              <TextInput
-                label = "Tên công việc"
-                value = {title} 
-                onChange = {(e) => setTitle(e.target.value)}
-                mt = {10}
-                withAsterisk
-                required
-                // error = "Không thể bỏ trống"
-              />
-              <DateTimePicker
-                defaultValue={new Date(value)}
-                withAsterisk
-                // error = "Không thể bỏ trống"
-                label="Chọn ngày và thời gian"
-                placeholder="Pick date and time"
-                clearable
-                value={time}
-                onChange={setTime}
-                mt = {15}
-                minDate={new Date()}
-                required
-              />
-              <Textarea
-                label = "Mô tả công việc"
-                value = {data} 
-                onChange = {(e) => setData(e.target.value)}
-                mt = {15}
-                autosize
-                withAsterisk
-                required
-              />
-              <Button
-                ml = "80%"
-                mt={15}
-                onClick={addJob}
-              >
-                Submit
-              </Button>
+              <Fieldset legend="Điền công việc">
+                <TextInput
+                  label = "Tên công việc"
+                  value = {title} 
+                  onChange = {(e) => setTitle(e.target.value)}
+                  mt = {10}
+                  withAsterisk
+                  required
+                />
+                <DateTimePicker
+                  defaultValue={new Date(value)}
+                  withAsterisk
+                  label="Chọn ngày và thời gian"
+                  placeholder="Pick date and time"
+                  clearable
+                  value={time}
+                  onChange={setTime}
+                  mt = {15}
+                  minDate={new Date()}
+                  required
+                />
+                <Textarea
+                  label = "Mô tả công việc"
+                  value = {data} 
+                  onChange = {(e) => setData(e.target.value)}
+                  mt = {15}
+                  autosize
+                  withAsterisk
+                  required
+                />
+                <Group mt = {15} justify='space-between'>
+                  <Stack gap = {0}>
+                    <Text withAsterisk>Công việc có quan trọng?</Text>
+                    <Switch
+                      withAsterisk
+                      value = {important}
+                      onChange = {(e) => setImportant(e.target.checked)}
+                    />
+                  </Stack>
+
+                  <Stack gap = {0}>
+                    <Text withAsterisk>Công việc có cấp bách?</Text>
+                    <Switch
+                      withAsterisk
+                      value = {urgent}
+                      onChange = {(e) => setUrgent(e.target.checked)}
+                    />
+                  </Stack>
+                </Group>
+                
+                <Group 
+                  mt = {15}
+                  justify='flex-end'
+                >
+                  <Button
+                    onClick={() => {
+                      addJob()
+                    }}
+                  >
+                    Submit
+                  </Button>
+                </Group>
+              </Fieldset>
             </Modal>
-            <MantineProvider theme={{ colorScheme: 'dark' }}>
-              <MyCalendar value = {value} setValue = {setValue} date={date} setDate={setDate}/>
-            </MantineProvider>
-            <Todaylist value = {value} jobs = {jobs} setJobs={setJobs}/>
+            <Todaylist value = {value} jobs = {jobs} setJobs={setJobs} mode={0}/>
           </Stack>
-          <Stack h = "100vh">
+          <Stack h = {"100%"} w = "73%">
             <Group justify='space-between' mt={5}>
               <Button.Group mt = {5} >
                 <Button 

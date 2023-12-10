@@ -1,9 +1,6 @@
 import {Button, Select, Text, Modal, Stack, Group, ActionIcon, ThemeIcon} from "@mantine/core"
-import {useState, useCallback, useEffect} from "react"
 import { notifications } from '@mantine/notifications';
-import { useDidUpdate, useForceUpdate, useDisclosure} from "@mantine/hooks"
 import {IconLock, IconWorld} from '@tabler/icons-react'
-// import '@mantine/notifications/styles.css';
 
 const Sharing = ({docname, jobs, date, index}) => {
 
@@ -18,7 +15,14 @@ const Sharing = ({docname, jobs, date, index}) => {
         })
         .then(response => response.text())
         .then(data => {
-            navigator.clipboard.writeText(data)
+            console.log(data)
+            try {
+                navigator.clipboard.writeText(data)
+            } 
+            catch (error) {
+                console.log(error)
+            }
+            // return navigator.clipboard.writeText(data)
         })
         notifications.show({
             title: 'Shared '+jobs.get(date)[index].name,
@@ -30,7 +34,6 @@ const Sharing = ({docname, jobs, date, index}) => {
         <>
             <Button 
                 size = {"xs"} 
-                // mr = {5} 
                 ff = "Roboto"
                 onClick = {() => {
                     handleShare()
