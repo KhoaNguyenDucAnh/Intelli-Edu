@@ -2,10 +2,6 @@ body {
   margin: 0;
 }
 
-.m-396ce5cb{
-  /* color: #b8b9bc !important; */
-}
-
 .m-dc6a3c71{
   color: #b8b9bc !important;
 }
@@ -39,7 +35,6 @@ body {
 .mantine-TextInput-input{
   /* margin-left: 15px; */
   font-family: "Montserrat";
-  color: red;
 }
 
 .mantine-TextInput-wrapper:hover{

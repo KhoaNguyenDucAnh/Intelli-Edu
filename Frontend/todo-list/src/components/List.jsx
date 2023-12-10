@@ -5,7 +5,7 @@ import Sharing from './Sharing'
 import dayjs from "dayjs"
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { DateTimePicker } from "@mantine/dates";
-import { Modal , ScrollArea, Table, Text, MantineProvider, Box, TextInput, Button, Textarea, Group, Stack} from "@mantine/core"
+import { Switch, Modal , ScrollArea, Table, Text, MantineProvider, Box, TextInput, Button, Textarea, Group, Stack} from "@mantine/core"
 import { useDidUpdate, useDisclosure, useForceUpdate } from '@mantine/hooks';
 import { useState } from 'react';
 
@@ -15,11 +15,12 @@ const List = ({value, jobs, setJobs, docname}) => {
     const [time, setTime] = useState();
     const [data, setData] = useState();
     const [name, setName] = useState();
-    const [content, setContent] = useState();
+    const [daycolor, setDayColor] = useState("");
+    const [urgent, setUrgent] = useState();
+    const [important, setImportant] = useState();
     const [opened, { open, close }] = useDisclosure(false);
     const [currentdate, setCurrentdate] = useState();
     const [index, setIndex] = useState();
-    const forceUpdate = useForceUpdate();
     dayjs.extend(customParseFormat)
     let copy = structuredClone(jobs);
     function sort(map){
@@ -71,9 +72,6 @@ const List = ({value, jobs, setJobs, docname}) => {
             ))}
         </Table.Tr>
     );
-    useDidUpdate(() => {
-        // console.log(jobs)
-    }, [jobs]);
     function deleteEvent(id){
         const APIurl = `http://localhost:8080/api/v1/event/${id}`
         fetch(APIurl, {
@@ -93,7 +91,9 @@ const List = ({value, jobs, setJobs, docname}) => {
             date: dayjs(time).format("DD/MM/YYYY"),
             time: dayjs(time).format("HH:mm"),
             description: data,
-            shared: false
+            shared: false,
+            urgent: urgent,
+            important: important
         }
         fetch(APIurl,{
           method: 'PUT', 
@@ -118,20 +118,20 @@ const List = ({value, jobs, setJobs, docname}) => {
     function addJob(){
         const dateTime = dayjs(time).format("DD-MM-YYYY")
         const jobTime = dayjs(time).format("HH:mm")
-        if(copy.has(dateTime)){
-          copy.get(dateTime).push({
+        let jobstatus = {
             name: name,
             time: jobTime,
-            description: data
-          })
+            description: data,
+            id : null,
+            urgent: urgent,
+            important: important
+        }
+        if(copy.has(dateTime)){
+          copy.get(dateTime).push(jobstatus)
         }
         else{
           copy.set(dateTime, [])
-          copy.get(dateTime).push({
-            name: name,
-            time: jobTime,
-            description: data
-          })
+          copy.get(dateTime).push(jobstatus)
         }
         setData()
         setName()
@@ -175,7 +175,11 @@ const List = ({value, jobs, setJobs, docname}) => {
                                             setIndex(i)
                                             setName(currentJob.name)
                                             setData(currentJob.description)
+                                            setUrgent(currentJob.urgent)
+                                            setImportant(currentJob.important)
                                             setTime(new Date(jsDate+" "+currentJob.time))
+                                            console.log("urgent", currentJob.urgent)
+                                            console.log("important", currentJob.important)
                                             open()
                                         }}
                                     >
@@ -253,6 +257,28 @@ const List = ({value, jobs, setJobs, docname}) => {
                         setData(e.target.value)
                     }}
                 />
+                <Group mt = {15} justify='space-between'>
+                  <Stack gap = {0}>
+                    <Text withAsterisk>Công việc có quan trọng?</Text>
+                    <Switch
+                      withAsterisk
+                      defaultChecked={important}
+                      value = {important}
+                      onChange = {(e) => setImportant(e.target.checked)}
+                    />
+                  </Stack>
+
+                  <Stack gap = {0}>
+                    <Text withAsterisk>Công việc có cấp bách?</Text>
+                    <Switch
+                      withAsterisk
+                      defaultChecked={urgent}
+                      value = {urgent}
+                      onChange = {(e) => setUrgent(e.target.checked)}
+                    />
+                  </Stack>
+                </Group>
+
                 <Group 
                     justify="space-between" 
                     w={"100%"}
@@ -266,8 +292,8 @@ const List = ({value, jobs, setJobs, docname}) => {
                             ff = "Roboto"
                             onClick = {() => {
                                 console.log("Delete", currentdate, index)
-                                deleteItem(currentdate, index)
                                 let id = jobs.get(currentdate)[index].id
+                                deleteItem(currentdate, index)
                                 deleteEvent(id)
                                 close()
                             }}

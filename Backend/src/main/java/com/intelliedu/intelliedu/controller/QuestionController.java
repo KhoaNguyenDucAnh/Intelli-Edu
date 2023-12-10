@@ -40,7 +40,7 @@ public class QuestionController {
   }
 
   @GetMapping("/{id}")
-  public QuestionDto findQuestion(@PathVariable UUID id, @RequestParam(name = "shuffle", defaultValue = "false") Boolean shuffle, Authentication authentication) {
+  public QuestionDto findQuestion(@PathVariable UUID id, @RequestParam(name = "shuffle", defaultValue = "true") Boolean shuffle, Authentication authentication) {
     return questionService.findContent(id, shuffle, authentication);
   }
 
@@ -60,8 +60,8 @@ public class QuestionController {
   }
 
   @PostMapping("/q/{id}")
-  public QuestionDto createQuestionDetail(@PathVariable UUID id, @RequestBody @Valid QuestionDtoDetail questionDtoDetail, Authentication authentication) {
-    return questionService.createQuestionDetail(id, questionDtoDetail, authentication);
+  public QuestionDtoDetail createQuestionDetail(@PathVariable UUID id, @RequestParam(name = "shuffle", defaultValue = "true") Boolean shuffle, @RequestBody @Valid QuestionDtoDetail questionDtoDetail, Authentication authentication) {
+    return questionService.createQuestionDetail(id, shuffle, questionDtoDetail, authentication);
   }
 
   @PutMapping("/q/{questionId}")

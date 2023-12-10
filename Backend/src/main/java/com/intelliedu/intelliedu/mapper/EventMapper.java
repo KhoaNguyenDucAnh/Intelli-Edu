@@ -38,6 +38,16 @@ public abstract class EventMapper {
 
   public abstract EventDto toEventDto(Event event);
 
+  public List<Map<String, String>> toEventDtoHelper(List<Event> event) {
+    return event.stream().map(e ->
+      Map.of(
+        "name", e.getName(),
+        "time", timeFormatter.format(e.getTime()),
+        "description", e.getDescription()
+      )
+    ).toList();
+  }
+
   public Map<String, List<Object>> toEventDto(List<Event> event) {
     Map<String, List<Object>> eventDto = new HashMap<>();
     event.stream().forEach(e ->
@@ -49,7 +59,9 @@ public abstract class EventMapper {
           "name", e.getName(),
           "time", timeFormatter.format(e.getTime()),
           "description", e.getDescription(),
-          "shared", e.isShared()
+          "shared", e.isShared(),
+          "urgent", e.isUrgent(),
+          "important", e.isImportant()
         )
       )
     );

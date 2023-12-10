@@ -4,6 +4,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ import com.intelliedu.intelliedu.dto.AccountLogInDto;
 import com.intelliedu.intelliedu.dto.AccountRegistrationDto;
 import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.entity.SecurityToken;
+import com.intelliedu.intelliedu.exception.NotFoundException;
 import com.intelliedu.intelliedu.mapper.AccountMapper;
 import com.intelliedu.intelliedu.repository.AccountRepo;
 import com.intelliedu.intelliedu.repository.SecurityTokenRepo;
@@ -169,5 +171,9 @@ public class AuthService {
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
       }
     );
+  }
+
+  public Account getAccount(UUID id) {
+    return accountRepo.findById(id).orElseThrow(() -> new NotFoundException(Account.class, id));
   }
 }

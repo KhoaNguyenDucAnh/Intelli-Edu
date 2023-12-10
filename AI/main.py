@@ -83,7 +83,7 @@ class Custom_Client(Client):
         return answer
 
 
-cookie = "intercom-device-id-lupk8zyo=435acf1c-a907-4409-ae7b-593d8b45e4a5; __ssid=ae3af040adac10d2aec8d3d99438209; __stripe_mid=439d2fe6-7918-47a3-aece-aea314af663ae04ec2; activitySessionId=cac39620-4f7a-4a13-9f84-ec91c91cd857; __stripe_sid=1f25e942-288a-4a33-bd8f-ca519b529805a12a23; __cf_bm=JV9TmU0XaU.nA09Ge3txMNulrZ4KiXlq8Xq5_9a.DDQ-1700790319-0-AUL9cB9c63dECcuEapQqP19X9INOGPIP9bBI0Nu9Oez1QLt+3+Mn6iESvJdHXcZfrM74ABIWYY10TBkyQ9frTJc=; cf_clearance=bwKArpu44ulMLNDcfUFCw8OFDnB2dbxXrcGU0OpY4H0-1700790339-0-1-afc0c2e4.a6a158a9.f8c19d04-0.2.1700790339; sessionKey=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; intercom-session-lupk8zyo=S1RGL0VDakwzZ1J5T3BlNzBlMlJWZzB5L3AyRHVQcm1tdzhVelYvRE1sOXRQajJsRUV3TGVNdHlNZDdQOTRZMi0tSm1ITUx3NmpvZFc4K25RN1lIcmlwUT09--50fa01f0d64699246ef6775ab868d9650f0d2c5a"
+cookie = "activitySessionId=c5fa41a9-c0a8-4108-b40a-2e445c85c4dc; cf_clearance=My6jV1kwuzbBjwSe25pFRs.90Ol9nPfVJT2SIY75_nM-1702135721-0-1-af0c7280.440d5721.f80d2d60-0.2.1702135721; __ssid=2763ba1c74e3a7a3e4156a838541768; __stripe_mid=cb0b769a-afa4-4c00-ab0b-732057ec9b49dc64ae; __stripe_sid=fd9d5aed-61cb-4dd0-9ea8-7132c529f97271b25a; sessionKey=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; __cf_bm=lDob9azCnxTtPYjxoAASNudOAEecCk9LqZep6LOxbag-1702135744-1-ASQCBehcqft8+22BkymulvdaiAYFoEjqR+UvG+byip432dlUtrtu0AWJ7PmbPH9P1LWED6KtHLLA70lCmEzsPQo="
 
 claude_api = Custom_Client(cookie)
 
@@ -91,19 +91,37 @@ def to_mindmap(file: str):
     conversation_id = claude_api.create_new_chat()["uuid"]
     mindmap = claude_api.send_message(
         """
-        Human: We want a comprehensive mind map in vietnamese for this essay in json with type: title -> root -> label -> children. Thêm những nhánh về ví dụ và số liệu quan trọng nếu có.
-        
-        Say 'Start' before the json and 'End' after the json in your answer. No lines between the json elements. No lines between Start and json. No lines between the json and End.
-        
+        Human: We want a comprehensive mind map in vietnamese for this text in a valid json structure by this type:
+
+        {
+            "title":title,
+            "root": {
+                "label":label,
+                "children": [
+                    {
+                        "label":label,
+                        "children":[]
+                    }
+                ]
+            }
+        }
+
+        The keys of the json should strictly follow the given structure. Give additional details and statistics if needed.
+
+        Say 'Start' before the json and 'End' after the json in your answer. No lines between the json elements. No lines between Start and json. No lines between the json and End. Check the validity of the json in the numbers of {, }, [, ] and the position of commas.
+
         Assistant:
         """,
         conversation_id,
         attachment=file,
     )
-    claude_api.delete_conversation(conversation_id)
+    # claude_api.delete_conversation(conversation_id)
     mindmap = str(mindmap)
     begin = 5
     end = -3
+    # print('here is mindmap')
+    # print(mindmap)
+    # print()
     for i in range(5, len(mindmap) + 1):
         if mindmap[i - 5:i] == "Start":
             begin = i
@@ -113,13 +131,13 @@ def to_mindmap(file: str):
             end = i
             break
     mindmap = mindmap[begin:end]
-    return mindmap
+    return json.loads(mindmap)
 
 def create_questions(file):
     conversation_id = claude_api.create_new_chat()['uuid']
     questions = claude_api.send_message(
         """
-        Human:We want to create 5 multiple choices questions in Vietnamese for this text. Each questions should be in json format and is seperated from each other by commas. For each question, include 1 correct answer and 3 incorrect answers with the following structure: {"question": question goes here, "answers": [correct answer, incorrect answer 1, incorrect answer 2, incorrect answer 3]}.
+        Human:We want to create 5 multiple choices questions in Vietnamese for this text. Each questions should be in json format, and there should be commas in betwen the questions. For each question, include 1 correct answer and 3 incorrect answers with the following structure: {"question": question goes here, "answers": [correct answer, incorrect answer 1, incorrect answer 2, incorrect answer 3]}.
         
         Say 'Start' before the json and 'End' after the json in your answer. No lines between the json elements. No lines between Start and json. No lines between the json and End.  
 
@@ -128,7 +146,7 @@ def create_questions(file):
         conversation_id,
         attachment=file
     )
-    claude_api.delete_conversation(conversation_id)
+    # claude_api.delete_conversation(conversation_id)
     questions = str(questions)
     begin = 5
     end = -3
@@ -148,27 +166,44 @@ def main(document, mindmap):
     chainHead = np.zeros((2, 500))
     chainEnd = np.zeros((2, 500))
     chainInd = np.zeros((2, 500))
-    values = [[None for i in range(100)], [None for i in range(500)]]
-    adj = [[[] for i in range(500)], [[] for i in range(500)]]
+    values = [[None for _ in range(100)], [None for _ in range(500)]]
+    adj = [[[] for _ in range(500)], [[] for _ in range(500)]]
     nBase = np.zeros(2)
     pos = np.zeros((2, 500))
     parent = np.zeros((2, 500))
     nChild = np.zeros((2, 500))
     rev = np.zeros((2, 500))
-    flat = [[None for i in range(100)], [None for i in range(100)]]
+    flat = [[None for _ in range(100)], [None for _ in range(100)]]
     count = deque([0])
     for i in range(500):
         count.append(i + 1)
 
     json1 = to_mindmap(document)["root"]
-    json2 = mindmap["root"] # json.loads(mindmap)["root"]
+
+    #print(json1)
+
+    json2 = json.loads(mindmap)["root"]
+
+    #print(json2)
 
     def compare(text):
         new_chat = claude_api.create_new_chat()
         conversation_id = new_chat["uuid"]
         prompt = text + "\n"
-        # print(prompt)
-        prompt += "Can you see if the second text is missing any information or numbers or wrong order compare to the first text in less than 3 sentences in Vietnamese"
+        prompt += """
+
+        Human: A list of texts written in pair has the following structure:
+
+            [TEXT 1] [TEXT 2],
+            [TEXT 1] [TEXT 2],
+            ....
+
+        Take the text 1 in each pair of texts as the standard and correct text. We want a compairison between text 2 and text 1 for each pair of texts. Refer to text 2 as the user's mindmap and text 1 as the document's information. 
+        If there is not enough information from text 2, please say 'không đủ thông tin để đưa ra nhận xét'.
+        Everything should be written in Vietnamese.
+
+        Assistant:
+        """
         response = claude_api.send_message(prompt, conversation_id)
         claude_api.delete_conversation(conversation_id)
         return response
@@ -176,7 +211,7 @@ def main(document, mindmap):
     def to_tree(index, js, u):
         values[index][u] = js["label"]
         count.popleft()
-        if "children" not in js:
+        if ("children" not in js) or (js["children"]==[]):
             return 1
         js = js["children"]
         dem = 0
@@ -233,6 +268,8 @@ def main(document, mindmap):
     for i in range(500):
         count.append(i + 1)
     d2 = to_tree(1, json2, 1)
+    if(d2==1):
+        return 'Mindmap quá nhỏ để có thể so sánh'
     dfs(0, 1)
     dfs(1, 1)
     hld(0, 1)
@@ -252,6 +289,7 @@ def main(document, mindmap):
         if End_index == Head_index:
             user_text = flat[1][int(pos[1][int(Head_index)]) : int(pos[1][int(End_index)]) + 1]
             text += str(comp_text) + " " + str(user_text) + "\n"
+            continue
         loca = 0
         # print(Head_index, " ", End_index)
         while End_index != Head_index:
@@ -266,9 +304,23 @@ def main(document, mindmap):
                 break
             user_chain = int(chainInd[1][int(End_index)])
         if loca == -1:
-            # print("sai vi tri dang le", flat[1][findHead], "va", flat[1][findEnd], "o cung 1 chuoi",)
+            #print("sai vị trí đáng lẽ", flat[1][findHead], "và", flat[1][findEnd], "phải ở cùng 1 chuỗi",)
             continue
         text += str(comp_text) + " " + str(user_text) + "\n"
     return str(compare(text))
+# print(main("""## Dựa vào nguồn gốc
+# Dựa vào nguồn gốc, polime được chia thành hai loại chính: Polime có nguồn gốc tự nhiên và polime tổng hợp. 
+# - Polime có nguồn gốc từ thiên nhiên như cao su, xenlulozơ… 
+# - Polime tổng hợp do con người tổng hợp nên như polietilen, nhựa phenol-fomanđehit. 
+# - Ngoài ra, polime nhân tạo (hay được gọi là bán tổng hợp) được lấy từ polime thiên nhiên và chế hóa thành polime mới như xenlulozơ trinitrat, tơ visco ...
 
-#print(create_questions("Chiến tranh thế giới thứ hai (còn được nhắc đến với các tên gọi Đệ nhị thế chiến, Thế chiến II hay Đại chiến thế giới lần thứ hai) là một cuộc chiến tranh thế giới bắt đầu từ khoảng năm 1939 và chấm dứt vào năm 1945. Cuộc chiến có sự tham gia của đại đa số các quốc gia trên thế giới — bao gồm tất cả các cường quốc — tạo thành hai liên minh quân sự đối lập: Đồng Minh và Phe Trục. Trong diện mạo một cuộc chiến tranh toàn diện, Thế chiến II có sự tham gia trực tiếp của hơn 100 triệu nhân sự từ hơn 30 quốc gia. Các bên tham chiến chính đã dồn toàn bộ nguồn lực kinh tế, công nghiệp và khoa học cho nỗ lực tham chiến, làm mờ đi ranh giới giữa nguồn lực dân sự và quân sự. Chiến tranh thế giới thứ hai là cuộc xung đột đẫm máu nhất trong lịch sử nhân loại, gây nên cái chết của 70 đến 85 triệu người, với số lượng thường dân tử vong nhiều hơn quân nhân. Hàng chục triệu người đã phải bỏ mạng trong các vụ thảm sát, diệt chủng (trong đó có Holocaust), chết vì thiếu lương thực hay vì bệnh tật. Máy bay đóng vai trò quan trọng đối với tiến trình cuộc chiến, bao gồm ném bom chiến lược vào các trung tâm dân cư, và đối với sự phát triển vũ khí hạt nhân cũng như hai lần duy nhất sử dụng loại vũ khí này trong chiến tranh."))
+# ## Dựa vào cách tổng hợp
+# Dựa vào cách tổng hợp, polime được chia thành hai loại chính như sau: 
+# - Polime trùng hợp được tổng hợp bằng phản ứng trùng hợp: (–CH2–CH2–)n và (–CH2–CHCl–)n. 
+# - Polime trùng ngưng được tổng hợp bằng phản ứng trùng ngưng: (–HN–[CH2]6–NH–CO–[CH2]4–CO–)n
+
+# ## Dựa vào cấu trúc:
+# Bên cạnh đó, polime còn được phân loại dựa vào đặc điểm cấu trúc. 
+# - Polime có mạch không phân nhánh, ví dụ như: PVC, PE, PS, cao su, xenlulozơ, tinh bột...
+# - Polime có mạch nhánh, ví dụ như amilopectin, glicogen.
+# - Polime có cấu trúc mạng không gian, ví dụ như rezit, cao su lưu hóa.""",{"root":{"index":0,"x":241,"y":378,"width":200,"color":"Red","label":"lmao. ","subject":"lmao","body":"","file":'null',"children":[{"index":1,"x":494,"y":229,"width":200,"color":"Red","label":"bruh. ","subject":"bruh","body":"","file":'null',"children":[]},{"index":2,"x":487,"y":503,"width":200,"color":"Red","label":"huhu. hehe","subject":"huhu","body":"hehe","file":'null',"children":[]}]}}))

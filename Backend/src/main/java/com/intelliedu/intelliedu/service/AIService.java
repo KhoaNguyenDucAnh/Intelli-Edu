@@ -19,7 +19,10 @@ import com.intelliedu.intelliedu.dto.QuestionDtoDetail;
 import com.intelliedu.intelliedu.entity.Document;
 import com.intelliedu.intelliedu.entity.MindMap;
 
+import lombok.extern.slf4j.Slf4j;
+
 /** AIService */
+@Slf4j
 @Service
 public class AIService {
 
@@ -56,8 +59,8 @@ public class AIService {
         new TypeReference<List<QuestionDtoDetail>>(){}
       );
     } catch (JsonProcessingException e) {
-      e.printStackTrace();
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+      log.error(e.getMessage());
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Json parsing error");
     }
   }
 

@@ -93,12 +93,22 @@ public abstract class QuestionMapper implements ContentMapper<Question, Question
 
   public abstract QuestionDtoDetail toQuestionDtoDetail(QuestionDetail questionDetail);
 
+  public QuestionDtoDetail toQuestionDtoDetail(QuestionDetail questionDetail, Boolean shuffle) {
+    QuestionDtoDetail questionDtoDetail = toQuestionDtoDetail(questionDetail);
+    if (shuffle) questionDtoDetail.shuffle();
+    return questionDtoDetail;
+  }
+
   public List<QuestionDetail> toQuestionDetail(List<QuestionDtoDetail> questionDtoDetail) {
     System.out.println(questionDtoDetail);
     return questionDtoDetail.stream().map(question -> toQuestionDetail(question)).collect(Collectors.toList());
   }
 
-  protected List<QuestionDtoDetail> toQuestionDtoDetail(List<QuestionDetail> questionDetail) {
-    return questionDetail.stream().map(question -> toQuestionDtoDetail(question)).toList();  
+  public List<QuestionDtoDetail> toQuestionDtoDetail(List<QuestionDetail> questionDetail) {
+    return questionDetail.stream().map(question -> toQuestionDtoDetail(question)).toList();
+  }
+
+  public List<QuestionDtoDetail> toQuestionDtoDetail(List<QuestionDetail> questionDetail, Boolean shuffle) {
+    return questionDetail.stream().map(question -> toQuestionDtoDetail(question, shuffle)).toList();
   }
 }

@@ -21,6 +21,7 @@ public class SecurityConfig {
     "/assets/.*",
     "/error",
     "/activate/.*", "/api/v1/auth/.*",
+    "/api/v1/event/notification/.*"
     //"/.*"
   };
   private static final String[] PERMITALLWITHAUTH = new String[] {

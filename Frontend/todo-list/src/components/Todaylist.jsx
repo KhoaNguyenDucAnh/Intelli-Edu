@@ -1,13 +1,15 @@
 import React from 'react'
 import dayjs from 'dayjs';
+import {useState} from 'react'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
-import { ScrollArea, List, Group, Text, ActionIcon, MantineProvider, CloseButton, Button} from '@mantine/core'
+import { ScrollArea, List, Group, Text, ActionIcon, MantineProvider, CloseButton, Button, ThemeIcon} from '@mantine/core'
 import { IconPointFilled  } from '@tabler/icons-react'
 import '@mantine/core/styles.css';
 
 const Todaylist = ({date, jobs, setJobs}) => {
   const days = ["CHỦ NHẬT", "THỨ HAI", "THỨ BA", "THỨ TƯ", "THỨ NĂM", "THỨ SÁU", "THỨ BẢY"]
   const Bulletcolor = ["#3b82f6", "#ec4899", "#fbbf24", "#9ADE7B"]
+  const [color, setColor] = useState("#b8b9bc")
   dayjs.extend(customParseFormat)
   function deleteEvent(id){
     const APIurl = `http://localhost:8080/api/v1/event/${id}`
@@ -33,6 +35,7 @@ const Todaylist = ({date, jobs, setJobs}) => {
     let copy = structuredClone(jobs)
     const id = copy.get(key)[i].id
     deleteEvent(id)
+    console.log("id", id)
     copy.get(key).splice(i, 1);
     if(copy.get(key).length === 0)
       copy.delete(key)
@@ -43,7 +46,7 @@ const Todaylist = ({date, jobs, setJobs}) => {
   return (
     <MantineProvider>
       <ScrollArea 
-        h = {300}
+        h = {351}
         w = "100%"
         type="never"
         ff = "Montserrat"
@@ -80,9 +83,9 @@ const Todaylist = ({date, jobs, setJobs}) => {
                 <>
                   <List.Item 
                     icon = {
-                      <ActionIcon variant="transparent" c={Bulletcolor[Math.floor(Math.random() * Bulletcolor.length)]} >
+                      <ThemeIcon variant="transparent" c={Bulletcolor[Math.floor(Math.random() * Bulletcolor.length)]} >
                         <IconPointFilled/> 
-                      </ActionIcon>
+                      </ThemeIcon>
                     }
                   >
                     <Text mb={5}>{job.time}</Text>

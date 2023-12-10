@@ -1,5 +1,7 @@
 package com.intelliedu.intelliedu.dto;
 
+import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +13,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AccountResponseDto {
 
-  private String username;
+  private UUID id;
 
   private String email;
+
+  private String username;
 }

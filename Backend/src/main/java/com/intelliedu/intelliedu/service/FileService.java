@@ -1,5 +1,6 @@
 package com.intelliedu.intelliedu.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +13,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.intelliedu.intelliedu.dto.FileDto;
-import com.intelliedu.intelliedu.dto.QuestionDto;
+import com.intelliedu.intelliedu.dto.QuestionDtoDetail;
 import com.intelliedu.intelliedu.entity.Account;
 import com.intelliedu.intelliedu.entity.Document;
 import com.intelliedu.intelliedu.entity.File;
 import com.intelliedu.intelliedu.entity.MindMap;
 import com.intelliedu.intelliedu.entity.Question;
+import com.intelliedu.intelliedu.entity.QuestionDetail;
 import com.intelliedu.intelliedu.exception.AlreadyExistsException;
 import com.intelliedu.intelliedu.exception.NotFoundException;
 import com.intelliedu.intelliedu.mapper.FileMapper;
@@ -77,7 +79,7 @@ public class FileService {
     FileDto fileDto = fileMapper.toFileDto(findFileHelper(id, authentication));
     fileDto.setDocument(documentService.findContent(id));
     fileDto.setMindMap(mindMapService.findContent(id));
-    fileDto.setQuestion(questionService.findContent(id));
+    fileDto.setQuestion(questionMapper.toDto(questionService.findContentHelper(id), true));
     return fileDto;
   }
 
@@ -170,12 +172,14 @@ public class FileService {
     }
   }
 
-  public QuestionDto generateQuestion(UUID id, Authentication authentication) {
+  public List<QuestionDtoDetail> generateQuestion(UUID id, Authentication authentication) {
     if (!fileRepo.existsByIdAndAccount(id, authService.getAccount(authentication))) {
       throw new NotFoundException(File.class, id);
     }
     Question question = questionService.findContentHelper(id);
-    question.addContent(questionMapper.toQuestionDetail(aiService.generateQuestion(documentService.findContentHelper(id))));
-    return questionService.saveContent(question);
+    List<QuestionDetail> questionDetail = questionMapper.toQuestionDetail(aiService.generateQuestion(documentService.findContentHelper(id)));
+    question.addContent(questionDetail);
+    questionService.saveContent(question);
+    return questionMapper.toQuestionDtoDetail(questionDetail, true);
   }
 }
