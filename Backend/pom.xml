@@ -144,12 +144,12 @@
       <version>1.4.14</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-core -->
+    <!-- https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-core
     <dependency>
       <groupId>org.apache.tomcat.embed</groupId>
       <artifactId>tomcat-embed-core</artifactId>
       <version>10.1.16</version>
-    </dependency>
+    </dependency> -->
 
   </dependencies>
 
