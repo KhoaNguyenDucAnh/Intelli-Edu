@@ -55,4 +55,4 @@ def server(host, port):
                 return
 
 if __name__ == "__main__":
-    server("localhost", 65432)
+    server("localhost", 54321)

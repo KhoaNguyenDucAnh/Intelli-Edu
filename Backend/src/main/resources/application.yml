@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 12345
   error:
     include-message: always
     include-stacktrace: never
@@ -18,4 +18,4 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 ---
 python:
-  port: 65432
+  port: 54321
