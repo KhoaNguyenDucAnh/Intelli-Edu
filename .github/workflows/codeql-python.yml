@@ -14,8 +14,6 @@ name: "CodeQL Python"
 on:
   push:
     paths: "AI/**"
-  pull_request:
-    paths: "AI/**"
   schedule:
     - cron: "0 0 * * 0"
   workflow_dispatch:
