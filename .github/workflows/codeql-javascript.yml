@@ -14,8 +14,6 @@ name: "CodeQL Javascript"
 on:
   push:
     paths: "Frontend/**"
-  pull_request:
-    paths: "Frontend/**"
   schedule:
     - cron: "0 0 * * 0"
   workflow_dispatch:

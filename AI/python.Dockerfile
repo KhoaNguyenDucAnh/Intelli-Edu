@@ -5,8 +5,8 @@ FROM ghcr.io/khoanguyenducanh/python:library
 COPY AI/main.py .
 COPY AI/server.py .
 
-# Make port 65432 available to the world outside this container
-EXPOSE 65432
+# Make port 54321 available to the world outside this container
+EXPOSE 54321
 
 # Run app.py when the container launches
 CMD ["python", "server.py"]

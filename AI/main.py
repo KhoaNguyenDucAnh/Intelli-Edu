@@ -83,7 +83,7 @@ class Custom_Client(Client):
         return answer
 
 
-cookie = "activitySessionId=c5fa41a9-c0a8-4108-b40a-2e445c85c4dc; cf_clearance=My6jV1kwuzbBjwSe25pFRs.90Ol9nPfVJT2SIY75_nM-1702135721-0-1-af0c7280.440d5721.f80d2d60-0.2.1702135721; __ssid=2763ba1c74e3a7a3e4156a838541768; __stripe_mid=cb0b769a-afa4-4c00-ab0b-732057ec9b49dc64ae; __stripe_sid=fd9d5aed-61cb-4dd0-9ea8-7132c529f97271b25a; sessionKey=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; __cf_bm=lDob9azCnxTtPYjxoAASNudOAEecCk9LqZep6LOxbag-1702135744-1-ASQCBehcqft8+22BkymulvdaiAYFoEjqR+UvG+byip432dlUtrtu0AWJ7PmbPH9P1LWED6KtHLLA70lCmEzsPQo="
+cookie = "activitySessionId=46e4256d-2ee6-4006-aafc-aaeb320b86bc; __ssid=086e33567ac862a249fc32b0819e68f; __stripe_mid=01f492d9-48ef-4576-831e-b2d1d832159e850e76; cf_clearance=oUdCCizPJMT.FOqsfcurgHIhsze90ivRvL3CeW2ELM4-1705630204-1-AZUPFPPiMphxleHlgyzMCCw+mCBTcClI1WK4W7tJtdq15zpB/7cZGawTs/uzO4yQKD27je1ggcb2OswA35ZFS9k=; __cf_bm=ag8z0PJM7IK_JYZ.Yd.S2HPC_UBjszOAKeKsjpApWgM-1705633287-1-ATbaEk7C41WdsSfzh52t9qJMOvZGg4RceJwOG6sr6Nas+zE4UPCB041ME235UBXR0/uvKobIRtH+8cp023J2rs4=; sessionKey=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"
 
 claude_api = Custom_Client(cookie)
 
