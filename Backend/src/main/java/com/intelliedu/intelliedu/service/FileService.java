@@ -163,7 +163,6 @@ public class FileService {
     mindMapRepo.save(mindMap);
 
     return feedback;
-    }
   }
 
   public List<QuestionDtoDetail> generateQuestion(UUID id, Authentication authentication) {
