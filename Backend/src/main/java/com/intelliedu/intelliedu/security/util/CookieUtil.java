@@ -32,8 +32,8 @@ public class CookieUtil {
     Cookie cookie = new Cookie(key, value);
     cookie.setMaxAge(age);
     cookie.setPath("/");
-    cookie.setHttpOnly(true);
-    cookie.setSecure(true);
+    cookie.setHttpOnly(false);
+    cookie.setSecure(false);
     return cookie;
   }
 }
