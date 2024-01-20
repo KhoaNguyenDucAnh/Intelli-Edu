@@ -158,17 +158,11 @@ public class FileService {
     Document document = documentService.findContentHelper(id);
     MindMap mindMap = mindMapService.findContentHelper(id);
 
-    if (document.getPreContent() != null && document.getPreContent().equals(document.getContent()) && mindMap.getPreContent() != null && mindMap.getPreContent().equals(mindMap.getPreContent())) {
-      return mindMap.getFeedback();
-    } else {
-      String feedback = aiService.checkMindMap(documentService.findContentHelper(id), mindMapService.findContentHelper(id));
+    String feedback = aiService.checkMindMap(documentService.findContentHelper(id), mindMapService.findContentHelper(id));
+    mindMap.setFeedback(feedback);
+    mindMapRepo.save(mindMap);
 
-      document.setPreContent(document.getPreContent());
-      mindMap.setPreContent(mindMap.getContent());
-      mindMap.setFeedback(feedback);
-      mindMapRepo.save(mindMap);
-
-      return feedback;
+    return feedback;
     }
   }
 
