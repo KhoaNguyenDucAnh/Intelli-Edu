@@ -23,7 +23,7 @@ public class JWTUtil {
     return Jwts.builder()
       .subject(userPrincipal.getUsername())
       .issuedAt(Date.from(Instant.now())) 
-      .expiration(Date.from(Instant.now().plus(SecurityConfig.TOKEN_EXPIRATION_TIME,ChronoUnit.MILLIS)))
+      .expiration(Date.from(Instant.now().plus(SecurityConfig.TOKEN_EXPIRATION_TIME,ChronoUnit.SECONDS)))
       .signWith(SecurityConfig.SECRET_KEY)
       .compact();
   }

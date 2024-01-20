@@ -8,11 +8,11 @@ import io.jsonwebtoken.security.Keys;
 public class SecurityConfig {
   public static final String SECRET = "ThisIsAFuckingSecretKeySoPleaseDoNotTouchAtAllCost";
   public static final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET));
-  public static final String AUTHORIZATION = "Authorization";
+  public static final String AUTHORIZATION = "authorization";
   public static final String BEARER_PREFIX = "Bearer ";
 	public static final String HMAC_ALGORITHM = "HmacSHA256";
-  public static final long ACTIVATION_EXPIRATION_TIME = (long) (1000 * 60 * 5);
-  public static final long TOKEN_EXPIRATION_TIME = (long) (1000 * 60 * 60 * 24 * 365);
+  public static final int ACTIVATION_EXPIRATION_TIME = 60 * 5;
+  public static final int TOKEN_EXPIRATION_TIME = 60 * 60 * 24 * 365;
   private static final String[] PERMITALL = new String[] {
     "/favicon.ico",
     "/", "/homepage/.*", "/static/.*", "/manifest.json", "/logo192.png",

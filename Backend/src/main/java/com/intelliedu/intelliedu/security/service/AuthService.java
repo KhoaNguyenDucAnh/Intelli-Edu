@@ -119,7 +119,7 @@ public class AuthService {
       .orElse(SecurityToken.builder().account(account).build());
     securityToken.setSecurityAction(securityAction);
     securityToken.setToken(HashUtil.HMACSHA256(account.getEmail()));
-    securityToken.setExpireDateTime(ZonedDateTime.now().plus(Duration.ofMillis(SecurityConfig.ACTIVATION_EXPIRATION_TIME)));
+    securityToken.setExpireDateTime(ZonedDateTime.now().plus(Duration.ofSeconds(SecurityConfig.ACTIVATION_EXPIRATION_TIME)));
     return securityTokenRepo.save(securityToken);
   }
 
