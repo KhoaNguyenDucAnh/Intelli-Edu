@@ -2,7 +2,7 @@ spring:
   main:
     lazy-initialization: true
   datasource:
-    url: jdbc:postgresql://ep-winter-brook-48494983.ap-southeast-1.aws.neon.tech/Intelli%20Edu?user=robinkhoa06&password=Dq5loepZr8PW&sslmode=require
+    url: ${DATABASE_TEST}
   jpa:
     hibernate:
       ddl-auto: update

@@ -12,6 +12,10 @@ spring:
     driver-class-name: org.postgresql.Driver
     hikari:
       maxLifeTime: 300000
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 ---
 python:
   port: 54321
