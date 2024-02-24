@@ -76,6 +76,7 @@ jobs:
       run: |
         echo "First command"
         echo $DATABASE_TEST
+        edho ${{ env.DATABASE_TEST }}
         echo "Second command"
         mvn clean install package -q -f Backend/pom.xml -Dspring.profiles.active=test
       env:
