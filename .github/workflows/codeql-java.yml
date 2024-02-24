@@ -73,11 +73,7 @@ jobs:
         cache: maven
     
     - name: Build with Maven
-      run: |
-        echo "First command"
-        echo ${{ vars.DATABASE_TEST }}
-        echo "Second command"
-        mvn clean install package -q -f Backend/pom.xml -Dspring.profiles.active=test
+      run: mvn clean install package -q -f Backend/pom.xml -Dspring.profiles.active=test
       env:
         DATABASE_TEST: ${{ vars.DATABASE_TEST }}
 
