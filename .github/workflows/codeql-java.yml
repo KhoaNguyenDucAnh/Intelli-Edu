@@ -74,6 +74,8 @@ jobs:
     
     - name: Build with Maven
       run: mvn clean install package -q -f Backend/pom.xml -Dspring.profiles.active=test
+      env:
+        DATABASE_TEST: ${{ env.DATABASE_TEST }}
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
